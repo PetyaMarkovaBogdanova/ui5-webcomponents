@@ -152,12 +152,6 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         * @private
         */
         this._visibleColumns = 1;
-        /**
-        * Defines if the user is currently resizing the columns by dragging their separator.
-        * @default false
-        * @private
-        */
-        this._resizing = false;
         this._userDefinedColumnLayouts = {
             tablet: {},
             desktop: {},
@@ -337,8 +331,7 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
     }
     initSeparatorMovementSession(separator, cursorPositionX, isTouch) {
         this.attachMoveListeners(isTouch);
-        this.toggleSideAnimations(separator, false); // disable animations for side colmns to prevent slowdown while dragging
-        this._resizing = true;
+        this.toggleSideAnimations(separator, false); // toggle animations for side colmns
         return {
             separator,
             cursorPositionX,
@@ -350,7 +343,6 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         const hasAnimation = getAnimationMode() !== AnimationMode.None;
         this.detachMoveListeners();
         this.toggleSideAnimations(movedSeparator, hasAnimation); // restore animations for side columns
-        this._resizing = false;
         movedSeparator.focus();
         this.separatorMovementSession = null;
     }
@@ -885,9 +877,6 @@ __decorate([
 __decorate([
     property({ type: Number })
 ], FlexibleColumnLayout.prototype, "_visibleColumns", void 0);
-__decorate([
-    property({ type: Boolean })
-], FlexibleColumnLayout.prototype, "_resizing", void 0);
 __decorate([
     property({ type: Object })
 ], FlexibleColumnLayout.prototype, "_layoutsConfiguration", void 0);

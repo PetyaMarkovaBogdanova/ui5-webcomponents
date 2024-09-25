@@ -26,17 +26,6 @@ declare const testAssets: {
     invisibleMessage: {
         announce: (message: string, mode: import("@ui5/webcomponents-base/dist/types/InvisibleMessageMode.js").default) => void;
     };
-    getElementSelection: (element: HTMLElement) => {
-        selectedText: string;
-        x: number;
-        y: number;
-        width: number;
-        height: number;
-        top: number;
-        right: number;
-        bottom: number;
-        left: number;
-    };
     getLocaleData: (lang: string) => Promise<import("@ui5/webcomponents-localization/dist/LocaleData.js").default>;
     applyDirection: () => Promise<void>;
     attachDirectionChange: (listener: () => void) => void;

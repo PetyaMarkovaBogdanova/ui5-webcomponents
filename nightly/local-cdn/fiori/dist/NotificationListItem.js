@@ -20,7 +20,6 @@ import Link from "@ui5/webcomponents/dist/Link.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
 import WrappingType from "@ui5/webcomponents/dist/types/WrappingType.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
 import NotificationListItemImportance from "./types/NotificationListItemImportance.js";
 import NotificationListItemBase from "./NotificationListItemBase.js";
 // Icons
@@ -163,7 +162,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
         return this.state !== ValueState.None;
     }
     get hasDesc() {
-        return willShowContent(this.description);
+        return !!this.description.length;
     }
     get hasImportance() {
         return this.importance !== NotificationListItemImportance.Standard;

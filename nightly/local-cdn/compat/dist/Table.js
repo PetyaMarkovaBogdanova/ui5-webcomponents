@@ -763,7 +763,7 @@ let Table = Table_1 = class Table extends UI5Element {
         return Table_1.i18nBundle.getText(ARIA_LABEL_SELECT_ALL_CHECKBOX);
     }
     get loadMoreAriaLabelledBy() {
-        if (this.growingButtonSubtext) {
+        if (this.moreDataText) {
             return `${this._id}-growingButton-text ${this._id}-growingButton-subtext`;
         }
         return `${this._id}-growingButton-text`;

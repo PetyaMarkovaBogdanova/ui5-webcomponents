@@ -290,6 +290,9 @@ let FileUploader = FileUploader_1 = class FileUploader extends UI5Element {
     get hasValueStateText() {
         return this.hasValueState && this.valueState !== ValueState.Positive;
     }
+    get valueStateMessageText() {
+        return this.getSlottedNodes("valueStateMessage").map(el => el.cloneNode(true));
+    }
     get shouldDisplayDefaultValueStateMessage() {
         return !this.valueStateMessage.length && this.hasValueStateText;
     }

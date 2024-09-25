@@ -53,7 +53,7 @@ const boot = async () => {
         insertSystemCSSVars();
         resolve();
         booted = true;
-        eventProvider.fireEvent("boot");
+        await eventProvider.fireEventAsync("boot");
     };
     bootPromise = new Promise(bootExecutor);
     return bootPromise;

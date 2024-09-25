@@ -321,12 +321,7 @@ class Suggestions extends ComponentFeature {
         const rectItem = item.getDomRef().getBoundingClientRect();
         const rectInput = this._getComponent().getDomRef().getBoundingClientRect();
         const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
-        let headerHeight = 0;
-        if (this._hasValueState) {
-            const valueStateHeader = this._getPicker().querySelector("[slot=header]");
-            headerHeight = valueStateHeader.getBoundingClientRect().height;
-        }
-        return (rectItem.top + Suggestions.SCROLL_STEP <= windowHeight) && (rectItem.top >= rectInput.top + headerHeight);
+        return (rectItem.top + Suggestions.SCROLL_STEP <= windowHeight) && (rectItem.top >= rectInput.top);
     }
     _scrollItemIntoView(item) {
         item.scrollIntoView({

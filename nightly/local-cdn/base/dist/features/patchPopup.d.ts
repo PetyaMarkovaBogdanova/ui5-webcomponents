@@ -1,4 +1,4 @@
-type Control = {
+type Element = {
     getDomRef: () => HTMLElement | null;
 };
 type OpenUI5Popup = {
@@ -6,7 +6,7 @@ type OpenUI5Popup = {
         open: (...args: any[]) => void;
         _closed: (...args: any[]) => void;
         getOpenState: () => "CLOSED" | "CLOSING" | "OPEN" | "OPENING";
-        getContent: () => Control | HTMLElement;
+        getContent: () => Element;
         onFocusEvent: (e: FocusEvent) => void;
     };
 };

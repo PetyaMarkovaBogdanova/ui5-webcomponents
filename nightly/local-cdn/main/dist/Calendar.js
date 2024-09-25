@@ -186,10 +186,7 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
         this._valueIsProcessed = false;
     }
     static async onDefine() {
-        [Calendar_1.i18nBundle] = await Promise.all([
-            getI18nBundle("@ui5/webcomponents"),
-            super.onDefine(),
-        ]);
+        Calendar_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
     /**
      * @private

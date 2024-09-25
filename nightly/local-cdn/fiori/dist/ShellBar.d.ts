@@ -1,6 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type AriaRole from "@ui5/webcomponents-base/dist/types/AriaRole.js";
-import type { ListSelectionChangeEventDetail } from "@ui5/webcomponents/dist/List.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import Popover from "@ui5/webcomponents/dist/Popover.js";
 import type Input from "@ui5/webcomponents/dist/Input.js";
@@ -14,6 +13,7 @@ import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import type { Timeout, ClassMap, AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
 import type ListItemBase from "@ui5/webcomponents/dist/ListItemBase.js";
 import type PopoverHorizontalAlign from "@ui5/webcomponents/dist/types/PopoverHorizontalAlign.js";
+import type ShellBarVariant from "./types/ShellBarVariant.js";
 import type ShellBarItem from "./ShellBarItem.js";
 type LowercaseString<T> = T extends string ? Lowercase<T> : never;
 type ShellBarLogoAccessibilityAttributes = {
@@ -144,6 +144,13 @@ declare class ShellBar extends UI5Element {
      */
     showSearchField: boolean;
     /**
+     * Defines the mode Shellbar is presented in.
+     *
+     * @default false
+     * @public
+     */
+    variant: `${ShellBarVariant}`;
+    /**
      * Defines additional accessibility attributes on different areas of the component.
      *
      * The accessibilityAttributes object has the following fields,
@@ -191,6 +198,7 @@ declare class ShellBar extends UI5Element {
     _overflowPopoverExpanded: boolean;
     _fullWidthSearch: boolean;
     _isXXLBreakpoint: boolean;
+    _isSBreakpoint: boolean;
     /**
      * Defines the assistant slot.
      *
@@ -224,7 +232,7 @@ declare class ShellBar extends UI5Element {
      */
     logo: Array<HTMLElement>;
     /**
-     * Defines the items displayed in menu after a click on the primary title.
+     * Defines the items displayed in menu after a click on a start button.
      *
      * **Note:** You can use the  `<ui5-li></ui5-li>` and its ancestors.
      * @since 0.10
@@ -238,7 +246,7 @@ declare class ShellBar extends UI5Element {
     searchField: Array<Input>;
     /**
      * Defines a `ui5-button` in the bar that will be placed in the beginning.
-     * We encourage this slot to be used for a back or home button.
+     * We encourage this slot to be used for a menu button.
      * It gets overstyled to match ShellBar's styling.
      * @public
      */
@@ -248,26 +256,23 @@ declare class ShellBar extends UI5Element {
      *
      * **Note:** If set, the `searchField` slot is not rendered.
      * @private
+     * @deprecated Use additionalContextStart of additionalContextEnd instead.
      */
     midContent: Array<HTMLElement>;
+    additionalContextStart: Array<HTMLElement>;
+    additionalContextEnd: Array<HTMLElement>;
     static i18nBundle: I18nBundle;
     overflowPopover?: Popover | null;
-    menuPopover?: Popover | null;
     _isInitialRendering: boolean;
     _defaultItemPressPrevented: boolean;
-    menuItemsObserver: MutationObserver;
     _debounceInterval?: Timeout | null;
     _hiddenIcons: Array<IShelBarItemInfo>;
     _handleResize: ResizeObserverCallback;
-    _headerPress: () => void;
     static get FIORI_3_BREAKPOINTS(): number[];
     static get FIORI_3_BREAKPOINTS_MAP(): Record<string, string>;
     constructor();
     _debounce(fn: () => void, delay: number): void;
-    _menuItemPress(e: CustomEvent<ListSelectionChangeEventDetail>): void;
     _logoPress(): void;
-    _menuPopoverBeforeOpen(): void;
-    _menuPopoverAfterClose(): void;
     _overflowPopoverBeforeOpen(): void;
     _overflowPopoverAfterClose(): void;
     _logoKeyup(e: KeyboardEvent): void;
@@ -282,8 +287,13 @@ declare class ShellBar extends UI5Element {
     closeOverflow(): void;
     _handleBarBreakpoints(): string;
     _handleSizeS(): void;
-    _handleActionsOverflow(): IShelBarItemInfo[];
+    _handleActionsOverflow(): any[];
+    _handleadditionalContext(): void;
+    itemsByPriority(items: Array<any>): any[];
+    itemsHiddenClasses(items: Array<IShelBarItemInfo>, count: number): void;
+    itemsHiddenState(itemsByPriority: Array<any>): void;
     _overflowActions(): void;
+    _setContentPriority(items: Array<any>): any[];
     _toggleActionPopover(): void;
     onEnterDOM(): void;
     onExitDOM(): void;
@@ -336,10 +346,7 @@ declare class ShellBar extends UI5Element {
      */
     _getAllItems(showOverflowButton: boolean): IShelBarItemInfo[];
     _updateItemsInfo(newItems: Array<IShelBarItemInfo>): void;
-    _updateClonedMenuItems(): void;
-    _observeMenuItems(): void;
     _getOverflowPopover(): Popover;
-    _getMenuPopover(): Popover;
     isIconHidden(name: string): boolean;
     get classes(): ClassMap;
     get styles(): {
@@ -382,6 +389,8 @@ declare class ShellBar extends UI5Element {
     get _productsText(): string;
     get _searchText(): string;
     get _overflowText(): string;
+    get _isFullVariant(): boolean;
+    get hasAdditionalContext(): HTMLElement[];
     get accInfo(): {
         notifications: {
             title: string;

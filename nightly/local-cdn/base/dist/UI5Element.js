@@ -202,9 +202,6 @@ class UI5Element extends HTMLElement {
         if (!this._inDOM) { // Component removed from DOM while _processChildren was running
             return;
         }
-        if (!ctor.asyncFinished) {
-            await ctor.definePromise;
-        }
         renderImmediately(this);
         this._domRefReadyPromise._deferredResolve();
         this._fullyConnected = true;
@@ -980,6 +977,12 @@ class UI5Element extends HTMLElement {
         return uniqueDependenciesCache.get(this) || [];
     }
     /**
+     * Returns a promise that resolves whenever all dependencies for this UI5 Web Component have resolved
+     */
+    static whenDependenciesDefined() {
+        return Promise.all(this.getUniqueDependencies().map(dep => dep.define()));
+    }
+    /**
      * Hook that will be called upon custom element definition
      *
      * @protected
@@ -992,8 +995,9 @@ class UI5Element extends HTMLElement {
      * @public
      */
     static async define() {
-        this.definePromise = Promise.all([
-            boot(),
+        await boot();
+        await Promise.all([
+            this.whenDependenciesDefined(),
             this.onDefine(),
         ]);
         const tag = this.getMetadata().getTag();
@@ -1014,8 +1018,6 @@ class UI5Element extends HTMLElement {
             registerTag(tag);
             customElements.define(tag, this);
         }
-        await this.definePromise;
-        this.asyncFinished = true;
         return this;
     }
     /**

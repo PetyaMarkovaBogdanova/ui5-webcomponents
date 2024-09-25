@@ -16,7 +16,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import { isTabNext, isSpace, isEnter, isTabPrevious, isCtrl, } from "@ui5/webcomponents-base/dist/Keys.js";
 import DragRegistry from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
-import { findClosestPosition, findClosestPositionsByKey } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
+import { findClosestPosition, findClosestPositionByKey } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
 import getNormalizedTarget from "@ui5/webcomponents-base/dist/util/getNormalizedTarget.js";
@@ -94,8 +94,6 @@ const PAGE_UP_DOWN_SIZE = 10;
  * @constructor
  * @extends UI5Element
  * @public
- * @csspart growing-button - Used to style the button, that is used for growing of the component
- * @csspart growing-button-inner - Used to style the button inner element
  */
 let List = List_1 = class List extends UI5Element {
     static async onDefine() {
@@ -473,13 +471,23 @@ let List = List_1 = class List extends UI5Element {
         if (!item || !item.movable) {
             return;
         }
-        const closestPositions = findClosestPositionsByKey(this.items, item, e);
-        if (!closestPositions.length) {
+        const { placement, element } = findClosestPositionByKey(this.items, item, e);
+        if (!element || !placement) {
             return;
         }
         e.preventDefault();
-        const acceptedPosition = closestPositions.find(({ element, placement }) => {
-            return !this.fireEvent("move-over", {
+        const placementAccepted = !this.fireEvent("move-over", {
+            originalEvent: e,
+            source: {
+                element: item,
+            },
+            destination: {
+                element,
+                placement,
+            },
+        }, true);
+        if (placementAccepted) {
+            this.fireEvent("move", {
                 originalEvent: e,
                 source: {
                     element: item,
@@ -487,18 +495,6 @@ let List = List_1 = class List extends UI5Element {
                 destination: {
                     element,
                     placement,
-                },
-            }, true);
-        });
-        if (acceptedPosition) {
-            this.fireEvent("move", {
-                originalEvent: e,
-                source: {
-                    element: item,
-                },
-                destination: {
-                    element: acceptedPosition.element,
-                    placement: acceptedPosition.placement,
                 },
             });
             item.focus();

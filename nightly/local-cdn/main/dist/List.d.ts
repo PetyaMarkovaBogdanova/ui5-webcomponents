@@ -99,8 +99,6 @@ type ListItemClickEventDetail = {
  * @constructor
  * @extends UI5Element
  * @public
- * @csspart growing-button - Used to style the button, that is used for growing of the component
- * @csspart growing-button-inner - Used to style the button inner element
  */
 declare class List extends UI5Element {
     /**

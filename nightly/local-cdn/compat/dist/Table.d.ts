@@ -259,6 +259,7 @@ declare class Table extends UI5Element {
     fnHandleF7: (e: CustomEvent) => void;
     fnOnRowFocused: (e: CustomEvent) => void;
     _handleResize: ResizeObserverCallback;
+    moreDataText?: string;
     tableEndObserved: boolean;
     visibleColumns: Array<TableColumn>;
     visibleColumnsCount?: number;

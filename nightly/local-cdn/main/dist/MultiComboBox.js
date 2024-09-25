@@ -854,7 +854,6 @@ let MultiComboBox = MultiComboBox_1 = class MultiComboBox extends UI5Element {
             this._dialogInputValueState = valueState;
             this.valueState = valueState;
             this._validationTimeout = null;
-            this._innerInput.focus();
             callback && callback();
         }, 2000);
     }
@@ -1305,7 +1304,7 @@ let MultiComboBox = MultiComboBox_1 = class MultiComboBox extends UI5Element {
         if (!this._tokenizer) {
             return;
         }
-        return getTokensCountText(this.selectedValues.length);
+        return getTokensCountText(this._tokenizer.tokens.length);
     }
     get _tokensCountTextId() {
         return "ui5-multi-combobox-hiddenText-nMore";

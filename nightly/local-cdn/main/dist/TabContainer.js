@@ -24,7 +24,7 @@ import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsSco
 import "@ui5/webcomponents-icons/dist/slim-arrow-up.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import arraysAreEqual from "@ui5/webcomponents-base/dist/util/arraysAreEqual.js";
-import { findClosestPosition, findClosestPositionsByKey } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
+import { findClosestPosition, findClosestPositionByKey } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
 import Orientation from "@ui5/webcomponents-base/dist/types/Orientation.js";
 import DragRegistry from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
 import longDragOverHandler from "@ui5/webcomponents-base/dist/util/dragAndDrop/longDragOverHandler.js";
@@ -341,42 +341,39 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         if (!tab.movable) {
             return;
         }
-        const headerItems = this.items.map(item => item.getDomRefInStrip())
-            .filter((item) => !item?.hasAttribute("hidden"));
-        let positions = findClosestPositionsByKey(headerItems, tab.getDomRefInStrip(), e);
-        positions = positions.map(({ element, placement }) => {
-            while (element && element.realTabReference.hasAttribute("ui5-tab-separator") && placement === MovePlacement.Before) {
-                element = headerItems.at(headerItems.indexOf(element) - 1);
-                placement = MovePlacement.After;
-            }
-            while (element && element.realTabReference.hasAttribute("ui5-tab-separator") && placement === MovePlacement.After) {
-                element = headerItems.at(headerItems.indexOf(element) + 1);
-                placement = MovePlacement.Before;
-            }
-            return {
-                element,
+        const headerItems = this.items.map(item => item.getDomRefInStrip()).filter((item) => !item?.hasAttribute("hidden"));
+        let { placement, element } = findClosestPositionByKey(headerItems, tab.getDomRefInStrip(), e);
+        if (!element || !placement) {
+            return;
+        }
+        while (element && element.realTabReference.hasAttribute("ui5-tab-separator") && placement === MovePlacement.Before) {
+            element = element.previousElementSibling;
+            placement = MovePlacement.After;
+        }
+        while (element && element.realTabReference.hasAttribute("ui5-tab-separator") && placement === MovePlacement.After) {
+            element = element.nextElementSibling;
+            placement = MovePlacement.Before;
+        }
+        if (!element) {
+            return;
+        }
+        const placementAccepted = !this.fireEvent("move-over", {
+            source: {
+                element: tab,
+            },
+            destination: {
+                element: element.realTabReference,
                 placement,
-            };
-        });
-        const acceptedPosition = positions.find(({ element, placement }) => {
-            return !this.fireEvent("move-over", {
+            },
+        }, true);
+        if (placementAccepted) {
+            this.fireEvent("move", {
                 source: {
                     element: tab,
                 },
                 destination: {
                     element: element.realTabReference,
                     placement,
-                },
-            }, true);
-        });
-        if (acceptedPosition) {
-            this.fireEvent("move", {
-                source: {
-                    element: tab,
-                },
-                destination: {
-                    element: acceptedPosition.element.realTabReference,
-                    placement: acceptedPosition.placement,
                 },
             });
             tab.focus();
@@ -392,7 +389,6 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         const { destination, source } = e.detail;
         const draggedElement = DragRegistry.getDraggedElement();
         let destinationElement = destination.element.realTabReference;
-        // workaround to simulate tree behavior
         if (e.detail.originalEvent instanceof KeyboardEvent) {
             const realTabReference = source.element.realTabReference;
             const siblings = this._findSiblings(realTabReference);
@@ -402,8 +398,8 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                     return e.target.items.some(el => el.realTabReference === sibling);
                 });
             }
-            const nextPosition = findClosestPositionsByKey(items, realTabReference, e.detail.originalEvent);
-            destinationElement = nextPosition[0]?.element;
+            const nextPlacement = findClosestPositionByKey(items, realTabReference, e.detail.originalEvent);
+            destinationElement = nextPlacement.element;
         }
         if (!destinationElement) {
             return;
@@ -434,7 +430,6 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         const { destination, source } = e.detail;
         const draggedElement = DragRegistry.getDraggedElement();
         let destinationElement = destination.element.realTabReference;
-        // Workaround to simulate tree behavior
         if (e.detail.originalEvent instanceof KeyboardEvent) {
             const realTabReference = source.element.realTabReference;
             const siblings = this._findSiblings(realTabReference);
@@ -444,8 +439,8 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                     return e.target.items.some(el => el.realTabReference === sibling);
                 });
             }
-            const nextPosition = findClosestPositionsByKey(items, realTabReference, e.detail.originalEvent);
-            destinationElement = nextPosition[0]?.element;
+            const nextPlacement = findClosestPositionByKey(items, realTabReference, e.detail.originalEvent);
+            destinationElement = nextPlacement.element;
         }
         if (!destinationElement) {
             return;
@@ -535,7 +530,6 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         }
         if (isCtrl(e)) {
             this._moveHeaderItem(tab.realTabReference, e);
-            e.preventDefault();
             return;
         }
         if (tab.realTabReference.disabled) {

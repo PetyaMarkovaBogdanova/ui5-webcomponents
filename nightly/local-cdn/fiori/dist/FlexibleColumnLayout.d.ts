@@ -176,12 +176,6 @@ declare class FlexibleColumnLayout extends UI5Element {
     */
     _visibleColumns: number;
     /**
-    * Defines if the user is currently resizing the columns by dragging their separator.
-    * @default false
-    * @private
-    */
-    _resizing: boolean;
-    /**
     * Allows the user to replace the whole layouts configuration
     * @private
     */

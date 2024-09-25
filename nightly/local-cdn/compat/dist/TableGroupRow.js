@@ -53,7 +53,7 @@ let TableGroupRow = TableGroupRow_1 = class TableGroupRow extends UI5Element {
         return this._colSpan;
     }
     get ariaLabelText() {
-        return `${TableGroupRow_1.i18nBundle.getText(TABLE_GROUP_ROW_ARIA_LABEL)} ${this.textContent}. ${this.forcedAriaPosition}`;
+        return `${TableGroupRow_1.i18nBundle.getText(TABLE_GROUP_ROW_ARIA_LABEL)} ${this.innerText}. ${this.forcedAriaPosition}`;
     }
     visibleColCount() {
         let count = this._columnsInfo?.reduce((acc, column) => {

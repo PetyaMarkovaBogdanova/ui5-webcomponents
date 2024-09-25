@@ -4,11 +4,15 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
         __id?: string | undefined;
         _suppressInvalidation: boolean;
         _changedState: import("../UI5Element.js").ChangeInfo[];
-        _invalidationEventProvider: import("../EventProvider.js").default<import("../UI5Element.js").InvalidationInfo, void>;
+        _invalidationEventProvider: import("../EventProvider.js").default<import("../UI5Element.js").ChangeInfo & {
+            target: UI5Element;
+        }, void>;
         _componentStateFinalizedEventProvider: import("../EventProvider.js").default<void, void>;
         _inDOM: boolean;
         _fullyConnected: boolean;
-        _childChangeListeners: Map<string, (param: import("../UI5Element.js").InvalidationInfo) => void>;
+        _childChangeListeners: Map<string, (param: import("../UI5Element.js").ChangeInfo & {
+            target: UI5Element;
+        }) => void>;
         _slotsAssignedNodes: WeakMap<HTMLSlotElement, Node[]>;
         _slotChangeListeners: Map<string, (this: HTMLSlotElement, ev: Event) => void>;
         _domRefReadyPromise: Promise<void> & {
@@ -35,13 +39,19 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
         _processChildren(): Promise<void>;
         _updateSlots(): Promise<void>;
         _clearSlot(slotName: string, slotData: import("../UI5ElementMetadata.js").Slot): void;
-        attachInvalidate(callback: (param: import("../UI5Element.js").InvalidationInfo) => void): void;
-        detachInvalidate(callback: (param: import("../UI5Element.js").InvalidationInfo) => void): void;
+        attachInvalidate(callback: (param: import("../UI5Element.js").ChangeInfo & {
+            target: UI5Element;
+        }) => void): void;
+        detachInvalidate(callback: (param: import("../UI5Element.js").ChangeInfo & {
+            target: UI5Element;
+        }) => void): void;
         _onChildChange(slotName: string, childChangeInfo: import("../UI5Element.js").ChangeInfo): void;
         attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void;
         formAssociatedCallback(): void;
         _updateAttribute(name: string, newValue: import("../UI5ElementMetadata.js").PropertyValue): void;
-        _getChildChangeListener(slotName: string): (param: import("../UI5Element.js").InvalidationInfo) => void;
+        _getChildChangeListener(slotName: string): (param: import("../UI5Element.js").ChangeInfo & {
+            target: UI5Element;
+        }) => void;
         _getSlotChangeListener(slotName: string): (this: HTMLSlotElement, ev: Event) => void;
         _attachSlotChange(slot: HTMLSlotElement, slotName: string, invalidateOnChildChange: boolean): void;
         _detachSlotChange(child: HTMLSlotElement, slotName: string): void;
@@ -407,9 +417,8 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
     readonly dependencies: (typeof UI5Element)[];
     cacheUniqueDependencies(this: typeof UI5Element): void;
     getUniqueDependencies(this: typeof UI5Element): (typeof UI5Element)[];
+    whenDependenciesDefined(): Promise<(typeof UI5Element)[]>;
     onDefine(): Promise<void>;
-    asyncFinished: boolean;
-    definePromise: Promise<[void, void]> | undefined;
     define(): Promise<typeof UI5Element>;
     getMetadata(): import("../UI5ElementMetadata.js").default;
 };
