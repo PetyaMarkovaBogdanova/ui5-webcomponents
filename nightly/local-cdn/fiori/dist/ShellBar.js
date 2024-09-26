@@ -801,6 +801,12 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     get hasAdditionalContext() {
         return this.additionalContextStart || this.additionalContextEnd;
     }
+    get hasVisibleAdditionalContextStart() {
+        return this.additionalContextStart.some(item => !item.getAttribute("hidden"));
+    }
+    get hasVisibleAdditionalContextEnd() {
+        return this.additionalContextEnd.some(item => !item.getAttribute("hidden"));
+    }
     get accInfo() {
         const overflowExpanded = this.accessibilityAttributes.overflow?.expanded;
         return {
