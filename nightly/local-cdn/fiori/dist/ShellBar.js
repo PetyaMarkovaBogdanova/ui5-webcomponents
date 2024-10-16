@@ -545,10 +545,10 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             icon: "search",
             text: this._searchText,
             classes: `${this.searchField.length ? "" : "ui5-shellbar-invisible-button"} ui5-shellbar-search-button ui5-shellbar-button`,
-            priority: 1,
+            priority: 4,
             domOrder: this.searchField.length ? (++domOrder) : -1,
             styles: {
-                order: 1,
+                order: this.searchField.length ? 1 : -10,
             },
             id: `${this._id}-item-${1}`,
             press: this._handleSearchIconPress.bind(this),
@@ -581,7 +581,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 icon: "bell",
                 text: this._notificationsText,
                 classes: `${this.showNotifications ? "" : "ui5-shellbar-invisible-button"} ui5-shellbar-bell-button ui5-shellbar-button`,
-                priority: 1,
+                priority: 3,
                 styles: {
                     order: this.showNotifications ? 3 : -10,
                 },
@@ -630,7 +630,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 domOrder: this.showProductSwitch ? (++domOrder) : -1,
                 press: this._handleProductSwitchPress.bind(this),
             },
-            search
         ];
         if (this.assistant.length > 0) {
             this.assistant.forEach(assistant => {
@@ -693,14 +692,16 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 notification: {
                     "ui5-shellbar-hidden-button": this.isIconHidden("bell"),
                 },
-                product: {},
+                product: {
+                    "ui5-shellbar-hidden-button": this.isIconHidden("grid"),
+                },
                 search: {
                     "ui5-shellbar-hidden-button": this.isIconHidden("search"),
-                    // "ui5-shellbar-no-overflow-button": true
+                    "ui5-shellbar-no-overflow-button": true
                 },
                 overflow: {
                     "ui5-shellbar-hidden-button": this.isIconHidden("overflow"),
-                    "ui5-shellbar-no-overflow-button": true,
+                    "ui5-shellbar-no-overflow-button": true
                 },
             },
         };
@@ -718,8 +719,8 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                     "order": this.hasProfile ? "5" : "-1",
                 },
                 product: {
-                    "order": "6",
-                },
+                    "order": this.isIconHidden("grid") ? "-1" : "6",
+                }
             },
             searchField: {
                 "display": this.correctSearchFieldStyles,
@@ -799,12 +800,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     get hasAdditionalContext() {
         return this.additionalContextStart || this.additionalContextEnd;
-    }
-    get hasVisibleAdditionalContextStart() {
-        return this.additionalContextStart.some(item => !item.getAttribute("hidden"));
-    }
-    get hasVisibleAdditionalContextEnd() {
-        return this.additionalContextEnd.some(item => !item.getAttribute("hidden"));
     }
     get accInfo() {
         const overflowExpanded = this.accessibilityAttributes.overflow?.expanded;

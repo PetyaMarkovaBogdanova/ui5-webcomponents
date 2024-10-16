@@ -391,8 +391,6 @@ declare class ShellBar extends UI5Element {
     get _overflowText(): string;
     get _isFullVariant(): boolean;
     get hasAdditionalContext(): HTMLElement[];
-    get hasVisibleAdditionalContextStart(): boolean;
-    get hasVisibleAdditionalContextEnd(): boolean;
     get accInfo(): {
         notifications: {
             title: string;
