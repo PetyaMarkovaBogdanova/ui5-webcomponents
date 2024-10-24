@@ -22,7 +22,7 @@ type CarouselNavigateEventDetail = {
  * There are several ways to perform navigation:
  *
  * - on desktop - the user can navigate using the navigation arrows or with keyboard shortcuts.
- * - on mobile - the user can use swipe gestures.
+ * - on touch devices - the user can navigate using the navigation arrows (always visible) or can use swipe gestures.
  *
  * ### Usage
  *
@@ -98,8 +98,7 @@ declare class Carousel extends UI5Element {
      * Defines the visibility of the navigation arrows.
      * If set to true the navigation arrows will be hidden.
      *
-     * **Note:** The navigation arrows are never displayed on touch devices.
-     * In this case, the user can swipe to navigate through the items.
+     * **Note:** The navigation arrows are always displayed on touch devices.
      * @since 1.0.0-rc.15
      * @default false
      * @public
@@ -294,7 +293,6 @@ declare class Carousel extends UI5Element {
      * @default []
      */
     get visibleItemsIndices(): Array<number>;
-    static onDefine(): Promise<void>;
 }
 export default Carousel;
 export type { CarouselNavigateEventDetail, };

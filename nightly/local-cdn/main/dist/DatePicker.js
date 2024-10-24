@@ -9,6 +9,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import CalendarDate from "@ui5/webcomponents-localization/dist/dates/CalendarDate.js";
 import modifyDateBy from "@ui5/webcomponents-localization/dist/dates/modifyDateBy.js";
 import getRoundedTimestamp from "@ui5/webcomponents-localization/dist/dates/getRoundedTimestamp.js";
@@ -324,7 +325,7 @@ let DatePicker = DatePicker_1 = class DatePicker extends DateComponentBase {
             this._updateValueState(); // Change the value state to Error/None, but only if needed
         }
         events.forEach((e) => {
-            if (!this.fireEvent(e, { value, valid }, true)) {
+            if (!this.fireDecoratorEvent(e, { value, valid })) {
                 executeEvent = false;
             }
         });
@@ -340,7 +341,7 @@ let DatePicker = DatePicker_1 = class DatePicker extends DateComponentBase {
         const valid = this._checkValueValidity(this.value);
         const previousValueState = this.valueState;
         this.valueState = valid ? ValueState.None : ValueState.Negative;
-        const eventPrevented = !this.fireEvent("value-state-change", { valueState: this.valueState, valid }, true);
+        const eventPrevented = !this.fireDecoratorEvent("value-state-change", { valueState: this.valueState, valid });
         if (eventPrevented) {
             this.valueState = previousValueState;
         }
@@ -614,6 +615,9 @@ __decorate([
 __decorate([
     slot({ type: HTMLElement })
 ], DatePicker.prototype, "valueStateMessage", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], DatePicker, "i18nBundle", void 0);
 DatePicker = DatePicker_1 = __decorate([
     customElement({
         tag: "ui5-date-picker",
@@ -636,7 +640,6 @@ DatePicker = DatePicker_1 = __decorate([
     })
     /**
      * Fired when the input operation has finished by pressing Enter or on focusout.
-     * @allowPreventDefault
      * @public
      * @param {string} value The submitted value.
      * @param {boolean} valid Indicator if the value is in correct format pattern and in valid range.
@@ -657,10 +660,11 @@ DatePicker = DatePicker_1 = __decorate([
                 type: Boolean,
             },
         },
+        bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired when the value of the component is changed at each key stroke.
-     * @allowPreventDefault
      * @public
      * @param {string} value The submitted value.
      * @param {boolean} valid Indicator if the value is in correct format pattern and in valid range.
@@ -681,12 +685,13 @@ DatePicker = DatePicker_1 = __decorate([
                 type: Boolean,
             },
         },
+        bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired before the value state of the component is updated internally.
      * The event is preventable, meaning that if it's default action is
      * prevented, the component will not update the value state.
-     * @allowPreventDefault
      * @public
      * @param {string} valueState The new `valueState` that will be set.
      * @param {boolean} valid Indicator if the value is in correct format pattern and in valid range.
@@ -707,6 +712,8 @@ DatePicker = DatePicker_1 = __decorate([
                 type: Boolean,
             },
         },
+        bubbles: true,
+        cancelable: true,
     })
 ], DatePicker);
 DatePicker.define();

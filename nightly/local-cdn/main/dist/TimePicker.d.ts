@@ -1,4 +1,3 @@
-/// <reference types="openui5" />
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
@@ -176,7 +175,6 @@ declare class TimePicker extends UI5Element implements IFormInputElement {
     valueStateMessage: Array<HTMLElement>;
     tempValue?: string;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     get formValidityMessage(): string;
     get formValidity(): ValidityStateFlags;
     formElementAnchor(): Promise<HTMLElement | undefined>;

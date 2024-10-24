@@ -140,7 +140,7 @@ let Tree = class Tree extends UI5Element {
         }
         const placementAccepted = placements.some(placement => {
             const closestElement = closestPosition.element;
-            const beforeItemMovePrevented = !this.fireEvent("move-over", {
+            const beforeItemMovePrevented = !this.fireDecoratorEvent("move-over", {
                 source: {
                     element: draggedElement,
                 },
@@ -148,7 +148,7 @@ let Tree = class Tree extends UI5Element {
                     element: closestElement,
                     placement,
                 },
-            }, true);
+            });
             if (beforeItemMovePrevented) {
                 e.preventDefault();
                 this.dropIndicatorDOM.targetReference = closestElement;
@@ -164,7 +164,7 @@ let Tree = class Tree extends UI5Element {
     _ondrop(e) {
         e.preventDefault();
         const draggedElement = DragRegistry.getDraggedElement();
-        this.fireEvent("move", {
+        this.fireDecoratorEvent("move", {
             source: {
                 element: draggedElement,
             },
@@ -194,35 +194,35 @@ let Tree = class Tree extends UI5Element {
     }
     _onListItemToggle(e) {
         const treeItem = e.detail.item;
-        const defaultPrevented = !this.fireEvent("item-toggle", { item: treeItem }, true);
+        const defaultPrevented = !this.fireDecoratorEvent("item-toggle", { item: treeItem });
         if (!defaultPrevented) {
             treeItem.toggle();
         }
     }
     _onListItemClick(e) {
         const treeItem = e.detail.item;
-        if (!this.fireEvent("item-click", { item: treeItem }, true)) {
+        if (!this.fireDecoratorEvent("item-click", { item: treeItem })) {
             e.preventDefault();
         }
     }
     _onListItemDelete(e) {
         const treeItem = e.detail.item;
-        this.fireEvent("item-delete", { item: treeItem });
+        this.fireDecoratorEvent("item-delete", { item: treeItem });
     }
     _onListItemFocus(e) {
         const treeItem = e.detail.item;
-        this.fireEvent("item-focus", { item: treeItem });
+        this.fireDecoratorEvent("item-focus", { item: treeItem });
     }
     _onListItemMouseOver(e) {
         const target = e.target;
         if (this._isInstanceOfTreeItemBase(target)) {
-            this.fireEvent("item-mouseover", { item: target });
+            this.fireDecoratorEvent("item-mouseover", { item: target });
         }
     }
     _onListItemMouseOut(e) {
         const target = e.target;
         if (this._isInstanceOfTreeItemBase(target)) {
-            this.fireEvent("item-mouseout", { item: target });
+            this.fireDecoratorEvent("item-mouseout", { item: target });
         }
     }
     _onListSelectionChange(e) {
@@ -235,7 +235,7 @@ let Tree = class Tree extends UI5Element {
         selectedItems.forEach(item => {
             item.selected = true;
         });
-        this.fireEvent("selection-change", {
+        this.fireDecoratorEvent("selection-change", {
             previouslySelectedItems,
             selectedItems,
             targetItem,
@@ -332,7 +332,6 @@ Tree = __decorate([
      * This may be handy for example if you want to dynamically load tree items upon the user expanding a node.
      * Even if you prevented the event's default behavior, you can always manually call `toggle()` on a tree item.
      * @param {HTMLElement} item the toggled item.
-     * @allowPreventDefault
      * @public
      */
     ,
@@ -343,6 +342,8 @@ Tree = __decorate([
              */
             item: { type: HTMLElement },
         },
+        bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired when the mouse cursor enters the tree item borders.
@@ -358,6 +359,7 @@ Tree = __decorate([
              */
             item: { type: HTMLElement },
         },
+        bubbles: true,
     })
     /**
      * Fired when the mouse cursor leaves the tree item borders.
@@ -373,10 +375,10 @@ Tree = __decorate([
              */
             item: { type: HTMLElement },
         },
+        bubbles: true,
     })
     /**
      * Fired when a tree item is activated.
-     * @allowPreventDefault
      * @param {HTMLElement} item The clicked item.
      * @public
      */
@@ -388,6 +390,8 @@ Tree = __decorate([
              */
             item: { type: HTMLElement },
         },
+        bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired when the Delete button of any tree item is pressed.
@@ -405,6 +409,7 @@ Tree = __decorate([
              */
             item: { type: HTMLElement },
         },
+        bubbles: true,
     })
     /**
      * Fired when a tree item is focused.
@@ -416,6 +421,7 @@ Tree = __decorate([
         detail: {
             item: { type: HTMLElement },
         },
+        bubbles: true,
     })
     /**
      * Fired when selection is changed by user interaction
@@ -441,6 +447,22 @@ Tree = __decorate([
              */
             targetItem: { type: HTMLElement },
         },
+        bubbles: true,
+    }),
+    event("move", {
+        detail: {
+            source: { type: Object },
+            destination: { type: Object },
+        },
+        bubbles: true,
+    }),
+    event("move-over", {
+        detail: {
+            source: { type: Object },
+            destination: { type: Object },
+        },
+        bubbles: true,
+        cancelable: true,
     })
 ], Tree);
 const walkTree = (el, level, callback) => {

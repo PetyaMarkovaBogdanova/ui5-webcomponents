@@ -466,7 +466,7 @@ let TimePickerClock = class TimePickerClock extends UI5Element {
         else {
             // the new value is set, fire event
             setTimeout(() => {
-                this.fireEvent("change", {
+                this.fireDecoratorEvent("change", {
                     "value": newValue,
                     "stringValue": this._getStringValue(newValue),
                     "finalChange": true,
@@ -514,7 +514,7 @@ let TimePickerClock = class TimePickerClock extends UI5Element {
     _setSelectedValue(value) {
         const realValue = this._fixReplacementValue(value);
         this.selectedValue = realValue;
-        this.fireEvent("change", {
+        this.fireDecoratorEvent("change", {
             "value": realValue,
             "stringValue": this._getStringValue(realValue),
             "finalChange": false,
@@ -704,6 +704,7 @@ TimePickerClock = __decorate([
              */
             finalChange: { type: Boolean },
         },
+        bubbles: true,
     })
 ], TimePickerClock);
 TimePickerClock.define();

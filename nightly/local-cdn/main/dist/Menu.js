@@ -12,7 +12,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import { isLeft, isRight, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isPhone, isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
@@ -87,9 +87,6 @@ let Menu = Menu_1 = class Menu extends UI5Element {
          * @since 1.13.0
          */
         this.loadingDelay = 1000;
-    }
-    static async onDefine() {
-        Menu_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
     get isRtl() {
         return this.effectiveDir === "rtl";
@@ -238,6 +235,9 @@ __decorate([
 __decorate([
     slot({ "default": true, type: HTMLElement, invalidateOnChildChange: true })
 ], Menu.prototype, "items", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Menu, "i18nBundle", void 0);
 Menu = Menu_1 = __decorate([
     customElement({
         tag: "ui5-menu",

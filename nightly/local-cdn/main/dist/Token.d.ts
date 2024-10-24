@@ -94,7 +94,6 @@ declare class Token extends UI5Element implements IToken {
     get textDom(): Element | null | undefined;
     get isTruncatable(): boolean;
     get ariaDescription(): string;
-    static onDefine(): Promise<void>;
 }
 export default Token;
 export type { TokenDeleteEventDetail };

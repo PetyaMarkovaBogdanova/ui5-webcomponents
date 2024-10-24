@@ -87,7 +87,6 @@ declare class BusyIndicator extends UI5Element {
     constructor();
     onEnterDOM(): void;
     onExitDOM(): void;
-    static onDefine(): Promise<void>;
     get ariaTitle(): string;
     get labelId(): string | undefined;
     get classes(): {

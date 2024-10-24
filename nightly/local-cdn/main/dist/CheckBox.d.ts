@@ -199,6 +199,5 @@ declare class CheckBox extends UI5Element implements IFormInputElement {
     get isCompletelyChecked(): boolean;
     get isDisplayOnly(): boolean;
     get displayOnlyIcon(): "complete" | "tri-state" | "border";
-    static onDefine(): Promise<void>;
 }
 export default CheckBox;

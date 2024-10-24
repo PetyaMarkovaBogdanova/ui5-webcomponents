@@ -1,5 +1,5 @@
 /* eslint no-unused-vars: 0 */
-import { html, repeat, ifDefined, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import { html, svg, repeat, classMap, styleMap, ifDefined, unsafeHTML, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 function block0(context, tags, suffix) { return html `<div class="ui5-form-root" role="form" aria-labelledby="${ifDefined(this.ariaLabelledByID)}">${this.hasHeader ? block1.call(this, context, tags, suffix) : undefined}<div class="ui5-form-layout" part="layout">${this.hasGroupItems ? block4.call(this, context, tags, suffix) : block7.call(this, context, tags, suffix)}</div></div>`; }
 function block1(context, tags, suffix) { return html `<div class="ui5-form-header" part="header">${this.hasCustomHeader ? block2.call(this, context, tags, suffix) : block3.call(this, context, tags, suffix)}</div>`; }
 function block2(context, tags, suffix) { return html `<slot name="header"></slot>`; }

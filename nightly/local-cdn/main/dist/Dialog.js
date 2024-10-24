@@ -12,7 +12,7 @@ import clamp from "@ui5/webcomponents-base/dist/util/clamp.js";
 import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import { isUp, isDown, isLeft, isRight, isUpShift, isDownShift, isLeftShift, isRightShift, } from "@ui5/webcomponents-base/dist/Keys.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import Popup from "./Popup.js";
 import Icon from "./Icon.js";
 import "@ui5/webcomponents-icons/dist/resize-corner.js";
@@ -160,9 +160,6 @@ let Dialog = Dialog_1 = class Dialog extends Popup {
         this._resizeMouseMoveHandler = this._onResizeMouseMove.bind(this);
         this._resizeMouseUpHandler = this._onResizeMouseUp.bind(this);
         this._dragStartHandler = this._handleDragStart.bind(this);
-    }
-    static async onDefine() {
-        Dialog_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
     static _isHeader(element) {
         return element.classList.contains("ui5-popup-header-root") || element.getAttribute("slot") === "header";
@@ -479,6 +476,9 @@ __decorate([
 __decorate([
     slot()
 ], Dialog.prototype, "footer", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Dialog, "i18nBundle", void 0);
 Dialog = Dialog_1 = __decorate([
     customElement({
         tag: "ui5-dialog",

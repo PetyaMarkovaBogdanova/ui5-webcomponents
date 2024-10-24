@@ -1,4 +1,3 @@
-/// <reference types="openui5" />
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import DateFormat from "@ui5/webcomponents-localization/dist/DateFormat.js";
@@ -87,6 +86,5 @@ declare class DateComponentBase extends UI5Element {
     _getStringFromTimestamp(timestamp: number): string;
     getFormat(): import("sap/ui/core/format/DateFormat").default;
     getISOFormat(): DateFormat;
-    static onDefine(): Promise<void>;
 }
 export default DateComponentBase;

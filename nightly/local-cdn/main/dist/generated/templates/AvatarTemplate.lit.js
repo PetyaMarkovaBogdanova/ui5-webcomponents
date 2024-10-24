@@ -1,5 +1,5 @@
 /* eslint no-unused-vars: 0 */
-import { html, ifDefined, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import { html, svg, repeat, classMap, styleMap, ifDefined, unsafeHTML, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 function block0(context, tags, suffix) { return html `<div class="ui5-avatar-root" tabindex="${ifDefined(this.tabindex)}" data-sap-focus-ref @keyup=${this._onkeyup} @keydown=${this._onkeydown} @click=${this._onclick} role="${ifDefined(this._role)}" aria-haspopup="${ifDefined(this._ariaHasPopup)}" aria-label="${ifDefined(this.accessibleNameText)}" fallback-icon="${ifDefined(this.fallbackIcon)}">${this.hasImage ? block1.call(this, context, tags, suffix) : block2.call(this, context, tags, suffix)}<slot name="badge"></slot></div>`; }
 function block1(context, tags, suffix) { return html `<slot></slot>`; }
 function block2(context, tags, suffix) { return html `${this.icon ? block3.call(this, context, tags, suffix) : undefined}${this.initials ? block4.call(this, context, tags, suffix) : undefined}`; }

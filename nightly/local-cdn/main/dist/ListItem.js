@@ -8,12 +8,12 @@ var ListItem_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import { isSpace, isEnter, isDelete, isF2, } from "@ui5/webcomponents-base/dist/Keys.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getFirstFocusableElement } from "@ui5/webcomponents-base/dist/util/FocusableElements.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/decline.js";
 import "@ui5/webcomponents-icons/dist/edit.js";
 import Highlight from "./types/Highlight.js";
@@ -130,6 +130,9 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
         document.removeEventListener("touchend", this.deactivate);
     }
     async _onkeydown(e) {
+        if ((isSpace(e) || isEnter(e)) && this._isTargetSelfFocusDomRef(e)) {
+            return;
+        }
         super._onkeydown(e);
         const itemActive = this.type === ListItemType.Active, itemNavigated = this.typeNavigation;
         if ((isSpace(e) || isEnter(e)) && (itemActive || itemNavigated)) {
@@ -189,6 +192,10 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
             this.removeAttribute("data-moving");
         }
     }
+    _isTargetSelfFocusDomRef(e) {
+        const target = e.target, focusDomRef = this.getFocusDomRef();
+        return target !== focusDomRef;
+    }
     /**
      * Called when selection components in Single (ui5-radio-button)
      * and Multi (ui5-checkbox) selection modes are used.
@@ -197,13 +204,13 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
         if (this.isInactive) {
             return;
         }
-        this.fireEvent("_selection-requested", { item: this, selected: e.target.checked, selectionComponentPressed: true });
+        this.fireDecoratorEvent("_selection-requested", { item: this, selected: e.target.checked, selectionComponentPressed: true });
     }
     onSingleSelectionComponentPress(e) {
         if (this.isInactive) {
             return;
         }
-        this.fireEvent("_selection-requested", { item: this, selected: !e.target.checked, selectionComponentPressed: true });
+        this.fireDecoratorEvent("_selection-requested", { item: this, selected: !e.target.checked, selectionComponentPressed: true });
     }
     activate() {
         if (this.type === ListItemType.Active || this.type === ListItemType.Navigation) {
@@ -211,10 +218,10 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
         }
     }
     onDelete() {
-        this.fireEvent("_selection-requested", { item: this, selectionComponentPressed: false });
+        this.fireDecoratorEvent("_selection-requested", { item: this, selectionComponentPressed: false });
     }
     onDetailClick() {
-        this.fireEvent("detail-click", { item: this, selected: this.selected });
+        this.fireDecoratorEvent("detail-click", { item: this, selected: this.selected });
     }
     fireItemPress(e) {
         if (this.isInactive) {
@@ -321,9 +328,6 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
     get _listItem() {
         return this.shadowRoot.querySelector("li");
     }
-    static async onDefine() {
-        ListItem_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property()
@@ -355,6 +359,9 @@ __decorate([
 __decorate([
     slot()
 ], ListItem.prototype, "deleteButton", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], ListItem, "i18nBundle", void 0);
 ListItem = ListItem_1 = __decorate([
     customElement({
         languageAware: true,
@@ -374,9 +381,15 @@ ListItem = ListItem_1 = __decorate([
      * @public
      */
     ,
-    event("detail-click"),
-    event("_focused"),
-    event("_selection-requested")
+    event("detail-click", {
+        bubbles: true,
+    }),
+    event("_focused", {
+        bubbles: true,
+    }),
+    event("_selection-requested", {
+        bubbles: true,
+    })
 ], ListItem);
 export default ListItem;
 //# sourceMappingURL=ListItem.js.map

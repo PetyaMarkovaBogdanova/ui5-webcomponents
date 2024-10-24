@@ -88,6 +88,9 @@ __decorate([
 __decorate([
     property()
 ], FormGroup.prototype, "itemSpacing", void 0);
+__decorate([
+    property()
+], FormGroup.prototype, "labelSpan", void 0);
 FormGroup = __decorate([
     customElement("ui5-form-group")
 ], FormGroup);

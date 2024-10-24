@@ -15,7 +15,6 @@ declare abstract class TableRowBase extends UI5Element {
     cells: Array<TableCellBase>;
     _invalidate: number;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     onEnterDOM(): void;
     onBeforeRendering(): void;
     getFocusDomRef(): this;

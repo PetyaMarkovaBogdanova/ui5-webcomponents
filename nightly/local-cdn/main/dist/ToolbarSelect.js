@@ -127,7 +127,6 @@ ToolbarSelect = __decorate([
     })
     /**
      * Fired when the selected option changes.
-     * @allowPreventDefault
      * @param {HTMLElement} selectedOption the selected option.
      * @public
      */
@@ -139,13 +138,17 @@ ToolbarSelect = __decorate([
             */
             selectedOption: { type: HTMLElement },
         },
+        bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired after the component's dropdown menu opens.
      * @public
      */
     ,
-    event("open")
+    event("open", {
+        bubbles: true,
+    })
     /**
      * Fired after the component's dropdown menu closes.
      * @public

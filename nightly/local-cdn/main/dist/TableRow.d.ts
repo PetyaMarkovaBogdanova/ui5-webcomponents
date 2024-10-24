@@ -48,7 +48,6 @@ declare class TableRow extends TableRowBase {
      */
     navigated: boolean;
     _renderNavigated: boolean;
-    static onDefine(): Promise<void>;
     onBeforeRendering(): void;
     focus(focusOptions?: FocusOptions | undefined): Promise<void>;
     _onkeydown(e: KeyboardEvent, eventOrigin: HTMLElement): void;

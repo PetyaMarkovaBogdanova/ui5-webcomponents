@@ -28,6 +28,15 @@ import { LABEL_COLON } from "./generated/i18n/i18n-defaults.js";
  * @experimental This web component is available since 2.0 with an experimental flag and its API and behavior are subject to change.
  */
 let TableCell = class TableCell extends TableCellBase {
+    onBeforeRendering() {
+        super.onBeforeRendering();
+        if (this.horizontalAlign) {
+            this.style.justifyContent = this.horizontalAlign;
+        }
+        else {
+            this.style.justifyContent = `var(--horizontal-align-${this._individualSlot})`;
+        }
+    }
     get _popinHeader() {
         const row = this.parentElement;
         const table = row.parentElement;

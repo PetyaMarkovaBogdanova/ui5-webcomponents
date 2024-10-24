@@ -99,7 +99,7 @@ let Button = class Button extends UI5Element {
      */
     async _fadeOut() {
         const fadeOutDuration = 180;
-        const button = this.shadowRoot?.querySelector("[ui5-button]");
+        const button = this._mainButton;
         const newStateObject = this._effectiveStateObject;
         if (!newStateObject) {
             // eslint-disable-next-line no-console
@@ -145,6 +145,11 @@ let Button = class Button extends UI5Element {
             this.fadeMid = false;
             this.fadeIn = false;
         }, fadeResetDuration);
+        // reset the button's width after animations
+        const button = this._mainButton;
+        if (button) {
+            button.style.width = "";
+        }
     }
     /**
      * Handles the click event.
@@ -152,7 +157,10 @@ let Button = class Button extends UI5Element {
      */
     _onclick(e) {
         e.stopImmediatePropagation();
-        this.fireEvent("click");
+        this.fireDecoratorEvent("click");
+    }
+    get _mainButton() {
+        return this.shadowRoot?.querySelector("[ui5-button]");
     }
     get _effectiveState() {
         return this.state || (this.states.length && this.states[0].name) || "";
@@ -216,7 +224,9 @@ Button = __decorate([
      * @public
      */
     ,
-    event("click")
+    event("click", {
+        bubbles: true,
+    })
 ], Button);
 Button.define();
 export default Button;

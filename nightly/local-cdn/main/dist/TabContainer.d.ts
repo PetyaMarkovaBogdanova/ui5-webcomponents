@@ -319,7 +319,6 @@ declare class TabContainer extends UI5Element {
     get accInvisibleText(): string;
     get overflowBtnAccessibilityAttributes(): Pick<AccessibilityAttributes, "hasPopup">;
     get tablistAriaDescribedById(): string | undefined;
-    static onDefine(): Promise<void>;
 }
 export default TabContainer;
 export type { TabContainerTabSelectEventDetail, TabContainerMoveEventDetail, TabContainerStripInfo, TabContainerOverflowInfo, ITab, };

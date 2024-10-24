@@ -159,7 +159,6 @@ declare class Tab extends UI5Element implements ITabbable, ITab {
     get overflowState(): ListItemType.Inactive | ListItemType.Active;
     static get stripTemplate(): typeof TabInStripTemplate;
     static get overflowTemplate(): typeof TabInOverflowTemplate;
-    static onDefine(): Promise<void>;
     _ondragstart(e: DragEvent): void;
     _ondragend(e: DragEvent): void;
 }

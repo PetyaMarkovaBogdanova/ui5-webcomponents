@@ -11,7 +11,7 @@ import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
 import { isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import Icon from "./Icon.js";
@@ -109,9 +109,6 @@ let Tag = Tag_1 = class Tag extends UI5Element {
          */
         this._iconOnly = false;
     }
-    static async onDefine() {
-        Tag_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     onEnterDOM() {
         if (isDesktop()) {
             this.setAttribute("desktop", "");
@@ -180,7 +177,7 @@ let Tag = Tag_1 = class Tag extends UI5Element {
         }
     }
     _onclick() {
-        this.fireEvent("click");
+        this.fireDecoratorEvent("click");
     }
 };
 __decorate([
@@ -213,6 +210,9 @@ __decorate([
 __decorate([
     slot()
 ], Tag.prototype, "icon", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Tag, "i18nBundle", void 0);
 Tag = Tag_1 = __decorate([
     customElement({
         tag: "ui5-tag",
@@ -232,7 +232,9 @@ Tag = Tag_1 = __decorate([
      * @since 1.22.0
      */
     ,
-    event("click")
+    event("click", {
+        bubbles: true,
+    })
 ], Tag);
 Tag.define();
 export default Tag;

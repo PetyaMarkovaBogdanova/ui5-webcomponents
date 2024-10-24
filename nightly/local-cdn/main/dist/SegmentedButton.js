@@ -12,7 +12,7 @@ import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import { isSpace, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { SEGMENTEDBUTTON_ARIA_DESCRIPTION, SEGMENTEDBUTTON_ARIA_DESCRIBEDBY } from "./generated/i18n/i18n-defaults.js";
@@ -41,9 +41,6 @@ import SegmentedButtonCss from "./generated/themes/SegmentedButton.css.js";
  * @public
  */
 let SegmentedButton = SegmentedButton_1 = class SegmentedButton extends UI5Element {
-    static async onDefine() {
-        SegmentedButton_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     constructor() {
         super();
         /**
@@ -100,7 +97,7 @@ let SegmentedButton = SegmentedButton_1 = class SegmentedButton extends UI5Eleme
             default:
                 this._applySingleSelection(target);
         }
-        this.fireEvent("selection-change", {
+        this.fireDecoratorEvent("selection-change", {
             selectedItems: this.selectedItems,
         });
         this._itemNavigation.setCurrentItem(target);
@@ -182,6 +179,9 @@ __decorate([
 __decorate([
     slot({ type: HTMLElement, invalidateOnChildChange: true, "default": true })
 ], SegmentedButton.prototype, "items", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], SegmentedButton, "i18nBundle", void 0);
 SegmentedButton = SegmentedButton_1 = __decorate([
     customElement({
         tag: "ui5-segmented-button",
@@ -205,6 +205,7 @@ SegmentedButton = SegmentedButton_1 = __decorate([
              */
             selectedItems: { type: Array },
         },
+        bubbles: true,
     })
 ], SegmentedButton);
 SegmentedButton.define();

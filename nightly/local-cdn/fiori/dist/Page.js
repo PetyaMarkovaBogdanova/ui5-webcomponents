@@ -10,6 +10,9 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
+import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScopeUtils.js";
+import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 // Template
 import PageTemplate from "./generated/templates/PageTemplate.lit.js";
 // Styles
@@ -26,7 +29,7 @@ import PageCss from "./generated/themes/Page.css.js";
  * The top most area of the page is occupied by the header. The standard header includes a navigation button and a title.
  * #### Content
  * The content occupies the main part of the page. Only the content area is scrollable by default.
- * This can be prevented by setting  `enableScrolling` to `false`.
+ * This can be prevented by setting `noScrolling` to `true`.
  * #### Footer
  * The footer is optional and occupies the part above the bottom part of the content. Alternatively, the footer can be fixed at the bottom of the page by enabling the `fixedFooter` property.
  *
@@ -45,7 +48,7 @@ import PageCss from "./generated/themes/Page.css.js";
  */
 let Page = class Page extends UI5Element {
     constructor() {
-        super(...arguments);
+        super();
         /**
          * Defines the background color of the `ui5-page`.
          *
@@ -75,6 +78,9 @@ let Page = class Page extends UI5Element {
          * @public
          */
         this.hideFooter = false;
+    }
+    onEnterDOM() {
+        this.style.setProperty(getScopedVarName("--_ui5-page-animation-duration"), getAnimationMode() === AnimationMode.None ? "0s" : "0.35s");
     }
     get _contentBottom() {
         return this.fixedFooter && !this.hideFooter ? "2.75rem" : "0";

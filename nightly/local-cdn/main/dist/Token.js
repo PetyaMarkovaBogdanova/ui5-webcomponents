@@ -14,7 +14,7 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isBackSpace, isSpace, isDelete, isSpaceCtrl, } from "@ui5/webcomponents-base/dist/Keys.js";
 import "@ui5/webcomponents-icons/dist/decline.js";
 import "@ui5/webcomponents-icons/dist/sys-cancel.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { TOKEN_ARIA_DELETABLE, TOKEN_ARIA_LABEL } from "./generated/i18n/i18n-defaults.js";
 import Icon from "./Icon.js";
 import TokenTemplate from "./generated/templates/TokenTemplate.lit.js";
@@ -88,7 +88,7 @@ let Token = Token_1 = class Token extends UI5Element {
     _handleSelect() {
         if (!this.toBeDeleted) {
             this.selected = !this.selected;
-            this.fireEvent("select");
+            this.fireDecoratorEvent("select");
         }
     }
     _focusin() {
@@ -99,14 +99,14 @@ let Token = Token_1 = class Token extends UI5Element {
     }
     _delete() {
         this.toBeDeleted = true;
-        this.fireEvent("delete");
+        this.fireDecoratorEvent("delete");
     }
     _keydown(e) {
         const isBackSpacePressed = isBackSpace(e);
         const isDeletePressed = isDelete(e);
         if (!this.readonly && (isBackSpacePressed || isDeletePressed)) {
             e.preventDefault();
-            this.fireEvent("delete", {
+            this.fireDecoratorEvent("delete", {
                 backSpace: isBackSpacePressed,
                 "delete": isDeletePressed,
             });
@@ -137,9 +137,6 @@ let Token = Token_1 = class Token extends UI5Element {
             description += ` ${Token_1.i18nBundle.getText(TOKEN_ARIA_DELETABLE)}`;
         }
         return description;
-    }
-    static async onDefine() {
-        Token_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
 };
 __decorate([
@@ -172,6 +169,9 @@ __decorate([
 __decorate([
     slot()
 ], Token.prototype, "closeIcon", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Token, "i18nBundle", void 0);
 Token = Token_1 = __decorate([
     customElement({
         tag: "ui5-token",
@@ -186,7 +186,9 @@ Token = Token_1 = __decorate([
      * @private
      */
     ,
-    event("select")
+    event("select", {
+        bubbles: true,
+    })
     /**
      * Fired when the backspace, delete or close icon of the token is pressed
      * @param {Boolean} backSpace Indicates whether token is deleted by backspace key.
@@ -199,6 +201,7 @@ Token = Token_1 = __decorate([
             "backSpace": { type: Boolean },
             "delete": { type: Boolean },
         },
+        bubbles: true,
     })
 ], Token);
 Token.define();

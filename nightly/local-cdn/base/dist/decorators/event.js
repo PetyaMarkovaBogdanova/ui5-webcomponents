@@ -16,6 +16,8 @@ const event = (name, data = {}) => {
         }
         const eventsMetadata = metadata.events;
         if (!eventsMetadata[name]) {
+            data.bubbles = !!data.bubbles;
+            data.cancelable = !!data.cancelable;
             eventsMetadata[name] = data;
         }
     };

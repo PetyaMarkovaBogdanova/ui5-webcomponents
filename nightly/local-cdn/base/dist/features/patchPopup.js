@@ -17,7 +17,7 @@ const patchOpen = (Popup) => {
         if (openingInitiated && topLayerAlreadyInUse) {
             const element = this.getContent();
             if (element) {
-                const domRef = element.getDomRef();
+                const domRef = element instanceof HTMLElement ? element : element?.getDomRef();
                 if (domRef) {
                     openNativePopover(domRef);
                 }
@@ -29,7 +29,7 @@ const patchClosed = (Popup) => {
     const _origClosed = Popup.prototype._closed;
     Popup.prototype._closed = function _closed(...args) {
         const element = this.getContent();
-        const domRef = element.getDomRef();
+        const domRef = element instanceof HTMLElement ? element : element?.getDomRef();
         _origClosed.apply(this, args); // only then call _close
         if (domRef) {
             closeNativePopover(domRef); // unset the popover attribute and close the native popover, but only if still in DOM

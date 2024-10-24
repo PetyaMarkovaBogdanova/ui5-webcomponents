@@ -78,6 +78,5 @@ declare class Card extends UI5Element {
     get _hasHeader(): boolean;
     get _getAriaLabel(): string;
     get _ariaCardContentLabel(): string;
-    static onDefine(): Promise<void>;
 }
 export default Card;

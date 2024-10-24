@@ -98,7 +98,6 @@ declare class Suggestions extends ComponentFeature {
     _clearValueStateFocus(): void;
     _clearSelectedSuggestionAndaccInfo(): void;
     static get dependencies(): (typeof Button | typeof Icon | typeof List | typeof SuggestionItem | typeof SuggestionItemGroup)[];
-    static define(): Promise<void>;
 }
 export default Suggestions;
 export type { SuggestionComponent, };

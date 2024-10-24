@@ -1,4 +1,3 @@
-import "@ui5/webcomponents-base/dist/i18nBundle.js";
 const LOAD_MORE_TEXT = { key: "LOAD_MORE_TEXT", defaultText: "More" };
 const TABLE_HEADER_ROW_INFORMATION = { key: "TABLE_HEADER_ROW_INFORMATION", defaultText: "Header Row 1 of {0}" };
 const TABLE_ROW_POSITION = { key: "TABLE_ROW_POSITION", defaultText: "{0} of {1}" };

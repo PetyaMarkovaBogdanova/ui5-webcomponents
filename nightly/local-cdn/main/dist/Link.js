@@ -12,8 +12,9 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { markEvent } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
+import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
 import { getLocationHostname, getLocationPort, getLocationProtocol } from "@ui5/webcomponents-base/dist/Location.js";
 import LinkDesign from "./types/LinkDesign.js";
 // Template
@@ -113,12 +114,12 @@ let Link = Link_1 = class Link extends UI5Element {
          * @default {}
          */
         this.accessibilityAttributes = {};
-        /**
-         * Indicates if the element is on focus.
-         * @private
-         */
-        this.focused = false;
         this._dummyAnchor = document.createElement("a");
+    }
+    onEnterDOM() {
+        if (isDesktop()) {
+            this.setAttribute("desktop", "");
+        }
     }
     onBeforeRendering() {
         const needsNoReferrer = this.target !== "_self"
@@ -162,29 +163,22 @@ let Link = Link_1 = class Link extends UI5Element {
     get _hasPopup() {
         return this.accessibilityAttributes.hasPopup;
     }
-    static async onDefine() {
-        Link_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     _onclick(e) {
         const { altKey, ctrlKey, metaKey, shiftKey, } = e;
         e.stopImmediatePropagation();
         markEvent(e, "link");
-        const executeEvent = this.fireEvent("click", {
+        const executeEvent = this.fireDecoratorEvent("click", {
             altKey,
             ctrlKey,
             metaKey,
             shiftKey,
-        }, true);
+        });
         if (!executeEvent) {
             e.preventDefault();
         }
     }
     _onfocusin(e) {
         markEvent(e, "link");
-        this.focused = true;
-    }
-    _onfocusout() {
-        this.focused = false;
     }
     _onkeydown(e) {
         if (isEnter(e) && !this.href) {
@@ -251,8 +245,8 @@ __decorate([
     property({ noAttribute: true })
 ], Link.prototype, "forcedTabIndex", void 0);
 __decorate([
-    property({ type: Boolean })
-], Link.prototype, "focused", void 0);
+    i18n("@ui5/webcomponents")
+], Link, "i18nBundle", void 0);
 Link = Link_1 = __decorate([
     customElement({
         tag: "ui5-link",
@@ -266,7 +260,6 @@ Link = Link_1 = __decorate([
      * Fired when the component is triggered either with a mouse/tap
      * or by using the Enter key.
      * @public
-     * @allowPreventDefault
      * @param {boolean} altKey Returns whether the "ALT" key was pressed when the event was triggered.
      * @param {boolean} ctrlKey Returns whether the "CTRL" key was pressed when the event was triggered.
      * @param {boolean} metaKey Returns whether the "META" key was pressed when the event was triggered.
@@ -292,6 +285,8 @@ Link = Link_1 = __decorate([
              */
             shiftKey: { type: Boolean },
         },
+        bubbles: true,
+        cancelable: true,
     })
 ], Link);
 Link.define();

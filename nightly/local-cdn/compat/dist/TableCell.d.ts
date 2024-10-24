@@ -30,7 +30,6 @@ declare class TableCell extends UI5Element {
      */
     content?: Array<HTMLElement>;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     get cellContent(): Array<HTMLElement>;
     get ariaLabelEmptyCellText(): string;
 }

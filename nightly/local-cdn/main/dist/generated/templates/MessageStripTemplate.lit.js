@@ -1,5 +1,5 @@
 /* eslint no-unused-vars: 0 */
-import { html, classMap, ifDefined, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import { html, svg, repeat, classMap, styleMap, ifDefined, unsafeHTML, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 function block0(context, tags, suffix) { return html `<div class="${classMap(this.classes.root)}" id="${ifDefined(this._id)}" role="note" aria-labelledby="${ifDefined(this._id)}">${!this.shouldHideIcon ? block1.call(this, context, tags, suffix) : undefined}<span class="ui5-hidden-text">${ifDefined(this.hiddenText)}</span><span class="ui5-message-strip-text"><slot></slot></span>${!this.hideCloseButton ? block4.call(this, context, tags, suffix) : undefined}</div>`; }
 function block1(context, tags, suffix) { return html `<div class="ui5-message-strip-icon-wrapper" aria-hidden="true">${this.iconProvided ? block2.call(this, context, tags, suffix) : block3.call(this, context, tags, suffix)}</div>`; }
 function block2(context, tags, suffix) { return html `<slot name="icon"></slot>`; }

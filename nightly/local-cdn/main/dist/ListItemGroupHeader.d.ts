@@ -24,6 +24,5 @@ declare class ListItemGroupHeader extends ListItemBase {
     get _pressable(): boolean;
     get groupHeaderText(): string;
     get ariaLabelText(): string;
-    static onDefine(): Promise<void>;
 }
 export default ListItemGroupHeader;

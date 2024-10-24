@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var ListItemGroupHeader_1;
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ListItemBase from "./ListItemBase.js";
 import { GROUP_HEADER_TEXT } from "./generated/i18n/i18n-defaults.js";
 // Template
@@ -37,13 +37,13 @@ let ListItemGroupHeader = ListItemGroupHeader_1 = class ListItemGroupHeader exte
     get ariaLabelText() {
         return [this.textContent, this.accessibleName].filter(Boolean).join(" ");
     }
-    static async onDefine() {
-        ListItemGroupHeader_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property()
 ], ListItemGroupHeader.prototype, "accessibleName", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], ListItemGroupHeader, "i18nBundle", void 0);
 ListItemGroupHeader = ListItemGroupHeader_1 = __decorate([
     customElement({
         tag: "ui5-li-group-header",

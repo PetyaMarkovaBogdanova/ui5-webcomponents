@@ -61,7 +61,6 @@ declare class YearPicker extends CalendarPart implements ICalendarPicker {
     _firstYear?: number;
     _lastYear?: number;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     get roleDescription(): string;
     onBeforeRendering(): void;
     _getPageSize(): 8 | 20;

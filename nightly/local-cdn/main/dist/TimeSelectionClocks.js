@@ -66,16 +66,12 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
      */
     _clocksFocusIn(evt) {
         const target = evt.target;
-        this._focused = true;
         if (target.id === this._id) {
             this._switchClock(this._activeIndex);
         }
     }
-    _clocksFocusOut() {
-        this._focused = false;
-    }
     /**
-     * ToggleSpinButton focusin event handler.Switches to clock which button is being focused.
+     * ToggleSpinButton focusin event handler. Switches to clock which button is being focused.
      * @param evt Event object
      */
     _buttonFocusIn(evt) {
@@ -115,7 +111,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
         const toggleSpinButtonTarget = evt.target && evt.target.tagName.toLowerCase().indexOf("segmented") === -1;
         if (isEnter(evt)) {
             // Accept the time and close the popover
-            this.fireEvent("close-picker");
+            this.fireDecoratorEvent("close-picker");
         }
         else if (isSpace(evt) && toggleSpinButtonTarget && !this._spacePressed) {
             evt.preventDefault();
@@ -282,7 +278,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
                 "itemMax": 60,
                 "value": time.minutes,
                 "stringValue": this._minutes,
-                "textValue": `${time.minutes} ${this.minutesLabel}`,
+                "textValue": `${time.minutes} ${this.minutesLabel}`, // possible concatenation
                 "displayStep": 5,
                 "lastItemReplacement": 0,
                 "showInnerCircle": false,
@@ -306,7 +302,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
                 "itemMax": 60,
                 "value": time.seconds,
                 "stringValue": this._seconds,
-                "textValue": `${time.seconds} ${this.secondsLabel}`,
+                "textValue": `${time.seconds} ${this.secondsLabel}`, // possible concatenation
                 "displayStep": 5,
                 "lastItemReplacement": 0,
                 "showInnerCircle": false,
@@ -321,7 +317,6 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
             });
         }
         this._entities[this._activeIndex].active = true;
-        this._entities[this._activeIndex].focused = this._focused && !this._amPmFocused;
         this._createPeriodComponent();
     }
     /**
@@ -342,10 +337,8 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
         const newButton = this._buttonComponent(clockIndex);
         if (this._entities.length && clockIndex < this._entities.length && newButton) {
             this._entities[this._activeIndex].active = false;
-            this._entities[this._activeIndex].focused = false;
             this._activeIndex = clockIndex;
             this._entities[this._activeIndex].active = true;
-            this._entities[this._activeIndex].focused = this._focused && !this._amPmFocused;
             newButton.focus();
         }
     }
@@ -416,7 +409,9 @@ __decorate([
     property({ type: Boolean, noAttribute: true })
 ], TimeSelectionClocks.prototype, "_amPmFocused", void 0);
 TimeSelectionClocks = __decorate([
-    event("close-picker")
+    event("close-picker", {
+        bubbles: true,
+    })
     /**
      * @class
      *

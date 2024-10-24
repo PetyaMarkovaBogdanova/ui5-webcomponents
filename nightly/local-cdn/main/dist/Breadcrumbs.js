@@ -10,12 +10,12 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import { locationOpen } from "@ui5/webcomponents-base/dist/Location.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import { isSpace, isShow, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import BreadcrumbsDesign from "./types/BreadcrumbsDesign.js";
@@ -244,19 +244,19 @@ let Breadcrumbs = Breadcrumbs_1 = class Breadcrumbs extends UI5Element {
     }
     _onLinkPress(e) {
         const link = e.target, items = this._getItems(), item = items.find(x => `${x._id}-link` === link.id), { altKey, ctrlKey, metaKey, shiftKey, } = e.detail;
-        if (!this.fireEvent("item-click", {
+        if (!this.fireDecoratorEvent("item-click", {
             item,
             altKey,
             ctrlKey,
             metaKey,
             shiftKey,
-        }, true)) {
+        })) {
             e.preventDefault();
         }
     }
     _onLabelPress(e) {
         const items = this._getItems(), item = items[items.length - 1], { altKey, ctrlKey, metaKey, shiftKey, } = e;
-        this.fireEvent("item-click", {
+        this.fireDecoratorEvent("item-click", {
             item,
             altKey,
             ctrlKey,
@@ -266,7 +266,7 @@ let Breadcrumbs = Breadcrumbs_1 = class Breadcrumbs extends UI5Element {
     }
     _onOverflowListItemSelect(e) {
         const listItem = e.detail.selectedItems[0], items = this._getItems(), item = items.find(x => `${x._id}-li` === listItem.id);
-        if (this.fireEvent("item-click", { item }, true)) {
+        if (this.fireDecoratorEvent("item-click", { item })) {
             locationOpen(item.href, item.target || "_self", "noopener,noreferrer");
             this.responsivePopover.open = false;
         }
@@ -441,9 +441,6 @@ let Breadcrumbs = Breadcrumbs_1 = class Breadcrumbs extends UI5Element {
     get _cancelButtonText() {
         return Breadcrumbs_1.i18nBundle.getText(BREADCRUMBS_CANCEL_BUTTON);
     }
-    static async onDefine() {
-        Breadcrumbs_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property()
@@ -457,6 +454,9 @@ __decorate([
 __decorate([
     slot({ type: HTMLElement, invalidateOnChildChange: true, "default": true })
 ], Breadcrumbs.prototype, "items", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Breadcrumbs, "i18nBundle", void 0);
 Breadcrumbs = Breadcrumbs_1 = __decorate([
     customElement({
         tag: "ui5-breadcrumbs",
@@ -479,7 +479,6 @@ Breadcrumbs = Breadcrumbs_1 = __decorate([
      * Fires when a `BreadcrumbsItem` is clicked.
      *
      * **Note:** You can prevent browser location change by calling `event.preventDefault()`.
-     * @allowPreventDefault
      * @param {HTMLElement} item The clicked item.
      * @param {Boolean} altKey Returns whether the "ALT" key was pressed when the event was triggered.
      * @param {Boolean} ctrlKey Returns whether the "CTRL" key was pressed when the event was triggered.
@@ -511,6 +510,8 @@ Breadcrumbs = Breadcrumbs_1 = __decorate([
              */
             shiftKey: { type: Boolean },
         },
+        bubbles: true,
+        cancelable: true,
     })
 ], Breadcrumbs);
 Breadcrumbs.define();

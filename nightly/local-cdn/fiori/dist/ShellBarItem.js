@@ -29,9 +29,9 @@ let ShellBarItem = class ShellBarItem extends UI5Element {
         return this.getAttribute("stable-dom-ref") || `${this._id}-stable-dom-ref`;
     }
     fireClickEvent(e) {
-        return this.fireEvent("click", {
+        return this.fireDecoratorEvent("click", {
             targetRef: e.target,
-        }, true);
+        });
     }
 };
 __decorate([
@@ -47,7 +47,6 @@ ShellBarItem = __decorate([
     customElement("ui5-shellbar-item")
     /**
      * Fired, when the item is pressed.
-     * @allowPreventDefault
      * @param {HTMLElement} targetRef DOM ref of the clicked element
      * @public
      */
@@ -56,6 +55,8 @@ ShellBarItem = __decorate([
         detail: {
             targetRef: { type: HTMLElement },
         },
+        bubbles: true,
+        cancelable: true,
     })
 ], ShellBarItem);
 ShellBarItem.define();

@@ -130,7 +130,6 @@ declare class SplitButton extends UI5Element {
     _isDefaultActionPressed: boolean;
     _isKeyDownOperation: boolean;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     constructor();
     onBeforeRendering(): void;
     _handleMouseClick(e: MouseEvent): void;

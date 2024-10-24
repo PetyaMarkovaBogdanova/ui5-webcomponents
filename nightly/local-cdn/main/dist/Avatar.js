@@ -10,8 +10,8 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import { isEnter, isSpace } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -124,9 +124,6 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
         this.accessibilityAttributes = {};
         this._hasImage = false;
         this._handleResizeBound = this.handleResize.bind(this);
-    }
-    static async onDefine() {
-        Avatar_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
     get tabindex() {
         return this.forcedTabIndex || (this._interactive ? "0" : "-1");
@@ -245,7 +242,7 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
         }
     }
     _fireClick() {
-        this.fireEvent("click");
+        this.fireDecoratorEvent("click");
     }
     _getAriaHasPopup() {
         const ariaHaspopup = this.accessibilityAttributes.hasPopup;
@@ -300,6 +297,9 @@ __decorate([
 __decorate([
     slot()
 ], Avatar.prototype, "badge", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Avatar, "i18nBundle", void 0);
 Avatar = Avatar_1 = __decorate([
     customElement({
         tag: "ui5-avatar",
@@ -318,7 +318,9 @@ Avatar = Avatar_1 = __decorate([
      * @since 1.0.0-rc.11
      */
     ,
-    event("click")
+    event("click", {
+        bubbles: true,
+    })
 ], Avatar);
 Avatar.define();
 export default Avatar;

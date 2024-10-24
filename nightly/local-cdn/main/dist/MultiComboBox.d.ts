@@ -419,7 +419,6 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
             "max-width": string;
         };
     };
-    static onDefine(): Promise<void>;
 }
 export default MultiComboBox;
 export type { IMultiComboBoxItem, MultiComboBoxSelectionChangeEventDetail, };

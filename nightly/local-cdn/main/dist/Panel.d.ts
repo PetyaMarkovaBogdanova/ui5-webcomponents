@@ -191,6 +191,5 @@ declare class Panel extends UI5Element {
             display: string;
         };
     };
-    static onDefine(): Promise<void>;
 }
 export default Panel;

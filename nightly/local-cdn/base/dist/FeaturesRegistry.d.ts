@@ -1,6 +1,9 @@
 import type UI5Element from "./UI5Element.js";
 declare abstract class ComponentFeature {
     constructor(...args: any[]);
+    /**
+     * @deprecated assign the feature's "i18nBundle" static member directly from the component that uses the feature
+     */
     static define?: () => Promise<void>;
     static dependencies?: Array<typeof UI5Element>;
 }

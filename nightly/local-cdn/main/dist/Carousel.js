@@ -12,7 +12,7 @@ import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isLeft, isRight, isDown, isUp, isF7, } from "@ui5/webcomponents-base/dist/Keys.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ScrollEnablement from "@ui5/webcomponents-base/dist/delegate/ScrollEnablement.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
@@ -40,7 +40,7 @@ import CarouselCss from "./generated/themes/Carousel.css.js";
  * There are several ways to perform navigation:
  *
  * - on desktop - the user can navigate using the navigation arrows or with keyboard shortcuts.
- * - on mobile - the user can use swipe gestures.
+ * - on touch devices - the user can navigate using the navigation arrows (always visible) or can use swipe gestures.
  *
  * ### Usage
  *
@@ -107,8 +107,7 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
          * Defines the visibility of the navigation arrows.
          * If set to true the navigation arrows will be hidden.
          *
-         * **Note:** The navigation arrows are never displayed on touch devices.
-         * In this case, the user can swipe to navigate through the items.
+         * **Note:** The navigation arrows are always displayed on touch devices.
          * @since 1.0.0-rc.15
          * @default false
          * @public
@@ -187,7 +186,7 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
         this._orderOfLastFocusedPages = [];
     }
     onBeforeRendering() {
-        if (this.arrowsPlacement === CarouselArrowsPlacement.Navigation) {
+        if (this.arrowsPlacement === CarouselArrowsPlacement.Navigation || !isDesktop()) {
             this._visibleNavigationArrows = true;
         }
         this.validateSelectedIndex();
@@ -224,7 +223,7 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
         }
         if (this._selectedIndex > this.pagesCount - 1) {
             this._selectedIndex = this.pagesCount - 1;
-            this.fireEvent("navigate", { selectedIndex: this._selectedIndex });
+            this.fireDecoratorEvent("navigate", { selectedIndex: this._selectedIndex });
         }
     }
     _updateScrolling(e) {
@@ -325,7 +324,7 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
             --this._selectedIndex;
         }
         if (previousSelectedIndex !== this._selectedIndex) {
-            this.fireEvent("navigate", { selectedIndex: this._selectedIndex });
+            this.fireDecoratorEvent("navigate", { selectedIndex: this._selectedIndex });
         }
     }
     navigateRight() {
@@ -343,7 +342,7 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
             ++this._selectedIndex;
         }
         if (previousSelectedIndex !== this._selectedIndex) {
-            this.fireEvent("navigate", { selectedIndex: this._selectedIndex });
+            this.fireDecoratorEvent("navigate", { selectedIndex: this._selectedIndex });
         }
     }
     _navButtonClick(e) {
@@ -431,7 +430,7 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
         if (!this.hasManyPages) {
             return false;
         }
-        if (this.arrowsPlacement === CarouselArrowsPlacement.Navigation && !this.hideNavigationArrows) {
+        if (this.arrowsPlacement === CarouselArrowsPlacement.Navigation && (!this.hideNavigationArrows || !isDesktop())) {
             return true;
         }
         if (this.hidePageIndicator) {
@@ -460,11 +459,11 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
                 "ui5-carousel-content": true,
                 "ui5-carousel-content-no-animation": this.suppressAnimation,
                 "ui5-carousel-content-has-navigation": this.renderNavigation,
-                "ui5-carousel-content-has-navigation-and-buttons": this.renderNavigation && this.arrowsPlacement === CarouselArrowsPlacement.Navigation && !this.hideNavigationArrows,
+                "ui5-carousel-content-has-navigation-and-buttons": this.renderNavigation && this.arrowsPlacement === CarouselArrowsPlacement.Navigation && (!this.hideNavigationArrows || !isDesktop()),
             },
             navigation: {
                 "ui5-carousel-navigation-wrapper": true,
-                "ui5-carousel-navigation-with-buttons": this.renderNavigation && this.arrowsPlacement === CarouselArrowsPlacement.Navigation && !this.hideNavigationArrows,
+                "ui5-carousel-navigation-with-buttons": this.renderNavigation && this.arrowsPlacement === CarouselArrowsPlacement.Navigation && (!this.hideNavigationArrows || !isDesktop()),
                 [`ui5-carousel-navigation-wrapper-bg-${this.pageIndicatorBackgroundDesign.toLowerCase()}`]: true,
                 [`ui5-carousel-navigation-wrapper-border-${this.pageIndicatorBorderDesign.toLowerCase()}`]: true,
             },
@@ -498,10 +497,10 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
         return dots;
     }
     get showArrows() {
-        const displayArrows = this._visibleNavigationArrows && this.hasManyPages && isDesktop();
+        const displayArrows = this._visibleNavigationArrows && this.hasManyPages;
         return {
-            content: !this.hideNavigationArrows && displayArrows && this.arrowsPlacement === CarouselArrowsPlacement.Content,
-            navigation: !this.hideNavigationArrows && displayArrows && this.arrowsPlacement === CarouselArrowsPlacement.Navigation,
+            content: (!this.hideNavigationArrows || !isDesktop()) && displayArrows && this.arrowsPlacement === CarouselArrowsPlacement.Content,
+            navigation: (!this.hideNavigationArrows || !isDesktop()) && displayArrows && this.arrowsPlacement === CarouselArrowsPlacement.Navigation,
         };
     }
     get hasPrev() {
@@ -548,9 +547,6 @@ let Carousel = Carousel_1 = class Carousel extends UI5Element {
             }
         });
         return visibleItemsIndices;
-    }
-    static async onDefine() {
-        Carousel_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
 };
 __decorate([
@@ -601,6 +597,9 @@ __decorate([
 __decorate([
     slot({ "default": true, type: HTMLElement, individualSlots: true })
 ], Carousel.prototype, "content", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Carousel, "i18nBundle", void 0);
 Carousel = Carousel_1 = __decorate([
     customElement({
         tag: "ui5-carousel",
@@ -630,6 +629,7 @@ Carousel = Carousel_1 = __decorate([
              */
             selectedIndex: { type: Number },
         },
+        bubbles: true,
     })
 ], Carousel);
 Carousel.define();

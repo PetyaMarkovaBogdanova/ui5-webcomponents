@@ -61,7 +61,6 @@ declare class SegmentedButton extends UI5Element {
     _itemNavigation: ItemNavigation;
     hasPreviouslyFocusedItem: boolean;
     _selectedItem?: ISegmentedButtonItem;
-    static onDefine(): Promise<void>;
     constructor();
     onBeforeRendering(): void;
     normalizeSelection(): void;

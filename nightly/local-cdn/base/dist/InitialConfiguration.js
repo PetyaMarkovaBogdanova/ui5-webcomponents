@@ -15,7 +15,7 @@ let initialConfig = {
     timezone: undefined,
     calendarType: undefined,
     secondaryCalendarType: undefined,
-    noConflict: false,
+    noConflict: false, // no URL
     formatSettings: {},
     fetchDefaultLanguage: false,
     defaultFontLoading: true,

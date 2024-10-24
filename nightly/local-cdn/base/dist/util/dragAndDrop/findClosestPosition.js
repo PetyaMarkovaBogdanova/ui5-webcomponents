@@ -55,33 +55,48 @@ const findClosestPosition = (elements, point, layoutOrientation) => {
         placements,
     };
 };
-const findClosestPositionByKey = (elements, element, e) => {
-    let placement;
+const findClosestPositionsByKey = (elements, element, e) => {
     let index = elements.indexOf(element);
+    const positions = [];
     switch (e.key) {
         case "ArrowLeft":
         case "ArrowUp":
-            placement = MovePlacement.Before;
             index--;
+            if (index >= 0) {
+                positions.push({
+                    element: elements[index],
+                    placement: MovePlacement.Before,
+                });
+            }
             break;
         case "ArrowRight":
         case "ArrowDown":
-            placement = MovePlacement.After;
             index++;
+            if (index < elements.length) {
+                positions.push({
+                    element: elements[index],
+                    placement: MovePlacement.After,
+                });
+            }
             break;
         case "Home":
-            placement = MovePlacement.Before;
-            index = 0;
+            elements.forEach(el => {
+                positions.push({
+                    element: el,
+                    placement: MovePlacement.Before,
+                });
+            });
             break;
         case "End":
-            placement = MovePlacement.After;
-            index = elements.length - 1;
+            elements.reverse().forEach(el => {
+                positions.push({
+                    element: el,
+                    placement: MovePlacement.After,
+                });
+            });
             break;
     }
-    return {
-        element: elements[index],
-        placement,
-    };
+    return positions;
 };
-export { findClosestPosition, findClosestPositionByKey, };
+export { findClosestPosition, findClosestPositionsByKey, };
 //# sourceMappingURL=findClosestPosition.js.map

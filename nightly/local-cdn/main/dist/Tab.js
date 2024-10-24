@@ -12,7 +12,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import executeTemplate from "@ui5/webcomponents-base/dist/renderer/executeTemplate.js";
 import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import { TAB_ARIA_DESIGN_POSITIVE, TAB_ARIA_DESIGN_NEGATIVE, TAB_ARIA_DESIGN_CRITICAL, TAB_ARIA_DESIGN_NEUTRAL, TABCONTAINER_END_OVERFLOW, TAB_SPLIT_ROLE_DESCRIPTION, } from "./generated/i18n/i18n-defaults.js";
 import "@ui5/webcomponents-icons/dist/error.js";
@@ -317,9 +317,6 @@ let Tab = Tab_1 = class Tab extends UI5Element {
     static get overflowTemplate() {
         return TabInOverflowTemplate;
     }
-    static async onDefine() {
-        Tab_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     _ondragstart(e) {
         if (e.target instanceof HTMLElement) {
             e.target.setAttribute("data-moving", "");
@@ -378,6 +375,9 @@ __decorate([
         },
     })
 ], Tab.prototype, "items", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Tab, "i18nBundle", void 0);
 Tab = Tab_1 = __decorate([
     customElement({
         tag: "ui5-tab",

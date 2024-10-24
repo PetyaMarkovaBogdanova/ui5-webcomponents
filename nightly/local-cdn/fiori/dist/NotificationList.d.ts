@@ -61,7 +61,6 @@ declare class NotificationList extends UI5Element {
     _onItemClose(e: CustomEvent<ListItemCloseEventDetail>): void;
     _onItemToggle(e: CustomEvent<ListItemToggleEventDetail>): void;
     _onLoadMore(): void;
-    static onDefine(): Promise<void>;
 }
 export default NotificationList;
 export type { NotificationItemClickEventDetail, NotificationItemToggleEventDetail, NotificationItemCloseEventDetail, };

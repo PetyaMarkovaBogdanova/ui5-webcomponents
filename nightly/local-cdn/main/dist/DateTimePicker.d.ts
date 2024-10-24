@@ -1,4 +1,3 @@
-/// <reference types="openui5" />
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import "@ui5/webcomponents-icons/dist/date-time.js";

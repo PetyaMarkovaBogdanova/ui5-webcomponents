@@ -6,7 +6,6 @@ import ColorPicker from "../ColorPicker.js";
 declare class ColorPaletteMoreColors extends ComponentFeature {
     static get dependencies(): (typeof Button | typeof Dialog | typeof ColorPicker)[];
     static i18nBundle: I18nBundle;
-    static define(): Promise<void>;
     get colorPaletteDialogTitle(): string;
     get colorPaletteDialogOKButton(): string;
     get colorPaletteCancelButton(): string;

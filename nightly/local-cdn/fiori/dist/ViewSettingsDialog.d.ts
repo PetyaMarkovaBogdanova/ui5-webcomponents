@@ -132,9 +132,8 @@ declare class ViewSettingsDialog extends UI5Element {
     onBeforeRendering(): void;
     onInvalidation(changeInfo: ChangeInfo): void;
     _setAdditionalTexts(): void;
-    static onDefine(): Promise<void>;
     get _selectedFilter(): (VSDItem & {
-        filterOptions: VSDItem[];
+        filterOptions: Array<VSDItem>;
     }) | undefined;
     get shouldBuildSort(): boolean;
     get shouldBuildFilter(): boolean;

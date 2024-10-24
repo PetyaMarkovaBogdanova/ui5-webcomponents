@@ -86,6 +86,5 @@ declare class ProgressIndicator extends UI5Element {
     get valueStateText(): string;
     get showIcon(): boolean;
     get valueStateIcon(): string;
-    static onDefine(): Promise<void>;
 }
 export default ProgressIndicator;

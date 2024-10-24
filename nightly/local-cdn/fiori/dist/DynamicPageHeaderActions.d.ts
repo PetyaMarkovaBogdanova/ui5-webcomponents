@@ -54,7 +54,6 @@ declare class DynamicPageHeaderActions extends UI5Element {
         controls?: string;
     };
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     get arrowButtonIcon(): "slim-arrow-down" | "slim-arrow-up";
     get pinButtonIcon(): "pushpin-off" | "pushpin-on";
     get expandButton(): Button | null;

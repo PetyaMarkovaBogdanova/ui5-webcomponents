@@ -99,7 +99,6 @@ declare class UploadCollectionItem extends ListItem {
      */
     thumbnail: Array<HTMLElement>;
     static i18nFioriBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     /**
      * @override
      */

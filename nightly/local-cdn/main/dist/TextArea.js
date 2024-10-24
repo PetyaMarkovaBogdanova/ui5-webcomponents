@@ -15,7 +15,7 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { getEffectiveAriaLabelText, getAssociatedLabelForTexts } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
 import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isEscape } from "@ui5/webcomponents-base/dist/Keys.js";
 import Popover from "./Popover.js";
 import Icon from "./Icon.js";
@@ -58,9 +58,6 @@ let TextArea = TextArea_1 = class TextArea extends UI5Element {
     }
     get formFormattedValue() {
         return this.value;
-    }
-    static async onDefine() {
-        TextArea_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
     constructor() {
         super();
@@ -196,7 +193,7 @@ let TextArea = TextArea_1 = class TextArea extends UI5Element {
             const nativeTextArea = this.getInputDomRef();
             this.value = this.previousValue;
             nativeTextArea.value = this.value;
-            this.fireEvent("input");
+            this.fireDecoratorEvent("input");
         }
     }
     _onkeyup() {
@@ -216,13 +213,13 @@ let TextArea = TextArea_1 = class TextArea extends UI5Element {
         }
     }
     _onchange() {
-        this.fireEvent("change", {});
+        this.fireDecoratorEvent("change", {});
     }
     _onselect() {
-        this.fireEvent("select", {});
+        this.fireDecoratorEvent("select", {});
     }
     _onscroll() {
-        this.fireEvent("scroll", {});
+        this.fireDecoratorEvent("scroll", {});
     }
     _oninput(e) {
         const nativeTextArea = this.getInputDomRef();
@@ -235,9 +232,9 @@ let TextArea = TextArea_1 = class TextArea extends UI5Element {
         if (e.inputType === "insertFromPaste" && this.maxlength && valueLength > this.maxlength) {
             nativeTextArea.setSelectionRange(this.maxlength, valueLength);
         }
-        this.fireEvent("input", {});
+        this.fireDecoratorEvent("input", {});
         // Angular two way data binding
-        this.fireEvent("value-changed");
+        this.fireDecoratorEvent("value-changed");
     }
     _onResize() {
         if (this.displayValueStateMessagePopover) {
@@ -472,6 +469,9 @@ __decorate([
 __decorate([
     slot()
 ], TextArea.prototype, "valueStateMessage", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], TextArea, "i18nBundle", void 0);
 TextArea = TextArea_1 = __decorate([
     customElement({
         tag: "ui5-textarea",
@@ -491,7 +491,17 @@ TextArea = TextArea_1 = __decorate([
      * @public
      */
     ,
-    event("change")
+    event("change", {
+        bubbles: true,
+    })
+    /**
+     * Fired to make Angular two way data binding work properly.
+     * @private
+     */
+    ,
+    event("value-changed", {
+        bubbles: true,
+    })
     /**
      * Fired when the value of the component changes at each keystroke or when
      * something is pasted.
@@ -499,7 +509,9 @@ TextArea = TextArea_1 = __decorate([
      * @public
      */
     ,
-    event("input")
+    event("input", {
+        bubbles: true,
+    })
     /**
      * Fired when some text has been selected.
      *
@@ -507,7 +519,9 @@ TextArea = TextArea_1 = __decorate([
      * @public
      */
     ,
-    event("select")
+    event("select", {
+        bubbles: true,
+    })
     /**
      * Fired when textarea is scrolled.
      *
@@ -515,7 +529,9 @@ TextArea = TextArea_1 = __decorate([
      * @public
      */
     ,
-    event("scroll")
+    event("scroll", {
+        bubbles: true,
+    })
 ], TextArea);
 TextArea.define();
 export default TextArea;

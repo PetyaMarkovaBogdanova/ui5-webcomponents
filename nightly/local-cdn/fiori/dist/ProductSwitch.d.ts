@@ -61,7 +61,6 @@ declare class ProductSwitch extends UI5Element {
         ONE_COLUMN: number;
         THREE_COLUMN: number;
     };
-    static onDefine(): Promise<void>;
     get _ariaLabelText(): string;
     onEnterDOM(): void;
     onExitDOM(): void;

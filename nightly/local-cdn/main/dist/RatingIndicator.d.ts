@@ -116,7 +116,6 @@ declare class RatingIndicator extends UI5Element {
     _focused: boolean;
     _liveValue?: number;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     constructor();
     onBeforeRendering(): void;
     calcState(): void;

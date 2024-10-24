@@ -86,7 +86,6 @@ declare class TableGrowing extends UI5Element implements ITableGrowing {
     _currentLastRow?: HTMLElement;
     _shouldFocusRow?: boolean;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     onTableActivate(table: Table): void;
     onTableRendered(): void;
     onExitDOM(): void;

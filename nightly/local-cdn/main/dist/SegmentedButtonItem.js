@@ -8,7 +8,7 @@ var SegmentedButtonItem_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getEnableDefaultTooltips } from "@ui5/webcomponents-base/dist/config/Tooltips.js";
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
 import { isSpaceShift } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -120,9 +120,6 @@ let SegmentedButtonItem = SegmentedButtonItem_1 = class SegmentedButtonItem exte
     get showIconTooltip() {
         return getEnableDefaultTooltips() && this.iconOnly && !this.tooltip;
     }
-    static async onDefine() {
-        SegmentedButtonItem_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property({ type: Boolean })
@@ -160,6 +157,9 @@ __decorate([
 __decorate([
     slot({ type: Node, "default": true })
 ], SegmentedButtonItem.prototype, "text", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], SegmentedButtonItem, "i18nBundle", void 0);
 SegmentedButtonItem = SegmentedButtonItem_1 = __decorate([
     customElement({
         tag: "ui5-segmented-button-item",

@@ -156,7 +156,6 @@ declare class Dialog extends Popup {
     footer: Array<HTMLElement>;
     static i18nBundle: I18nBundle;
     constructor();
-    static onDefine(): Promise<void>;
     static _isHeader(element: HTMLElement): boolean;
     get isModal(): boolean;
     get _ariaLabelledBy(): string | undefined;

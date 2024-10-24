@@ -523,7 +523,6 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      * @param value the numeric value of Input of type "Number"
      */
     removeFractionalPart(value: string): string;
-    static onDefine(): Promise<void>;
 }
 export default Input;
 export type { IInputSuggestionItem, IInputSuggestionItemSelectable, InputSuggestionScrollEventDetail, InputSelectionChangeEventDetail, InputEventDetail, };

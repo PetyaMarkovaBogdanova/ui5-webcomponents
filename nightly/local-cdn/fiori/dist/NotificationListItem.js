@@ -20,6 +20,7 @@ import Link from "@ui5/webcomponents/dist/Link.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
 import WrappingType from "@ui5/webcomponents/dist/types/WrappingType.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
+import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
 import NotificationListItemImportance from "./types/NotificationListItemImportance.js";
 import NotificationListItemBase from "./NotificationListItemBase.js";
 // Icons
@@ -162,7 +163,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
         return this.state !== ValueState.None;
     }
     get hasDesc() {
-        return !!this.description.length;
+        return willShowContent(this.description);
     }
     get hasImportance() {
         return this.importance !== NotificationListItemImportance.Standard;
@@ -358,7 +359,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
             return;
         }
         if (isDelete(e)) {
-            this.fireEvent("close", { item: this });
+            this.fireDecoratorEvent("close", { item: this });
         }
         if (isF10Shift(e)) {
             this._onBtnMenuClick();
@@ -368,7 +369,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
         }
     }
     _onBtnCloseClick() {
-        this.fireEvent("close", { item: this });
+        this.fireDecoratorEvent("close", { item: this });
     }
     _onBtnMenuClick() {
         if (this.getMenu()) {
@@ -391,7 +392,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
         if (getEventMark(e) === "button" || getEventMark(e) === "link") {
             return;
         }
-        this.fireEvent("_press", { item: this });
+        this.fireDecoratorEvent("_press", { item: this });
     }
     onResize() {
         if (this.wrappingType === WrappingType.Normal) {
@@ -469,7 +470,9 @@ NotificationListItem = NotificationListItem_1 = __decorate([
             Tag,
         ],
     }),
-    event("_press")
+    event("_press", {
+        bubbles: true,
+    })
     /**
      * Fired when the `Close` button is pressed.
      * @param {HTMLElement} item the closed item.
@@ -485,6 +488,7 @@ NotificationListItem = NotificationListItem_1 = __decorate([
                 type: HTMLElement,
             },
         },
+        bubbles: true,
     })
 ], NotificationListItem);
 NotificationListItem.define();

@@ -39,6 +39,5 @@ declare class TableGroupRow extends UI5Element implements ITableRow {
     visibleColCount(): number;
     onBeforeRendering(): void;
     _onfocusin(e: FocusEvent): void;
-    static onDefine(): Promise<void>;
 }
 export default TableGroupRow;

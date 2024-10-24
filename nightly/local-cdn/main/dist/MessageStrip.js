@@ -11,7 +11,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/decline.js";
 import "@ui5/webcomponents-icons/dist/information.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
@@ -107,10 +107,7 @@ let MessageStrip = MessageStrip_1 = class MessageStrip extends UI5Element {
         this.hideCloseButton = false;
     }
     _closeClick() {
-        this.fireEvent("close");
-    }
-    static async onDefine() {
-        MessageStrip_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
+        this.fireDecoratorEvent("close");
     }
     static designAnnouncementMappings() {
         const getTranslation = (text) => {
@@ -186,6 +183,9 @@ __decorate([
 __decorate([
     slot()
 ], MessageStrip.prototype, "icon", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], MessageStrip, "i18nBundle", void 0);
 MessageStrip = MessageStrip_1 = __decorate([
     customElement({
         tag: "ui5-message-strip",
@@ -201,7 +201,9 @@ MessageStrip = MessageStrip_1 = __decorate([
      * @public
      */
     ,
-    event("close")
+    event("close", {
+        bubbles: true,
+    })
 ], MessageStrip);
 MessageStrip.define();
 export default MessageStrip;

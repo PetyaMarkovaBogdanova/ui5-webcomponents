@@ -19,12 +19,12 @@ import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation
 import { isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import { isSpace, isEnter, isDown, isRight, isLeft, isUp, isCtrl, } from "@ui5/webcomponents-base/dist/Keys.js";
 import MediaRange from "@ui5/webcomponents-base/dist/MediaRange.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-up.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import arraysAreEqual from "@ui5/webcomponents-base/dist/util/arraysAreEqual.js";
-import { findClosestPosition, findClosestPositionByKey } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
+import { findClosestPosition, findClosestPositionsByKey } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
 import Orientation from "@ui5/webcomponents-base/dist/types/Orientation.js";
 import DragRegistry from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
 import longDragOverHandler from "@ui5/webcomponents-base/dist/util/dragAndDrop/longDragOverHandler.js";
@@ -288,7 +288,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                 placements = placements.filter(placement => placement !== MovePlacement.On);
             }
             const acceptedPlacement = placements.find(placement => {
-                const dragOverPrevented = !this.fireEvent("move-over", {
+                const dragOverPrevented = !this.fireDecoratorEvent("move-over", {
                     source: {
                         element: draggedElement,
                     },
@@ -296,7 +296,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                         element: dropTarget,
                         placement,
                     },
-                }, true);
+                });
                 if (dragOverPrevented) {
                     e.preventDefault();
                     this.dropIndicatorDOM.targetReference = closestPosition.element;
@@ -325,7 +325,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         }
         e.preventDefault();
         const draggedElement = DragRegistry.getDraggedElement();
-        this.fireEvent("move", {
+        this.fireDecoratorEvent("move", {
             source: {
                 element: draggedElement,
             },
@@ -341,39 +341,42 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         if (!tab.movable) {
             return;
         }
-        const headerItems = this.items.map(item => item.getDomRefInStrip()).filter((item) => !item?.hasAttribute("hidden"));
-        let { placement, element } = findClosestPositionByKey(headerItems, tab.getDomRefInStrip(), e);
-        if (!element || !placement) {
-            return;
-        }
-        while (element && element.realTabReference.hasAttribute("ui5-tab-separator") && placement === MovePlacement.Before) {
-            element = element.previousElementSibling;
-            placement = MovePlacement.After;
-        }
-        while (element && element.realTabReference.hasAttribute("ui5-tab-separator") && placement === MovePlacement.After) {
-            element = element.nextElementSibling;
-            placement = MovePlacement.Before;
-        }
-        if (!element) {
-            return;
-        }
-        const placementAccepted = !this.fireEvent("move-over", {
-            source: {
-                element: tab,
-            },
-            destination: {
-                element: element.realTabReference,
+        const headerItems = this.items.map(item => item.getDomRefInStrip())
+            .filter((item) => !item?.hasAttribute("hidden"));
+        let positions = findClosestPositionsByKey(headerItems, tab.getDomRefInStrip(), e);
+        positions = positions.map(({ element, placement }) => {
+            while (element && element.realTabReference.hasAttribute("ui5-tab-separator") && placement === MovePlacement.Before) {
+                element = headerItems.at(headerItems.indexOf(element) - 1);
+                placement = MovePlacement.After;
+            }
+            while (element && element.realTabReference.hasAttribute("ui5-tab-separator") && placement === MovePlacement.After) {
+                element = headerItems.at(headerItems.indexOf(element) + 1);
+                placement = MovePlacement.Before;
+            }
+            return {
+                element,
                 placement,
-            },
-        }, true);
-        if (placementAccepted) {
-            this.fireEvent("move", {
+            };
+        });
+        const acceptedPosition = positions.find(({ element, placement }) => {
+            return !this.fireDecoratorEvent("move-over", {
                 source: {
                     element: tab,
                 },
                 destination: {
                     element: element.realTabReference,
                     placement,
+                },
+            });
+        });
+        if (acceptedPosition) {
+            this.fireDecoratorEvent("move", {
+                source: {
+                    element: tab,
+                },
+                destination: {
+                    element: acceptedPosition.element.realTabReference,
+                    placement: acceptedPosition.placement,
                 },
             });
             tab.focus();
@@ -389,6 +392,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         const { destination, source } = e.detail;
         const draggedElement = DragRegistry.getDraggedElement();
         let destinationElement = destination.element.realTabReference;
+        // workaround to simulate tree behavior
         if (e.detail.originalEvent instanceof KeyboardEvent) {
             const realTabReference = source.element.realTabReference;
             const siblings = this._findSiblings(realTabReference);
@@ -398,8 +402,8 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                     return e.target.items.some(el => el.realTabReference === sibling);
                 });
             }
-            const nextPlacement = findClosestPositionByKey(items, realTabReference, e.detail.originalEvent);
-            destinationElement = nextPlacement.element;
+            const nextPosition = findClosestPositionsByKey(items, realTabReference, e.detail.originalEvent);
+            destinationElement = nextPosition[0]?.element;
         }
         if (!destinationElement) {
             return;
@@ -410,7 +414,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         if (draggedElement !== destinationElement && draggedElement.contains(destinationElement)) {
             return;
         }
-        const placementAccepted = !this.fireEvent("move-over", {
+        const placementAccepted = !this.fireDecoratorEvent("move-over", {
             source: {
                 element: draggedElement,
             },
@@ -418,7 +422,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                 element: destinationElement,
                 placement: destination.placement,
             },
-        }, true);
+        });
         if (placementAccepted) {
             e.preventDefault();
         }
@@ -430,6 +434,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         const { destination, source } = e.detail;
         const draggedElement = DragRegistry.getDraggedElement();
         let destinationElement = destination.element.realTabReference;
+        // Workaround to simulate tree behavior
         if (e.detail.originalEvent instanceof KeyboardEvent) {
             const realTabReference = source.element.realTabReference;
             const siblings = this._findSiblings(realTabReference);
@@ -439,14 +444,14 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                     return e.target.items.some(el => el.realTabReference === sibling);
                 });
             }
-            const nextPlacement = findClosestPositionByKey(items, realTabReference, e.detail.originalEvent);
-            destinationElement = nextPlacement.element;
+            const nextPosition = findClosestPositionsByKey(items, realTabReference, e.detail.originalEvent);
+            destinationElement = nextPosition[0]?.element;
         }
         if (!destinationElement) {
             return;
         }
         e.preventDefault();
-        this.fireEvent("move", {
+        this.fireDecoratorEvent("move", {
             source: {
                 element: draggedElement,
             },
@@ -454,7 +459,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                 element: destinationElement,
                 placement: destination.placement,
             },
-        }, true);
+        });
         this.dropIndicatorDOM.targetReference = null;
         draggedElement.focus();
     }
@@ -530,6 +535,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         }
         if (isCtrl(e)) {
             this._moveHeaderItem(tab.realTabReference, e);
+            e.preventDefault();
             return;
         }
         if (tab.realTabReference.disabled) {
@@ -625,7 +631,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
      * @returns true if the tab selection is successful, false if it was prevented
      */
     selectTab(selectedTab, selectedTabIndex) {
-        if (!this.fireEvent("tab-select", { tab: selectedTab, tabIndex: selectedTabIndex }, true)) {
+        if (!this.fireDecoratorEvent("tab-select", { tab: selectedTab, tabIndex: selectedTabIndex })) {
             return false;
         }
         // select the tab
@@ -1099,9 +1105,6 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
     get tablistAriaDescribedById() {
         return this.hasItems ? `${this._id}-invisibleText` : undefined;
     }
-    static async onDefine() {
-        TabContainer_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property({ type: Boolean })
@@ -1165,6 +1168,9 @@ __decorate([
 __decorate([
     longDragOverHandler("[data-ui5-stable=overflow-start],[data-ui5-stable=overflow-end],[role=tab]")
 ], TabContainer.prototype, "_onHeaderDragOver", null);
+__decorate([
+    i18n("@ui5/webcomponents")
+], TabContainer, "i18nBundle", void 0);
 TabContainer = TabContainer_1 = __decorate([
     customElement({
         tag: "ui5-tabcontainer",
@@ -1192,7 +1198,6 @@ TabContainer = TabContainer_1 = __decorate([
      * @param {Integer} tabIndex The selected `tab` index in the flattened array of all tabs and their subTabs, provided by the `allItems` getter.
      * @public
      * @since 2.0.0
-     * @allowPreventDefault
      */
     ,
     event("tab-select", {
@@ -1206,6 +1211,8 @@ TabContainer = TabContainer_1 = __decorate([
              */
             tabIndex: { type: Number },
         },
+        bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired when element is being moved over the tab container.
@@ -1215,7 +1222,6 @@ TabContainer = TabContainer_1 = __decorate([
      * @param {object} destination Contains information about the destination of the moved element. Has `element` and `placement` properties.
      * @public
      * @since 2.0.0
-     * @allowPreventDefault
      */
     ,
     event("move-over", {
@@ -1229,6 +1235,8 @@ TabContainer = TabContainer_1 = __decorate([
              */
             destination: { type: Object },
         },
+        bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired when element is moved to the tab container.
@@ -1237,7 +1245,6 @@ TabContainer = TabContainer_1 = __decorate([
      * @param {object} source Contains information about the moved element under `element` property.
      * @param {object} destination Contains information about the destination of the moved element. Has `element` and `placement` properties.
      * @public
-     * @allowPreventDefault
      */
     ,
     event("move", {
@@ -1251,6 +1258,7 @@ TabContainer = TabContainer_1 = __decorate([
              */
             destination: { type: Object },
         },
+        bubbles: true,
     })
 ], TabContainer);
 const isTabInStrip = (el) => el.localName === "div" && el.getAttribute("role") === "tab";

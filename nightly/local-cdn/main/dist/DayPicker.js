@@ -8,8 +8,11 @@ var DayPicker_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import getLocale from "@ui5/webcomponents-base/dist/locale/getLocale.js";
 import getCachedLocaleDataInstance from "@ui5/webcomponents-localization/dist/getCachedLocaleDataInstance.js";
+import InvisibleMessageMode from "@ui5/webcomponents-base/dist/types/InvisibleMessageMode.js";
+import announce from "@ui5/webcomponents-base/dist/util/InvisibleMessage.js";
 import { isSpace, isSpaceShift, isEnter, isEnterShift, isUp, isDown, isLeft, isRight, isHome, isEnd, isHomeCtrl, isEndCtrl, isPageUp, isPageDown, isPageUpShift, isPageUpAlt, isPageUpShiftCtrl, isPageDownShift, isPageDownAlt, isPageDownShiftCtrl, } from "@ui5/webcomponents-base/dist/Keys.js";
 import CalendarDate from "@ui5/webcomponents-localization/dist/dates/CalendarDate.js";
 import CalendarType from "@ui5/webcomponents-base/dist/types/CalendarType.js";
@@ -18,7 +21,7 @@ import CalendarUtils from "@ui5/webcomponents-localization/dist/CalendarUtils.js
 import DateFormat from "@ui5/webcomponents-localization/dist/DateFormat.js";
 import CalendarSelectionMode from "./types/CalendarSelectionMode.js";
 import CalendarPart from "./CalendarPart.js";
-import { DAY_PICKER_WEEK_NUMBER_TEXT, DAY_PICKER_NON_WORKING_DAY, DAY_PICKER_TODAY, } from "./generated/i18n/i18n-defaults.js";
+import { DAY_PICKER_WEEK_NUMBER_TEXT, DAY_PICKER_NON_WORKING_DAY, DAY_PICKER_TODAY, LIST_ITEM_SELECTED, } from "./generated/i18n/i18n-defaults.js";
 // Template
 import DayPickerTemplate from "./generated/templates/DayPickerTemplate.lit.js";
 // Styles
@@ -303,7 +306,7 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
         this._safelySetTimestamp(timestamp);
         this._updateSecondTimestamp();
         this._updateSelectedDates(timestamp, isShift);
-        this.fireEvent("change", {
+        this.fireDecoratorEvent("change", {
             timestamp: this.timestamp,
             dates: this.selectedDates,
         });
@@ -318,6 +321,7 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
             }
             return;
         }
+        announce(DayPicker_1.i18nBundle.getText(LIST_ITEM_SELECTED), InvisibleMessageMode.Assertive);
         if (this.selectionMode === CalendarSelectionMode.Range && this.selectedDates.length === 1) {
             this.selectedDates = [this.selectedDates[0], timestamp];
             return;
@@ -349,7 +353,7 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
                 }
             }
         });
-        this.fireEvent("change", {
+        this.fireDecoratorEvent("change", {
             timestamp: this.timestamp,
             dates: this.selectedDates,
         });
@@ -360,6 +364,7 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
         }
         else {
             this._addTimestampToSelection(timestamp);
+            announce(DayPicker_1.i18nBundle.getText(LIST_ITEM_SELECTED), InvisibleMessageMode.Assertive);
         }
     }
     _addTimestampToSelection(timestamp) {
@@ -556,7 +561,7 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
         this._safelyModifyTimestampBy(amount, unit, preserveDate);
         this._updateSecondTimestamp();
         // Notify the calendar to update its timestamp
-        this.fireEvent("navigate", { timestamp: this.timestamp });
+        this.fireDecoratorEvent("navigate", { timestamp: this.timestamp });
     }
     /**
      * Sets the timestamp to an absolute value.
@@ -566,7 +571,7 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
     _setTimestamp(value) {
         this._safelySetTimestamp(value);
         this._updateSecondTimestamp();
-        this.fireEvent("navigate", { timestamp: this.timestamp });
+        this.fireDecoratorEvent("navigate", { timestamp: this.timestamp });
     }
     /**
      * During range selection, when the user is navigating with the keyboard,
@@ -669,6 +674,9 @@ __decorate([
 __decorate([
     property({ type: Array })
 ], DayPicker.prototype, "specialCalendarDates", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], DayPicker, "i18nBundle", void 0);
 DayPicker = DayPicker_1 = __decorate([
     customElement({
         tag: "ui5-daypicker",
@@ -679,12 +687,16 @@ DayPicker = DayPicker_1 = __decorate([
      * Fired when the selected date(s) change
      */
     ,
-    event("change")
+    event("change", {
+        bubbles: true,
+    })
     /**
      * Fired when the timestamp changes (user navigates with the keyboard) or clicks with the mouse
      */
     ,
-    event("navigate")
+    event("navigate", {
+        bubbles: true,
+    })
 ], DayPicker);
 DayPicker.define();
 export default DayPicker;

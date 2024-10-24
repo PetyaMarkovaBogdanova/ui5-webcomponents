@@ -163,7 +163,6 @@ declare class StepInput extends UI5Element implements IFormInputElement {
     static i18nBundle: I18nBundle;
     formElementAnchor(): Promise<HTMLElement | undefined>;
     get formFormattedValue(): FormData | string | null;
-    static onDefine(): Promise<void>;
     get type(): InputType;
     get decIconTitle(): string;
     get decIconName(): string;

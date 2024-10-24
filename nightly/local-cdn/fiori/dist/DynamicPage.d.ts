@@ -125,7 +125,6 @@ declare class DynamicPage extends UI5Element {
     scrollContainer?: HTMLElement;
     headerActions?: DynamicPageHeaderActions;
     constructor();
-    static onDefine(): Promise<void>;
     onEnterDOM(): void;
     onExitDOM(): void;
     onBeforeRendering(): void;
@@ -139,10 +138,11 @@ declare class DynamicPage extends UI5Element {
     get _accAttributesForHeaderActions(): {
         controls: string;
     };
-    get headerTabIndex(): -1 | 0;
+    get headerTabIndex(): 0 | -1;
     get headerAriaHidden(): boolean;
     get hasHeading(): boolean;
     get headerSnapped(): boolean;
+    get hasSnappedTitleOnMobile(): number | false | undefined;
     /**
      * Defines if the header is snapped.
      *

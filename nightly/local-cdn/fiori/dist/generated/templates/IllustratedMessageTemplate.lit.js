@@ -1,5 +1,5 @@
 /* eslint no-unused-vars: 0 */
-import { html, svg, ifDefined, unsafeHTML, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import { html, svg, repeat, classMap, styleMap, ifDefined, unsafeHTML, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 function block0(context, tags, suffix) { return html `<div class="ui5-illustrated-message-root"><div class="ui5-illustrated-message-inner"><div class="ui5-illustrated-message-illustration">${unsafeHTML(this.effectiveIllustration)}</div><div class="ui5-illustrated-message-text-and-actions-container">${this.hasTitle ? block1.call(this, context, tags, suffix) : undefined}${this.hasSubtitle ? block4.call(this, context, tags, suffix) : undefined}${this.hasActions ? block7.call(this, context, tags, suffix) : undefined}</div></div><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="ui5-illustrated-message-util">${blockSVG1.call(this, context, tags, suffix)}</svg></div>`; }
 function block1(context, tags, suffix) { return html `<div part="title" class="ui5-illustrated-message-title">${this.hasFormattedTitle ? block2.call(this, context, tags, suffix) : block3.call(this, context, tags, suffix)}</div>`; }
 function block2(context, tags, suffix) { return html `<slot name="title"></slot>`; }

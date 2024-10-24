@@ -93,7 +93,6 @@ declare class Toolbar extends UI5Element {
     ITEMS_WIDTH_MAP: Map<string, number>;
     static get styles(): (string | import("@ui5/webcomponents-base/dist/types.js").StyleDataCSP | import("@ui5/webcomponents-base/dist/types.js").ComponentStylesData[])[];
     static get dependencies(): (typeof UI5Element)[];
-    static onDefine(): Promise<void>;
     constructor();
     /**
      * Read-only members

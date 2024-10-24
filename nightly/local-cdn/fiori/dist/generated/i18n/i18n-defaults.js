@@ -1,4 +1,3 @@
-import "@ui5/webcomponents-base/dist/i18nBundle.js";
 const BARCODE_SCANNER_DIALOG_CANCEL_BUTTON_TXT = { key: "BARCODE_SCANNER_DIALOG_CANCEL_BUTTON_TXT", defaultText: "Cancel" };
 const BARCODE_SCANNER_DIALOG_LOADING_TXT = { key: "BARCODE_SCANNER_DIALOG_LOADING_TXT", defaultText: "Loading" };
 const DYNAMIC_PAGE_ARIA_LABEL_EXPANDED_HEADER = { key: "DYNAMIC_PAGE_ARIA_LABEL_EXPANDED_HEADER", defaultText: "Header Expanded" };

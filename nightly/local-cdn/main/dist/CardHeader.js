@@ -10,8 +10,8 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isFirefox, isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import CardHeaderTemplate from "./generated/templates/CardHeaderTemplate.lit.js";
@@ -110,9 +110,6 @@ let CardHeader = CardHeader_1 = class CardHeader extends UI5Element {
     get hasAction() {
         return !!this.action.length;
     }
-    static async onDefine() {
-        CardHeader_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     _actionsFocusin() {
         this._root.classList.add("ui5-card-header-hide-focus");
     }
@@ -123,7 +120,7 @@ let CardHeader = CardHeader_1 = class CardHeader extends UI5Element {
         // prevents the native browser "click" event from firing
         e.stopImmediatePropagation();
         if (this.interactive && this._root.contains(e.target)) {
-            this.fireEvent("click");
+            this.fireDecoratorEvent("click");
         }
     }
     _keydown(e) {
@@ -134,7 +131,7 @@ let CardHeader = CardHeader_1 = class CardHeader extends UI5Element {
         const space = isSpace(e);
         this._headerActive = enter || space;
         if (enter) {
-            this.fireEvent("click");
+            this.fireDecoratorEvent("click");
             return;
         }
         if (space) {
@@ -148,7 +145,7 @@ let CardHeader = CardHeader_1 = class CardHeader extends UI5Element {
         const space = isSpace(e);
         this._headerActive = false;
         if (space) {
-            this.fireEvent("click");
+            this.fireDecoratorEvent("click");
         }
     }
 };
@@ -176,6 +173,9 @@ __decorate([
 __decorate([
     slot()
 ], CardHeader.prototype, "action", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], CardHeader, "i18nBundle", void 0);
 CardHeader = CardHeader_1 = __decorate([
     customElement({
         tag: "ui5-card-header",
@@ -191,7 +191,9 @@ CardHeader = CardHeader_1 = __decorate([
      * @public
      */
     ,
-    event("click")
+    event("click", {
+        bubbles: true,
+    })
 ], CardHeader);
 CardHeader.define();
 export default CardHeader;

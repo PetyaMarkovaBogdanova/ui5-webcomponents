@@ -37,9 +37,8 @@ declare class TimeSelectionClocks extends TimePickerInternals {
      * @param evt Event object
      */
     _clocksFocusIn(evt: Event): void;
-    _clocksFocusOut(): void;
     /**
-     * ToggleSpinButton focusin event handler.Switches to clock which button is being focused.
+     * ToggleSpinButton focusin event handler. Switches to clock which button is being focused.
      * @param evt Event object
      */
     _buttonFocusIn(evt: Event): void;

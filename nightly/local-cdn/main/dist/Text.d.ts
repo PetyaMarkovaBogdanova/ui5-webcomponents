@@ -49,7 +49,6 @@ declare class Text extends UI5Element {
      */
     text: Array<Node>;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     onBeforeRendering(): void;
     get hasText(): boolean;
     get _renderEmptyIndicator(): boolean;

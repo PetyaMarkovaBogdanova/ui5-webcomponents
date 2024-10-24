@@ -11,7 +11,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import { isUp, isDown, isUpCtrl, isDownCtrl, isUpShift, isDownShift, isUpShiftCtrl, isDownShiftCtrl, isPageUpShift, isPageDownShift, isEscape, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
@@ -130,9 +130,6 @@ let StepInput = StepInput_1 = class StepInput extends UI5Element {
     get formFormattedValue() {
         return this.value.toString();
     }
-    static async onDefine() {
-        StepInput_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     get type() {
         return InputType.Number;
     }
@@ -229,10 +226,10 @@ let StepInput = StepInput_1 = class StepInput extends UI5Element {
         const previousValueState = this.valueState;
         const isValid = isWithinRange && isValueWithCorrectPrecision;
         this.valueState = isValid ? ValueState.None : ValueState.Negative;
-        const eventPrevented = !this.fireEvent("value-state-change", {
+        const eventPrevented = !this.fireDecoratorEvent("value-state-change", {
             valueState: this.valueState,
             valid: isValid,
-        }, true);
+        });
         if (eventPrevented) {
             this.valueState = previousValueState;
         }
@@ -244,7 +241,7 @@ let StepInput = StepInput_1 = class StepInput extends UI5Element {
     _fireChangeEvent() {
         if (this._previousValue !== this.value) {
             this._previousValue = this.value;
-            this.fireEvent("change", { value: this.value });
+            this.fireDecoratorEvent("change", { value: this.value });
         }
     }
     /**
@@ -507,6 +504,9 @@ __decorate([
 __decorate([
     slot()
 ], StepInput.prototype, "valueStateMessage", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], StepInput, "i18nBundle", void 0);
 StepInput = StepInput_1 = __decorate([
     customElement({
         tag: "ui5-step-input",
@@ -524,12 +524,13 @@ StepInput = StepInput_1 = __decorate([
      * @public
      */
     ,
-    event("change")
+    event("change", {
+        bubbles: true,
+    })
     /**
      * Fired before the value state of the component is updated internally.
      * The event is preventable, meaning that if it's default action is
      * prevented, the component will not update the value state.
-     * @allowPreventDefault
      * @since 1.23.0
      * @public
      * @param {string} valueState The new `valueState` that will be set.
@@ -551,6 +552,8 @@ StepInput = StepInput_1 = __decorate([
                 type: Boolean,
             },
         },
+        bubbles: true,
+        cancelable: true,
     })
 ], StepInput);
 StepInput.define();

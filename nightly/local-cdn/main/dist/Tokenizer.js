@@ -18,7 +18,7 @@ import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/Ari
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getFocusedElement } from "@ui5/webcomponents-base/dist/util/PopupUtils.js";
 import ScrollEnablement from "@ui5/webcomponents-base/dist/delegate/ScrollEnablement.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
 import { isSpace, isSpaceCtrl, isSpaceShift, isLeftCtrl, isRightCtrl, isUpCtrl, isDownCtrl, isUpShift, isDownShift, isLeftShift, isRightShift, isLeftShiftCtrl, isRightShiftCtrl, isDeleteShift, isInsertCtrl, isEnd, isHome, isHomeShift, isEndShift, isPageUpShift, isPageDownShift, isHomeCtrl, isEndCtrl, isRight, isLeft, isUp, isDown, isEscape, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
@@ -179,7 +179,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
             token.forcedTabIndex = "-1";
         });
         this._skipTabIndex = true;
-        this.fireEvent("show-more-items-press");
+        this.fireDecoratorEvent("show-more-items-press");
     }
     _onmousedown(e) {
         if (e.target.hasAttribute("ui5-token")) {
@@ -239,7 +239,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         const nextToken = tokens[nextTokenIndex]; // if the last item was deleted this will be undefined
         this._handleCurrentItemAfterDeletion(nextToken);
         this._tokenDeleting = true;
-        this.fireEvent("token-delete", { tokens: [token] || [target] });
+        this.fireDecoratorEvent("token-delete", { tokens: [token] });
     }
     _handleCurrentItemAfterDeletion(nextToken) {
         if (nextToken && !isPhone()) {
@@ -284,10 +284,10 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         this._handleCurrentItemAfterDeletion(nextToken);
         this._tokenDeleting = true;
         if (this._selectedTokens.length) {
-            this.fireEvent("token-delete", { tokens: this._selectedTokens });
+            this.fireDecoratorEvent("token-delete", { tokens: this._selectedTokens });
         }
         else {
-            this.fireEvent("token-delete", { tokens: [token] });
+            this.fireDecoratorEvent("token-delete", { tokens: [token] });
         }
     }
     async itemDelete(e) {
@@ -297,7 +297,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         if (tokensArray.length === 1) {
             const morePopover = this.getPopover();
             morePopover.addEventListener("ui5-close", () => {
-                this.fireEvent("token-delete", { tokens: [token] });
+                this.fireDecoratorEvent("token-delete", { tokens: [token] });
             }, {
                 once: true,
             });
@@ -309,7 +309,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
                 this._deletedDialogItems.push(token);
             }
             else {
-                this.fireEvent("token-delete", { tokens: [token] });
+                this.fireDecoratorEvent("token-delete", { tokens: [token] });
             }
             const currentListItem = e.detail.item;
             const nextListItem = currentListItem.nextElementSibling;
@@ -340,7 +340,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         const list = this._getList();
         const firstListItem = list.querySelectorAll("[ui5-li]")[0];
         list._itemNavigation.setCurrentItem(firstListItem);
-        this.fireEvent("before-more-popover-open");
+        this.fireDecoratorEvent("before-more-popover-open");
     }
     handleAfterClose() {
         this.open = false;
@@ -354,7 +354,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         const isOkButton = e.target.hasAttribute("data-ui5-tokenizer-dialog-ok-button");
         const confirm = !!isOkButton;
         if (confirm && this._deletedDialogItems.length) {
-            this.fireEvent("token-delete", { tokens: this._deletedDialogItems });
+            this.fireDecoratorEvent("token-delete", { tokens: this._deletedDialogItems });
         }
         this.open = false;
     }
@@ -457,7 +457,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         });
         const selectedTokensChanged = JSON.stringify(previousSelectedTokens) !== JSON.stringify(this._selectedTokens);
         if (selectedTokensChanged) {
-            this.fireEvent("selection-change", {
+            this.fireDecoratorEvent("selection-change", {
                 tokens: this._selectedTokens,
             });
         }
@@ -473,7 +473,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         });
         const selectedTokensChanged = JSON.stringify(previousSelectedTokens) !== JSON.stringify(this._selectedTokens);
         if (selectedTokensChanged) {
-            this.fireEvent("selection-change", {
+            this.fireDecoratorEvent("selection-change", {
                 tokens: this._selectedTokens,
             });
         }
@@ -515,7 +515,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         tokens[nextIndex].selected = true;
         const selectedTokensChanged = JSON.stringify(previousSelectedTokens) !== JSON.stringify(this._selectedTokens);
         if (selectedTokensChanged) {
-            this.fireEvent("selection-change", {
+            this.fireDecoratorEvent("selection-change", {
                 tokens: this._selectedTokens,
             });
         }
@@ -524,7 +524,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
     }
     _click(e) {
         if (e.metaKey || e.ctrlKey) {
-            this.fireEvent("selection-change", {
+            this.fireDecoratorEvent("selection-change", {
                 tokens: this._selectedTokens,
             });
             return;
@@ -551,7 +551,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
                     token.selected = i >= start && i <= end;
                 });
             }
-            this.fireEvent("selection-change", {
+            this.fireDecoratorEvent("selection-change", {
                 tokens: this._selectedTokens,
             });
             return;
@@ -588,7 +588,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         }
         const tokensAreSelected = tokens.every(token => token.selected);
         tokens.forEach(token => { token.selected = !tokensAreSelected; });
-        this.fireEvent("selection-change", {
+        this.fireDecoratorEvent("selection-change", {
             tokens: this._selectedTokens,
         });
     }
@@ -601,7 +601,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
                     token.selected = false;
                 }
             });
-            this.fireEvent("selection-change", {
+            this.fireDecoratorEvent("selection-change", {
                 tokens: this._selectedTokens,
             });
         }
@@ -756,9 +756,6 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         const lastToken = tokens[tokens.length - 1];
         lastToken.focus();
     }
-    static async onDefine() {
-        Tokenizer_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     getPopover() {
         return this.shadowRoot.querySelector("[ui5-responsive-popover]");
     }
@@ -815,6 +812,9 @@ __decorate([
         },
     })
 ], Tokenizer.prototype, "tokens", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Tokenizer, "i18nBundle", void 0);
 Tokenizer = Tokenizer_1 = __decorate([
     customElement({
         tag: "ui5-tokenizer",
@@ -849,6 +849,7 @@ Tokenizer = Tokenizer_1 = __decorate([
             */
             tokens: { type: Array },
         },
+        bubbles: true,
     })
     /**
      * Fired when token selection is changed by user interaction
@@ -861,19 +862,24 @@ Tokenizer = Tokenizer_1 = __decorate([
         detail: {
             tokens: { type: Array },
         },
+        bubbles: true,
     })
     /**
      * Fired when nMore link is pressed.
      * @private
      */
     ,
-    event("show-more-items-press")
+    event("show-more-items-press", {
+        bubbles: true,
+    })
     /**
      * Fired before nMore Popover is opened.
      * @private
      */
     ,
-    event("before-more-popover-open")
+    event("before-more-popover-open", {
+        bubbles: true,
+    })
 ], Tokenizer);
 const getTokensCountText = (iTokenCount) => {
     const tokenCountMap = {

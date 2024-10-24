@@ -130,7 +130,7 @@ class RadioButtonGroup {
             radioBtn.focus();
             radioBtn.checked = true;
             radioBtn._checked = true;
-            radioBtn.fireEvent("change");
+            radioBtn.fireDecoratorEvent("change");
         }
     }
     static _nextSelectable(pos, group) {

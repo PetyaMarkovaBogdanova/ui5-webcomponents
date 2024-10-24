@@ -11,7 +11,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -230,10 +230,10 @@ let CheckBox = CheckBox_1 = class CheckBox extends UI5Element {
             else {
                 this.checked = !this.checked;
             }
-            const changePrevented = !this.fireEvent("change", null, true);
+            const changePrevented = !this.fireDecoratorEvent("change");
             // Angular two way data binding
-            const valueChagnePrevented = !this.fireEvent("value-changed", null, true);
-            if (changePrevented || valueChagnePrevented) {
+            const valueChangePrevented = !this.fireDecoratorEvent("value-changed");
+            if (changePrevented || valueChangePrevented) {
                 this.checked = lastState.checked;
                 this.indeterminate = lastState.indeterminate;
             }
@@ -305,9 +305,6 @@ let CheckBox = CheckBox_1 = class CheckBox extends UI5Element {
         }
         return "border";
     }
-    static async onDefine() {
-        CheckBox_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property()
@@ -348,6 +345,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], CheckBox.prototype, "active", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], CheckBox, "i18nBundle", void 0);
 CheckBox = CheckBox_1 = __decorate([
     customElement({
         tag: "ui5-checkbox",
@@ -364,10 +364,21 @@ CheckBox = CheckBox_1 = __decorate([
     /**
      * Fired when the component checked state changes.
      * @public
-     * @allowPreventDefault
      */
     ,
-    event("change")
+    event("change", {
+        bubbles: true,
+        cancelable: true,
+    })
+    /**
+     * Fired to make Angular two way data binding work properly.
+     * @private
+     */
+    ,
+    event("value-changed", {
+        bubbles: true,
+        cancelable: true,
+    })
 ], CheckBox);
 CheckBox.define();
 export default CheckBox;

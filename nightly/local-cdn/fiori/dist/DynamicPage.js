@@ -11,13 +11,14 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import query from "@ui5/webcomponents-base/dist/decorators/query.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import MediaRange from "@ui5/webcomponents-base/dist/MediaRange.js";
 import announce from "@ui5/webcomponents-base/dist/util/InvisibleMessage.js";
 import InvisibleMessageMode from "@ui5/webcomponents-base/dist/types/InvisibleMessageMode.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import debounce from "@ui5/webcomponents-base/dist/util/debounce.js";
 // Template
 import DynamicPageTemplate from "./generated/templates/DynamicPageTemplate.lit.js";
@@ -120,9 +121,6 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         this._headerSnapped = false;
         this._updateMediaRange = this.updateMediaRange.bind(this);
     }
-    static async onDefine() {
-        DynamicPage_1.i18nBundle = await getI18nBundle("@ui5/webcomponents-fiori");
-    }
     onEnterDOM() {
         ResizeHandler.register(this, this._updateMediaRange);
     }
@@ -133,6 +131,7 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         if (this.dynamicPageTitle) {
             this.dynamicPageTitle.snapped = this._headerSnapped;
             this.dynamicPageTitle.interactive = this.hasHeading;
+            this.dynamicPageTitle.hasSnappedTitleOnMobile = !!this.hasSnappedTitleOnMobile;
         }
     }
     get dynamicPageTitle() {
@@ -175,6 +174,9 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
     get headerSnapped() {
         return this._headerSnapped;
     }
+    get hasSnappedTitleOnMobile() {
+        return isPhone() && this.headerSnapped && this.dynamicPageTitle?.snappedTitleOnMobile.length;
+    }
     /**
      * Defines if the header is snapped.
      *
@@ -207,20 +209,23 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
             this._headerSnapped = false;
         }
         if (lastHeaderSnapped !== this._headerSnapped) {
-            this.fireEvent("title-toggle");
+            this.fireDecoratorEvent("title-toggle");
         }
         this.dynamicPageTitle.snapped = this._headerSnapped;
     }
     async onExpandClick() {
         this._toggleHeader();
-        this.fireEvent("title-toggle");
+        this.fireDecoratorEvent("title-toggle");
         await renderFinished();
         this.headerActions?.focusExpandButton();
+        if (this.hasSnappedTitleOnMobile) {
+            this.dynamicPageTitle?.focus();
+        }
         announce(this._headerLabel, InvisibleMessageMode.Polite);
     }
     async onPinClick() {
         this.headerPinned = !this.headerPinned;
-        this.fireEvent("pin-button-toggle");
+        this.fireDecoratorEvent("pin-button-toggle");
         await renderFinished();
         this.headerActions?.focusPinButton();
     }
@@ -229,7 +234,7 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
             return;
         }
         this._toggleHeader();
-        this.fireEvent("title-toggle");
+        this.fireDecoratorEvent("title-toggle");
         await renderFinished();
         this.dynamicPageTitle.focus();
     }
@@ -293,6 +298,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], DynamicPage.prototype, "headerSnapped", null);
+__decorate([
+    i18n("@ui5/webcomponents-fiori")
+], DynamicPage, "i18nBundle", void 0);
 DynamicPage = DynamicPage_1 = __decorate([
     customElement({
         tag: "ui5-dynamic-page",
@@ -307,14 +315,18 @@ DynamicPage = DynamicPage_1 = __decorate([
      * @public
      */
     ,
-    event("pin-button-toggle")
+    event("pin-button-toggle", {
+        bubbles: true,
+    })
     /**
      * Fired when the expand/collapse area of the title is toggled.
      *
      * @public
      */
     ,
-    event("title-toggle")
+    event("title-toggle", {
+        bubbles: true,
+    })
 ], DynamicPage);
 DynamicPage.define();
 export default DynamicPage;

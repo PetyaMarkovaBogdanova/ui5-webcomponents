@@ -12,7 +12,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import { isEscape, isSpace, isEnter, isDown, isUp, isDownAlt, isUpAlt, isF4, isShift, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import AriaHasPopup from "@ui5/webcomponents-base/dist/types/AriaHasPopup.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
@@ -67,9 +67,6 @@ import SplitButtonCss from "./generated/themes/SplitButton.css.js";
  * @since 1.1.0
  */
 let SplitButton = SplitButton_1 = class SplitButton extends UI5Element {
-    static async onDefine() {
-        SplitButton_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     constructor() {
         super();
         /**
@@ -208,13 +205,13 @@ let SplitButton = SplitButton_1 = class SplitButton extends UI5Element {
     _fireClick(e) {
         e?.stopPropagation();
         if (!this._shiftOrEscapePressed) {
-            this.fireEvent("click");
+            this.fireDecoratorEvent("click");
         }
         this._shiftOrEscapePressed = false;
     }
     _fireArrowClick(e) {
         e?.stopPropagation();
-        this.fireEvent("arrow-click");
+        this.fireDecoratorEvent("arrow-click");
     }
     _textButtonRelease() {
         this._textButtonActive = false;
@@ -374,6 +371,9 @@ __decorate([
 __decorate([
     slot({ type: Node, "default": true })
 ], SplitButton.prototype, "text", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], SplitButton, "i18nBundle", void 0);
 SplitButton = SplitButton_1 = __decorate([
     customElement({
         tag: "ui5-split-button",
@@ -387,13 +387,17 @@ SplitButton = SplitButton_1 = __decorate([
      * @public
      */
     ,
-    event("click")
+    event("click", {
+        bubbles: true,
+    })
     /**
      * Fired when the user clicks on the arrow action.
      * @public
      */
     ,
-    event("arrow-click")
+    event("arrow-click", {
+        bubbles: true,
+    })
 ], SplitButton);
 SplitButton.define();
 export default SplitButton;

@@ -8,6 +8,7 @@ var Toolbar_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
+import { event } from "@ui5/webcomponents-base/dist/decorators.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import executeTemplate from "@ui5/webcomponents-base/dist/renderer/executeTemplate.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
@@ -15,7 +16,7 @@ import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
 import "@ui5/webcomponents-icons/dist/overflow.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import AriaHasPopup from "@ui5/webcomponents-base/dist/types/AriaHasPopup.js";
 import { TOOLBAR_OVERFLOW_BUTTON_ARIA_LABEL, } from "./generated/i18n/i18n-defaults.js";
@@ -69,9 +70,6 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
             Button,
             ...deps,
         ];
-    }
-    static async onDefine() {
-        Toolbar_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
     constructor() {
         super();
@@ -278,7 +276,7 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
         });
         if (minWidth !== this.minContentWidth) {
             const spaceAroundContent = this.offsetWidth - this.getDomRef().offsetWidth;
-            this.fireEvent("_min-content-width-change", {
+            this.fireDecoratorEvent("_min-content-width-change", {
                 minWidth: minWidth + spaceAroundContent + this.overflowButtonSize,
             });
         }
@@ -470,12 +468,27 @@ __decorate([
 __decorate([
     slot({ "default": true, type: HTMLElement, invalidateOnChildChange: true })
 ], Toolbar.prototype, "items", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Toolbar, "i18nBundle", void 0);
 Toolbar = Toolbar_1 = __decorate([
     customElement({
         tag: "ui5-toolbar",
         languageAware: true,
         renderer: litRender,
         template: ToolbarTemplate,
+    })
+    /**
+     * @private
+    */
+    ,
+    event("_min-content-width-change", {
+        detail: {
+            minWidth: {
+                type: Number,
+            },
+        },
+        bubbles: true,
     })
 ], Toolbar);
 Toolbar.define();

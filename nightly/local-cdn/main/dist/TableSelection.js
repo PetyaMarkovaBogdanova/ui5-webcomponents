@@ -158,7 +158,7 @@ let TableSelection = class TableSelection extends UI5Element {
     _informRowSelectionChange(row) {
         const isRowSelected = this.isMultiSelect() ? !this.isSelected(row) : true;
         this._selectRow(row, isRowSelected);
-        this.fireEvent("change");
+        this.fireDecoratorEvent("change");
     }
     _informHeaderRowSelectionChange() {
         const isRowSelected = this.areAllRowsSelected();
@@ -168,7 +168,7 @@ let TableSelection = class TableSelection extends UI5Element {
             selectedSet[isRowSelected ? "delete" : "add"](rowIdentifier);
         });
         this.selectedAsSet = selectedSet;
-        this.fireEvent("change");
+        this.fireDecoratorEvent("change");
     }
     _invalidateTableAndRows() {
         if (!this._table) {
@@ -297,7 +297,7 @@ let TableSelection = class TableSelection extends UI5Element {
                 return changed || isRowSelectionDifferent;
             }, selectionChanged) || false;
         }
-        selectionChanged && this._fireEvent("change");
+        selectionChanged && this.fireDecoratorEvent("change");
     }
     _stopRangeSelection() {
         this._rangeSelection = null;
@@ -326,7 +326,9 @@ TableSelection = __decorate([
      * @public
      */
     ,
-    event("change")
+    event("change", {
+        bubbles: true,
+    })
 ], TableSelection);
 TableSelection.define();
 export default TableSelection;

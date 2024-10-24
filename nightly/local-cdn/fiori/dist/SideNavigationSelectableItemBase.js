@@ -91,7 +91,7 @@ let SideNavigationSelectableItemBase = class SideNavigationSelectableItemBase ex
     _activate(e) {
         e.stopPropagation();
         if (this.isOverflow) {
-            this.fireEvent("click");
+            this.fireDecoratorEvent("click");
         }
         else {
             this.sideNavigation?._handleItemClick(e, this);
@@ -117,7 +117,9 @@ __decorate([
     property({ type: Boolean })
 ], SideNavigationSelectableItemBase.prototype, "isOverflow", void 0);
 SideNavigationSelectableItemBase = __decorate([
-    event("click")
+    event("click", {
+        bubbles: true,
+    })
     /**
      * @class
      * Base class for the navigation items that support actions.

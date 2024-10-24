@@ -1,5 +1,6 @@
 import type { AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
 import "@ui5/webcomponents-icons/dist/nav-back.js";
+import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { ListItemAccessibilityAttributes } from "./ListItem.js";
 import ListItem from "./ListItem.js";
 import ResponsivePopover from "./ResponsivePopover.js";
@@ -37,7 +38,6 @@ type MenuItemAccessibilityAttributes = Pick<AccessibilityAttributes, "ariaKeySho
  * @public
  */
 declare class MenuItem extends ListItem implements IMenuItem {
-    static onDefine(): Promise<void>;
     /**
      * Defines the text of the tree item.
      * @default undefined
@@ -151,6 +151,7 @@ declare class MenuItem extends ListItem implements IMenuItem {
      * @since 2.0.0
      */
     endContent: Array<HTMLElement>;
+    static i18nBundle: I18nBundle;
     get placement(): `${PopoverPlacement}`;
     get isRtl(): boolean;
     get hasSubmenu(): boolean;
@@ -171,18 +172,18 @@ declare class MenuItem extends ListItem implements IMenuItem {
         ariaHaspopup: "dialog" | "grid" | "listbox" | "menu" | "tree" | undefined;
         ariaKeyShortcuts: string | undefined;
         ariaHidden: boolean | undefined;
-        ariaExpanded?: boolean | undefined;
-        ariaLevel?: number | undefined;
+        ariaExpanded?: boolean;
+        ariaLevel?: number;
         ariaLabel: string;
         ariaLabelRadioButton: string;
-        ariaSelectedText?: string | undefined;
-        posinset?: number | undefined;
-        setsize?: number | undefined;
-        ariaSelected?: boolean | undefined;
-        ariaChecked?: boolean | undefined;
-        listItemAriaLabel?: string | undefined;
-        ariaOwns?: string | undefined;
-        tooltip?: string | undefined;
+        ariaSelectedText?: string;
+        posinset?: number;
+        setsize?: number;
+        ariaSelected?: boolean;
+        ariaChecked?: boolean;
+        listItemAriaLabel?: string;
+        ariaOwns?: string;
+        tooltip?: string;
     };
     get _popover(): ResponsivePopover;
     get _menuItems(): MenuItem[];

@@ -34,8 +34,8 @@ const setLanguage = async (language) => {
         return;
     }
     curLanguage = language;
+    await fireLanguageChange(language);
     if (isBooted()) {
-        await fireLanguageChange(language);
         await reRenderAllUI5Elements({ languageAware: true });
     }
 };

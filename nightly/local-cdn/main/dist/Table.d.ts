@@ -1,4 +1,3 @@
-/// <reference types="openui5" />
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
@@ -130,6 +129,7 @@ type TableRowClickEventDetail = {
  * This Table replaces the previous Table web component, that has been part of **@ui5/webcomponents** version 1.x.
  * For compatibility reasons, we moved the previous Table implementation to the **@ui5/webcomponents-compat** package
  * and will be maintained until the new Table is experimental.
+ * Keep in mind that you can use either the compat/Table, or the main/Table - you can't use them both as they both define the `ui5-table` tag name.
  */
 declare class Table extends UI5Element {
     /**
@@ -214,7 +214,6 @@ declare class Table extends UI5Element {
     _invalidate: number;
     _renderNavigated: boolean;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     _events: string[];
     _onEventBound: (e: Event) => void;
     _onResizeBound: ResizeObserverCallback;

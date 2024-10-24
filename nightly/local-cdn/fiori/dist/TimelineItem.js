@@ -68,7 +68,7 @@ let TimelineItem = class TimelineItem extends UI5Element {
         this.hidden = false;
     }
     onNamePress() {
-        this.fireEvent("name-click", {});
+        this.fireDecoratorEvent("name-click", {});
     }
     /**
      * Focus the internal link.
@@ -159,7 +159,9 @@ TimelineItem = __decorate([
      * @public
      */
     ,
-    event("name-click")
+    event("name-click", {
+        bubbles: true,
+    })
 ], TimelineItem);
 TimelineItem.define();
 export default TimelineItem;

@@ -1,5 +1,6 @@
 import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { ChangeInfo } from "@ui5/webcomponents-base/dist/UI5Element.js";
+import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-left.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import CalendarPart from "./CalendarPart.js";
@@ -205,8 +206,8 @@ declare class Calendar extends CalendarPart {
      * @private
      */
     _selectedItemType: `${CalendarLegendItemType}`;
+    static i18nBundle: I18nBundle;
     constructor();
-    static onDefine(): Promise<void>;
     /**
      * @private
      */
@@ -284,8 +285,8 @@ declare class Calendar extends CalendarPart {
     get accInfo(): {
         ariaLabelMonthButton: string;
     };
-    get headerPreviousButtonText(): string | undefined;
-    get headerNextButtonText(): string | undefined;
+    get headerPreviousButtonText(): string;
+    get headerNextButtonText(): string;
     get secondMonthButtonText(): string;
     onMonthButtonKeyDown(e: KeyboardEvent): void;
     onMonthButtonKeyUp(e: KeyboardEvent): void;

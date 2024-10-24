@@ -10,7 +10,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import { isLeft, isRight } from "@ui5/webcomponents-base/dist/Keys.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import ListItem from "./ListItem.js";
 import Icon from "./Icon.js";
@@ -155,35 +155,29 @@ let TreeItemBase = TreeItemBase_1 = class TreeItemBase extends ListItem {
     }
     _toggleClick(e) {
         e.stopPropagation();
-        this.fireEvent("toggle", { item: this });
+        this.fireDecoratorEvent("toggle", { item: this });
     }
     async _onkeydown(e) {
         await super._onkeydown(e);
         if (!this._fixed && this.showToggleButton && isRight(e)) {
             if (!this.expanded) {
-                this.fireEvent("toggle", { item: this });
+                this.fireDecoratorEvent("toggle", { item: this });
             }
             else {
-                this.fireEvent("step-in", { item: this });
+                this.fireDecoratorEvent("step-in", { item: this });
             }
         }
         if (!this._fixed && isLeft(e)) {
             if (this.expanded) {
-                this.fireEvent("toggle", { item: this });
+                this.fireDecoratorEvent("toggle", { item: this });
             }
             else if (this.hasParent) {
-                this.fireEvent("step-out", { item: this });
+                this.fireDecoratorEvent("step-out", { item: this });
             }
         }
     }
     get iconAccessibleName() {
         return this.expanded ? TreeItemBase_1.i18nBundle.getText(TREE_ITEM_COLLAPSE_NODE) : TreeItemBase_1.i18nBundle.getText(TREE_ITEM_EXPAND_NODE);
-    }
-    static async onDefine() {
-        [TreeItemBase_1.i18nBundle] = await Promise.all([
-            getI18nBundle("@ui5/webcomponents"),
-            super.onDefine(),
-        ]);
     }
 };
 __decorate([
@@ -232,6 +226,9 @@ __decorate([
         "default": true,
     })
 ], TreeItemBase.prototype, "items", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], TreeItemBase, "i18nBundle", void 0);
 TreeItemBase = TreeItemBase_1 = __decorate([
     customElement({
         languageAware: true,
@@ -255,6 +252,7 @@ TreeItemBase = TreeItemBase_1 = __decorate([
         detail: {
             item: { type: HTMLElement },
         },
+        bubbles: true,
     })
     /**
      * Fired when the user drills down into the tree hierarchy by pressing the right arrow on the tree node.
@@ -266,6 +264,7 @@ TreeItemBase = TreeItemBase_1 = __decorate([
         detail: {
             item: { type: HTMLElement },
         },
+        bubbles: true,
     })
     /**
      * Fired when the user goes up the tree hierarchy by pressing the left arrow on the tree node.
@@ -277,6 +276,7 @@ TreeItemBase = TreeItemBase_1 = __decorate([
         detail: {
             item: { type: HTMLElement },
         },
+        bubbles: true,
     })
 ], TreeItemBase);
 export default TreeItemBase;

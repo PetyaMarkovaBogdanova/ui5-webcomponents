@@ -16,7 +16,7 @@ import slideUp from "@ui5/webcomponents-base/dist/animations/slideUp.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import Button from "./Button.js";
 import Icon from "./Icon.js";
@@ -199,7 +199,7 @@ let Panel = Panel_1 = class Panel extends UI5Element {
         }
         this.collapsed = !this.collapsed;
         if (this.shouldNotAnimate()) {
-            this.fireEvent("toggle");
+            this.fireDecoratorEvent("toggle");
             return;
         }
         this._animationRunning = true;
@@ -216,7 +216,7 @@ let Panel = Panel_1 = class Panel extends UI5Element {
         Promise.all(animations).then(() => {
             this._animationRunning = false;
             this._contentExpanded = !this.collapsed;
-            this.fireEvent("toggle");
+            this.fireDecoratorEvent("toggle");
         });
     }
     _headerOnTarget(target) {
@@ -293,9 +293,6 @@ let Panel = Panel_1 = class Panel extends UI5Element {
             },
         };
     }
-    static async onDefine() {
-        Panel_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property()
@@ -336,6 +333,9 @@ __decorate([
 __decorate([
     slot()
 ], Panel.prototype, "header", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Panel, "i18nBundle", void 0);
 Panel = Panel_1 = __decorate([
     customElement({
         tag: "ui5-panel",
@@ -351,7 +351,9 @@ Panel = Panel_1 = __decorate([
      * @public
      */
     ,
-    event("toggle")
+    event("toggle", {
+        bubbles: true,
+    })
 ], Panel);
 Panel.define();
 export default Panel;

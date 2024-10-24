@@ -59,5 +59,6 @@ declare class TableHeaderCell extends TableCellBase {
     protected ariaRole: string;
     _popinWidth: number;
     onEnterDOM(): void;
+    onBeforeRendering(): void;
 }
 export default TableHeaderCell;

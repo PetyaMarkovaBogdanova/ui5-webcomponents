@@ -154,7 +154,6 @@ declare class DynamicSideContent extends UI5Element {
     constructor();
     _handleResizeBound: () => void;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     onAfterRendering(): void;
     onEnterDOM(): void;
     onExitDOM(): void;

@@ -138,7 +138,6 @@ declare class PromptInput extends UI5Element {
      */
     valueStateMessage: Array<HTMLElement>;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     _onkeydown(e: KeyboardEvent): void;
     _onInnerInput(e: CustomEvent<InputEventDetail>): void;
     _onInnerChange(): void;

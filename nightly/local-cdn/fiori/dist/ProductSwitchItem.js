@@ -98,10 +98,10 @@ let ProductSwitchItem = class ProductSwitchItem extends UI5Element {
         this.active = false;
     }
     _onfocusin(e) {
-        this.fireEvent("_focused", e);
+        this.fireDecoratorEvent("_focused", e);
     }
     _fireItemClick() {
-        this.fireEvent("click", { item: this });
+        this.fireDecoratorEvent("click", { item: this });
     }
 };
 __decorate([
@@ -142,8 +142,12 @@ ProductSwitchItem = __decorate([
      * @public
      */
     ,
-    event("click"),
-    event("_focused")
+    event("click", {
+        bubbles: true,
+    }),
+    event("_focused", {
+        bubbles: true,
+    })
 ], ProductSwitchItem);
 ProductSwitchItem.define();
 export default ProductSwitchItem;

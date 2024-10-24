@@ -133,7 +133,6 @@ declare class AvatarGroup extends UI5Element {
     _hiddenItems: number;
     _itemNavigation: ItemNavigation;
     constructor();
-    static onDefine(): Promise<void>;
     /**
      * Returns an array containing the `ui5-avatar` instances that are currently not displayed due to lack of space.
      * @default []

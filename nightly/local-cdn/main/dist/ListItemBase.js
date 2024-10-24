@@ -76,11 +76,11 @@ let ListItemBase = class ListItemBase extends UI5Element {
         this.actionable = true;
     }
     _onfocusin(e) {
-        this.fireEvent("_request-tabindex-change", e);
+        this.fireDecoratorEvent("_request-tabindex-change", e);
         if (e.target !== this.getFocusDomRef()) {
             return;
         }
-        this.fireEvent("_focused", e);
+        this.fireDecoratorEvent("_focused", e);
     }
     _onkeydown(e) {
         if (isTabNext(e)) {
@@ -120,11 +120,11 @@ let ListItemBase = class ListItemBase extends UI5Element {
         if (isEnter(e)) {
             e.preventDefault();
         }
-        this.fireEvent("_press", { item: this, selected: this.selected, key: e.key });
+        this.fireDecoratorEvent("_press", { item: this, selected: this.selected, key: e.key });
     }
     _handleTabNext(e) {
         if (this.shouldForwardTabAfter()) {
-            if (!this.fireEvent("_forward-after", {}, true)) {
+            if (!this.fireDecoratorEvent("_forward-after")) {
                 e.preventDefault();
             }
         }
@@ -132,7 +132,7 @@ let ListItemBase = class ListItemBase extends UI5Element {
     _handleTabPrevious(e) {
         const target = e.target;
         if (this.shouldForwardTabBefore(target)) {
-            this.fireEvent("_forward-before");
+            this.fireDecoratorEvent("_forward-before");
         }
     }
     /**
@@ -205,11 +205,22 @@ ListItemBase = __decorate([
         renderer: litRender,
         styles: [styles, draggableElementStyles],
     }),
-    event("_request-tabindex-change"),
-    event("_press"),
-    event("_focused"),
-    event("_forward-after"),
-    event("_forward-before")
+    event("_request-tabindex-change", {
+        bubbles: true,
+    }),
+    event("_press", {
+        bubbles: true,
+    }),
+    event("_focused", {
+        bubbles: true,
+    }),
+    event("_forward-after", {
+        bubbles: true,
+        cancelable: true,
+    }),
+    event("_forward-before", {
+        bubbles: true,
+    })
 ], ListItemBase);
 export default ListItemBase;
 //# sourceMappingURL=ListItemBase.js.map

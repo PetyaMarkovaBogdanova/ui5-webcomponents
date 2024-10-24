@@ -9,10 +9,10 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { getIllustrationDataSync, getIllustrationData } from "@ui5/webcomponents-base/dist/asset-registries/Illustrations.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import Title from "@ui5/webcomponents/dist/Title.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import IllustrationMessageDesign from "./types/IllustrationMessageDesign.js";
@@ -118,9 +118,6 @@ let IllustratedMessage = IllustratedMessage_1 = class IllustratedMessage extends
         this._lastKnownOffsetHeightForMedia = {};
         // this will store the last known media, in order to detect if IllustratedMessage has been hidden by expand/collapse container
         this._lastKnownMedia = "base";
-    }
-    static async onDefine() {
-        IllustratedMessage_1.i18nBundle = await getI18nBundle("@ui5/webcomponents-fiori");
     }
     static get BREAKPOINTS() {
         return {
@@ -345,6 +342,9 @@ __decorate([
 __decorate([
     slot({ type: HTMLElement, "default": true })
 ], IllustratedMessage.prototype, "actions", void 0);
+__decorate([
+    i18n("@ui5/webcomponents-fiori")
+], IllustratedMessage, "i18nBundle", void 0);
 IllustratedMessage = IllustratedMessage_1 = __decorate([
     customElement({
         tag: "ui5-illustrated-message",

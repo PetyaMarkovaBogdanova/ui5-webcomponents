@@ -11,8 +11,9 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
+import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScopeUtils.js";
 import ColorPalettePopoverTemplate from "./generated/templates/ColorPalettePopoverTemplate.lit.js";
 // Styles
 import ColorPalettePopoverCss from "./generated/themes/ColorPalettePopover.css.js";
@@ -48,9 +49,6 @@ import ColorPalette from "./ColorPalette.js";
  * @since 1.0.0-rc.16
  */
 let ColorPalettePopover = ColorPalettePopover_1 = class ColorPalettePopover extends UI5Element {
-    static async onDefine() {
-        ColorPalettePopover_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     constructor() {
         super();
         /**
@@ -92,7 +90,7 @@ let ColorPalettePopover = ColorPalettePopover_1 = class ColorPalettePopover exte
     }
     onAfterClose() {
         this.closePopover();
-        this.fireEvent("close");
+        this.fireDecoratorEvent("close");
     }
     onAfterOpen() {
         const colorPalette = this._colorPalette;
@@ -105,10 +103,15 @@ let ColorPalettePopover = ColorPalettePopover_1 = class ColorPalettePopover exte
         else if (colorPalette.showDefaultColor) {
             colorPalette.colorPaletteNavigationElements[0].focus();
         }
+        // since height is dynamically determined by padding-block-start
+        colorPalette.allColorsInPalette.forEach((item) => {
+            const itemHeight = item.offsetHeight + 4; // adding 4px for the offsets on top and bottom
+            item.style.setProperty(getScopedVarName("--_ui5_color_palette_item_height"), `${itemHeight}px`);
+        });
     }
     onSelectedColor(e) {
         this.closePopover();
-        this.fireEvent("item-click", e.detail);
+        this.fireDecoratorEvent("item-click", e.detail);
     }
     get _colorPalette() {
         return this.responsivePopover.content[0].querySelector("[ui5-color-palette]");
@@ -155,6 +158,9 @@ __decorate([
 __decorate([
     slot({ "default": true, type: HTMLElement, individualSlots: true })
 ], ColorPalettePopover.prototype, "colors", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], ColorPalettePopover, "i18nBundle", void 0);
 ColorPalettePopover = ColorPalettePopover_1 = __decorate([
     customElement({
         tag: "ui5-color-palette-popover",
@@ -183,6 +189,7 @@ ColorPalettePopover = ColorPalettePopover_1 = __decorate([
                 type: String,
             },
         },
+        bubbles: true,
     })
     /**
      * Fired when the `ui5-color-palette-popover` is closed due to user interaction.
@@ -190,7 +197,9 @@ ColorPalettePopover = ColorPalettePopover_1 = __decorate([
      * @public
      */
     ,
-    event("close")
+    event("close", {
+        bubbles: true,
+    })
 ], ColorPalettePopover);
 ColorPalettePopover.define();
 export default ColorPalettePopover;

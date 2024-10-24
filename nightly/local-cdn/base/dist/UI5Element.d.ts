@@ -227,7 +227,7 @@ declare abstract class UI5Element extends HTMLElement {
      * @private
      */
     _waitForDomRef(): Promise<void> & {
-        _deferredResolve?: PromiseResolve | undefined;
+        _deferredResolve?: PromiseResolve;
     };
     /**
      * Returns the DOM Element inside the Shadow Root that corresponds to the opening tag in the UI5 Web Component's template
@@ -263,9 +263,23 @@ declare abstract class UI5Element extends HTMLElement {
      * @param cancelable - true, if the user can call preventDefault on the event object
      * @param bubbles - true, if the event bubbles
      * @returns false, if the event was cancelled (preventDefault called), true otherwise
+     * @deprecated use fireDecoratorEvent instead
      */
     fireEvent<T>(name: string, data?: T, cancelable?: boolean, bubbles?: boolean): boolean;
+    /**
+     * Fires a custom event, configured via the "event" decorator.
+     * @public
+     * @param name - name of the event
+     * @param data - additional data for the event
+     * @returns false, if the event was cancelled (preventDefault called), true otherwise
+     */
+    fireDecoratorEvent<T>(name: string, data?: T): boolean;
     _fireEvent<T>(name: string, data?: T, cancelable?: boolean, bubbles?: boolean): boolean;
+    getEventData(name: string): {
+        detail: Record<string, object>;
+        cancelable: boolean;
+        bubbles: boolean;
+    };
     /**
      * Returns the actual children, associated with a slot.
      * Useful when there are transitive slots in nested component scenarios and you don't want to get a list of the slots, but rather of their content.
@@ -345,20 +359,21 @@ declare abstract class UI5Element extends HTMLElement {
      */
     static getUniqueDependencies(this: typeof UI5Element): Array<typeof UI5Element>;
     /**
-     * Returns a promise that resolves whenever all dependencies for this UI5 Web Component have resolved
-     */
-    static whenDependenciesDefined(): Promise<Array<typeof UI5Element>>;
-    /**
      * Hook that will be called upon custom element definition
      *
      * @protected
+     * @deprecated use the "i18n" decorator for fetching message bundles and the "cldr" option in the "customElements" decorator for fetching CLDR
      */
     static onDefine(): Promise<void>;
+    static fetchI18nBundles(): Promise<import("./i18nBundle.js").default[]>;
+    static fetchCLDR(): Promise<void>;
+    static asyncFinished: boolean;
+    static definePromise: Promise<void> | undefined;
     /**
      * Registers a UI5 Web Component in the browser window object
      * @public
      */
-    static define(): Promise<typeof UI5Element>;
+    static define(): typeof UI5Element;
     /**
      * Returns an instance of UI5ElementMetadata.js representing this UI5 Web Component's full metadata (its and its parents')
      * Note: not to be confused with the "get metadata()" method, which returns an object for this class's metadata only
@@ -376,4 +391,4 @@ declare abstract class UI5Element extends HTMLElement {
 declare const instanceOfUI5Element: (object: any) => object is UI5Element;
 export default UI5Element;
 export { instanceOfUI5Element, };
-export type { ChangeInfo, Renderer, RendererOptions, };
+export type { ChangeInfo, InvalidationInfo, Renderer, RendererOptions, };

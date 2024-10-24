@@ -61,7 +61,6 @@ declare class MonthPicker extends CalendarPart implements ICalendarPicker {
      */
     _secondTimestamp?: number;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     get roleDescription(): string;
     onBeforeRendering(): void;
     onAfterRendering(): void;

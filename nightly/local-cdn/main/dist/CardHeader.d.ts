@@ -85,7 +85,6 @@ declare class CardHeader extends UI5Element {
     get ariaLabelledBy(): string | undefined;
     get hasAvatar(): boolean;
     get hasAction(): boolean;
-    static onDefine(): Promise<void>;
     _actionsFocusin(): void;
     _actionsFocusout(): void;
     _click(e: MouseEvent): void;

@@ -151,7 +151,6 @@ declare class RadioButton extends UI5Element implements IFormInputElement {
     get formFormattedValue(): string | null;
     static i18nBundle: I18nBundle;
     constructor();
-    static onDefine(): Promise<void>;
     onAfterRendering(): void;
     onEnterDOM(): void;
     onExitDOM(): void;

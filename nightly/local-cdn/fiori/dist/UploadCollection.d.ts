@@ -91,7 +91,6 @@ declare class UploadCollection extends UI5Element {
     header: Array<HTMLElement>;
     _bodyDnDHandler: DnDEventListener;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     constructor();
     bodyDnDHandler(e: DnDEventListenerParam): void;
     onEnterDOM(): void;

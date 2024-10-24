@@ -99,6 +99,8 @@ type ListItemClickEventDetail = {
  * @constructor
  * @extends UI5Element
  * @public
+ * @csspart growing-button - Used to style the button, that is used for growing of the component
+ * @csspart growing-button-inner - Used to style the button inner element
  */
 declare class List extends UI5Element {
     /**
@@ -236,7 +238,6 @@ declare class List extends UI5Element {
     onForwardAfterBound: (e: CustomEvent) => void;
     onForwardBeforeBound: (e: CustomEvent) => void;
     onItemTabIndexChangeBound: (e: CustomEvent) => void;
-    static onDefine(): Promise<void>;
     constructor();
     /**
      * Returns an array containing the list item instances without the groups in a flat structure.
@@ -258,6 +259,7 @@ declare class List extends UI5Element {
     get listEndDOM(): Element | null;
     get dropIndicatorDOM(): DropIndicator | null;
     get hasData(): boolean;
+    get showBusyIndicatorOverlay(): boolean;
     get showNoDataText(): string | false | undefined;
     get isDelete(): boolean;
     get isSingleSelect(): boolean;

@@ -195,7 +195,6 @@ declare class TextArea extends UI5Element implements IFormInputElement {
     get formValidity(): ValidityStateFlags;
     formElementAnchor(): Promise<HTMLElement | undefined>;
     get formFormattedValue(): FormData | string | null;
-    static onDefine(): Promise<void>;
     constructor();
     onEnterDOM(): void;
     onExitDOM(): void;

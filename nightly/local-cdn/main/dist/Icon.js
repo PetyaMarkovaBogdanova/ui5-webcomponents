@@ -128,7 +128,7 @@ let Icon = class Icon extends UI5Element {
             return;
         }
         if (isEnter(e)) {
-            this.fireEvent("click");
+            this.fireDecoratorEvent("click");
         }
         if (isSpace(e)) {
             e.preventDefault(); // prevent scrolling
@@ -136,7 +136,7 @@ let Icon = class Icon extends UI5Element {
     }
     _onkeyup(e) {
         if (this.mode === IconMode.Interactive && isSpace(e)) {
-            this.fireEvent("click");
+            this.fireDecoratorEvent("click");
         }
     }
     /**
@@ -256,7 +256,9 @@ Icon = __decorate([
      * @since 1.0.0-rc.8
      */
     ,
-    event("click")
+    event("click", {
+        bubbles: true,
+    })
 ], Icon);
 Icon.define();
 export default Icon;

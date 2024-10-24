@@ -12,7 +12,7 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { isPhone, supportsTouch } from "@ui5/webcomponents-base/dist/Device.js";
 import "@ui5/webcomponents-icons/dist/direction-arrows.js";
-import { isEscape, isHome, isEnd, isUp, isDown, isRight, isLeft, isUpCtrl, isDownCtrl, isRightCtrl, isLeftCtrl, isPlus, isMinus, isPageUp, isPageDown, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isEscape, isHome, isEnd, isUp, isDown, isRight, isLeft, isUpCtrl, isDownCtrl, isRightCtrl, isLeftCtrl, isPlus, isMinus, isPageUp, isPageDown, isF2, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 // Styles
 import sliderBaseStyles from "./generated/themes/SliderBase.css.js";
 /**
@@ -79,6 +79,16 @@ class SliderBase extends UI5Element {
          */
         this.showTooltip = false;
         /**
+         *
+         * Indicates whether input fields should be used as tooltips for the handles.
+         *
+         * **Note:** Setting this option to true will only work if showTooltip is set to true.
+         * **Note:** In order for the component to comply with the accessibility standard, it is recommended to set the editableTooltip property to true.
+         * @default false
+         * @public
+         */
+        this.editableTooltip = false;
+        /**
          * Defines whether the slider is in disabled state.
          * @default false
          * @public
@@ -87,9 +97,14 @@ class SliderBase extends UI5Element {
         /**
          * @private
          */
+        this.value = 0;
+        /**
+         * @private
+         */
         this._tooltipVisibility = "hidden";
         this._labelsOverlapping = false;
         this._hiddenTickmarks = false;
+        this._isInputValueValid = false;
         this.notResized = false;
         this._isUserInteraction = false;
         this._isInnerElementFocusing = false;
@@ -112,9 +127,10 @@ class SliderBase extends UI5Element {
         };
     }
     _handleMove(e) { } // eslint-disable-line
-    _handleUp() { }
+    _handleUp(e) { } // eslint-disable-line
     _onmousedown(e) { } // eslint-disable-line
     _handleActionKeyPress(e) { } // eslint-disable-line
+    _updateInputValue() { }
     static get ACTION_KEYS() {
         return [
             isLeft,
@@ -190,16 +206,47 @@ class SliderBase extends UI5Element {
         }
     }
     _onkeydown(e) {
-        if (this.disabled || this._effectiveStep === 0) {
+        const target = e.target;
+        if (isF2(e) && target.classList.contains("ui5-slider-handle")) {
+            target.parentNode.querySelector(".ui5-slider-handle-container ui5-input").focus();
+        }
+        if (this.disabled || this._effectiveStep === 0 || target.hasAttribute("ui5-slider-handle")) {
             return;
         }
-        if (SliderBase_1._isActionKey(e)) {
+        if (SliderBase_1._isActionKey(e) && target && !target.hasAttribute("ui5-input")) {
             e.preventDefault();
             this._isUserInteraction = true;
             this._handleActionKeyPress(e);
         }
     }
-    _onkeyup() {
+    _onInputKeydown(e) {
+        const target = e.target;
+        if (isF2(e) && target.hasAttribute("ui5-input")) {
+            target.parentNode.parentNode.querySelector(".ui5-slider-handle").focus();
+        }
+        if (isEnter(e)) {
+            this._updateInputValue();
+            this._updateValueFromInput(e);
+        }
+    }
+    _onInputChange() {
+        if (this._valueOnInteractionStart !== this.value) {
+            this.fireEvent("change");
+        }
+    }
+    _onInputInput() {
+        this.fireEvent("input");
+    }
+    _updateValueFromInput(e) {
+        const input = e.target;
+        const value = parseFloat(input.value);
+        this._isInputValueValid = value >= this._effectiveMin && value <= this._effectiveMax;
+        if (!this._isInputValueValid) {
+            return;
+        }
+        this.value = value;
+    }
+    _onKeyupBase() {
         if (this.disabled) {
             return;
         }
@@ -295,8 +342,9 @@ class SliderBase extends UI5Element {
      * @private
      */
     _handleFocusOnMouseDown(e) {
-        const focusedElement = this.shadowRoot.activeElement;
-        if (!focusedElement || focusedElement !== e.target) {
+        const currentlyFocusedElement = this.shadowRoot.activeElement;
+        const elementToBeFocused = e.target;
+        if ((!currentlyFocusedElement || currentlyFocusedElement !== elementToBeFocused) && !elementToBeFocused.hasAttribute("ui5-input")) {
             this._preserveFocus(true);
             this.focusInnerElement();
         }
@@ -323,7 +371,7 @@ class SliderBase extends UI5Element {
     updateStateStorageAndFireInputEvent(valueType) {
         this.storePropertyState(valueType);
         if (this._isUserInteraction) {
-            this.fireEvent("input");
+            this.fireDecoratorEvent("input");
         }
     }
     /**
@@ -566,8 +614,17 @@ class SliderBase extends UI5Element {
     get _tabIndex() {
         return this.disabled ? "-1" : "0";
     }
-    get _ariaLabelledByHandleRefs() {
-        return [`${this._id}-accName`, `${this._id}-sliderDesc`].join(" ").trim();
+    get _ariaDescribedByHandleText() {
+        return this.editableTooltip ? "ui5-slider-InputDesc" : undefined;
+    }
+    get _ariaLabelledByHandleText() {
+        return this.accessibleName ? "ui5-slider-accName ui5-slider-sliderDesc" : "ui5-slider-sliderDesc";
+    }
+    get _ariaDescribedByInputText() {
+        return "";
+    }
+    get _ariaLabelledByInputText() {
+        return "";
     }
 };
 __decorate([
@@ -593,10 +650,16 @@ __decorate([
 ], SliderBase.prototype, "showTooltip", void 0);
 __decorate([
     property({ type: Boolean })
+], SliderBase.prototype, "editableTooltip", void 0);
+__decorate([
+    property({ type: Boolean })
 ], SliderBase.prototype, "disabled", void 0);
 __decorate([
     property()
 ], SliderBase.prototype, "accessibleName", void 0);
+__decorate([
+    property({ type: Number })
+], SliderBase.prototype, "value", void 0);
 __decorate([
     property()
 ], SliderBase.prototype, "_tooltipVisibility", void 0);
@@ -606,14 +669,21 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], SliderBase.prototype, "_hiddenTickmarks", void 0);
+__decorate([
+    property({ type: Boolean })
+], SliderBase.prototype, "_isInputValueValid", void 0);
 SliderBase = SliderBase_1 = __decorate([
-    event("change")
+    event("change", {
+        bubbles: true,
+    })
     /**
      * Fired when the value changes due to user interaction that is not yet finished - during mouse/touch dragging.
      * @public
      */
     ,
-    event("input")
+    event("input", {
+        bubbles: true,
+    })
     /**
      * @class
      *

@@ -65,6 +65,16 @@ declare abstract class SliderBase extends UI5Element {
      */
     showTooltip: boolean;
     /**
+     *
+     * Indicates whether input fields should be used as tooltips for the handles.
+     *
+     * **Note:** Setting this option to true will only work if showTooltip is set to true.
+     * **Note:** In order for the component to comply with the accessibility standard, it is recommended to set the editableTooltip property to true.
+     * @default false
+     * @public
+     */
+    editableTooltip: boolean;
+    /**
      * Defines whether the slider is in disabled state.
      * @default false
      * @public
@@ -80,12 +90,17 @@ declare abstract class SliderBase extends UI5Element {
     /**
      * @private
      */
+    value: number;
+    /**
+     * @private
+     */
     _tooltipVisibility: string;
     _labelsOverlapping: boolean;
     _hiddenTickmarks: boolean;
+    _isInputValueValid: boolean;
     _resizeHandler: ResizeObserverCallback;
     _moveHandler: (e: TouchEvent | MouseEvent) => void;
-    _upHandler: () => void;
+    _upHandler: (e: TouchEvent | MouseEvent) => void;
     _stateStorage: StateStorage;
     _ontouchstart: PassiveEventListenerObject;
     notResized: boolean;
@@ -96,12 +111,14 @@ declare abstract class SliderBase extends UI5Element {
     _oldMax?: number;
     _labelWidth: number;
     _labelValues?: Array<string>;
+    _valueOnInteractionStart?: number;
     formElementAnchor(): Promise<HTMLElement | undefined>;
     constructor();
     _handleMove(e: TouchEvent | MouseEvent): void;
-    _handleUp(): void;
+    _handleUp(e: TouchEvent | MouseEvent): void;
     _onmousedown(e: TouchEvent | MouseEvent): void;
     _handleActionKeyPress(e: Event): void;
+    _updateInputValue(): void;
     abstract styles: {
         label: object;
         labelContainer: object;
@@ -137,7 +154,11 @@ declare abstract class SliderBase extends UI5Element {
      */
     _onmouseout(): void;
     _onkeydown(e: KeyboardEvent): void;
-    _onkeyup(): void;
+    _onInputKeydown(e: KeyboardEvent): void;
+    _onInputChange(): void;
+    _onInputInput(): void;
+    _updateValueFromInput(e: Event): void;
+    _onKeyupBase(): void;
     /**
      * Flags if an inner element is currently being focused
      * @private
@@ -288,6 +309,9 @@ declare abstract class SliderBase extends UI5Element {
     get _effectiveMin(): number;
     get _effectiveMax(): number;
     get _tabIndex(): "-1" | "0";
-    get _ariaLabelledByHandleRefs(): string;
+    get _ariaDescribedByHandleText(): "ui5-slider-InputDesc" | undefined;
+    get _ariaLabelledByHandleText(): "ui5-slider-accName ui5-slider-sliderDesc" | "ui5-slider-sliderDesc";
+    get _ariaDescribedByInputText(): string;
+    get _ariaLabelledByInputText(): string;
 }
 export default SliderBase;

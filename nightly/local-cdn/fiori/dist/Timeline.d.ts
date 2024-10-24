@@ -60,7 +60,6 @@ declare class Timeline extends UI5Element {
     static i18nBundle: I18nBundle;
     _itemNavigation: ItemNavigation;
     constructor();
-    static onDefine(): Promise<void>;
     get ariaLabel(): string;
     _onfocusin(e: FocusEvent): void;
     onBeforeRendering(): void;

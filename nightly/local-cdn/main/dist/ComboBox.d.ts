@@ -322,7 +322,6 @@ declare class ComboBox extends UI5Element implements IFormInputElement {
     get ariaLabelText(): string | undefined;
     get clearIconAccessibleName(): string;
     get responsivePopoverId(): string;
-    static onDefine(): Promise<void>;
     get styles(): {
         popoverHeader: {
             width: string;

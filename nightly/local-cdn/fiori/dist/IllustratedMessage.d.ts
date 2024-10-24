@@ -168,7 +168,6 @@ declare class IllustratedMessage extends UI5Element {
     _lastKnownMedia: string;
     _handleResize: ResizeObserverCallback;
     constructor();
-    static onDefine(): Promise<void>;
     static get BREAKPOINTS(): {
         DIALOG: number;
         SPOT: number;

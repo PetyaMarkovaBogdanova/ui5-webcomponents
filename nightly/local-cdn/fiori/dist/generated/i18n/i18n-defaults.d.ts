@@ -1,4 +1,4 @@
-import { I18nText } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import type { I18nText } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 declare const BARCODE_SCANNER_DIALOG_CANCEL_BUTTON_TXT: I18nText;
 declare const BARCODE_SCANNER_DIALOG_LOADING_TXT: I18nText;
 declare const DYNAMIC_PAGE_ARIA_LABEL_EXPANDED_HEADER: I18nText;

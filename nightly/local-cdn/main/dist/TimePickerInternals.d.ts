@@ -1,4 +1,3 @@
-/// <reference types="openui5" />
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import DateFormat from "@ui5/webcomponents-localization/dist/DateFormat.js";
@@ -114,7 +113,6 @@ declare class TimePickerInternals extends UI5Element {
      */
     _keyboardBuffer: string;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     get _hoursConfiguration(): import("./timepicker-utils/TimeSlider.js").HoursConfiguration;
     get _zeroPaddedHours(): boolean;
     get _neededComponents(): boolean[];

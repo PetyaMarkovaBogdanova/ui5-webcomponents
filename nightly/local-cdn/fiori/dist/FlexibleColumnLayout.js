@@ -10,10 +10,10 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { supportsTouch } from "@ui5/webcomponents-base/dist/Device.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
@@ -152,6 +152,12 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         * @private
         */
         this._visibleColumns = 1;
+        /**
+        * Defines if the user is currently resizing the columns by dragging their separator.
+        * @default false
+        * @private
+        */
+        this._resizing = false;
         this._userDefinedColumnLayouts = {
             tablet: {},
             desktop: {},
@@ -171,9 +177,6 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
             handleEvent: handleTouchStartEvent,
             passive: true,
         };
-    }
-    static async onDefine() {
-        FlexibleColumnLayout_1.i18nBundle = await getI18nBundle("@ui5/webcomponents-fiori");
     }
     static get ANIMATION_DURATION() {
         return getAnimationMode() !== AnimationMode.None ? 560 : 0;
@@ -278,7 +281,7 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         return colLayout.filter(colWidth => !this._isColumnHidden(colWidth)).length;
     }
     fireLayoutChange(separatorUsed, resized) {
-        this.fireEvent("layout-change", {
+        this.fireDecoratorEvent("layout-change", {
             layout: this.layout,
             columnLayout: this._columnLayout,
             startColumnVisible: this.startColumnVisible,
@@ -293,7 +296,7 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         if (pressedSeparator.classList.contains("ui5-fcl-separator-start") && !this.showStartSeparatorGrip) {
             return;
         }
-        const isTouch = e instanceof TouchEvent, cursorPositionX = this.getPageXValueFromEvent(e);
+        const isTouch = supportsTouch() && e instanceof TouchEvent, cursorPositionX = this.getPageXValueFromEvent(e);
         this.separatorMovementSession = this.initSeparatorMovementSession(pressedSeparator, cursorPositionX, isTouch);
     }
     onSeparatorMove(e) {
@@ -331,7 +334,8 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
     }
     initSeparatorMovementSession(separator, cursorPositionX, isTouch) {
         this.attachMoveListeners(isTouch);
-        this.toggleSideAnimations(separator, false); // toggle animations for side colmns
+        this.toggleSideAnimations(separator, false); // disable animations for side colmns to prevent slowdown while dragging
+        this._resizing = true;
         return {
             separator,
             cursorPositionX,
@@ -343,6 +347,7 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         const hasAnimation = getAnimationMode() !== AnimationMode.None;
         this.detachMoveListeners();
         this.toggleSideAnimations(movedSeparator, hasAnimation); // restore animations for side columns
+        this._resizing = false;
         movedSeparator.focus();
         this.separatorMovementSession = null;
     }
@@ -878,6 +883,9 @@ __decorate([
     property({ type: Number })
 ], FlexibleColumnLayout.prototype, "_visibleColumns", void 0);
 __decorate([
+    property({ type: Boolean })
+], FlexibleColumnLayout.prototype, "_resizing", void 0);
+__decorate([
     property({ type: Object })
 ], FlexibleColumnLayout.prototype, "_layoutsConfiguration", void 0);
 __decorate([
@@ -889,6 +897,9 @@ __decorate([
 __decorate([
     slot()
 ], FlexibleColumnLayout.prototype, "endColumn", void 0);
+__decorate([
+    i18n("@ui5/webcomponents-fiori")
+], FlexibleColumnLayout, "i18nBundle", void 0);
 FlexibleColumnLayout = FlexibleColumnLayout_1 = __decorate([
     customElement({
         tag: "ui5-flexible-column-layout",
@@ -942,6 +953,7 @@ FlexibleColumnLayout = FlexibleColumnLayout_1 = __decorate([
             */
             resized: { type: Boolean },
         },
+        bubbles: true,
     })
 ], FlexibleColumnLayout);
 FlexibleColumnLayout.define();

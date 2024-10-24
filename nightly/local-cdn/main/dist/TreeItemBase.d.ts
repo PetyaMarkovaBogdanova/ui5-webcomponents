@@ -1,4 +1,5 @@
 import type { ClassMap } from "@ui5/webcomponents-base/dist/types.js";
+import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import ListItem from "./ListItem.js";
 import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
@@ -116,6 +117,7 @@ declare class TreeItemBase extends ListItem {
      * @public
      */
     items: Array<TreeItemBase>;
+    static i18nBundle: I18nBundle;
     onBeforeRendering(): void;
     get classes(): ClassMap;
     get styles(): {
@@ -140,10 +142,10 @@ declare class TreeItemBase extends ListItem {
         ariaHaspopup: ("dialog" | "grid" | "listbox" | "menu" | "tree") | undefined;
         ariaLabel: string;
         ariaLabelRadioButton: string;
-        ariaSelected?: boolean | undefined;
-        ariaChecked?: boolean | undefined;
-        tooltip?: string | undefined;
-        ariaKeyShortcuts?: string | undefined;
+        ariaSelected?: boolean;
+        ariaChecked?: boolean;
+        tooltip?: string;
+        ariaKeyShortcuts?: string;
     };
     /**
      * Used to duck-type TreeItem elements without using instanceof
@@ -159,7 +161,6 @@ declare class TreeItemBase extends ListItem {
     _toggleClick(e: MouseEvent | KeyboardEvent): void;
     _onkeydown(e: KeyboardEvent): Promise<void>;
     get iconAccessibleName(): string;
-    static onDefine(): Promise<void>;
 }
 export default TreeItemBase;
 export type { TreeItemBaseToggleEventDetail, TreeItemBaseStepInEventDetail, TreeItemBaseStepOutEventDetail, };

@@ -85,13 +85,13 @@ let CalendarLegend = class CalendarLegend extends UI5Element {
     }
     _onFocusIn(e) {
         const target = e.target;
-        this.fireEvent("_calendar-legend-selection-change", {
+        this.fireDecoratorEvent("_calendar-legend-selection-change", {
             item: target,
         });
         this._lastFocusedItemIndex = this.focusableElements.indexOf(target);
     }
     _onFocusOut() {
-        this.fireEvent("_calendar-legend-focus-out");
+        this.fireDecoratorEvent("_calendar-legend-focus-out");
     }
     _onItemKeyDown(e) {
         const items = this.focusableElements;
@@ -167,8 +167,11 @@ CalendarLegend = __decorate([
         detail: {
             item: { type: CalendarLegendItem },
         },
+        bubbles: true,
     }),
-    event("_calendar-legend-focus-out")
+    event("_calendar-legend-focus-out", {
+        bubbles: true,
+    })
 ], CalendarLegend);
 CalendarLegend.define();
 export default CalendarLegend;

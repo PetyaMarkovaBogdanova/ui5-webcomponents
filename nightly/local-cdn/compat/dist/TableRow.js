@@ -10,7 +10,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isEnter, isF7, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
@@ -107,20 +107,20 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
         const elements = rowElements.map(getLastTabbableElement).filter(Boolean);
         const lastFocusableElement = elements.pop();
         if (isTabNext(e) && activeElement === (lastFocusableElement || this.root)) {
-            this.fireEvent("_forward-after", { target: activeElement });
+            this.fireDecoratorEvent("_forward-after", { target: activeElement });
         }
         if (isTabPrevious(e) && activeElement === this.root) {
-            this.fireEvent("_forward-before", { target: activeElement });
+            this.fireDecoratorEvent("_forward-before", { target: activeElement });
         }
         if (isSpace(e) && target.tagName.toLowerCase() === "tr") {
             e.preventDefault();
         }
         if (isRowFocused && !checkboxPressed) {
             if ((isSpace(e) && itemSelectable) || (isEnter(e) && isSingleSelect)) {
-                this.fireEvent("selection-requested", { row: this });
+                this.fireDecoratorEvent("selection-requested", { row: this });
             }
             if (isEnter(e) && itemActive) {
-                this.fireEvent("row-click", { row: this });
+                this.fireDecoratorEvent("row-click", { row: this });
                 if (!isSingleSelect) {
                     this.activate();
                 }
@@ -128,7 +128,7 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
         }
         if (isF7(e)) {
             e.preventDefault();
-            this.fireEvent("f7-pressed", { row: this });
+            this.fireDecoratorEvent("f7-pressed", { row: this });
         }
     }
     _onkeyup(e) {
@@ -147,7 +147,7 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
             this.root.focus();
             this.activate();
         }
-        this.fireEvent("_focused");
+        this.fireDecoratorEvent("_focused");
     }
     _onrowclick(e) {
         const checkboxPressed = e.target.classList.contains("ui5-multi-select-checkbox");
@@ -171,12 +171,12 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
                 this._handleSelection();
             }
             if (this.type === TableRowType.Active && !checkboxPressed) {
-                this.fireEvent("row-click", { row: this });
+                this.fireDecoratorEvent("row-click", { row: this });
             }
         }
     }
     _handleSelection() {
-        this.fireEvent("selection-requested", { row: this });
+        this.fireDecoratorEvent("selection-requested", { row: this });
     }
     _activeElementHasAttribute(attr) {
         return !!(this.getRootNode().activeElement?.hasAttribute(attr));
@@ -292,9 +292,6 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
     getNormilzedTextContent(textContent) {
         return textContent.replace(/[\n\r\t]/g, "").trim();
     }
-    static async onDefine() {
-        TableRow_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property()
@@ -326,6 +323,9 @@ __decorate([
 __decorate([
     slot({ type: HTMLElement, "default": true, individualSlots: true })
 ], TableRow.prototype, "cells", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], TableRow, "i18nBundle", void 0);
 TableRow = TableRow_1 = __decorate([
     customElement({
         tag: "ui5-table-row",
@@ -340,22 +340,58 @@ TableRow = TableRow_1 = __decorate([
      * @private
      */
     ,
-    event("row-click"),
-    event("_focused")
+    event("row-click", {
+        bubbles: true,
+    })
+    /**
+     * @private
+     */
+    ,
+    event("_focused", {
+        bubbles: true,
+    })
+    /**
+     * @private
+     */
+    ,
+    event("_forward-before", {
+        detail: {
+            target: {
+                type: HTMLElement,
+            },
+        },
+        bubbles: true,
+    })
+    /**
+     * @private
+     */
+    ,
+    event("_forward-after", {
+        detail: {
+            target: {
+                type: HTMLElement,
+            },
+        },
+        bubbles: true,
+    })
     /**
      * Fired on selection change of an active row.
      * @since 2.0.0
      * @private
      */
     ,
-    event("selection-requested")
+    event("selection-requested", {
+        bubbles: true,
+    })
     /**
      * Fired when F7 is pressed.
      * @since 2.0.0
      * @private
      */
     ,
-    event("f7-pressed")
+    event("f7-pressed", {
+        bubbles: true,
+    })
 ], TableRow);
 TableRow.define();
 export default TableRow;

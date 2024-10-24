@@ -248,7 +248,7 @@ let MediaGallery = MediaGallery_1 = class MediaGallery extends UI5Element {
         this._updateSelectedFlag(item);
         this._itemNavigation.setCurrentItem(item);
         if (userInteraction) {
-            this.fireEvent("selection-change", { item });
+            this.fireDecoratorEvent("selection-change", { item });
         }
         if (isPhone()) {
             this._selectItemOnPhone(item);
@@ -287,17 +287,17 @@ let MediaGallery = MediaGallery_1 = class MediaGallery extends UI5Element {
         }
     }
     _onOverflowBtnClick() {
-        this.fireEvent("overflow-click");
+        this.fireDecoratorEvent("overflow-click");
     }
     _onDisplayAreaClick() {
         if (!this.interactiveDisplayArea) {
             return;
         }
-        this.fireEvent("display-area-click");
+        this.fireDecoratorEvent("display-area-click");
     }
     _onCarouselNavigate(e) {
         const selectedIndex = e.detail.selectedIndex, item = this._selectableItems[selectedIndex];
-        this.fireEvent("selection-change", { item });
+        this.fireDecoratorEvent("selection-change", { item });
     }
     get _mainItemTabIndex() {
         return this.interactiveDisplayArea ? 0 : undefined;
@@ -410,13 +410,16 @@ MediaGallery = MediaGallery_1 = __decorate([
              */
             item: { type: HTMLElement },
         },
+        bubbles: true,
     })
     /**
      * Fired when the thumbnails overflow button is clicked.
      * @public
      */
     ,
-    event("overflow-click")
+    event("overflow-click", {
+        bubbles: true,
+    })
     /**
      * Fired when the display area is clicked.
      * The display area is the central area that contains
@@ -424,7 +427,9 @@ MediaGallery = MediaGallery_1 = __decorate([
      * @public
      */
     ,
-    event("display-area-click")
+    event("display-area-click", {
+        bubbles: true,
+    })
 ], MediaGallery);
 MediaGallery.define();
 export default MediaGallery;

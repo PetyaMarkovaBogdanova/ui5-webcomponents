@@ -10,8 +10,8 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/paper-plane.js";
 import Input from "@ui5/webcomponents/dist/Input.js";
 import Label from "@ui5/webcomponents/dist/Label.js";
@@ -105,23 +105,20 @@ let PromptInput = PromptInput_1 = class PromptInput extends UI5Element {
          */
         this.showSuggestions = false;
     }
-    static async onDefine() {
-        PromptInput_1.i18nBundle = await getI18nBundle("@ui5/webcomponents-ai");
-    }
     _onkeydown(e) {
         if (isEnter(e)) {
-            this.fireEvent("submit");
+            this.fireDecoratorEvent("submit");
         }
     }
     _onInnerInput(e) {
         this.value = e.target.value;
-        this.fireEvent("input");
+        this.fireDecoratorEvent("input");
     }
     _onInnerChange() {
-        this.fireEvent("change");
+        this.fireDecoratorEvent("change");
     }
     _onButtonClick() {
-        this.fireEvent("submit");
+        this.fireDecoratorEvent("submit");
     }
     _onTypeAhead(e) {
         this.value = e.target.value;
@@ -185,6 +182,9 @@ __decorate([
         invalidateOnChildChange: true,
     })
 ], PromptInput.prototype, "valueStateMessage", void 0);
+__decorate([
+    i18n("@ui5/webcomponents-ai")
+], PromptInput, "i18nBundle", void 0);
 PromptInput = PromptInput_1 = __decorate([
     customElement({
         tag: "ui5-ai-prompt-input",
@@ -205,7 +205,9 @@ PromptInput = PromptInput_1 = __decorate([
      * @public
      */
     ,
-    event("submit")
+    event("submit", {
+        bubbles: true,
+    })
     /**
      * Fired when the value of the component changes at each keystroke,
      * and when a suggestion item has been selected.
@@ -214,7 +216,9 @@ PromptInput = PromptInput_1 = __decorate([
      * @public
      */
     ,
-    event("input")
+    event("input", {
+        bubbles: true,
+    })
     /**
      * Fired when the input operation has finished by pressing Enter
      * or on focusout.
@@ -223,7 +227,9 @@ PromptInput = PromptInput_1 = __decorate([
      * @public
      */
     ,
-    event("change")
+    event("change", {
+        bubbles: true,
+    })
 ], PromptInput);
 PromptInput.define();
 export default PromptInput;

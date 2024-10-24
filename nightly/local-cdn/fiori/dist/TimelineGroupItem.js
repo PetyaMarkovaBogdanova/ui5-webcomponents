@@ -107,7 +107,7 @@ let TimelineGroupItem = class TimelineGroupItem extends UI5Element {
     }
     onGroupItemClick() {
         this.collapsed = !this.collapsed;
-        this.fireEvent("toggle");
+        this.fireDecoratorEvent("toggle");
     }
     get isGroupItem() {
         return true;
@@ -162,7 +162,9 @@ TimelineGroupItem = __decorate([
      * @public
      */
     ,
-    event("toggle")
+    event("toggle", {
+        bubbles: true,
+    })
 ], TimelineGroupItem);
 TimelineGroupItem.define();
 export default TimelineGroupItem;

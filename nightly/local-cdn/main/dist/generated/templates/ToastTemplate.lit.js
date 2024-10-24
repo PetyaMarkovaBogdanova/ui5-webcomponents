@@ -1,5 +1,5 @@
 /* eslint no-unused-vars: 0 */
-import { html, ifDefined } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import { html, svg, repeat, classMap, styleMap, ifDefined, unsafeHTML, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 function block0(context, tags, suffix) { return html `${this.open ? block1.call(this, context, tags, suffix) : undefined} `; }
 function block1(context, tags, suffix) { return html `<div class="ui5-toast-root" role="alert" tabindex="${ifDefined(this._tabindex)}"><bdi><slot></slot></bdi></div>`; }
 export default block0;

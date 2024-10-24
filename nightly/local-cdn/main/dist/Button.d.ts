@@ -237,7 +237,6 @@ declare class Button extends UI5Element implements IButton {
     get ariaDescribedbyText(): "ui5-button-hiddenText-type" | undefined;
     get _isSubmit(): boolean;
     get _isReset(): boolean;
-    static onDefine(): Promise<void>;
 }
 export default Button;
 export type { ButtonAccessibilityAttributes, IButton, };

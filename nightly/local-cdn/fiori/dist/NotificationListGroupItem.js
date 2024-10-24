@@ -67,6 +67,14 @@ let NotificationListGroupItem = NotificationListGroupItem_1 = class Notification
          * @public
          */
         this.collapsed = false;
+        /**
+         * Defines whether the component will have growing capability by pressing a `More` button.
+         * When button is pressed `load-more` event will be fired.
+         * @default "None"
+         * @public
+         * @since 2.2.0
+         */
+        this.growing = "None";
     }
     onBeforeRendering() {
         super.onBeforeRendering();
@@ -113,7 +121,7 @@ let NotificationListGroupItem = NotificationListGroupItem_1 = class Notification
         }
         return ids.join(" ");
     }
-    get _ariaExpanded() {
+    get _expanded() {
         return !this.collapsed;
     }
     get _pressable() {
@@ -124,7 +132,7 @@ let NotificationListGroupItem = NotificationListGroupItem_1 = class Notification
     }
     toggleCollapsed() {
         this.collapsed = !this.collapsed;
-        this.fireEvent("toggle", { item: this });
+        this.fireDecoratorEvent("toggle", { item: this });
     }
     /**
      * Event handlers
@@ -132,6 +140,13 @@ let NotificationListGroupItem = NotificationListGroupItem_1 = class Notification
      */
     _onHeaderToggleClick() {
         this.toggleCollapsed();
+    }
+    _onLoadMore() {
+        this.fireDecoratorEvent("load-more");
+    }
+    get loadMoreButton() {
+        const innerList = this.getDomRef()?.querySelector("[ui5-notification-group-list]");
+        return innerList.getDomRef()?.querySelector("[growing-button-inner]");
     }
     async _onkeydown(e) {
         const isFocused = this.matches(":focus");
@@ -170,6 +185,9 @@ __decorate([
     property({ type: Boolean })
 ], NotificationListGroupItem.prototype, "collapsed", void 0);
 __decorate([
+    property()
+], NotificationListGroupItem.prototype, "growing", void 0);
+__decorate([
     slot({ type: HTMLElement, "default": true })
 ], NotificationListGroupItem.prototype, "items", void 0);
 NotificationListGroupItem = NotificationListGroupItem_1 = __decorate([
@@ -192,7 +210,19 @@ NotificationListGroupItem = NotificationListGroupItem_1 = __decorate([
      * @public
      */
     ,
-    event("toggle")
+    event("toggle", {
+        bubbles: true,
+    })
+    /**
+     * Fired when additional items are requested.
+     *
+     * @public
+     * @since 2.2.0
+     */
+    ,
+    event("load-more", {
+        bubbles: true,
+    })
 ], NotificationListGroupItem);
 NotificationListGroupItem.define();
 export default NotificationListGroupItem;

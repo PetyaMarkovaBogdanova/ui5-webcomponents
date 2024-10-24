@@ -12,7 +12,7 @@ import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import { isEnter, isSpace } from "@ui5/webcomponents-base/dist/Keys.js";
 import { FILEUPLOAD_BROWSE, FILEUPLOADER_TITLE, VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, VALUE_STATE_ERROR, VALUE_STATE_WARNING, } from "./generated/i18n/i18n-defaults.js";
@@ -155,7 +155,7 @@ let FileUploader = FileUploader_1 = class FileUploader extends UI5Element {
         }
         this._input.files = validatedFiles;
         this._updateValue(validatedFiles);
-        this.fireEvent("change", {
+        this.fireDecoratorEvent("change", {
             files: validatedFiles,
         });
     }
@@ -191,7 +191,7 @@ let FileUploader = FileUploader_1 = class FileUploader extends UI5Element {
             return;
         }
         this._updateValue(changedFiles);
-        this.fireEvent("change", {
+        this.fireDecoratorEvent("change", {
             files: changedFiles,
         });
     }
@@ -208,7 +208,7 @@ let FileUploader = FileUploader_1 = class FileUploader extends UI5Element {
     _validateFiles(changedFiles) {
         const exceededFilesData = this.maxFileSize ? this._getExceededFiles(changedFiles) : [];
         if (exceededFilesData.length) {
-            this.fireEvent("file-size-exceed", {
+            this.fireDecoratorEvent("file-size-exceed", {
                 filesData: exceededFilesData,
             });
             changedFiles = new DataTransfer().files;
@@ -290,9 +290,6 @@ let FileUploader = FileUploader_1 = class FileUploader extends UI5Element {
     get hasValueStateText() {
         return this.hasValueState && this.valueState !== ValueState.Positive;
     }
-    get valueStateMessageText() {
-        return this.getSlottedNodes("valueStateMessage").map(el => el.cloneNode(true));
-    }
     get shouldDisplayDefaultValueStateMessage() {
         return !this.valueStateMessage.length && this.hasValueStateText;
     }
@@ -332,9 +329,6 @@ let FileUploader = FileUploader_1 = class FileUploader extends UI5Element {
     get ui5Input() {
         return this.shadowRoot.querySelector(".ui5-file-uploader-input");
     }
-    static async onDefine() {
-        FileUploader_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property()
@@ -372,6 +366,9 @@ __decorate([
 __decorate([
     slot()
 ], FileUploader.prototype, "valueStateMessage", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], FileUploader, "i18nBundle", void 0);
 FileUploader = FileUploader_1 = __decorate([
     customElement({
         tag: "ui5-file-uploader",
@@ -405,6 +402,7 @@ FileUploader = FileUploader_1 = __decorate([
              */
             files: { type: FileList },
         },
+        bubbles: true,
     })
     /**
      * Event is fired when the size of a file is above the `maxFileSize` property value.
@@ -420,6 +418,7 @@ FileUploader = FileUploader_1 = __decorate([
              */
             filesData: { type: (Array) },
         },
+        bubbles: true,
     })
 ], FileUploader);
 FileUploader.define();

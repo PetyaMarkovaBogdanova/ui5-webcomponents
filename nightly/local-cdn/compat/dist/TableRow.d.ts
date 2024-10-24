@@ -114,7 +114,6 @@ declare class TableRow extends UI5Element implements ITableRow {
     getCellText(cell: TableCell): string;
     getColumnTextByIdx(index: number): string;
     getNormilzedTextContent(textContent: string): string;
-    static onDefine(): Promise<void>;
 }
 export default TableRow;
 export type { TableRowClickEventDetail, TableRowSelectionRequestedEventDetail, TableRowForwardBeforeEventDetail, TableRowForwardAfterEventDetail, TableRowF7PressEventDetail, };

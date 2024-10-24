@@ -1,4 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import MainButton from "@ui5/webcomponents/dist/Button.js";
 import type ButtonDesign from "@ui5/webcomponents/dist/types/ButtonDesign.js";
 import ButtonState from "./ButtonState.js";
 /**
@@ -101,6 +102,7 @@ declare class Button extends UI5Element {
      * @private
      */
     _onclick(e: MouseEvent): void;
+    get _mainButton(): MainButton;
     get _effectiveState(): string;
     get _effectiveStateObject(): ButtonState | undefined;
     get _stateIconOnly(): boolean;

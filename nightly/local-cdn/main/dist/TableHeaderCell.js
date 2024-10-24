@@ -77,6 +77,11 @@ let TableHeaderCell = class TableHeaderCell extends TableCellBase {
         this.style.maxWidth = this.maxWidth;
         this.style.width = this.width;
     }
+    onBeforeRendering() {
+        super.onBeforeRendering();
+        // overwrite setting of TableCellBase so that the TableHeaderCell always uses the slot variable
+        this.style.justifyContent = `var(--horizontal-align-${this._individualSlot})`;
+    }
 };
 __decorate([
     property()

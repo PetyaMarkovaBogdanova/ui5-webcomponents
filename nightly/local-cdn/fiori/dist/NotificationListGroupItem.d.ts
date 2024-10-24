@@ -1,3 +1,4 @@
+import type NotificationListGrowingMode from "@ui5/webcomponents/dist/types/NotificationListGrowingMode.js";
 import NotificationListItemBase from "./NotificationListItemBase.js";
 import type NotificationListItem from "./NotificationListItem.js";
 import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
@@ -47,6 +48,14 @@ declare class NotificationListGroupItem extends NotificationListItemBase {
      */
     collapsed: boolean;
     /**
+     * Defines whether the component will have growing capability by pressing a `More` button.
+     * When button is pressed `load-more` event will be fired.
+     * @default "None"
+     * @public
+     * @since 2.2.0
+     */
+    growing: `${NotificationListGrowingMode}`;
+    /**
      * Defines the items of the `ui5-li-notification-group`,
      * usually `ui5-li-notification` items.
      * @public
@@ -63,7 +72,7 @@ declare class NotificationListGroupItem extends NotificationListItemBase {
     get expandText(): string;
     get groupText(): string;
     get ariaLabelledBy(): string;
-    get _ariaExpanded(): boolean;
+    get _expanded(): boolean;
     get _pressable(): boolean;
     get groupCollapsedIcon(): "navigation-right-arrow" | "navigation-down-arrow";
     toggleCollapsed(): void;
@@ -72,6 +81,8 @@ declare class NotificationListGroupItem extends NotificationListItemBase {
      *
      */
     _onHeaderToggleClick(): void;
+    _onLoadMore(): void;
+    get loadMoreButton(): HTMLElement;
     _onkeydown(e: KeyboardEvent): Promise<void>;
     getHeaderDomRef(): HTMLElement;
 }

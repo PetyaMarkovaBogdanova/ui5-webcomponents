@@ -164,7 +164,6 @@ declare class SideNavigation extends UI5Element {
     get isOverflow(): boolean;
     _onkeydownOverflow(e: KeyboardEvent): void;
     _onkeyupOverflow(e: KeyboardEvent): void;
-    static onDefine(): Promise<void>;
 }
 export default SideNavigation;
 export type { SideNavigationSelectionChangeEventDetail, };

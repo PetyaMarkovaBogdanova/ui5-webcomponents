@@ -12,7 +12,7 @@ import type PageBackgroundDesign from "./types/PageBackgroundDesign.js";
  * The top most area of the page is occupied by the header. The standard header includes a navigation button and a title.
  * #### Content
  * The content occupies the main part of the page. Only the content area is scrollable by default.
- * This can be prevented by setting  `enableScrolling` to `false`.
+ * This can be prevented by setting `noScrolling` to `true`.
  * #### Footer
  * The footer is optional and occupies the part above the bottom part of the content. Alternatively, the footer can be fixed at the bottom of the page by enabling the `fixedFooter` property.
  *
@@ -74,6 +74,8 @@ declare class Page extends UI5Element {
      * @public
      */
     footer: Array<HTMLElement>;
+    constructor();
+    onEnterDOM(): void;
     get _contentBottom(): "0" | "2.75rem";
     get _contentPaddingBottom(): "0" | "3.5rem";
     get _contentTop(): "2.75rem" | "0rem";

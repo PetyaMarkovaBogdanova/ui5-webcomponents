@@ -102,7 +102,6 @@ declare class Tag extends UI5Element {
      */
     icon: Array<IIcon>;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     onEnterDOM(): void;
     onBeforeRendering(): void;
     get _roleDescription(): string;

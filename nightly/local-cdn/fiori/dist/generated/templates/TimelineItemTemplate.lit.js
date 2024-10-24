@@ -1,5 +1,5 @@
 /* eslint no-unused-vars: 0 */
-import { html, classMap, ifDefined, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import { html, svg, repeat, classMap, styleMap, ifDefined, unsafeHTML, scopeTag } from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 function block0(context, tags, suffix) { return html `<div class="ui5-tli-root"><div class="${classMap(this.classes.indicator)}"><div class="ui5-tli-icon-outer">${this.icon ? block1.call(this, context, tags, suffix) : block2.call(this, context, tags, suffix)}</div></div>${!this.hideBubble ? block3.call(this, context, tags, suffix) : undefined}</div>`; }
 function block1(context, tags, suffix) { return suffix ? html `<${scopeTag("ui5-icon", tags, suffix)} class="ui5-tli-icon" name="${ifDefined(this.icon)}"></${scopeTag("ui5-icon", tags, suffix)}>` : html `<ui5-icon class="ui5-tli-icon" name="${ifDefined(this.icon)}"></ui5-icon>`; }
 function block2(context, tags, suffix) { return html `<div class="ui5-tli-dummy-icon-container"></div>`; }

@@ -449,7 +449,6 @@ declare class ShellBar extends UI5Element {
         };
     };
     get accLogoRole(): "link" | "button";
-    static onDefine(): Promise<void>;
 }
 export default ShellBar;
 export type { ShellBarNotificationsClickEventDetail, ShellBarProfileClickEventDetail, ShellBarProductSwitchClickEventDetail, ShellBarLogoClickEventDetail, ShellBarMenuItemClickEventDetail, ShellBarAccessibilityAttributes, ShellBarSearchButtonEventDetail, };

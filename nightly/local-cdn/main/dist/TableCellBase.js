@@ -4,13 +4,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var TableCellBase_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import TableCellBaseStyles from "./generated/themes/TableCellBase.css.js";
 /**
  * @class
@@ -21,14 +20,11 @@ import TableCellBaseStyles from "./generated/themes/TableCellBase.css.js";
  * @since 2.0.0
  * @public
  */
-let TableCellBase = TableCellBase_1 = class TableCellBase extends UI5Element {
+let TableCellBase = class TableCellBase extends UI5Element {
     constructor() {
         super(...arguments);
         this._popin = false;
         this.ariaRole = "gridcell";
-    }
-    static async onDefine() {
-        TableCellBase_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
     onEnterDOM() {
         this.toggleAttribute("ui5-table-cell-base", true);
@@ -54,7 +50,13 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], TableCellBase.prototype, "_popin", void 0);
-TableCellBase = TableCellBase_1 = __decorate([
+__decorate([
+    property()
+], TableCellBase.prototype, "horizontalAlign", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], TableCellBase, "i18nBundle", void 0);
+TableCellBase = __decorate([
     customElement({
         renderer: litRender,
         styles: TableCellBaseStyles,

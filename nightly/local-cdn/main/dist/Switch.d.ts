@@ -145,6 +145,5 @@ declare class Switch extends UI5Element implements IFormInputElement {
     get accessibilityOffText(): string | undefined;
     get hiddenText(): string | undefined;
     get ariaLabelText(): string;
-    static onDefine(): Promise<void>;
 }
 export default Switch;

@@ -9,7 +9,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import ListItemType from "@ui5/webcomponents/dist/types/ListItemType.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
@@ -113,12 +113,6 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
          */
         this._editing = false;
     }
-    static async onDefine() {
-        [UploadCollectionItem_1.i18nFioriBundle] = await Promise.all([
-            getI18nBundle("@ui5/webcomponents-fiori"),
-            super.onDefine(),
-        ]);
-    }
     /**
      * @override
      */
@@ -167,7 +161,7 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
     _onRename() {
         const inp = this.shadowRoot.querySelector("#ui5-uci-edit-input");
         this.fileName = inp.value + this._fileExtension;
-        this.fireEvent("rename");
+        this.fireDecoratorEvent("rename");
         this._editing = false;
         this._focus();
     }
@@ -192,13 +186,13 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
         }
     }
     _focus() {
-        this.fireEvent("_focus-requested");
+        this.fireDecoratorEvent("_focus-requested");
     }
     _onFileNameClick() {
-        this.fireEvent("file-name-click");
+        this.fireDecoratorEvent("file-name-click");
     }
     _onRetry() {
-        this.fireEvent("retry");
+        this.fireDecoratorEvent("retry");
     }
     _onRetryKeyup(e) {
         if (isSpace(e)) {
@@ -206,7 +200,7 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
         }
     }
     _onTerminate() {
-        this.fireEvent("terminate");
+        this.fireDecoratorEvent("terminate");
     }
     _onTerminateKeyup(e) {
         if (isSpace(e)) {
@@ -214,7 +208,7 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
         }
     }
     _onDelete() {
-        this.fireEvent("_uci-delete");
+        this.fireDecoratorEvent("_uci-delete");
     }
     getFocusDomRef() {
         return this.getDomRef();
@@ -324,6 +318,9 @@ __decorate([
 __decorate([
     slot({ type: HTMLElement })
 ], UploadCollectionItem.prototype, "thumbnail", void 0);
+__decorate([
+    i18n("@ui5/webcomponents-fiori")
+], UploadCollectionItem, "i18nFioriBundle", void 0);
 UploadCollectionItem = UploadCollectionItem_1 = __decorate([
     customElement({
         tag: "ui5-upload-collection-item",
@@ -346,7 +343,9 @@ UploadCollectionItem = UploadCollectionItem_1 = __decorate([
      * @public
      */
     ,
-    event("file-name-click")
+    event("file-name-click", {
+        bubbles: true,
+    })
     /**
      * Fired when the `fileName` property gets changed.
      *
@@ -355,7 +354,9 @@ UploadCollectionItem = UploadCollectionItem_1 = __decorate([
      * @public
      */
     ,
-    event("rename")
+    event("rename", {
+        bubbles: true,
+    })
     /**
      * Fired when the terminate button is pressed.
      *
@@ -363,7 +364,9 @@ UploadCollectionItem = UploadCollectionItem_1 = __decorate([
      * @public
      */
     ,
-    event("terminate")
+    event("terminate", {
+        bubbles: true,
+    })
     /**
      * Fired when the retry button is pressed.
      *
@@ -371,18 +374,24 @@ UploadCollectionItem = UploadCollectionItem_1 = __decorate([
      * @public
      */
     ,
-    event("retry")
+    event("retry", {
+        bubbles: true,
+    })
     /**
      * @since 1.0.0-rc.8
      * @private
      */
     ,
-    event("_focus-requested")
+    event("_focus-requested", {
+        bubbles: true,
+    })
     /**
      * @private
      */
     ,
-    event("_uci-delete")
+    event("_uci-delete", {
+        bubbles: true,
+    })
 ], UploadCollectionItem);
 UploadCollectionItem.define();
 export default UploadCollectionItem;

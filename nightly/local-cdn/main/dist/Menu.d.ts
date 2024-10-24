@@ -107,7 +107,6 @@ declare class Menu extends UI5Element {
     items: Array<IMenuItem>;
     static i18nBundle: I18nBundle;
     _timeout?: Timeout;
-    static onDefine(): Promise<void>;
     get isRtl(): boolean;
     get labelClose(): string;
     get isPhone(): boolean;

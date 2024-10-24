@@ -8,6 +8,7 @@ var MonthPicker_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import getCachedLocaleDataInstance from "@ui5/webcomponents-localization/dist/getCachedLocaleDataInstance.js";
 import convertMonthNumbersToMonthNames from "@ui5/webcomponents-localization/dist/dates/convertMonthNumbersToMonthNames.js";
 import transformDateToSecondaryType from "@ui5/webcomponents-localization/dist/dates/transformDateToSecondaryType.js";
@@ -15,7 +16,6 @@ import CalendarDate from "@ui5/webcomponents-localization/dist/dates/CalendarDat
 import CalendarType from "@ui5/webcomponents-base/dist/types/CalendarType.js";
 import { isEnter, isSpace, isDown, isUp, isLeft, isRight, isHome, isEnd, isHomeCtrl, isEndCtrl, isPageUp, isPageDown, } from "@ui5/webcomponents-base/dist/Keys.js";
 import getLocale from "@ui5/webcomponents-base/dist/locale/getLocale.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import { MONTH_PICKER_DESCRIPTION, } from "./generated/i18n/i18n-defaults.js";
 import CalendarPart from "./CalendarPart.js";
 // Template
@@ -57,9 +57,6 @@ let MonthPicker = MonthPicker_1 = class MonthPicker extends CalendarPart {
         this.selectionMode = "Single";
         this._months = [];
         this._hidden = false;
-    }
-    static async onDefine() {
-        MonthPicker_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
     }
     get roleDescription() {
         return MonthPicker_1.i18nBundle.getText(MONTH_PICKER_DESCRIPTION);
@@ -209,7 +206,7 @@ let MonthPicker = MonthPicker_1 = class MonthPicker extends CalendarPart {
      */
     _setTimestamp(value) {
         this._safelySetTimestamp(value);
-        this.fireEvent("navigate", { timestamp: this.timestamp });
+        this.fireDecoratorEvent("navigate", { timestamp: this.timestamp });
     }
     /**
      * In range selection, the currently focused or hovered month is considered the "second day".
@@ -245,7 +242,7 @@ let MonthPicker = MonthPicker_1 = class MonthPicker extends CalendarPart {
         this._safelyModifyTimestampBy(amount, "month", preserveDate);
         this._updateSecondTimestamp();
         // Notify the calendar to update its timestamp
-        this.fireEvent("navigate", { timestamp: this.timestamp });
+        this.fireDecoratorEvent("navigate", { timestamp: this.timestamp });
     }
     _onkeyup(e) {
         if (isSpace(e)) {
@@ -267,7 +264,7 @@ let MonthPicker = MonthPicker_1 = class MonthPicker extends CalendarPart {
         this._safelySetTimestamp(timestamp);
         this._updateSecondTimestamp();
         this._updateSelectedDates(timestamp);
-        this.fireEvent("change", {
+        this.fireDecoratorEvent("change", {
             timestamp: this.timestamp,
             dates: this.selectedDates,
         });
@@ -335,6 +332,9 @@ __decorate([
 __decorate([
     property({ type: Number })
 ], MonthPicker.prototype, "_secondTimestamp", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], MonthPicker, "i18nBundle", void 0);
 MonthPicker = MonthPicker_1 = __decorate([
     customElement({
         tag: "ui5-monthpicker",
@@ -345,13 +345,17 @@ MonthPicker = MonthPicker_1 = __decorate([
      * Fired when the user selects a month via "Space", "Enter" or click.
      */
     ,
-    event("change")
+    event("change", {
+        bubbles: true,
+    })
     /**
      * Fired when the timestamp changes - the user navigates with the keyboard or clicks with the mouse.
      * @since 1.0.0-rc.9
      */
     ,
-    event("navigate")
+    event("navigate", {
+        bubbles: true,
+    })
 ], MonthPicker);
 MonthPicker.define();
 export default MonthPicker;

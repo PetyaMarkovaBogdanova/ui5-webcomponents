@@ -238,7 +238,6 @@ declare class Tokenizer extends UI5Element {
      * @protected
      */
     _focusLastToken(): void;
-    static onDefine(): Promise<void>;
     getPopover(): ResponsivePopover;
 }
 declare const getTokensCountText: (iTokenCount: number) => string;

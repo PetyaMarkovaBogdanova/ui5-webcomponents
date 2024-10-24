@@ -96,7 +96,6 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
     static i18nBundle: I18nBundle;
     formElementAnchor(): Promise<HTMLElement | undefined>;
     get formFormattedValue(): string;
-    static onDefine(): Promise<void>;
     constructor();
     onBeforeRendering(): void;
     _handleMouseDown(e: MouseEvent): void;

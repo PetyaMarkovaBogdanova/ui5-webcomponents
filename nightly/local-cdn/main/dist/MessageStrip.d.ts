@@ -99,7 +99,6 @@ declare class MessageStrip extends UI5Element {
     icon: Array<IIcon>;
     static i18nBundle: I18nBundle;
     _closeClick(): void;
-    static onDefine(): Promise<void>;
     static designAnnouncementMappings(): DesignTypeAnnouncemnt;
     get hiddenText(): string;
     get shouldHideIcon(): boolean;

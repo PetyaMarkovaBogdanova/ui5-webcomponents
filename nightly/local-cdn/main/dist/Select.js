@@ -21,7 +21,7 @@ import "@ui5/webcomponents-icons/dist/alert.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
 import "@ui5/webcomponents-icons/dist/information.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/decline.js";
 import InvisibleMessageMode from "@ui5/webcomponents-base/dist/types/InvisibleMessageMode.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
@@ -343,7 +343,7 @@ let Select = Select_1 = class Select extends UI5Element {
             this.options[selectedIndex].selected = false;
         }
         if (selectedIndex !== index) {
-            this.fireEvent("live-change", { selectedOption: this.options[index] });
+            this.fireDecoratorEvent("live-change", { selectedOption: this.options[index] });
         }
         this.options[index].selected = true;
     }
@@ -369,6 +369,7 @@ let Select = Select_1 = class Select extends UI5Element {
      * @private
      */
     _handleSelectionChange(index = this._selectedIndex) {
+        this._typedChars = "";
         this._select(index);
         this._toggleRespPopover();
     }
@@ -418,7 +419,7 @@ let Select = Select_1 = class Select extends UI5Element {
         previousOption.focused = false;
         nextOption.selected = true;
         nextOption.focused = true;
-        this.fireEvent("live-change", { selectedOption: nextOption });
+        this.fireDecoratorEvent("live-change", { selectedOption: nextOption });
         if (!this._isPickerOpen) {
             // arrow pressed on closed picker - do selection change
             this._fireChangeEvent(nextOption);
@@ -436,7 +437,7 @@ let Select = Select_1 = class Select extends UI5Element {
     }
     _afterOpen() {
         this.opened = true;
-        this.fireEvent("open");
+        this.fireDecoratorEvent("open");
         this.itemSelectionAnnounce();
         this._scrollSelectedItem();
         this._applyFocusToSelectedItem();
@@ -458,15 +459,15 @@ let Select = Select_1 = class Select extends UI5Element {
             this._fireChangeEvent(this.options[this._selectedIndex]);
             this._lastSelectedOption = this.options[this._selectedIndex];
         }
-        this.fireEvent("close");
+        this.fireDecoratorEvent("close");
     }
     get hasCustomLabel() {
         return !!this.label.length;
     }
     _fireChangeEvent(selectedOption) {
-        const changePrevented = !this.fireEvent("change", { selectedOption }, true);
+        const changePrevented = !this.fireDecoratorEvent("change", { selectedOption });
         //  Angular two way data binding
-        this.fireEvent("selected-item-changed");
+        this.fireDecoratorEvent("selected-item-changed");
         if (changePrevented) {
             this._select(this._selectedIndexBeforeOpen);
         }
@@ -618,9 +619,6 @@ let Select = Select_1 = class Select extends UI5Element {
     _getPopover() {
         return this.shadowRoot.querySelector("[ui5-popover]");
     }
-    static async onDefine() {
-        Select_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
 };
 __decorate([
     property({ type: Boolean })
@@ -667,6 +665,9 @@ __decorate([
 __decorate([
     property({ noAttribute: true })
 ], Select.prototype, "value", null);
+__decorate([
+    i18n("@ui5/webcomponents")
+], Select, "i18nBundle", void 0);
 Select = Select_1 = __decorate([
     customElement({
         tag: "ui5-select",
@@ -691,7 +692,6 @@ Select = Select_1 = __decorate([
     })
     /**
      * Fired when the selected option changes.
-     * @allowPreventDefault
      * @param {IOption} selectedOption the selected option.
      * @public
      */
@@ -703,6 +703,8 @@ Select = Select_1 = __decorate([
             */
             selectedOption: { type: HTMLElement },
         },
+        bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired when the user navigates through the options, but the selection is not finalized,
@@ -719,19 +721,30 @@ Select = Select_1 = __decorate([
             */
             selectedOption: { type: HTMLElement },
         },
+        bubbles: true,
     })
     /**
      * Fired after the component's dropdown menu opens.
      * @public
      */
     ,
-    event("open")
+    event("open", {
+        bubbles: true,
+    })
     /**
      * Fired after the component's dropdown menu closes.
      * @public
      */
     ,
     event("close")
+    /**
+     * Fired to make Angular two way data binding work properly.
+     * @private
+     */
+    ,
+    event("selected-item-changed", {
+        bubbles: true,
+    })
 ], Select);
 Select.define();
 export default Select;

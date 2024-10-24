@@ -66,7 +66,6 @@ declare class ResponsivePopover extends Popover {
     _afterDialogClose(e: CustomEvent): void;
     _propagateDialogEvent(e: CustomEvent): void;
     get isModal(): boolean;
-    static onDefine(): Promise<void>;
 }
 export default ResponsivePopover;
 export type { ResponsivePopoverBeforeCloseEventDetail, };

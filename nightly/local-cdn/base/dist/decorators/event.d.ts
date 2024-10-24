@@ -8,6 +8,8 @@
 declare const event: <EventDetail>(name: string, data?: {
     detail?: Record<keyof EventDetail, {
         type: any;
-    }> | undefined;
+    }>;
+    bubbles?: boolean;
+    cancelable?: boolean;
 }) => ClassDecorator;
 export default event;

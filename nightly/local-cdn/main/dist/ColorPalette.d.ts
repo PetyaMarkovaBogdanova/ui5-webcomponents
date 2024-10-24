@@ -96,7 +96,6 @@ declare class ColorPalette extends UI5Element {
     _currentlySelected?: ColorPaletteItem;
     _shouldFocusRecentColors: boolean;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     constructor();
     onBeforeRendering(): void;
     get _effectiveShowMoreColors(): boolean;

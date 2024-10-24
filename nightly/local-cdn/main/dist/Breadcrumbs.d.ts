@@ -167,7 +167,6 @@ declare class Breadcrumbs extends UI5Element {
     get _accessibleNameText(): string;
     get _dropdownArrowAccessibleNameText(): string;
     get _cancelButtonText(): string;
-    static onDefine(): Promise<void>;
 }
 export default Breadcrumbs;
 export type { BreadcrumbsItemClickEventDetail, };

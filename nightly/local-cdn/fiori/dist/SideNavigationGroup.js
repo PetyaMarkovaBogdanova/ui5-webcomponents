@@ -8,9 +8,9 @@ var SideNavigationGroup_1;
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isLeft, isRight, } from "@ui5/webcomponents-base/dist/Keys.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
 import "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
@@ -123,12 +123,6 @@ let SideNavigationGroup = SideNavigationGroup_1 = class SideNavigationGroup exte
     get isSideNavigationGroup() {
         return true;
     }
-    static async onDefine() {
-        [SideNavigationGroup_1.i18nBundle] = await Promise.all([
-            getI18nBundle("@ui5/webcomponents-fiori"),
-            super.onDefine(),
-        ]);
-    }
 };
 __decorate([
     property({ type: Boolean })
@@ -136,6 +130,9 @@ __decorate([
 __decorate([
     slot({ type: HTMLElement, invalidateOnChildChange: true, "default": true })
 ], SideNavigationGroup.prototype, "items", void 0);
+__decorate([
+    i18n("@ui5/webcomponents-fiori")
+], SideNavigationGroup, "i18nBundle", void 0);
 SideNavigationGroup = SideNavigationGroup_1 = __decorate([
     customElement({
         tag: "ui5-side-navigation-group",

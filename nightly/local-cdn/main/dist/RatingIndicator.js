@@ -13,7 +13,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isDown, isUp, isLeft, isRight, isSpace, isEnter, isHome, isEnd, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { RATING_INDICATOR_TEXT, RATING_INDICATOR_TOOLTIP_TEXT, RATING_INDICATOR_ARIA_DESCRIPTION, } from "./generated/i18n/i18n-defaults.js";
 import RatingIndicatorTemplate from "./generated/templates/RatingIndicatorTemplate.lit.js";
 import Icon from "./Icon.js";
@@ -56,9 +56,6 @@ import RatingIndicatorCss from "./generated/themes/RatingIndicator.css.js";
  * @since 1.0.0-rc.8
  */
 let RatingIndicator = RatingIndicator_1 = class RatingIndicator extends UI5Element {
-    static async onDefine() {
-        RatingIndicator_1.i18nBundle = await getI18nBundle("@ui5/webcomponents");
-    }
     constructor() {
         super();
         /**
@@ -149,7 +146,7 @@ let RatingIndicator = RatingIndicator_1 = class RatingIndicator extends UI5Eleme
                 this.value = 0;
             }
             if (this._liveValue !== this.value) {
-                this.fireEvent("change");
+                this.fireDecoratorEvent("change");
                 this._liveValue = this.value;
             }
         }
@@ -187,7 +184,7 @@ let RatingIndicator = RatingIndicator_1 = class RatingIndicator extends UI5Eleme
                 const pressedNumber = parseInt(e.key);
                 this.value = pressedNumber > this.max ? this.max : pressedNumber;
             }
-            this.fireEvent("change");
+            this.fireDecoratorEvent("change");
         }
     }
     _onfocusin() {
@@ -259,6 +256,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], RatingIndicator.prototype, "_focused", void 0);
+__decorate([
+    i18n("@ui5/webcomponents")
+], RatingIndicator, "i18nBundle", void 0);
 RatingIndicator = RatingIndicator_1 = __decorate([
     customElement({
         tag: "ui5-rating-indicator",
@@ -273,7 +273,9 @@ RatingIndicator = RatingIndicator_1 = __decorate([
      * @public
      */
     ,
-    event("change")
+    event("change", {
+        bubbles: true,
+    })
 ], RatingIndicator);
 RatingIndicator.define();
 export default RatingIndicator;

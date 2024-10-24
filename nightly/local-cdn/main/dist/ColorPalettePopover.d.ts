@@ -81,7 +81,6 @@ declare class ColorPalettePopover extends UI5Element {
      */
     colors: Array<IColorPaletteItem>;
     static i18nBundle: I18nBundle;
-    static onDefine(): Promise<void>;
     constructor();
     get responsivePopover(): ResponsivePopover;
     get respPopover(): ResponsivePopover;
