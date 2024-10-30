@@ -1,5 +1,5 @@
-commit c6f50471ccd2506881771dcd6331e01efa89eb47
+commit 18e61383ac54fe254a0a220e88fbf2ea0cb7a8b9
 Author: Dobrin Dimchev <dobrin.dimchev@sap.com>
-Date:   Thu Oct 24 16:19:29 2024 +0300
+Date:   Tue Oct 29 16:22:25 2024 +0200
 
-    refactor(ui5-shellbar): menuItems slot backward compatibility (#10077)
+    refactor(ui5-shellbar): apply max-width on search input (#10106)
