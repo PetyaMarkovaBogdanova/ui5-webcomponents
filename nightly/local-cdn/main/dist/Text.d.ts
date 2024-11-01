@@ -1,6 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import EmptyIndicatorMode from "./types/TextEmptyIndicatorMode.js";
+import TextEmptyIndicatorMode from "./types/TextEmptyIndicatorMode.js";
 /**
  * @class
  *
@@ -42,7 +42,7 @@ declare class Text extends UI5Element {
      * @since 2.2.0
      * @public
      */
-    emptyIndicatorMode: `${EmptyIndicatorMode}`;
+    emptyIndicatorMode: `${TextEmptyIndicatorMode}`;
     /**
      * Defines the text of the component.
      * @public

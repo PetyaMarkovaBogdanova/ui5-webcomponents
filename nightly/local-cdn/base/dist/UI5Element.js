@@ -1036,12 +1036,13 @@ class UI5Element extends HTMLElement {
      * @public
      */
     static define() {
-        this.definePromise = Promise.all([
-            this.fetchI18nBundles(),
-            this.fetchCLDR(),
-            boot(),
-            this.onDefine(),
-        ]).then(result => {
+        const defineSequence = async () => {
+            await boot(); // boot must finish first, because it initializes configuration
+            const result = await Promise.all([
+                this.fetchI18nBundles(), // uses configuration
+                this.fetchCLDR(),
+                this.onDefine(),
+            ]);
             const [i18nBundles] = result;
             Object.entries(this.getMetadata().getI18n()).forEach((pair, index) => {
                 const propertyName = pair[0];
@@ -1049,7 +1050,8 @@ class UI5Element extends HTMLElement {
                 targetClass[propertyName] = i18nBundles[index];
             });
             this.asyncFinished = true;
-        });
+        };
+        this.definePromise = defineSequence();
         const tag = this.getMetadata().getTag();
         const features = this.getMetadata().getFeatures();
         features.forEach(feature => {

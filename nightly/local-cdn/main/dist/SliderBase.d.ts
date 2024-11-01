@@ -285,8 +285,7 @@ declare abstract class SliderBase extends UI5Element {
      */
     _createLabels(): void;
     _handleActionKeyPressBase(e: KeyboardEvent, affectedPropName: string): number;
-    static _isDecreaseValueAction(e: KeyboardEvent): boolean;
-    static _isIncreaseValueAction(e: KeyboardEvent): boolean;
+    static _isIncreaseValueAction(e: KeyboardEvent, directionStart: DirectionStart): boolean;
     static _isBigStepAction(e: KeyboardEvent): boolean;
     get _tickmarksCount(): number;
     /**

@@ -322,7 +322,22 @@ let ViewSettingsDialog = ViewSettingsDialog_1 = class ViewSettingsDialog extends
             }
             return filter;
         });
+        this._setSelectedProp(e);
         this._currentSettings = JSON.parse(JSON.stringify(this._currentSettings));
+    }
+    /**
+     * Sets the selected property of the clicked item.
+     * @param e
+     * @private
+     */
+    _setSelectedProp(e) {
+        this.filterItems.forEach(filterItem => {
+            filterItem.values.forEach(option => {
+                if (option.text === e.detail.item.innerText) {
+                    option.selected = !option.selected;
+                }
+            });
+        });
     }
     _navigateToFilters() {
         this._filterStepTwo = false;
@@ -363,13 +378,14 @@ let ViewSettingsDialog = ViewSettingsDialog_1 = class ViewSettingsDialog extends
         this.open = false;
     }
     get eventsParams() {
-        const _currentSortOrderSelected = this._currentSettings.sortOrder.filter(item => item.selected)[0], _currentSortBySelected = this._currentSettings.sortBy.filter(item => item.selected)[0], sortOrder = _currentSortOrderSelected && (_currentSortOrderSelected.text || ""), sortDescending = !this._currentSettings.sortOrder[0].selected, sortBy = _currentSortBySelected && (_currentSortBySelected.text || ""), sortByElementIndex = _currentSortBySelected && _currentSortBySelected.index, sortByItem = this.sortItems[sortByElementIndex];
+        const _currentSortOrderSelected = this._currentSettings.sortOrder.filter(item => item.selected)[0], _currentSortBySelected = this._currentSettings.sortBy.filter(item => item.selected)[0], sortOrder = _currentSortOrderSelected && (_currentSortOrderSelected.text || ""), sortDescending = !this._currentSettings.sortOrder[0].selected, sortBy = _currentSortBySelected && (_currentSortBySelected.text || ""), sortByElementIndex = _currentSortBySelected && _currentSortBySelected.index, sortByItem = this.sortItems[sortByElementIndex], selectedFilterItems = this.filterItems.filter(filterItem => filterItem.values.some(item => item.selected));
         return {
             sortOrder,
             sortDescending,
             sortBy,
             sortByItem,
             filters: this.selectedFilters,
+            filterItems: selectedFilterItems,
         };
     }
     get selectedFilters() {

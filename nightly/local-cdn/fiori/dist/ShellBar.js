@@ -15,7 +15,7 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import AriaHasPopup from "@ui5/webcomponents-base/dist/types/AriaHasPopup.js";
-import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isSpace, isEnter, isLeft, isRight } from "@ui5/webcomponents-base/dist/Keys.js";
 import ListItemStandard from "@ui5/webcomponents/dist/ListItemStandard.js";
 import List from "@ui5/webcomponents/dist/List.js";
 import Popover from "@ui5/webcomponents/dist/Popover.js";
@@ -28,14 +28,12 @@ import "@ui5/webcomponents-icons/dist/bell.js";
 import "@ui5/webcomponents-icons/dist/overflow.js";
 import "@ui5/webcomponents-icons/dist/grid.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
-import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
-import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 // Templates
 import ShellBarTemplate from "./generated/templates/ShellBarTemplate.lit.js";
 // Styles
 import shellBarStyles from "./generated/themes/ShellBar.css.js";
 import ShellBarPopoverCss from "./generated/themes/ShellBarPopover.css.js";
-import { SHELLBAR_LABEL, SHELLBAR_LOGO, SHELLBAR_NOTIFICATIONS, SHELLBAR_CANCEL, SHELLBAR_PROFILE, SHELLBAR_PRODUCTS, SHELLBAR_SEARCH, SHELLBAR_OVERFLOW, } from "./generated/i18n/i18n-defaults.js";
+import { SHELLBAR_LABEL, SHELLBAR_LOGO, SHELLBAR_NOTIFICATIONS, SHELLBAR_NOTIFICATIONS_NO_COUNT, SHELLBAR_CANCEL, SHELLBAR_PROFILE, SHELLBAR_PRODUCTS, SHELLBAR_SEARCH, SHELLBAR_OVERFLOW, } from "./generated/i18n/i18n-defaults.js";
 // interface IShelBarNavigationItem extends HTMLElement, ITabbable {
 // 	titleText?: string,
 // 	subtitleText?: string,
@@ -173,6 +171,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._hiddenIcons = [];
         this._itemsInfo = [];
         this._isInitialRendering = true;
+        this._overflowNotifications = null;
         // marks if preventDefault() is called in item's press handler
         this._defaultItemPressPrevented = false;
         const navigatableItems = [...this.additionalContextStart, ...this.additionalContextEnd];
@@ -197,10 +196,67 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             }, HANDLE_RESIZE_DEBOUNCE_RATE);
         };
         this._currentIndex = 0;
-        this._itemNavigation = new ItemNavigation(this, {
-            navigationMode: NavigationMode.Horizontal,
-            getItemsCallback: () => [...this.customItemsInfo, ...this.additionalContextStart, ...this.additionalContextEnd],
+        this._onkeydownFn = this._onKeyDown.bind(this);
+    }
+    _onKeyDown(e) {
+        const items = this._getShellbarVisibleAndInteractiveItems();
+        const activeElement = this._getActiveElement();
+        const currentIndex = items.findIndex(el => el === activeElement);
+        if (isLeft(e) || isRight(e)) {
+            e.preventDefault(); // Prevent the default behavior to avoid any further automatic focus movemen
+            // Focus navigation based on the key pressed
+            if (isLeft(e)) {
+                this._focusPreviousItem(items, currentIndex);
+            }
+            else if (isRight(e)) {
+                this._focusNextItem(items, currentIndex);
+            }
+        }
+    }
+    _focusNextItem(items, currentIndex) {
+        if (currentIndex < items.length - 1) {
+            (items[currentIndex + 1]).focus(); // Focus the next element
+        }
+    }
+    _focusPreviousItem(items, currentIndex) {
+        if (currentIndex > 0) {
+            (items[currentIndex - 1]).focus(); // Focus the previous element
+        }
+    }
+    _isVisible(element) {
+        const style = getComputedStyle(element);
+        return style.display !== "none" && style.visibility !== "hidden" && element.offsetWidth > 0 && element.offsetHeight > 0;
+    }
+    _isInteractive(element) {
+        const firstShadowRootChild = element.shadowRoot?.firstElementChild;
+        return (firstShadowRootChild && firstShadowRootChild.hasAttribute("tabindex") && firstShadowRootChild.getAttribute("tabindex") === "0");
+    }
+    _getActiveElement() {
+        const activeElement = document.activeElement;
+        if (activeElement === this) {
+            return activeElement.shadowRoot.activeElement;
+        }
+        return activeElement;
+    }
+    _getAllShellbarItems() {
+        return [
+            // ...this.startButton,
+            ...this.logo,
+            ...this.additionalContextStart,
+            ...this.additionalContextEnd,
+            ...this.shadowRoot.querySelectorAll(".ui5-shellbar-search-item-for-arrow-nav"),
+            ...this.assistant,
+            ...this.shadowRoot.querySelectorAll(".ui5-shellbar-items-for-arrow-nav"),
+            ...this.profile,
+            // ...this.menuItems,
+        ];
+    }
+    _getShellbarVisibleAndInteractiveItems() {
+        const allShellbarItems = this._getAllShellbarItems();
+        const visibleAndInteractiveItems = allShellbarItems.filter(item => {
+            return this._isVisible(item) && this._isInteractive(item);
         });
+        return visibleAndInteractiveItems;
     }
     _debounce(fn, delay) {
         clearTimeout(this._debounceInterval);
@@ -211,7 +267,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     _onfocusin(e) {
         const target = e.target;
-        this._itemNavigation.setCurrentItem(target);
         this._currentIndex = [...this.customItemsInfo, ...this.additionalContextStart, ...this.additionalContextEnd].indexOf(target);
     }
     _menuItemPress(e) {
@@ -412,6 +467,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         }
         const newItems = this._handleActionsOverflow();
         this._updateItemsInfo(newItems);
+        this._updateOverflowNotifications();
     }
     _setContentPriority(items) {
         for (let i = 0; i < items.length; i++) {
@@ -437,16 +493,18 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     onEnterDOM() {
         ResizeHandler.register(this, this._handleResize);
+        this.addEventListener("keydown", this._onkeydownFn);
         if (isDesktop()) {
             this.setAttribute("desktop", "");
         }
-        setTimeout(this._overflowActions.bind(this), 300);
+        setTimeout(this._overflowActions.bind(this), 100);
     }
     onExitDOM() {
         this.menuItemsObserver.disconnect();
         ResizeHandler.deregister(this, this._handleResize);
         clearTimeout(this._debounceInterval);
         this._debounceInterval = null;
+        this.removeEventListener("keydown", this._onkeydownFn);
     }
     _handleSearchIconPress() {
         const searchButtonRef = this.shadowRoot.querySelector(".ui5-shellbar-search-button");
@@ -607,7 +665,9 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             }),
             {
                 icon: "bell",
-                text: this._notificationsText,
+                title: this._notificationsText,
+                text: ShellBar_1.i18nBundle.getText(SHELLBAR_NOTIFICATIONS_NO_COUNT),
+                count: this.notificationsCount,
                 classes: `${this.showNotifications ? "" : "ui5-shellbar-invisible-button"} ui5-shellbar-bell-button ui5-shellbar-button`,
                 priority: 2,
                 styles: {
@@ -671,6 +731,22 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         if (isDifferent) {
             this._itemsInfo = newItems;
         }
+    }
+    _updateOverflowNotifications() {
+        const notificationsArr = [];
+        let overflowNotifications = null;
+        this._itemsInfo.forEach(item => {
+            if (item.count && this.isIconHidden(item.icon)) {
+                notificationsArr.push(item.count);
+            }
+        });
+        if (notificationsArr.length === 1) {
+            overflowNotifications = notificationsArr[0];
+        }
+        else if (notificationsArr.length > 1) {
+            overflowNotifications = " ";
+        }
+        this._overflowNotifications = overflowNotifications;
     }
     _updateClonedMenuItems() {
         this._menuPopoverItems = [];

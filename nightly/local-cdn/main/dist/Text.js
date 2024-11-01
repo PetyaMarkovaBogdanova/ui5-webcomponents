@@ -13,7 +13,7 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
-import EmptyIndicatorMode from "./types/TextEmptyIndicatorMode.js";
+import TextEmptyIndicatorMode from "./types/TextEmptyIndicatorMode.js";
 // Template
 import TextTemplate from "./generated/templates/TextTemplate.lit.js";
 import { EMPTY_INDICATOR_SYMBOL, EMPTY_INDICATOR_ACCESSIBLE_TEXT, } from "./generated/i18n/i18n-defaults.js";
@@ -71,7 +71,7 @@ let Text = Text_1 = class Text extends UI5Element {
         return willShowContent(this.text);
     }
     get _renderEmptyIndicator() {
-        return !this.hasText && this.emptyIndicatorMode === EmptyIndicatorMode.On;
+        return !this.hasText && this.emptyIndicatorMode === TextEmptyIndicatorMode.On;
     }
     get _emptyIndicatorAriaLabel() {
         return Text_1.i18nBundle.getText(EMPTY_INDICATOR_ACCESSIBLE_TEXT);

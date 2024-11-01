@@ -2,18 +2,18 @@
  * Empty Indicator Mode.
  * @public
  */
-var EmptyIndicatorMode;
-(function (EmptyIndicatorMode) {
+var TextEmptyIndicatorMode;
+(function (TextEmptyIndicatorMode) {
     /**
      * Empty indicator is never rendered.
      * @public
      */
-    EmptyIndicatorMode["Off"] = "Off";
+    TextEmptyIndicatorMode["Off"] = "Off";
     /**
      * Empty indicator is rendered always when the component's content is empty.
      * @public
      */
-    EmptyIndicatorMode["On"] = "On";
-})(EmptyIndicatorMode || (EmptyIndicatorMode = {}));
-export default EmptyIndicatorMode;
+    TextEmptyIndicatorMode["On"] = "On";
+})(TextEmptyIndicatorMode || (TextEmptyIndicatorMode = {}));
+export default TextEmptyIndicatorMode;
 //# sourceMappingURL=TextEmptyIndicatorMode.js.map

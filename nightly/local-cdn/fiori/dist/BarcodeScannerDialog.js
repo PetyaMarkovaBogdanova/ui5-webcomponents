@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var BarcodeScannerDialog_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import Dialog from "@ui5/webcomponents/dist/Dialog.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
@@ -312,6 +313,12 @@ let BarcodeScannerDialog = BarcodeScannerDialog_1 = class BarcodeScannerDialog e
         this.isReadyToScan = false;
     }
 };
+__decorate([
+    slot()
+], BarcodeScannerDialog.prototype, "header", void 0);
+__decorate([
+    slot()
+], BarcodeScannerDialog.prototype, "footer", void 0);
 __decorate([
     property({ type: Boolean })
 ], BarcodeScannerDialog.prototype, "open", void 0);

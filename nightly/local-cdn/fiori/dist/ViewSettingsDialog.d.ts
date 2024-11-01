@@ -185,6 +185,12 @@ declare class ViewSettingsDialog extends UI5Element {
     afterDialogClose(): void;
     _handleModeChange(e: CustomEvent): void;
     _handleFilterValueItemClick(e: CustomEvent<ListItemClickEventDetail>): void;
+    /**
+     * Sets the selected property of the clicked item.
+     * @param e
+     * @private
+     */
+    _setSelectedProp(e: CustomEvent<ListItemClickEventDetail>): void;
     _navigateToFilters(): void;
     _changeCurrentFilter(e: CustomEvent<ListItemClickEventDetail>): void;
     /**
@@ -205,6 +211,7 @@ declare class ViewSettingsDialog extends UI5Element {
         sortBy: string;
         sortByItem: SortItem;
         filters: VSDFilters;
+        filterItems: FilterItem[];
     };
     get selectedFilters(): VSDFilters;
     /**

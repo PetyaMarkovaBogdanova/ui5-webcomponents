@@ -19,7 +19,7 @@ declare abstract class TableCellBase extends UI5Element {
     _popin: boolean;
     /**
      * Determines the horizontal alignment of table cells.
-     * Note: All values valid for justify-content can be used not just the ones inside the enum.
+     * **Note:** All values valid for justify-content can be used, not just the ones inside the enumeration.
      * @default undefined
      * @public
      */
