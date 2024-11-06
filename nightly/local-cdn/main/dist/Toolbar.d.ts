@@ -169,7 +169,7 @@ declare class Toolbar extends UI5Element {
     openOverflow(): void;
     closeOverflow(): void;
     toggleOverflow(): void;
-    getOverflowPopover(): Popover | null;
+    getOverflowPopover(): Popover;
     /**
      * Layout management
      */
@@ -200,6 +200,7 @@ declare class Toolbar extends UI5Element {
     getCachedItemWidth(id: string): number | undefined;
     getItemByID(id: string): ToolbarItem | undefined;
     getRegisteredToolbarItemByID(id: string): HTMLElement | null;
+    preprocessItems(): void;
 }
 export default Toolbar;
 export type { ToolbarMinWidthChangeEventDetail, };

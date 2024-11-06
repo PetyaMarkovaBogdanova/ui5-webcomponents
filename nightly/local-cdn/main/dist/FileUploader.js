@@ -13,7 +13,6 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import { isEnter, isSpace } from "@ui5/webcomponents-base/dist/Keys.js";
 import { FILEUPLOAD_BROWSE, FILEUPLOADER_TITLE, VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, VALUE_STATE_ERROR, VALUE_STATE_WARNING, } from "./generated/i18n/i18n-defaults.js";
 import Input from "./Input.js";
@@ -121,8 +120,8 @@ let FileUploader = FileUploader_1 = class FileUploader extends UI5Element {
             item.classList.remove("ui5_hovered");
         });
     }
-    _onclick(e) {
-        if (getEventMark(e) === "button") {
+    _onclick() {
+        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
             this._input.click();
         }
     }

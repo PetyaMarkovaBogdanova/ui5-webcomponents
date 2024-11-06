@@ -185,7 +185,7 @@ declare class NotificationListItem extends NotificationListItemBase {
     /**
      * Event handlers
      */
-    _onclick(e: MouseEvent): void;
+    _onclick(): void;
     _onShowMoreClick(e: MouseEvent): void;
     _onkeydown(e: KeyboardEvent): Promise<void>;
     focusSameItemOnNextRow(e: KeyboardEvent): void;
@@ -197,7 +197,7 @@ declare class NotificationListItem extends NotificationListItemBase {
     /**
      * Private
      */
-    fireItemPress(e: Event): void;
+    fireItemPress(): void;
     onResize(): void;
 }
 export default NotificationListItem;

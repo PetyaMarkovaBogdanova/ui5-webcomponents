@@ -138,10 +138,11 @@ declare abstract class ListItem extends ListItemBase {
     onExitDOM(): void;
     _onkeydown(e: KeyboardEvent): Promise<void>;
     _onkeyup(e: KeyboardEvent): void;
-    _onmousedown(e: MouseEvent): void;
-    _onmouseup(e: MouseEvent): void;
-    _ontouchend(e: TouchEvent): void;
-    _onfocusout(): void;
+    _onmousedown(): void;
+    _onmouseup(): void;
+    _ontouchend(): void;
+    _onfocusin(e: FocusEvent): void;
+    _onfocusout(e: FocusEvent): void;
     _ondragstart(e: DragEvent): void;
     _ondragend(e: DragEvent): void;
     _isTargetSelfFocusDomRef(e: KeyboardEvent): boolean;

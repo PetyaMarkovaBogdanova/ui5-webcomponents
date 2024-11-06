@@ -198,6 +198,10 @@ let DatePicker = DatePicker_1 = class DatePicker extends DateComponentBase {
         else {
             this._getInput()?.focus();
         }
+        this.fireDecoratorEvent("close");
+    }
+    onResponsivePopoverAfterOpen() {
+        this.fireDecoratorEvent("open");
     }
     onResponsivePopoverBeforeOpen() {
         this._calendar.timestamp = this._calendarTimestamp;
@@ -715,6 +719,20 @@ DatePicker = DatePicker_1 = __decorate([
         bubbles: true,
         cancelable: true,
     })
+    /**
+     * Fired after the value-help dialog of the component is opened.
+     * @since 2.4.0
+     * @public
+     */
+    ,
+    event("open")
+    /**
+     * Fired after the value-help dialog of the component is closed.
+     * @since 2.4.0
+     * @public
+     */
+    ,
+    event("close")
 ], DatePicker);
 DatePicker.define();
 export default DatePicker;

@@ -377,7 +377,6 @@ let List = List_1 = class List extends UI5Element {
     onSelectionRequested(e) {
         const previouslySelectedItems = this.getSelectedItems();
         let selectionChange = false;
-        this._selectionRequested = true;
         if (this.selectionMode !== ListSelectionMode.None && this[`handle${this.selectionMode}`]) {
             selectionChange = this[`handle${this.selectionMode}`](e.detail.item, !!e.detail.selected);
         }
@@ -701,8 +700,7 @@ let List = List_1 = class List extends UI5Element {
         if (!this.fireDecoratorEvent("item-click", { item: pressedItem })) {
             return;
         }
-        if (!this._selectionRequested && this.selectionMode !== ListSelectionMode.Delete) {
-            this._selectionRequested = true;
+        if (this.selectionMode !== ListSelectionMode.Delete) {
             const detail = {
                 item: pressedItem,
                 selectionComponentPressed: false,
@@ -711,7 +709,6 @@ let List = List_1 = class List extends UI5Element {
             };
             this.onSelectionRequested({ detail });
         }
-        this._selectionRequested = false;
     }
     // This is applicable to NotificationListItem
     onItemClose(e) {

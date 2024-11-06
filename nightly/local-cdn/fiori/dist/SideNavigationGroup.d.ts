@@ -43,7 +43,7 @@ declare class SideNavigationGroup extends SideNavigationItemBase {
     get allItems(): Array<SideNavigationItemBase>;
     get _groupId(): string | undefined;
     get _expanded(): boolean | undefined;
-    get _toggleIconName(): "navigation-right-arrow" | "navigation-down-arrow";
+    get _toggleIconName(): "navigation-down-arrow" | "navigation-right-arrow";
     get belowGroupClassName(): "" | "ui5-sn-item-group-below-group";
     get accDescription(): string;
     _onkeydown: (e: KeyboardEvent) => void;

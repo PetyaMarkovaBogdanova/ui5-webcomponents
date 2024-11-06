@@ -53,7 +53,7 @@ declare class SideNavigationItem extends SideNavigationSelectableItemBase {
     get _ariaChecked(): boolean | undefined;
     get _groupId(): string | undefined;
     get _expanded(): boolean | undefined;
-    get _toggleIconName(): "navigation-right-arrow" | "navigation-down-arrow";
+    get _toggleIconName(): "navigation-down-arrow" | "navigation-right-arrow";
     get classesArray(): string[];
     get _selected(): boolean;
     _onToggleClick: (e: PointerEvent) => void;

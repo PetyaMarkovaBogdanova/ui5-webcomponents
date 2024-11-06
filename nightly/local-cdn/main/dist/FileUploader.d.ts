@@ -135,7 +135,7 @@ declare class FileUploader extends UI5Element implements IFormInputElement {
     get formFormattedValue(): FormData | null;
     _onmouseover(): void;
     _onmouseout(): void;
-    _onclick(e: MouseEvent): void;
+    _onclick(): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
     _ondrag(e: DragEvent): void;

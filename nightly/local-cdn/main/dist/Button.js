@@ -14,7 +14,6 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isEnter, isEscape, isShift, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
-import { markEvent } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import { getIconAccessibleName } from "@ui5/webcomponents-base/dist/asset-registries/Icons.js";
 import { isDesktop, isSafari, } from "@ui5/webcomponents-base/dist/Device.js";
 import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
@@ -174,8 +173,7 @@ let Button = Button_1 = class Button extends UI5Element {
             document.addEventListener("mouseup", this._deactivate);
             isGlobalHandlerAttached = true;
         }
-        const handleTouchStartEvent = (e) => {
-            markEvent(e, "button");
+        const handleTouchStartEvent = () => {
             if (this.nonInteractive) {
                 return;
             }
@@ -197,11 +195,10 @@ let Button = Button_1 = class Button extends UI5Element {
         this.iconOnly = this.isIconOnly;
         this.buttonTitle = this.tooltip || await this.getDefaultTooltip();
     }
-    _onclick(e) {
+    _onclick() {
         if (this.nonInteractive) {
             return;
         }
-        markEvent(e, "button");
         if (this._isSubmit) {
             submitForm(this);
         }
@@ -212,11 +209,10 @@ let Button = Button_1 = class Button extends UI5Element {
             this.getDomRef()?.focus();
         }
     }
-    _onmousedown(e) {
+    _onmousedown() {
         if (this.nonInteractive) {
             return;
         }
-        markEvent(e, "button");
         this._setActiveState(true);
         activeButton = this; // eslint-disable-line
     }
@@ -232,12 +228,8 @@ let Button = Button_1 = class Button extends UI5Element {
             activeButton._setActiveState(false);
         }
     }
-    _onmouseup(e) {
-        markEvent(e, "button");
-    }
     _onkeydown(e) {
         this._cancelAction = isShift(e) || isEscape(e);
-        markEvent(e, "button");
         if (isSpace(e) || isEnter(e)) {
             this._setActiveState(true);
         }
@@ -248,9 +240,6 @@ let Button = Button_1 = class Button extends UI5Element {
     _onkeyup(e) {
         if (this._cancelAction) {
             e.preventDefault();
-        }
-        if (isSpace(e)) {
-            markEvent(e, "button");
         }
         if (isSpace(e) || isEnter(e)) {
             if (this.active) {
@@ -265,12 +254,6 @@ let Button = Button_1 = class Button extends UI5Element {
         if (this.active) {
             this._setActiveState(false);
         }
-    }
-    _onfocusin(e) {
-        if (this.nonInteractive) {
-            return;
-        }
-        markEvent(e, "button");
     }
     _setActiveState(active) {
         const eventPrevented = !this.fireDecoratorEvent("_active-state-change");

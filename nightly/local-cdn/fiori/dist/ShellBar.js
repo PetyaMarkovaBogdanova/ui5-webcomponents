@@ -803,6 +803,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 overflow: {
                     "ui5-shellbar-hidden-button": this.isIconHidden("overflow"),
                     "ui5-shellbar-no-overflow-button": true,
+                    "ui5-shellbar-overflow-button-shown": !!this._hiddenIcons.length,
                 },
             },
         };

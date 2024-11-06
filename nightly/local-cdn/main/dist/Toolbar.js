@@ -214,6 +214,7 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
     onBeforeRendering() {
         this.detachListeners();
         this.attachListeners();
+        this.preprocessItems();
     }
     async onAfterRendering() {
         await renderFinished();
@@ -442,6 +443,12 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
     }
     getRegisteredToolbarItemByID(id) {
         return this.itemsDOM.querySelector(`[data-ui5-external-action-item-id="${id}"]`);
+    }
+    preprocessItems() {
+        this.items.forEach(item => {
+            item._getRealDomRef = () => this.getDomRef().querySelector(`[data-ui5-stable*=${item.stableDomRef}]`)
+                ?? this.getOverflowPopover().querySelector(`[data-ui5-stable*=${item.stableDomRef}]`);
+        });
     }
 };
 __decorate([

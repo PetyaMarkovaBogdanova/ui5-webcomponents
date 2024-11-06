@@ -192,7 +192,6 @@ declare class Link extends UI5Element implements ITabbable {
     get effectiveAccRole(): string;
     get _hasPopup(): ("dialog" | "grid" | "listbox" | "menu" | "tree") | undefined;
     _onclick(e: MouseEvent | KeyboardEvent): void;
-    _onfocusin(e: FocusEvent): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
 }

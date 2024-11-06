@@ -14,7 +14,6 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
-import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import { TIMELINE_ARIA_LABEL } from "./generated/i18n/i18n-defaults.js";
 import TimelineTemplate from "./generated/templates/TimelineTemplate.lit.js";
 import TimelineItem from "./TimelineItem.js";
@@ -104,7 +103,7 @@ let Timeline = Timeline_1 = class Timeline extends UI5Element {
     }
     _onkeydown(e) {
         const target = e.target;
-        if (target.nameClickable && getEventMark(e) !== "link") {
+        if (target.nameClickable && !target.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         if (isTabNext(e)) {

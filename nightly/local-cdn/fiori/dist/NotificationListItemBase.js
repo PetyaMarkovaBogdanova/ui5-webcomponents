@@ -10,7 +10,6 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getTabbableElements } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import ListItemBase from "@ui5/webcomponents/dist/ListItemBase.js";
-import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import { getFirstFocusableElement } from "@ui5/webcomponents-base/dist/util/FocusableElements.js";
 // Texts
 import { NOTIFICATION_LIST_ITEM_LOADING, } from "./generated/i18n/i18n-defaults.js";
@@ -60,7 +59,7 @@ class NotificationListItemBase extends ListItemBase {
      */
     async _onkeydown(e) {
         super._onkeydown(e);
-        if (isSpace(e) && getEventMark(e) !== "button") {
+        if (isSpace(e) && this.getFocusDomRef().matches(":has(:focus-within)")) {
             e.preventDefault();
             return;
         }

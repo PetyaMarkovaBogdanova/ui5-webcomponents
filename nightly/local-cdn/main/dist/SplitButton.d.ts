@@ -133,8 +133,8 @@ declare class SplitButton extends UI5Element {
     constructor();
     onBeforeRendering(): void;
     _handleMouseClick(e: MouseEvent): void;
-    _onFocusOut(e: FocusEvent): void;
-    _onFocusIn(e: FocusEvent): void;
+    _onFocusOut(): void;
+    _onFocusIn(): void;
     _onInnerButtonFocusIn(e: FocusEvent): void;
     _onKeyDown(e: KeyboardEvent): void;
     _onKeyUp(e: KeyboardEvent): void;

@@ -13,7 +13,6 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import { isEscape, isSpace, isEnter, isDown, isUp, isDownAlt, isUpAlt, isF4, isShift, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import AriaHasPopup from "@ui5/webcomponents-base/dist/types/AriaHasPopup.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import Button from "./Button.js";
@@ -140,15 +139,15 @@ let SplitButton = SplitButton_1 = class SplitButton extends UI5Element {
     _handleMouseClick(e) {
         this._fireClick(e);
     }
-    _onFocusOut(e) {
-        if (this.disabled || getEventMark(e)) {
+    _onFocusOut() {
+        if (this.disabled || this.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         this._shiftOrEscapePressed = false;
         this._setTabIndexValue();
     }
-    _onFocusIn(e) {
-        if (this.disabled || getEventMark(e)) {
+    _onFocusIn() {
+        if (this.disabled || this.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         this._shiftOrEscapePressed = false;

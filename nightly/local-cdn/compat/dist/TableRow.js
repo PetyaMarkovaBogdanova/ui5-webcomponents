@@ -15,7 +15,6 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isEnter, isF7, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getLastTabbableElement } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
-import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import CheckBox from "@ui5/webcomponents/dist/CheckBox.js";
 import TableMode from "./types/TableMode.js";
 import TableRowType from "./types/TableRowType.js";
@@ -154,7 +153,7 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
         // If the user tab over a button on IOS device, the document.activeElement
         // is the ui5-table-row. The check below ensure that, if a button within the row is pressed,
         // the row will not be selected.
-        if (getEventMark(e) === "button") {
+        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         const activeElement = this.getRootNode().activeElement;

@@ -13,7 +13,6 @@ import { getTabbableElements } from "@ui5/webcomponents-base/dist/util/TabbableE
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
 import { isEnter, isSpace, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
-import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 // Styles
 import styles from "./generated/themes/ListItemBase.css.js";
 import draggableElementStyles from "./generated/themes/DraggableElement.css.js";
@@ -89,7 +88,7 @@ let ListItemBase = class ListItemBase extends UI5Element {
         if (isTabPrevious(e)) {
             return this._handleTabPrevious(e);
         }
-        if (getEventMark(e) === "button") {
+        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         if (isSpace(e)) {
@@ -100,7 +99,7 @@ let ListItemBase = class ListItemBase extends UI5Element {
         }
     }
     _onkeyup(e) {
-        if (getEventMark(e) === "button") {
+        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         if (isSpace(e)) {
@@ -108,7 +107,7 @@ let ListItemBase = class ListItemBase extends UI5Element {
         }
     }
     _onclick(e) {
-        if (getEventMark(e) === "button") {
+        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         this.fireItemPress(e);

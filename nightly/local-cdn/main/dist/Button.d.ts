@@ -213,14 +213,12 @@ declare class Button extends UI5Element implements IButton {
     constructor();
     onEnterDOM(): void;
     onBeforeRendering(): Promise<void>;
-    _onclick(e: MouseEvent): void;
-    _onmousedown(e: MouseEvent): void;
+    _onclick(): void;
+    _onmousedown(): void;
     _ontouchend(e: TouchEvent): void;
-    _onmouseup(e: MouseEvent): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
     _onfocusout(): void;
-    _onfocusin(e: FocusEvent): void;
     _setActiveState(active: boolean): void;
     get _hasPopup(): ("dialog" | "grid" | "listbox" | "menu" | "tree") | undefined;
     get hasButtonType(): boolean;

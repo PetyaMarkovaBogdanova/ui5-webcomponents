@@ -118,6 +118,7 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         this.showFooter = false;
         this.skipSnapOnScroll = false;
         this.showHeaderInStickArea = false;
+        this.isToggled = false;
         this._headerSnapped = false;
         this._updateMediaRange = this.updateMediaRange.bind(this);
     }
@@ -132,6 +133,7 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
             this.dynamicPageTitle.snapped = this._headerSnapped;
             this.dynamicPageTitle.interactive = this.hasHeading;
             this.dynamicPageTitle.hasSnappedTitleOnMobile = !!this.hasSnappedTitleOnMobile;
+            this.dynamicPageTitle.removeAttribute("hovered");
         }
     }
     get dynamicPageTitle() {
@@ -147,7 +149,7 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         return !this._headerSnapped && (this.showHeaderInStickArea || this.headerPinned);
     }
     get headerInContent() {
-        return !this.showHeaderInStickArea && !this.headerInTitle;
+        return !this.showHeaderInStickArea && !this.headerInTitle && !this.hasSnappedTitleOnMobile;
     }
     get _headerLabel() {
         return this._headerSnapped
@@ -195,25 +197,42 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         if (!this.dynamicPageTitle || !this.dynamicPageHeader || this.headerPinned) {
             return;
         }
-        const scrollTop = this.scrollContainer.scrollTop;
-        const lastHeaderSnapped = this._headerSnapped;
+        if (this.isToggled) {
+            this.isToggled = false;
+            return;
+        }
         if (this.skipSnapOnScroll) {
             this.skipSnapOnScroll = false;
             return;
         }
-        if (scrollTop > this.dynamicPageHeader.getBoundingClientRect().height) {
+        const scrollTop = this.scrollContainer.scrollTop;
+        const headerHeight = this.dynamicPageHeader.getBoundingClientRect().height;
+        const lastHeaderSnapped = this._headerSnapped;
+        const shouldSnap = !this._headerSnapped && scrollTop > headerHeight + SCROLL_THRESHOLD;
+        const shouldExpand = this._headerSnapped && (scrollTop < headerHeight - SCROLL_THRESHOLD
+            || (!scrollTop && !headerHeight));
+        if (shouldSnap) {
             this.showHeaderInStickArea = false;
             this._headerSnapped = true;
+            //* snappedTitleOnMobile
+            // If the header is snapped and the scroll is at the top, scroll down a bit
+            // to avoid ending in an endless loop of snapping and unsnapping
+            requestAnimationFrame(() => {
+                if (this.scrollContainer.scrollTop === 0) {
+                    this.scrollContainer.scrollTop = SCROLL_THRESHOLD;
+                }
+            });
         }
-        else {
+        else if (shouldExpand) {
             this._headerSnapped = false;
         }
+        // Fire event if snapped state changed
         if (lastHeaderSnapped !== this._headerSnapped) {
             this.fireDecoratorEvent("title-toggle");
         }
-        this.dynamicPageTitle.snapped = this._headerSnapped;
     }
     async onExpandClick() {
+        this.isToggled = true;
         this._toggleHeader();
         this.fireDecoratorEvent("title-toggle");
         await renderFinished();
@@ -233,12 +252,27 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         if (!this.hasHeading) {
             return;
         }
+        this.isToggled = true;
         this._toggleHeader();
         this.fireDecoratorEvent("title-toggle");
         await renderFinished();
         this.dynamicPageTitle.focus();
     }
     async _toggleHeader() {
+        const headerHeight = this.dynamicPageHeader?.getBoundingClientRect().height || 0;
+        const currentScrollTop = this.scrollContainer.scrollTop;
+        if (currentScrollTop > SCROLL_THRESHOLD && currentScrollTop < headerHeight) {
+            if (!this._headerSnapped) {
+                this._headerSnapped = true;
+                this.showHeaderInStickArea = true;
+                this.scrollContainer.scrollTop = 0;
+            }
+            else {
+                this.showHeaderInStickArea = false;
+                this._headerSnapped = false;
+            }
+            return;
+        }
         if (this.scrollContainer.scrollTop === SCROLL_THRESHOLD) {
             this.scrollContainer.scrollTop = 0;
         }

@@ -211,6 +211,7 @@ declare class DatePicker extends DateComponentBase implements IFormInputElement 
      * @protected
      */
     onResponsivePopoverAfterClose(): void;
+    onResponsivePopoverAfterOpen(): void;
     onResponsivePopoverBeforeOpen(): void;
     onBeforeRendering(): void;
     get _calendar(): Calendar;

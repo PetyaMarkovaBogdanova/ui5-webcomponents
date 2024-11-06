@@ -120,6 +120,7 @@ declare class DynamicPage extends UI5Element {
     static i18nBundle: I18nBundle;
     skipSnapOnScroll: boolean;
     showHeaderInStickArea: boolean;
+    isToggled: boolean;
     _headerSnapped: boolean;
     _updateMediaRange: ResizeObserverCallback;
     scrollContainer?: HTMLElement;

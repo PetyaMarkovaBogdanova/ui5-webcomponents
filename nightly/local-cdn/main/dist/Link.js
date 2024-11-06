@@ -13,7 +13,6 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import { markEvent } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
 import { getLocationHostname, getLocationPort, getLocationProtocol } from "@ui5/webcomponents-base/dist/Location.js";
 import LinkDesign from "./types/LinkDesign.js";
@@ -166,7 +165,6 @@ let Link = Link_1 = class Link extends UI5Element {
     _onclick(e) {
         const { altKey, ctrlKey, metaKey, shiftKey, } = e;
         e.stopImmediatePropagation();
-        markEvent(e, "link");
         const executeEvent = this.fireDecoratorEvent("click", {
             altKey,
             ctrlKey,
@@ -177,9 +175,6 @@ let Link = Link_1 = class Link extends UI5Element {
             e.preventDefault();
         }
     }
-    _onfocusin(e) {
-        markEvent(e, "link");
-    }
     _onkeydown(e) {
         if (isEnter(e) && !this.href) {
             this._onclick(e);
@@ -187,11 +182,9 @@ let Link = Link_1 = class Link extends UI5Element {
         else if (isSpace(e)) {
             e.preventDefault();
         }
-        markEvent(e, "link");
     }
     _onkeyup(e) {
         if (!isSpace(e)) {
-            markEvent(e, "link");
             return;
         }
         this._onclick(e);

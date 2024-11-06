@@ -6,7 +6,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var ListItem_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import { isSpace, isEnter, isDelete, isF2, } from "@ui5/webcomponents-base/dist/Keys.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getFirstFocusableElement } from "@ui5/webcomponents-base/dist/util/FocusableElements.js";
@@ -106,8 +105,8 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
                 this.active = false;
             }
         };
-        const handleTouchStartEvent = (e) => {
-            this._onmousedown(e);
+        const handleTouchStartEvent = () => {
+            this._onmousedown();
         };
         this._ontouchstart = {
             handleEvent: handleTouchStartEvent,
@@ -159,22 +158,28 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
             this.onDelete();
         }
     }
-    _onmousedown(e) {
-        if (getEventMark(e) === "button") {
-            return;
-        }
+    _onmousedown() {
         this.activate();
     }
-    _onmouseup(e) {
-        if (getEventMark(e) === "button") {
+    _onmouseup() {
+        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         this.deactivate();
     }
-    _ontouchend(e) {
-        this._onmouseup(e);
+    _ontouchend() {
+        this._onmouseup();
     }
-    _onfocusout() {
+    _onfocusin(e) {
+        super._onfocusin(e);
+        if (e.target !== this.getFocusDomRef()) {
+            this.deactivate();
+        }
+    }
+    _onfocusout(e) {
+        if (e.target !== this.getFocusDomRef()) {
+            return;
+        }
         this.deactivate();
     }
     _ondragstart(e) {

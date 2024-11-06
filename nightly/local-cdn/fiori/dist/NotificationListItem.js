@@ -12,7 +12,6 @@ import query from "@ui5/webcomponents-base/dist/decorators/query.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
-import { getEventMark } from "@ui5/webcomponents-base/dist/MarkedEvents.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
 import BusyIndicator from "@ui5/webcomponents/dist/BusyIndicator.js";
 import Tag from "@ui5/webcomponents/dist/Tag.js";
@@ -308,8 +307,8 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
     /**
      * Event handlers
      */
-    _onclick(e) {
-        this.fireItemPress(e);
+    _onclick() {
+        this.fireItemPress();
     }
     _onShowMoreClick(e) {
         e.preventDefault();
@@ -354,7 +353,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
     _onkeyup(e) {
         super._onkeyup(e);
         const space = isSpace(e);
-        if (space && getEventMark(e) === "link") {
+        if (space && this.getFocusDomRef().matches(":has(:focus-within)")) {
             this._onShowMoreClick(e);
             return;
         }
@@ -388,8 +387,8 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
     /**
      * Private
      */
-    fireItemPress(e) {
-        if (getEventMark(e) === "button" || getEventMark(e) === "link") {
+    fireItemPress() {
+        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
             return;
         }
         this.fireDecoratorEvent("_press", { item: this });
