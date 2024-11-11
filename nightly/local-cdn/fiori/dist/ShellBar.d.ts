@@ -287,7 +287,7 @@ declare class ShellBar extends UI5Element {
     _focusNextItem(items: HTMLElement[], currentIndex: number): void;
     _focusPreviousItem(items: HTMLElement[], currentIndex: number): void;
     _isVisible(element: HTMLElement): boolean;
-    _isInteractive(element: HTMLElement): boolean | null | undefined;
+    _isInteractive(element: HTMLElement | UI5Element): boolean;
     _getActiveElement(): Element | null;
     _getAllShellbarItems(): HTMLElement[];
     _getShellbarVisibleAndInteractiveItems(): HTMLElement[];
