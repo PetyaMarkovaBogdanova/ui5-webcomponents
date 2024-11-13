@@ -1,13 +1,5 @@
-commit d62c686e7ff997bc2ca6e10131864cef2ac1e2d6
-Author: yanaminkova <32466553+yanaminkova@users.noreply.github.com>
-Date:   Mon Nov 11 12:36:43 2024 +0200
+commit 89d9d970ccff4ff1eb553616dd91f599f9edc453
+Author: Petya Markova <petya.markova-bogdanova@sap.com>
+Date:   Wed Nov 13 15:43:19 2024 +0200
 
-    feat(ui5-shellbar): improve arrow navigation (#10151)
-    
-    * feat(ui5-shellbar): improve arrow navigation
-    
-    * chore: use getFocusDomRef
-    
-    ---------
-    
-    Co-authored-by: Dobrin Dimchev <dobrin.dimchev@sap.com>
+    Merge branch 'SAP:chore-shellbar-evolution' into chore-shellbar-evolution
