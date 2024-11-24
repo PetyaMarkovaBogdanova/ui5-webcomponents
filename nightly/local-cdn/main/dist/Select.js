@@ -13,7 +13,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isUp, isDown, isEnter, isEscape, isHome, isEnd, isShow, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import announce from "@ui5/webcomponents-base/dist/util/InvisibleMessage.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import "@ui5/webcomponents-icons/dist/error.js";
@@ -468,6 +468,8 @@ let Select = Select_1 = class Select extends UI5Element {
         const changePrevented = !this.fireDecoratorEvent("change", { selectedOption });
         //  Angular two way data binding
         this.fireDecoratorEvent("selected-item-changed");
+        // Fire input event for Vue.js two-way binding
+        this.fireDecoratorEvent("input");
         if (changePrevented) {
             this._select(this._selectedIndexBeforeOpen);
         }
@@ -743,6 +745,14 @@ Select = Select_1 = __decorate([
      */
     ,
     event("selected-item-changed", {
+        bubbles: true,
+    })
+    /**
+     * Fired to make Vue.js two way data binding work properly.
+     * @private
+     */
+    ,
+    event("input", {
         bubbles: true,
     })
 ], Select);

@@ -13,7 +13,7 @@ import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import { isUp, isDown, isUpCtrl, isDownCtrl, isUpShift, isDownShift, isUpShiftCtrl, isDownShiftCtrl, isPageUpShift, isPageDownShift, isEscape, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import StepInputTemplate from "./generated/templates/StepInputTemplate.lit.js";
 import { STEPINPUT_DEC_ICON_TITLE, STEPINPUT_INC_ICON_TITLE } from "./generated/i18n/i18n-defaults.js";

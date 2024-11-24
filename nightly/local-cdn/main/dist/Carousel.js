@@ -19,7 +19,7 @@ import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
 import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { CAROUSEL_OF_TEXT, CAROUSEL_DOT_TEXT, CAROUSEL_PREVIOUS_ARROW_TEXT, CAROUSEL_NEXT_ARROW_TEXT, } from "./generated/i18n/i18n-defaults.js";
 import CarouselArrowsPlacement from "./types/CarouselArrowsPlacement.js";
 import CarouselPageIndicatorType from "./types/CarouselPageIndicatorType.js";

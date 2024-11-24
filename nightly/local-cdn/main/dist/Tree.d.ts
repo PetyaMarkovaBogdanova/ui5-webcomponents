@@ -117,6 +117,20 @@ declare class Tree extends UI5Element {
      */
     accessibleNameRef?: string;
     /**
+     * Defines the accessible description of the component.
+     * @default undefined
+     * @public
+     * @since 2.5.0
+     */
+    accessibleDescription?: string;
+    /**
+     * Defines the IDs of the elements that describe the component.
+     * @default undefined
+     * @public
+     * @since 2.5.0
+     */
+    accessibleDescriptionRef?: string;
+    /**
      * Defines the items of the component. Tree items may have other tree items as children.
      *
      * **Note:** Use `ui5-tree-item` for the intended design.
@@ -138,7 +152,6 @@ declare class Tree extends UI5Element {
     get dropIndicatorDOM(): DropIndicator | null;
     get list(): TreeList;
     get _role(): ListAccessibleRole;
-    get _label(): string | undefined;
     get _hasHeader(): boolean;
     _ondragenter(e: DragEvent): void;
     _ondragleave(e: DragEvent): void;

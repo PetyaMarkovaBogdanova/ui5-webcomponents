@@ -1,9 +1,9 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import Dialog from "@ui5/webcomponents/dist/Dialog.js";
-import type { Result, Exception } from "@zxing/library/esm5/index.js";
+import type { Result, Exception } from "@zxing/library";
 import type { Interval } from "@ui5/webcomponents-base/dist/types.js";
-declare const BrowserMultiFormatReader: typeof import("@zxing/library/esm5/index.js").BrowserMultiFormatReader;
+declare const BrowserMultiFormatReader: typeof import("@zxing/library").BrowserMultiFormatReader;
 type BarcodeScannerDialogScanSuccessEventDetail = {
     text: string;
     rawBytes: Uint8Array;

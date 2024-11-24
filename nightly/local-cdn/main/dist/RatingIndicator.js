@@ -12,7 +12,7 @@ import { getEnableDefaultTooltips } from "@ui5/webcomponents-base/dist/config/To
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isDown, isUp, isLeft, isRight, isSpace, isEnter, isHome, isEnd, } from "@ui5/webcomponents-base/dist/Keys.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { RATING_INDICATOR_TEXT, RATING_INDICATOR_TOOLTIP_TEXT, RATING_INDICATOR_ARIA_DESCRIPTION, } from "./generated/i18n/i18n-defaults.js";
 import RatingIndicatorTemplate from "./generated/templates/RatingIndicatorTemplate.lit.js";

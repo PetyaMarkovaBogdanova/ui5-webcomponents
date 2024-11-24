@@ -1,5 +1,5 @@
-commit 89d9d970ccff4ff1eb553616dd91f599f9edc453
-Author: Petya Markova <petya.markova-bogdanova@sap.com>
-Date:   Wed Nov 13 15:43:19 2024 +0200
+commit d96208da4ac31f6a85cfb68a73d27865f0cbb347
+Author: Dobrin Dimchev <dobrin.dimchev@sap.com>
+Date:   Sun Nov 24 12:44:12 2024 +0200
 
-    Merge branch 'SAP:chore-shellbar-evolution' into chore-shellbar-evolution
+    fix: types

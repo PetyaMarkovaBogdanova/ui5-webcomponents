@@ -14,7 +14,6 @@ import Orientation from "@ui5/webcomponents-base/dist/types/Orientation.js";
 import MovePlacement from "@ui5/webcomponents-base/dist/types/MovePlacement.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
 import DropIndicator from "./DropIndicator.js";
 import TreeItem from "./TreeItem.js";
 import TreeItemCustom from "./TreeItemCustom.js";
@@ -100,9 +99,6 @@ let Tree = class Tree extends UI5Element {
     }
     get _role() {
         return ListAccessibleRole.Tree;
-    }
-    get _label() {
-        return getEffectiveAriaLabelText(this);
     }
     get _hasHeader() {
         return !!this.header.length;
@@ -306,6 +302,12 @@ __decorate([
 __decorate([
     property()
 ], Tree.prototype, "accessibleNameRef", void 0);
+__decorate([
+    property()
+], Tree.prototype, "accessibleDescription", void 0);
+__decorate([
+    property()
+], Tree.prototype, "accessibleDescriptionRef", void 0);
 __decorate([
     slot({ type: HTMLElement, invalidateOnChildChange: true, "default": true })
 ], Tree.prototype, "items", void 0);

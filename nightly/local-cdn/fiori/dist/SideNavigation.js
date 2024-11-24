@@ -50,6 +50,10 @@ const PAGE_UP_DOWN_SIZE = 10;
  * The items can consist of text only or an icon with text. The use or non-use of icons must be consistent for all items on one level.
  * You must not combine entries with and without icons on the same level. We strongly recommend that you do not use icons on the second level.
  *
+ * The `ui5-side-navigation` component is intended for use within an `ui5-navigation-layout` component.
+ * While it can function independently, it is recommended to use it with
+ * the `ui5-navigation-layout` for optimal user experience.
+ *
  * ### Keyboard Handling
  *
  * ### Fast Navigation
@@ -359,7 +363,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
         return this._getSelectableItems(items).find(item => item._selected);
     }
     get overflowItems() {
-        return this.items.reduce((result, item) => {
+        return (this.items).reduce((result, item) => {
             return result.concat(item.overflowItems);
         }, new Array());
     }

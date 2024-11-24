@@ -9,12 +9,13 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getFocusedElement } from "@ui5/webcomponents-base/dist/util/PopupUtils.js";
 import ScrollEnablement from "@ui5/webcomponents-base/dist/delegate/ScrollEnablement.js";
@@ -30,7 +31,7 @@ import Button from "./Button.js";
 import Icon from "./Icon.js";
 import ListItemStandard from "./ListItemStandard.js";
 import TokenizerTemplate from "./generated/templates/TokenizerTemplate.lit.js";
-import { MULTIINPUT_SHOW_MORE_TOKENS, TOKENIZER_ARIA_LABEL, TOKENIZER_POPOVER_REMOVE, TOKENIZER_ARIA_CONTAIN_TOKEN, TOKENIZER_ARIA_CONTAIN_ONE_TOKEN, TOKENIZER_ARIA_CONTAIN_SEVERAL_TOKENS, TOKENIZER_SHOW_ALL_ITEMS, } from "./generated/i18n/i18n-defaults.js";
+import { MULTIINPUT_SHOW_MORE_TOKENS, TOKENIZER_ARIA_LABEL, TOKENIZER_POPOVER_REMOVE, TOKENIZER_ARIA_CONTAIN_TOKEN, TOKENIZER_ARIA_CONTAIN_ONE_TOKEN, TOKENIZER_ARIA_CONTAIN_SEVERAL_TOKENS, TOKENIZER_SHOW_ALL_ITEMS, TOKENIZER_CLEAR_ALL, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import TokenizerCss from "./generated/themes/Tokenizer.css.js";
 import TokenizerPopoverCss from "./generated/themes/TokenizerPopover.css.js";
@@ -96,6 +97,22 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
          */
         this.readonly = false;
         /**
+         * Defines whether tokens are displayed on multiple lines.
+         *
+         * **Note:** The `multiLine` property is in an experimental state and is a subject to change.
+         * @default false
+         * @public
+         */
+        this.multiLine = false;
+        /**
+         * Defines whether "Clear All" button is present. Ensure `multiLine` is enabled, otherwise `showClearAll` will have no effect.
+         *
+         * **Note:** The `showClearAll` property is in an experimental state and is a subject to change.
+         * @default false
+         * @public
+         */
+        this.showClearAll = false;
+        /**
          * Defines whether the component is disabled.
          *
          * **Note:** A disabled component is completely noninteractive.
@@ -149,14 +166,19 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
             currentIndex: -1,
             getItemsCallback: this._getVisibleTokens.bind(this),
         });
-        this._scrollEnablement = new ScrollEnablement(this);
         this._deletedDialogItems = [];
     }
+    handleClearAll() {
+        this.fireDecoratorEvent("token-delete", { tokens: this._tokens });
+    }
     onBeforeRendering() {
+        if (!this.multiLine) {
+            this._scrollEnablement = new ScrollEnablement(this);
+        }
         const tokensLength = this._tokens.length;
         this._tokensCount = tokensLength;
         this._tokens.forEach(token => {
-            token.singleToken = tokensLength === 1;
+            token.singleToken = (tokensLength === 1) || this.multiLine;
             token.readonly = this.readonly;
         });
     }
@@ -194,11 +216,16 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
             }
         }
     }
-    onTokenSelect() {
+    onTokenSelect(e) {
         const tokens = this._tokens;
         const firstToken = tokens[0];
+        const targetToken = e.target;
         if (tokens.length === 1 && firstToken.isTruncatable) {
             this.open = firstToken.selected;
+        }
+        if (this.multiLine && targetToken.isTruncatable) {
+            this.opener = targetToken;
+            this.open = targetToken.selected;
         }
     }
     _getVisibleTokens() {
@@ -216,7 +243,9 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         if (firstToken && !this.disabled && !this.preventInitialFocus && !this._skipTabIndex) {
             firstToken.forcedTabIndex = "0";
         }
-        this._scrollEnablement.scrollContainer = this.contentDom;
+        if (this._scrollEnablement) {
+            this._scrollEnablement.scrollContainer = this.contentDom;
+        }
         if (this.expanded) {
             this._expandedScrollWidth = this.contentDom.scrollWidth;
         }
@@ -334,9 +363,16 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         }
     }
     handleBeforeOpen() {
-        this._tokens.forEach(token => {
-            token._isVisible = true;
-        });
+        if (this.multiLine) {
+            this._resetTokensVisibility();
+            const focusedToken = this._tokens.find(token => token.focused);
+            focusedToken._isVisible = true;
+        }
+        else {
+            this._tokens.forEach(token => {
+                token._isVisible = true;
+            });
+        }
         const list = this._getList();
         const firstListItem = list.querySelectorAll("[ui5-li]")[0];
         list._itemNavigation.setCurrentItem(firstListItem);
@@ -606,6 +642,17 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
             });
         }
     }
+    _resetTokensVisibility() {
+        this._tokens.forEach(token => {
+            token._isVisible = false;
+        });
+    }
+    get hasTokens() {
+        return this._tokens.length > 0;
+    }
+    get showEffectiveClearAll() {
+        return this.showClearAll && this.hasTokens && this.multiLine && !this.readonly;
+    }
     _fillClipboard(shortcutName, tokens) {
         const tokensTexts = tokens.filter(token => token.selected).map(token => token.text).join("\r\n");
         const cutToClipboard = (e) => {
@@ -624,8 +671,8 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
      * @protected
      */
     scrollToStart() {
-        if (this._scrollEnablement.scrollContainer) {
-            this._scrollEnablement.scrollTo(0, 0);
+        if (this._scrollEnablement?.scrollContainer) {
+            this._scrollEnablement?.scrollTo(0, 0);
         }
     }
     /**
@@ -635,8 +682,8 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
      */
     scrollToEnd() {
         const expandedTokenizerScrollWidth = this.contentDom && (this.effectiveDir !== "rtl" ? this.contentDom.scrollWidth : -this.contentDom.scrollWidth);
-        if (this._scrollEnablement.scrollContainer) {
-            this._scrollEnablement.scrollTo(expandedTokenizerScrollWidth, 0, 5, 10);
+        if (this._scrollEnablement?.scrollContainer) {
+            this._scrollEnablement?.scrollTo(expandedTokenizerScrollWidth, 0, 5, 10);
         }
     }
     /**
@@ -651,10 +698,10 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         const tokenRect = token.getBoundingClientRect();
         const tokenContainerRect = this.contentDom.getBoundingClientRect();
         if (tokenRect.left < tokenContainerRect.left) {
-            this._scrollEnablement.scrollTo(this.contentDom.scrollLeft - (tokenContainerRect.left - tokenRect.left + 5), 0);
+            this._scrollEnablement?.scrollTo(this.contentDom.scrollLeft - (tokenContainerRect.left - tokenRect.left + 5), 0);
         }
         else if (tokenRect.right > tokenContainerRect.right) {
-            this._scrollEnablement.scrollTo(this.contentDom.scrollLeft + (tokenRect.right - tokenContainerRect.right + 5), 0);
+            this._scrollEnablement?.scrollTo(this.contentDom.scrollLeft + (tokenRect.right - tokenContainerRect.right + 5), 0);
         }
     }
     _getList() {
@@ -678,6 +725,9 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
             return Tokenizer_1.i18nBundle.getText(MULTIINPUT_SHOW_MORE_TOKENS, this._nMoreCount);
         }
         return Tokenizer_1.i18nBundle.getText(TOKENIZER_SHOW_ALL_ITEMS, this._nMoreCount);
+    }
+    get _clearAllText() {
+        return Tokenizer_1.i18nBundle.getText(TOKENIZER_CLEAR_ALL);
     }
     get showNMore() {
         return !this.expanded && !!this.overflownTokens.length;
@@ -765,6 +815,12 @@ __decorate([
 ], Tokenizer.prototype, "readonly", void 0);
 __decorate([
     property({ type: Boolean })
+], Tokenizer.prototype, "multiLine", void 0);
+__decorate([
+    property({ type: Boolean })
+], Tokenizer.prototype, "showClearAll", void 0);
+__decorate([
+    property({ type: Boolean })
 ], Tokenizer.prototype, "disabled", void 0);
 __decorate([
     property()
@@ -826,6 +882,7 @@ Tokenizer = Tokenizer_1 = __decorate([
             ResponsivePopoverCommonCss,
             SuggestionsCss,
             TokenizerPopoverCss,
+            getEffectiveScrollbarStyle(),
         ],
         dependencies: [
             ResponsivePopover,

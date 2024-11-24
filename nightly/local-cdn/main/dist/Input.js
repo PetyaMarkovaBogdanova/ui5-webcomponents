@@ -21,7 +21,7 @@ import { getComponentFeature } from "@ui5/webcomponents-base/dist/FeaturesRegist
 import { isUp, isDown, isSpace, isEnter, isBackSpace, isDelete, isEscape, isTabNext, isPageUp, isPageDown, isHome, isEnd, } from "@ui5/webcomponents-base/dist/Keys.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { submitForm } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
-import { getAssociatedLabelForTexts, getAllAccessibleNameRefTexts, registerUI5Element, deregisterUI5Element, } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getAssociatedLabelForTexts, getAllAccessibleNameRefTexts, registerUI5Element, deregisterUI5Element, } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { getCaretPosition, setCaretPosition } from "@ui5/webcomponents-base/dist/util/Caret.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import "@ui5/webcomponents-icons/dist/decline.js";

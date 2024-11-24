@@ -18,6 +18,7 @@ import ColorPickerTemplate from "./generated/templates/ColorPickerTemplate.lit.j
 import Input from "./Input.js";
 import Slider from "./Slider.js";
 import Label from "./Label.js";
+import ColorPickerDisplayMode from "./types/ColorPickerDisplayMode.js";
 import { COLORPICKER_ALPHA_SLIDER, COLORPICKER_HUE_SLIDER, COLORPICKER_HEX, COLORPICKER_RED, COLORPICKER_GREEN, COLORPICKER_BLUE, COLORPICKER_ALPHA, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import ColorPickerCss from "./generated/themes/ColorPicker.css.js";
@@ -64,6 +65,13 @@ let ColorPicker = ColorPicker_1 = class ColorPicker extends UI5Element {
          * @public
          */
         this.value = "rgba(255,255,255,1)";
+        /**
+         * Defines the display mode of the component.
+         * @default "Default"
+         * @public
+         * @since 2.5.0
+         */
+        this.displayMode = "Default";
         /**
          * Defines the HEX code of the currently selected color
          *
@@ -386,6 +394,9 @@ let ColorPicker = ColorPicker_1 = class ColorPicker extends UI5Element {
     get hexInputErrorState() {
         return this._wrongHEX ? "Error" : undefined;
     }
+    get _isDefaultPickerMode() {
+        return this.displayMode === ColorPickerDisplayMode.Default;
+    }
     get styles() {
         return {
             mainColor: {
@@ -407,6 +418,9 @@ __decorate([
 __decorate([
     property()
 ], ColorPicker.prototype, "name", void 0);
+__decorate([
+    property()
+], ColorPicker.prototype, "displayMode", void 0);
 __decorate([
     property({ noAttribute: true })
 ], ColorPicker.prototype, "hex", void 0);

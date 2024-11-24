@@ -29,7 +29,6 @@ interface IComboBoxItem extends UI5Element {
     isGroupItem?: boolean;
     selected?: boolean;
     additionalText?: string;
-    stableDomRef: string;
     _isVisible?: boolean;
     items?: Array<IComboBoxItem>;
 }

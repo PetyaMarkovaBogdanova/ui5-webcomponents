@@ -71,6 +71,9 @@ declare class TableGrowing extends UI5Element implements ITableGrowing {
     growingSubText?: string;
     /**
      * Disables the growing feature.
+     *
+     * @default false
+     * @public
      */
     disabled: boolean;
     /**
@@ -79,12 +82,14 @@ declare class TableGrowing extends UI5Element implements ITableGrowing {
      * @private
      */
     _activeState: boolean;
+    _invalidate: number;
     readonly identifier = "TableGrowing";
     _table?: Table;
     _observer?: IntersectionObserver;
     _individualSlot?: string;
     _currentLastRow?: HTMLElement;
     _shouldFocusRow?: boolean;
+    _renderContent: boolean;
     static i18nBundle: I18nBundle;
     onTableActivate(table: Table): void;
     onTableRendered(): void;

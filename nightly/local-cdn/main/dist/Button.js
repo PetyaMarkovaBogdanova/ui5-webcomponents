@@ -13,7 +13,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isEnter, isEscape, isShift, } from "@ui5/webcomponents-base/dist/Keys.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { getIconAccessibleName } from "@ui5/webcomponents-base/dist/asset-registries/Icons.js";
 import { isDesktop, isSafari, } from "@ui5/webcomponents-base/dist/Device.js";
 import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";

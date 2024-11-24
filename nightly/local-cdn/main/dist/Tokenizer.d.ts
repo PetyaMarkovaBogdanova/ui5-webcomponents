@@ -71,6 +71,22 @@ declare class Tokenizer extends UI5Element {
      */
     readonly: boolean;
     /**
+     * Defines whether tokens are displayed on multiple lines.
+     *
+     * **Note:** The `multiLine` property is in an experimental state and is a subject to change.
+     * @default false
+     * @public
+     */
+    multiLine: boolean;
+    /**
+     * Defines whether "Clear All" button is present. Ensure `multiLine` is enabled, otherwise `showClearAll` will have no effect.
+     *
+     * **Note:** The `showClearAll` property is in an experimental state and is a subject to change.
+     * @default false
+     * @public
+     */
+    showClearAll: boolean;
+    /**
      * Defines whether the component is disabled.
      *
      * **Note:** A disabled component is completely noninteractive.
@@ -146,7 +162,7 @@ declare class Tokenizer extends UI5Element {
     static i18nBundle: I18nBundle;
     _resizeHandler: ResizeObserverCallback;
     _itemNav: ItemNavigation;
-    _scrollEnablement: ScrollEnablement;
+    _scrollEnablement: ScrollEnablement | undefined;
     _expandedScrollWidth?: number;
     _tokenDeleting: boolean;
     _preventCollapse: boolean;
@@ -156,12 +172,13 @@ declare class Tokenizer extends UI5Element {
     _deletedDialogItems: Token[];
     _handleResize(): void;
     constructor();
+    handleClearAll(): void;
     onBeforeRendering(): void;
     onEnterDOM(): void;
     onExitDOM(): void;
     _handleNMoreClick(): void;
     _onmousedown(e: MouseEvent): void;
-    onTokenSelect(): void;
+    onTokenSelect(e: CustomEvent): void;
     _getVisibleTokens(): Token[];
     onAfterRendering(): void;
     _delete(e: CustomEvent<TokenDeleteEventDetail>): void;
@@ -194,6 +211,9 @@ declare class Tokenizer extends UI5Element {
     _onfocusout(e: FocusEvent): void;
     _toggleTokenSelection(tokens: Array<Token>): void;
     _handleTokenSelection(e: KeyboardEvent | MouseEvent, deselectAll?: boolean): void;
+    _resetTokensVisibility(): void;
+    get hasTokens(): boolean;
+    get showEffectiveClearAll(): boolean;
     _fillClipboard(shortcutName: ClipboardDataOperation, tokens: Array<IToken>): void;
     /**
      * Scrolls the container of the tokens to its beginning.
@@ -217,6 +237,7 @@ declare class Tokenizer extends UI5Element {
     get _tokens(): Token[];
     get morePopoverOpener(): HTMLElement;
     get _nMoreText(): string | undefined;
+    get _clearAllText(): string;
     get showNMore(): boolean;
     get contentDom(): HTMLElement;
     get moreLink(): HTMLElement | null;

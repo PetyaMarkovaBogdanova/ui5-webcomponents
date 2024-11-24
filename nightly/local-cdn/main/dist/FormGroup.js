@@ -92,7 +92,10 @@ __decorate([
     property()
 ], FormGroup.prototype, "labelSpan", void 0);
 FormGroup = __decorate([
-    customElement("ui5-form-group")
+    customElement({
+        tag: "ui5-form-group",
+        fastNavigation: true,
+    })
 ], FormGroup);
 FormGroup.define();
 export default FormGroup;

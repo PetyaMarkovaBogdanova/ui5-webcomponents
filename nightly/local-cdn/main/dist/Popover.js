@@ -198,10 +198,11 @@ let Popover = Popover_1 = class Popover extends Popup {
             return opener;
         }
         const rootNode = this.getRootNode();
-        if (rootNode instanceof Document) {
-            return rootNode.getElementById(opener);
+        const openerHTMLElement = rootNode instanceof Document ? rootNode.getElementById(opener) : document.getElementById(opener);
+        if (openerHTMLElement && this._isUI5Element(openerHTMLElement)) {
+            return openerHTMLElement.getFocusDomRef();
         }
-        return document.getElementById(opener);
+        return openerHTMLElement;
     }
     shouldCloseDueToOverflow(placement, openerRect) {
         const threshold = 32;

@@ -13,7 +13,7 @@ import event from "@ui5/webcomponents-base/dist/decorators/event.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { isSpace, isEnter, isDown, isLeft, isUp, isRight, } from "@ui5/webcomponents-base/dist/Keys.js";
 import Label from "./Label.js";
 import RadioButtonGroup from "./RadioButtonGroup.js";

@@ -19,7 +19,7 @@ import { isTabNext, isTabPrevious, isSpace, isEnter, isCtrlA, isUpAlt, isDownAlt
 import getNormalizedTarget from "@ui5/webcomponents-base/dist/util/getNormalizedTarget.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getLastTabbableElement, getTabbableElements } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import debounce from "@ui5/webcomponents-base/dist/util/debounce.js";
 import BusyIndicator from "@ui5/webcomponents/dist/BusyIndicator.js";
 import CheckBox from "@ui5/webcomponents/dist/CheckBox.js";

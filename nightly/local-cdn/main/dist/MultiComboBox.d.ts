@@ -21,7 +21,6 @@ import ResponsivePopover from "./ResponsivePopover.js";
 import List from "./List.js";
 import type { ListSelectionChangeEventDetail } from "./List.js";
 import type ComboBoxFilter from "./types/ComboBoxFilter.js";
-import type ListItemBase from "./ListItemBase.js";
 import type { InputEventDetail } from "./Input.js";
 import type PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
 /**
@@ -33,7 +32,6 @@ interface IMultiComboBoxItem extends UI5Element {
     headerText?: string;
     selected: boolean;
     isGroupItem?: boolean;
-    stableDomRef: string;
     _isVisible?: boolean;
     items?: Array<IMultiComboBoxItem>;
 }
@@ -314,7 +312,7 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     _handleEnd(e: KeyboardEvent): void;
     _handleTab(): void;
     _handleSelectAll(): void;
-    _onListHeaderKeydown(e: KeyboardEvent): Promise<void>;
+    _onListHeaderKeydown(e: KeyboardEvent): void | Promise<void>;
     _handleSelectAllCheckboxClick(e: CustomEvent): void;
     _onItemKeydown(e: KeyboardEvent): void;
     _handleArrowCtrl(e: KeyboardEvent): void;
@@ -342,7 +340,6 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     _getItems(): Array<IMultiComboBoxItem>;
     _getSelectedItems(): Array<MultiComboBoxItem>;
     _listSelectionChange(e: CustomEvent<ListSelectionChangeEventDetail>): void;
-    syncItems(listItems: Array<ListItemBase>): void;
     fireSelectionChange(): boolean;
     _getList(): List;
     _click(): void;

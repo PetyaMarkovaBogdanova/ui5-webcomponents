@@ -96,6 +96,13 @@ const StepColumn = {
  *
  * **For example:** To always place the labels on top set: `labelSpan="S12 M12 L12 XL12"` property.
  *
+ * ### Keyboard Handling
+ *
+ * - [Tab] - Moves the focus to the next interactive element within the Form/FormGroup (if available) or to the next element in the tab chain outside the Form
+ * - [Shift] + [Tab] - Moves the focus to the previous interactive element within the Form/FormGroup (if available) or to the previous element in the tab chain outside the Form
+ * - [F6] - Moves the focus to the first interactive element of the next FormGroup (if available) or to the next element in the tab chain outside the Form
+ * - [Shift] + [F6] - Moves the focus to the first interactive element of the previous FormGroup (if available) or to the previous element in the tab chain outside the Form
+ *
  * ### ES6 Module Import
  *
  * - import @ui5/webcomponents/dist/Form.js";
@@ -174,6 +181,7 @@ let Form = class Form extends UI5Element {
     onAfterRendering() {
         // Create additional CSS for number of columns that are not supported by default.
         this.createAdditionalCSSStyleSheet();
+        this.setFastNavGroup();
     }
     setColumnLayout() {
         const layoutArr = this.layout.split(" ");
@@ -211,6 +219,14 @@ let Form = class Form extends UI5Element {
             item.labelSpan = this.labelSpan;
             item.itemSpacing = this.itemSpacing;
         });
+    }
+    setFastNavGroup() {
+        if (this.hasGroupItems) {
+            this.removeAttribute("data-sap-ui-fastnavgroup");
+        }
+        else {
+            this.setAttribute("data-sap-ui-fastnavgroup", "true");
+        }
     }
     setGroupsColSpan() {
         if (!this.hasGroupItems) {
@@ -261,13 +277,17 @@ let Form = class Form extends UI5Element {
     get hasCustomHeader() {
         return !!this.header.length;
     }
-    get ariaLabelledByID() {
+    get effectiveАccessibleNameRef() {
         return this.hasCustomHeader ? undefined : `${this._id}-header-text`;
+    }
+    get effectiveAccessibleRole() {
+        return this.hasGroupItems ? "region" : "form";
     }
     get groupItemsInfo() {
         return this.items.map((groupItem) => {
             return {
                 groupItem,
+                accessibleNameRef: groupItem.headerText ? `${groupItem._id}-group-header-text` : undefined,
                 classes: `ui5-form-column-spanL-${groupItem.colsL} ui5-form-column-spanXL-${groupItem.colsXl} ui5-form-column-spanM-${groupItem.colsM} ui5-form-column-spanS-${groupItem.colsS}`,
                 items: this.getItemsInfo(Array.from(groupItem.children)),
             };

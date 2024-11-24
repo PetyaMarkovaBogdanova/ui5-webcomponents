@@ -42,6 +42,10 @@ type NavigationMenuClickEventDetail = MenuItemClickEventDetail & {
  * The items can consist of text only or an icon with text. The use or non-use of icons must be consistent for all items on one level.
  * You must not combine entries with and without icons on the same level. We strongly recommend that you do not use icons on the second level.
  *
+ * The `ui5-side-navigation` component is intended for use within an `ui5-navigation-layout` component.
+ * While it can function independently, it is recommended to use it with
+ * the `ui5-navigation-layout` for optimal user experience.
+ *
  * ### Keyboard Handling
  *
  * ### Fast Navigation
@@ -73,22 +77,19 @@ declare class SideNavigation extends UI5Element {
      */
     collapsed: boolean;
     /**
-     * Defines the main items of the `ui5-side-navigation`. Use the `ui5-side-navigation-item` component
-     * for the top-level items, and the `ui5-side-navigation-sub-item` component for second-level items, nested
-     * inside the items.
+     * Defines the main items of the component.
      *
      * @public
      */
-    items: Array<SideNavigationItemBase>;
+    items: Array<SideNavigationGroup | SideNavigationItem>;
     /**
-     * Defines the fixed items at the bottom of the `ui5-side-navigation`. Use the `ui5-side-navigation-item` component
-     * for the fixed items, and optionally the `ui5-side-navigation-sub-item` component to provide second-level items inside them.
+     * Defines the fixed items at the bottom of the component.
      *
      * **Note:** In order to achieve the best user experience, it is recommended that you keep the fixed items "flat" (do not pass sub-items)
      *
      * @public
      */
-    fixedItems: Array<SideNavigationItemBase>;
+    fixedItems: Array<SideNavigationGroup | SideNavigationItem>;
     /**
      * Defines the header of the `ui5-side-navigation`.
      *

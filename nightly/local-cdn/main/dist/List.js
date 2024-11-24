@@ -19,7 +19,7 @@ import { isTabNext, isSpace, isEnter, isTabPrevious, isCtrl, } from "@ui5/webcom
 import DragRegistry from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
 import { findClosestPosition, findClosestPositionsByKey } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getAllAccessibleDescriptionRefTexts, getEffectiveAriaDescriptionText, getEffectiveAriaLabelText, registerUI5Element, deregisterUI5Element, getAllAccessibleNameRefTexts, } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import getNormalizedTarget from "@ui5/webcomponents-base/dist/util/getNormalizedTarget.js";
 import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import debounce from "@ui5/webcomponents-base/dist/util/debounce.js";
@@ -190,10 +190,16 @@ let List = List_1 = class List extends UI5Element {
     get listItems() {
         return this.getItems();
     }
+    _updateAssociatedLabelsTexts() {
+        this._associatedDescriptionRefTexts = getAllAccessibleDescriptionRefTexts(this);
+        this._associatedLabelsRefTexts = getAllAccessibleNameRefTexts(this);
+    }
     onEnterDOM() {
+        registerUI5Element(this, this._updateAssociatedLabelsTexts.bind(this));
         DragRegistry.subscribe(this);
     }
     onExitDOM() {
+        deregisterUI5Element(this);
         this.unobserveListEnd();
         this.resizeListenerAttached = false;
         ResizeHandler.deregister(this.getDomRef(), this._handleResize);
@@ -296,7 +302,10 @@ let List = List_1 = class List extends UI5Element {
         return ids.length ? ids.join(" ") : undefined;
     }
     get ariaLabelTxt() {
-        return getEffectiveAriaLabelText(this);
+        return this._associatedLabelsRefTexts || getEffectiveAriaLabelText(this);
+    }
+    get ariaDescriptionText() {
+        return this._associatedDescriptionRefTexts || getEffectiveAriaDescriptionText(this);
     }
     get ariaLabelModeText() {
         if (this.hasData) {
@@ -433,11 +442,11 @@ let List = List_1 = class List extends UI5Element {
         const slottedItems = this.getSlottedNodes("items");
         slottedItems.forEach(item => {
             if (isInstanceOfListItemGroup(item)) {
-                const groupItems = [item.groupHeaderItem, ...item.items].filter(Boolean);
+                const groupItems = [item.groupHeaderItem, ...item.items.filter(listItem => listItem.assignedSlot)].filter(Boolean);
                 items.push(...groupItems);
             }
             else {
-                items.push(item);
+                item.assignedSlot && items.push(item);
             }
         });
         return items;
@@ -878,6 +887,18 @@ __decorate([
 __decorate([
     property()
 ], List.prototype, "accessibleNameRef", void 0);
+__decorate([
+    property()
+], List.prototype, "accessibleDescription", void 0);
+__decorate([
+    property()
+], List.prototype, "accessibleDescriptionRef", void 0);
+__decorate([
+    property({ noAttribute: true })
+], List.prototype, "_associatedDescriptionRefTexts", void 0);
+__decorate([
+    property({ noAttribute: true })
+], List.prototype, "_associatedLabelsRefTexts", void 0);
 __decorate([
     property()
 ], List.prototype, "accessibleRole", void 0);

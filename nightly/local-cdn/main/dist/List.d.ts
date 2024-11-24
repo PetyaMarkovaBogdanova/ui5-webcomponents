@@ -184,12 +184,36 @@ declare class List extends UI5Element {
      */
     accessibleName?: string;
     /**
-     * Defines the IDs of the elements that label the input.
+     * Defines the IDs of the elements that label the component.
      * @default undefined
      * @public
      * @since 1.0.0-rc.15
      */
     accessibleNameRef?: string;
+    /**
+     * Defines the accessible description of the component.
+     * @default undefined
+     * @public
+     * @since 2.5.0
+     */
+    accessibleDescription?: string;
+    /**
+     * Defines the IDs of the elements that describe the component.
+     * @default undefined
+     * @public
+     * @since 2.5.0
+     */
+    accessibleDescriptionRef?: string;
+    /**
+     * Constantly updated value of texts collected from the associated labels
+     * @private
+     */
+    _associatedDescriptionRefTexts?: string;
+    /**
+     * Constantly updated value of texts collected from the associated labels
+     * @private
+     */
+    _associatedLabelsRefTexts?: string;
     /**
      * Defines the accessible role of the component.
      * @public
@@ -246,6 +270,7 @@ declare class List extends UI5Element {
      * @public
      */
     get listItems(): ListItemBase[];
+    _updateAssociatedLabelsTexts(): void;
     onEnterDOM(): void;
     onExitDOM(): void;
     onBeforeRendering(): void;
@@ -266,6 +291,7 @@ declare class List extends UI5Element {
     get isMultiple(): boolean;
     get ariaLabelledBy(): string | undefined;
     get ariaLabelTxt(): string | undefined;
+    get ariaDescriptionText(): string | undefined;
     get ariaLabelModeText(): string;
     get grows(): boolean;
     get growsOnScroll(): boolean;

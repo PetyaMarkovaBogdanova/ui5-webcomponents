@@ -69,6 +69,9 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
         this.type = "Button";
         /**
          * Disables the growing feature.
+         *
+         * @default false
+         * @public
          */
         this.disabled = false;
         /**
@@ -77,14 +80,13 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
          * @private
          */
         this._activeState = false;
+        this._invalidate = 0;
         this.identifier = "TableGrowing";
+        this._renderContent = true;
     }
     onTableActivate(table) {
         this._table = table;
         this._shouldFocusRow = false;
-        if (this._hasScrollToLoad()) {
-            this._observeTableEnd();
-        }
     }
     onTableRendered() {
         // Focus the first row after growing, when the growing button is used
@@ -100,7 +102,11 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
         if (this.disabled) {
             return;
         }
-        if (this._hasScrollToLoad()) {
+        if (this._renderContent !== this.hasGrowingComponent()) {
+            this._invalidate++;
+            return;
+        }
+        if (this._hasScrollToLoad() && !this.hasGrowingComponent() && !this._observer) {
             this._observeTableEnd();
         }
     }
@@ -114,13 +120,17 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
         this._observer?.disconnect();
         this._observer = undefined;
         this._currentLastRow = undefined;
+        this._renderContent = this.hasGrowingComponent();
         this._invalidateTable();
     }
     hasGrowingComponent() {
-        if (this._hasScrollToLoad()) {
-            return !(this._table && this._table._scrollContainer.scrollHeight > this._table._scrollContainer.clientHeight);
+        if (this.disabled) {
+            return false;
         }
-        return this.type === TableGrowingMode.Button && !this.disabled;
+        if (this.type === TableGrowingMode.Scroll) {
+            return !!this._table && this._table._scrollContainer.clientHeight >= this._table._tableElement.scrollHeight;
+        }
+        return this.type === `${TableGrowingMode.Button}`;
     }
     /**
      * An event handler that can be used by the Table to notify the TableGrowing that
@@ -157,11 +167,7 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
      */
     _getIntersectionObserver() {
         if (!this._observer) {
-            this._observer = new IntersectionObserver(this._onIntersection.bind(this), {
-                root: document,
-                rootMargin: "10px",
-                threshold: 1.0,
-            });
+            this._observer = new IntersectionObserver(this._onIntersection.bind(this), { root: document });
         }
         return this._observer;
     }
@@ -226,6 +232,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], TableGrowing.prototype, "_activeState", void 0);
+__decorate([
+    property({ type: Number, noAttribute: true })
+], TableGrowing.prototype, "_invalidate", void 0);
 __decorate([
     i18n("@ui5/webcomponents")
 ], TableGrowing, "i18nBundle", void 0);

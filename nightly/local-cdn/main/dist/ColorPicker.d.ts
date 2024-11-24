@@ -2,6 +2,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import type { ColorRGB } from "@ui5/webcomponents-base/dist/util/ColorConversion.js";
+import ColorPickerDisplayMode from "./types/ColorPickerDisplayMode.js";
 type ColorCoordinates = {
     x: number;
     y: number;
@@ -49,6 +50,13 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
      * @since 2.0.0
      */
     name?: string;
+    /**
+     * Defines the display mode of the component.
+     * @default "Default"
+     * @public
+     * @since 2.5.0
+     */
+    displayMode: `${ColorPickerDisplayMode}`;
     /**
      * Defines the HEX code of the currently selected color
      *
@@ -128,6 +136,7 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
     get alphaInputLabel(): string;
     get inputsDisabled(): true | undefined;
     get hexInputErrorState(): "Error" | undefined;
+    get _isDefaultPickerMode(): boolean;
     get styles(): {
         mainColor: {
             "background-color": string;

@@ -27,7 +27,10 @@ class F6Navigation {
         document.removeEventListener("keydown", this.keydownHandler);
     }
     async groupElementToFocus(nextElement) {
-        const nextElementDomRef = instanceOfUI5Element(nextElement) ? nextElement.getDomRef() : nextElement;
+        let nextElementDomRef = nextElement;
+        if (instanceOfUI5Element(nextElement)) {
+            nextElementDomRef = nextElement.getDomRef() || nextElement.firstElementChild;
+        }
         if (nextElementDomRef) {
             if (isElementClickable(nextElementDomRef)) {
                 return nextElementDomRef;

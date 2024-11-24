@@ -14,7 +14,7 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { isPhone, isAndroid } from "@ui5/webcomponents-base/dist/Device.js";
 import InvisibleMessageMode from "@ui5/webcomponents-base/dist/types/InvisibleMessageMode.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AriaLabelHelper.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import announce from "@ui5/webcomponents-base/dist/util/InvisibleMessage.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
@@ -257,9 +257,6 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
             this.value = this.inner.value;
         }
         this.storeResponsivePopoverWidth();
-        this.items.forEach(item => {
-            item._getRealDomRef = () => this._getPicker().querySelector(`*[data-ui5-stable=${item.stableDomRef}]`);
-        });
     }
     _focusin(e) {
         this.focused = true;
@@ -754,8 +751,8 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
         e.preventDefault();
     }
     _selectItem(e) {
-        const listItem = e.detail.item;
-        this._selectedItemText = listItem.mappedItem.text || "";
+        const item = e.detail.item;
+        this._selectedItemText = item.text || "";
         this._selectionPerformed = true;
         const sameItemSelected = this.value === this._selectedItemText;
         const sameSelectionPerformed = this.value.toLowerCase() === this.filterValue.toLowerCase();
@@ -764,15 +761,11 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
             return this._closeRespPopover();
         }
         this.value = this._selectedItemText;
-        if (!listItem.mappedItem.selected) {
+        if (!item.selected) {
             this.fireDecoratorEvent("selection-change", {
-                item: listItem.mappedItem,
+                item,
             });
         }
-        this._filteredItems.map(item => {
-            item.selected = (item === listItem.mappedItem && !item.isGroupItem);
-            return item;
-        });
         this._fireChangeEvent();
         this._closeRespPopover();
         // reset selection
@@ -1040,7 +1033,12 @@ __decorate([
     property({ type: Boolean, noAttribute: true })
 ], ComboBox.prototype, "open", void 0);
 __decorate([
-    slot({ type: HTMLElement, "default": true, invalidateOnChildChange: true })
+    slot({
+        type: HTMLElement,
+        "default": true,
+        individualSlots: true,
+        invalidateOnChildChange: true,
+    })
 ], ComboBox.prototype, "items", void 0);
 __decorate([
     slot()
