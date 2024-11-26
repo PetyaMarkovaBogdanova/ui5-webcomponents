@@ -313,8 +313,6 @@ declare class ShellBar extends UI5Element {
     onBeforeRendering(): void;
     get additionalContextSorted(): HTMLElement[];
     get additionalContextContainer(): HTMLElement | null;
-    get spacerWidth(): number;
-    get spacer(): HTMLElement;
     onAfterRendering(): void;
     /**
      * Closes the overflow area.

@@ -344,12 +344,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     get additionalContextContainer() {
         return this.shadowRoot.querySelector(".ui5-shellbar-overflow-container-additional-content");
     }
-    get spacerWidth() {
-        return this.spacer?.offsetWidth || 0;
-    }
-    get spacer() {
-        return this.shadowRoot.querySelector(".ui5-shellbar-spacer");
-    }
     onAfterRendering() {
         requestAnimationFrame(() => {
             this._lastOffsetWidth = this.offsetWidth;
