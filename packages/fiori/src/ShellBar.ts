@@ -751,7 +751,7 @@ class ShellBar extends UI5Element {
 	}
 
 	onBeforeRendering() {
-		const input = this.searchField[0]?.shadowRoot!.querySelector(".ui5-input-inner");
+		const input = this.searchField.length && this.searchField[0]?.querySelector(".ui5-input-inner");
 
 		this.withLogo = this.hasLogo;
 
@@ -831,7 +831,7 @@ class ShellBar extends UI5Element {
 		const newItems = this._getAllItems(hasIcons > 1).filter(i => i.show).map((info): IShelBarItemInfo => {
 			const isOverflowIcon = info.classes.indexOf("ui5-shellbar-overflow-button") !== -1;
 			const isImageIcon = info.classes.indexOf("ui5-shellbar-image-button") !== -1;
-			const shouldStayOnScreen = isOverflowIcon || (isImageIcon && this.hasProfile) || !this._isFullVariant;
+			const shouldStayOnScreen = hasIcons === 1 || isOverflowIcon || (isImageIcon && this.hasProfile) || !this._isFullVariant;
 
 			return {
 				...info,
