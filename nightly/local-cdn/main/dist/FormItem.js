@@ -46,10 +46,6 @@ let FormItem = class FormItem extends UI5Element {
         /**
          * @private
          */
-        this.labelSpan = "S12 M4 L4 XL4";
-        /**
-         * @private
-         */
         this.itemSpacing = "Normal";
     }
     get isGroup() {
@@ -69,9 +65,6 @@ __decorate([
         individualSlots: true,
     })
 ], FormItem.prototype, "content", void 0);
-__decorate([
-    property()
-], FormItem.prototype, "labelSpan", void 0);
 __decorate([
     property()
 ], FormItem.prototype, "itemSpacing", void 0);

@@ -55,10 +55,6 @@ declare class FormItem extends UI5Element implements IFormItem {
     /**
      * @private
      */
-    labelSpan: string;
-    /**
-     * @private
-     */
     itemSpacing: `${FormItemSpacing}`;
     get isGroup(): boolean;
 }
