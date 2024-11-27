@@ -26,10 +26,10 @@ let ToolbarSpacer = class ToolbarSpacer extends ToolbarItem {
         return this.width ? { width: this.width } : { flex: "auto" };
     }
     get ignoreSpace() {
-        return this.width === "" || this.width === undefined || this.width === "auto";
+        return this.width === "";
     }
     get hasFlexibleWidth() {
-        return this.width === "" || this.width === undefined || this.width === "auto";
+        return this.width === "";
     }
     static get toolbarTemplate() {
         return ToolbarSpacerTemplate;

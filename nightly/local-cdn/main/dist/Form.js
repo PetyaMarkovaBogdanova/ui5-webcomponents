@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 // Template
@@ -22,10 +21,6 @@ const StepColumn = {
     "L": 3,
     "XL": 6,
 };
-const breakpoints = ["S", "M", "L", "Xl"];
-const MAX_FORM_ITEM_CELLS = 12;
-const DEFAULT_FORM_ITEM_LAYOUT = "4fr 8fr 0fr";
-const DEFAULT_FORM_ITEM_LAYOUT_S = "1fr";
 /**
  * @class
  *
@@ -101,56 +96,6 @@ const DEFAULT_FORM_ITEM_LAYOUT_S = "1fr";
  *
  * **For example:** To always place the labels on top set: `labelSpan="S12 M12 L12 XL12"` property.
  *
- * ### Items Empty Span
- *
- * By default, a form item spans 12 cells, fully divided between its label and field, with no empty space at the end:
- * - **Label:** occupies 4 cells.
- * - **Field:** occupies 8 cells.
- *
- * The `emptySpan` property provides additional layout flexibility by defining empty space at the form item’s end.
- *
- * **For example:** Setting "S0 M0 L3 XL3" (or just "L3 XL3") adjusts the layout as follows:
- * - **Label:** remains 4 cells.
- * - **Field:** is reduced to 5 cells.
- * - **Empty space:** 3 cells are added at the end.
- *
- * Greater values increase the empty space at the end of the form item, reducing the space available for the label and its field.
- * However, setting `emptySpan` to 1 cell is recommended and typically sufficient to achieve a balanced layout.
- *
- * ### Navigation flow
- *
- * The Form component supports two layout options for keyboard navigation:
- *
- * #### Simple form
- *
- * In this "simple form" layout, each `ui5-form-item` acts as a standalone group
- * with one item, so focus moves horizontally across the grid from one `ui5-form-item` to the next.
- * This layout is ideal for simpler forms and supports custom arrangements, e.g.,
- *
- * ```
- * | 1 | 2 |
- * |   3   |
- * | 4 | 5 |
- * ```
- *
- * #### Complex form
- *
- * In this layout, items are grouped into `ui5-form-group` elements, allowing more complex configurations:
- *
- * - **Single-Column Group**: Focus moves vertically down from one item to the next.
- *   ```
- *   | 1 |
- *   | 2 |
- *   | 3 |
- *   ```
- *
- * - **Multi-Column Group**: Focus moves horizontally within each row, advancing to the next row after completing the current one.
- *   ```
- *   | 1 | 4 |
- *   | 2 | 5 |
- *   | 3 | 6 |
- *   ```
- *
  * ### Keyboard Handling
  *
  * - [Tab] - Moves the focus to the next interactive element within the Form/FormGroup (if available) or to the next element in the tab chain outside the Form
@@ -190,7 +135,7 @@ let Form = class Form extends UI5Element {
          */
         this.layout = "S1 M1 L2 XL3";
         /**
-         * Defines the width proportion of the labels and fields of a form item by breakpoint.
+         * Defines the width proportion of the labels and fields of a FormItem by breakpoint.
          *
          * By default, the labels take 4/12 (or 1/3) of the form item in M,L and XL sizes,
          * and 12/12 in S size, e.g in S the label is on top of its associated field.
@@ -198,26 +143,10 @@ let Form = class Form extends UI5Element {
          * The supported values are between 1 and 12. Greater the number, more space the label will use.
          *
          * **Note:** If "12" is set, the label will be displayed on top of its assosiated field.
-         *
          * @default "S12 M4 L4 XL4"
          * @public
          */
         this.labelSpan = "S12 M4 L4 XL4";
-        /**
-         * Defines the number of cells that are empty at the end of each form item, configurable by breakpoint.
-         *
-         * By default, a form item spans 12 cells, fully divided between its label (4 cells) and field (8 cells), with no empty space at the end.
-         * The `emptySpan` provides additional layout flexibility by defining empty space at the form item’s end.
-         *
-         * **Note:**
-         * - The maximum allowable empty space is 10 cells. At least 1 cell each must remain for the label and the field.
-         * - When `emptySpan` is specified (greater than 0), ensure that the combined value of `emptySpan` and `labelSpan` does not exceed 11. This guarantees a minimum of 1 cell for the field.
-         *
-         * @default "S0 M0 L0 XL0"
-         * @since 2.5.0
-         * @public
-         */
-        this.emptySpan = "S0 M0 L0 XL0";
         /**
          * Defines the vertical spacing between form items.
          *
@@ -234,22 +163,18 @@ let Form = class Form extends UI5Element {
          */
         this.columnsS = 1;
         this.labelSpanS = 12;
-        this.emptySpanS = 0;
         this.columnsM = 1;
         this.labelSpanM = 4;
-        this.emptySpanM = 0;
         this.columnsL = 2;
         this.labelSpanL = 4;
-        this.emptySpanL = 0;
         this.columnsXl = 3;
         this.labelSpanXl = 4;
-        this.emptySpanXl = 0;
     }
     onBeforeRendering() {
         // Parse the layout and set it to the FormGroups/FormItems.
         this.setColumnLayout();
-        // Parse the labelSpan and emptySpan and set it to the FormGroups/FormItems.
-        this.setFormItemLayout();
+        // Parse the labelSpan and set it to the FormGroups/FormItems.
+        this.setLabelSpan();
         // Define how many columns a group should take.
         this.setGroupsColSpan();
     }
@@ -275,7 +200,7 @@ let Form = class Form extends UI5Element {
             }
         });
     }
-    parseFormItemSpan() {
+    setLabelSpan() {
         this.labelSpan.split(" ").forEach((breakpoint) => {
             if (breakpoint.startsWith("S")) {
                 this.labelSpanS = parseInt(breakpoint.slice(1));
@@ -290,58 +215,10 @@ let Form = class Form extends UI5Element {
                 this.labelSpanXl = parseInt(breakpoint.slice(2));
             }
         });
-        this.emptySpan.split(" ").forEach((breakpoint) => {
-            if (breakpoint.startsWith("S")) {
-                this.emptySpanS = parseInt(breakpoint.slice(1));
-            }
-            else if (breakpoint.startsWith("M")) {
-                this.emptySpanM = parseInt(breakpoint.slice(1));
-            }
-            else if (breakpoint.startsWith("L")) {
-                this.emptySpanL = parseInt(breakpoint.slice(1));
-            }
-            else if (breakpoint.startsWith("XL")) {
-                this.emptySpanXl = parseInt(breakpoint.slice(2));
-            }
+        this.items.forEach((item) => {
+            item.labelSpan = this.labelSpan;
+            item.itemSpacing = this.itemSpacing;
         });
-    }
-    setFormItemLayout() {
-        this.parseFormItemSpan();
-        [
-            {
-                breakpoint: "S",
-                labelSpan: this.labelSpanS,
-                emptySpan: this.emptySpanS,
-            },
-            {
-                breakpoint: "M",
-                labelSpan: this.labelSpanM,
-                emptySpan: this.emptySpanM,
-            },
-            {
-                breakpoint: "L",
-                labelSpan: this.labelSpanL,
-                emptySpan: this.emptySpanL,
-            },
-            {
-                breakpoint: "XL",
-                labelSpan: this.labelSpanXl,
-                emptySpan: this.emptySpanXl,
-            },
-        ].forEach(layout => {
-            if (this.isValidFormItemLayout(layout.labelSpan, layout.emptySpan)) {
-                const formItemLayout = layout.labelSpan === MAX_FORM_ITEM_CELLS ? `1fr` : `${layout.labelSpan}fr ${MAX_FORM_ITEM_CELLS - (layout.labelSpan + layout.emptySpan)}fr ${layout.emptySpan}fr`;
-                this.style.setProperty(getScopedVarName(`--ui5-form-item-layout-${layout.breakpoint}`), formItemLayout);
-            }
-            else {
-                // eslint-disable-next-line
-                console.warn(`Form :: invalid usage of emptySpan and/or labelSpan in ${layout.breakpoint} size. The labelSpan must be <=12 and when emptySpace is used - their combined values must not exceed 11.`);
-                this.style.setProperty(getScopedVarName(`--ui5-form-item-layout-${layout.breakpoint}`), layout.breakpoint === "S" ? DEFAULT_FORM_ITEM_LAYOUT_S : DEFAULT_FORM_ITEM_LAYOUT);
-            }
-        });
-    }
-    isValidFormItemLayout(labelSpan, emptySpan) {
-        return emptySpan === 0 ? labelSpan <= MAX_FORM_ITEM_CELLS : labelSpan + emptySpan <= MAX_FORM_ITEM_CELLS - 1;
     }
     setFastNavGroup() {
         if (this.hasGroupItems) {
@@ -408,24 +285,6 @@ let Form = class Form extends UI5Element {
     }
     get groupItemsInfo() {
         return this.items.map((groupItem) => {
-            const items = this.getItemsInfo(Array.from(groupItem.children));
-            breakpoints.forEach(breakpoint => {
-                const cols = ((groupItem[`cols${breakpoint}`]) || 1);
-                const rows = Math.ceil(items.length / cols);
-                const total = cols * rows;
-                const lastRowColumns = (cols - (total - items.length) - 1); // all other indecies start from 0
-                let currentItem = 0;
-                for (let i = 0; i < total; i++) {
-                    const column = Math.floor(i / rows);
-                    const row = i % rows;
-                    if (row === rows - 1 && column > lastRowColumns) {
-                        // eslint-disable-next-line no-continue
-                        continue;
-                    }
-                    items[currentItem].item.style.setProperty(getScopedVarName(`--ui5-form-item-order-${breakpoint}`), `${column + row * cols}`);
-                    currentItem++;
-                }
-            });
             return {
                 groupItem,
                 accessibleNameRef: groupItem.headerText ? `${groupItem._id}-group-header-text` : undefined,
@@ -520,9 +379,6 @@ __decorate([
 ], Form.prototype, "labelSpan", void 0);
 __decorate([
     property()
-], Form.prototype, "emptySpan", void 0);
-__decorate([
-    property()
 ], Form.prototype, "headerText", void 0);
 __decorate([
     property()
@@ -546,16 +402,10 @@ __decorate([
 ], Form.prototype, "labelSpanS", void 0);
 __decorate([
     property({ type: Number })
-], Form.prototype, "emptySpanS", void 0);
-__decorate([
-    property({ type: Number })
 ], Form.prototype, "columnsM", void 0);
 __decorate([
     property({ type: Number })
 ], Form.prototype, "labelSpanM", void 0);
-__decorate([
-    property({ type: Number })
-], Form.prototype, "emptySpanM", void 0);
 __decorate([
     property({ type: Number })
 ], Form.prototype, "columnsL", void 0);
@@ -564,16 +414,10 @@ __decorate([
 ], Form.prototype, "labelSpanL", void 0);
 __decorate([
     property({ type: Number })
-], Form.prototype, "emptySpanL", void 0);
-__decorate([
-    property({ type: Number })
 ], Form.prototype, "columnsXl", void 0);
 __decorate([
     property({ type: Number })
 ], Form.prototype, "labelSpanXl", void 0);
-__decorate([
-    property({ type: Number })
-], Form.prototype, "emptySpanXl", void 0);
 Form = __decorate([
     customElement({
         tag: "ui5-form",
