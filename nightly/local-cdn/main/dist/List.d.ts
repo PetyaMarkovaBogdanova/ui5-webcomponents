@@ -326,8 +326,6 @@ declare class List extends UI5Element {
     checkListInViewport(): void;
     loadMore(): void;
     _handleTabNext(e: KeyboardEvent): void;
-    _handleHome(): void;
-    _handleEnd(): void;
     _onfocusin(e: FocusEvent): void;
     _ondragenter(e: DragEvent): void;
     _ondragleave(e: DragEvent): void;
@@ -345,7 +343,6 @@ declare class List extends UI5Element {
     focusBeforeElement(): void;
     focusAfterElement(): void;
     focusGrowingButton(): void;
-    _shouldFocusGrowingButton(): void;
     getGrowingButton(): HTMLElement;
     /**
      * Focuses the first list item and sets its tabindex to "0" via the ItemNavigation
