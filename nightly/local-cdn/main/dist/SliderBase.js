@@ -231,11 +231,11 @@ class SliderBase extends UI5Element {
     }
     _onInputChange() {
         if (this._valueOnInteractionStart !== this.value) {
-            this.fireDecoratorEvent("change");
+            this.fireEvent("change");
         }
     }
     _onInputInput() {
-        this.fireDecoratorEvent("input");
+        this.fireEvent("input");
     }
     _updateValueFromInput(e) {
         const input = e.target;

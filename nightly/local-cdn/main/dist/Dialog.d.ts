@@ -29,7 +29,8 @@ import "@ui5/webcomponents-icons/dist/information.js";
 
  *
  * ### Responsive Behavior
- * The `stretch` property can be used to stretch the `ui5-dialog` to full screen. For better usability, it's recommended to stretch the dialog to full screen on phone devices.
+ * The `stretch` property can be used to stretch the
+ * `ui5-dialog` on full screen.
  *
  * **Note:** When a `ui5-bar` is used in the header or in the footer, you should remove the default dialog's paddings.
  *
@@ -72,10 +73,10 @@ declare class Dialog extends Popup {
      */
     headerText?: string;
     /**
-     * Determines if the dialog will be stretched to full screen on mobile. On desktop,
-     * the dialog will be stretched to approximately 90% of the viewport.
+     * Determines whether the component should be stretched to fullscreen.
      *
-     * **Note:** For better usability of the component it is recommended to set this property to "true" when the dialog is opened on phone.
+     * **Note:** The component will be stretched to approximately
+     * 90% of the viewport.
      * @default false
      * @public
      */
