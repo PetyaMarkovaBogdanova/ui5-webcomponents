@@ -15,7 +15,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
-import { isTabNext, isSpace, isEnter, isTabPrevious, isCtrl, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isTabNext, isSpace, isEnter, isTabPrevious, isCtrl, isEnd, isHome, } from "@ui5/webcomponents-base/dist/Keys.js";
 import DragRegistry from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
 import { findClosestPosition, findClosestPositionsByKey } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
@@ -469,6 +469,15 @@ let List = List_1 = class List extends UI5Element {
         });
     }
     _onkeydown(e) {
+        if (isEnd(e)) {
+            this._handleEnd();
+            e.preventDefault();
+            return;
+        }
+        if (isHome(e)) {
+            this._handleHome();
+            return;
+        }
         if (isCtrl(e)) {
             this._moveItem(e.target, e);
             return;
@@ -553,7 +562,10 @@ let List = List_1 = class List extends UI5Element {
         this._inViewport = isElementInView(this.getDomRef());
     }
     loadMore() {
-        this.fireDecoratorEvent("load-more");
+        // don't fire load-more on initial mount
+        if (this.children.length > 0) {
+            this.fireDecoratorEvent("load-more");
+        }
     }
     /*
     * KEYBOARD SUPPORT
@@ -577,6 +589,18 @@ let List = List_1 = class List extends UI5Element {
             e.stopImmediatePropagation();
             e.preventDefault();
         }
+    }
+    _handleHome() {
+        if (!this.growsWithButton) {
+            return;
+        }
+        this.focusFirstItem();
+    }
+    _handleEnd() {
+        if (!this.growsWithButton) {
+            return;
+        }
+        this._shouldFocusGrowingButton();
     }
     _onfocusin(e) {
         const target = getNormalizedTarget(e.target);
@@ -758,6 +782,14 @@ let List = List_1 = class List extends UI5Element {
         const growingBtn = this.getGrowingButton();
         if (growingBtn) {
             growingBtn.focus();
+        }
+    }
+    _shouldFocusGrowingButton() {
+        const items = this.getItems();
+        const lastIndex = items.length - 1;
+        const currentIndex = items.indexOf(document.activeElement);
+        if (currentIndex !== -1 && currentIndex === lastIndex) {
+            this.focusGrowingButton();
         }
     }
     getGrowingButton() {

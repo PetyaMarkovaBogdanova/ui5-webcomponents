@@ -58,7 +58,6 @@ declare class FormGroup extends UI5Element implements IFormItem {
     colsL: number;
     colsXl: number;
     itemSpacing: `${FormItemSpacing}`;
-    labelSpan: string;
     onBeforeRendering(): void;
     processFormItems(): void;
     get isGroup(): boolean;
