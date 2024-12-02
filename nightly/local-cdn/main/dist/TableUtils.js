@@ -61,5 +61,14 @@ const scrollElementIntoView = (scrollContainer, element, stickyElements, isRtl) 
 const isFeature = (element, identifier) => {
     return element.identifier === identifier;
 };
-export { isInstanceOfTable, isSelectionCheckbox, isHeaderSelector, findRowInPath, findVerticalScrollContainer, scrollElementIntoView, isFeature, };
+const throttle = (callback) => {
+    let timer;
+    return () => {
+        cancelAnimationFrame(timer);
+        timer = requestAnimationFrame(() => {
+            callback();
+        });
+    };
+};
+export { isInstanceOfTable, isSelectionCheckbox, isHeaderSelector, findRowInPath, findVerticalScrollContainer, scrollElementIntoView, isFeature, throttle, };
 //# sourceMappingURL=TableUtils.js.map

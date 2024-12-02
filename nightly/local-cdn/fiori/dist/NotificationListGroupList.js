@@ -28,6 +28,9 @@ let NotificationListGroupList = class NotificationListGroupList extends List {
     }
     onItemFocused() {
     }
+    _onfocusin(e) {
+        e.stopImmediatePropagation();
+    }
     focusItem(item) {
         item.focus();
     }

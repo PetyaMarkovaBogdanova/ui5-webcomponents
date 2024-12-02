@@ -197,6 +197,9 @@ let RatingIndicator = RatingIndicator_1 = class RatingIndicator extends UI5Eleme
     _onfocusout() {
         this._focused = false;
     }
+    get halfStarIconName() {
+        return this.disabled || this.readonly ? "favorite" : "unfavorite";
+    }
     get effectiveTabIndex() {
         const tabindex = this.getAttribute("tabindex");
         return this.disabled ? "-1" : tabindex || "0";

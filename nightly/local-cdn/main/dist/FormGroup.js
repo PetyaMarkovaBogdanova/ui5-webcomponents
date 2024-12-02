@@ -46,14 +46,12 @@ let FormGroup = class FormGroup extends UI5Element {
         this.colsL = 1;
         this.colsXl = 1;
         this.itemSpacing = "Normal";
-        this.labelSpan = "S12 M4 L4 XL4";
     }
     onBeforeRendering() {
         this.processFormItems();
     }
     processFormItems() {
         this.items.forEach((item) => {
-            item.labelSpan = this.labelSpan;
             item.itemSpacing = this.itemSpacing;
         });
     }
@@ -88,9 +86,6 @@ __decorate([
 __decorate([
     property()
 ], FormGroup.prototype, "itemSpacing", void 0);
-__decorate([
-    property()
-], FormGroup.prototype, "labelSpan", void 0);
 FormGroup = __decorate([
     customElement({
         tag: "ui5-form-group",

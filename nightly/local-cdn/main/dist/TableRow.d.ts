@@ -34,6 +34,13 @@ declare class TableRow extends TableRowBase {
      */
     rowKey: string;
     /**
+     * Defines the position of the row respect to the total number of rows within the table when the <code>ui5-table-virtualizer</code> feature is used.
+     *
+     * @default -1
+     * @public
+     */
+    position: number;
+    /**
      * Defines the interactive state of the row.
      *
      * @default false

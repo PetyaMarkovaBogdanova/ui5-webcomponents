@@ -7,6 +7,7 @@ import type TableHeaderCell from "./TableHeaderCell.js";
 import type TableSelection from "./TableSelection.js";
 import TableOverflowMode from "./types/TableOverflowMode.js";
 import TableNavigation from "./TableNavigation.js";
+import type TableVirtualizer from "./TableVirtualizer.js";
 /**
  * Interface for components that can be slotted inside the <code>features</code> slot of the <code>ui5-table</code>.
  *
@@ -23,7 +24,7 @@ interface ITableFeature extends UI5Element {
     /**
      * Called when the table finished rendering.
      */
-    onTableRendered?(): void;
+    onTableAfterRendering?(): void;
 }
 /**
  * Interface for components that can be slotted inside the <code>features</code> slot of the <code>ui5-table</code>
@@ -229,6 +230,7 @@ declare class Table extends UI5Element {
     onBeforeRendering(): void;
     onAfterRendering(): void;
     _getSelection(): TableSelection | undefined;
+    _getVirtualizer(): TableVirtualizer | undefined;
     _onEvent(e: Event): void;
     _onResize(): void;
     _onfocusin(e: FocusEvent): void;
@@ -248,6 +250,11 @@ declare class Table extends UI5Element {
     get styles(): {
         table: {
             "grid-template-columns": string | undefined;
+            "--row-height": string;
+        };
+        spacer: {
+            transform: string | undefined;
+            "will-change": string | undefined;
         };
     };
     get _gridTemplateColumns(): string | undefined;
@@ -260,6 +267,7 @@ declare class Table extends UI5Element {
     get _loadingElement(): HTMLElement;
     get _effectiveNoDataText(): string;
     get _ariaLabel(): string | undefined;
+    get _ariaRowCount(): number | undefined;
     get _ariaMultiSelectable(): boolean | undefined;
     get _shouldRenderGrowing(): boolean | 0;
     get _growing(): ITableGrowing;

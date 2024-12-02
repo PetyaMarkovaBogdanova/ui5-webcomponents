@@ -159,6 +159,9 @@ let Link = Link_1 = class Link extends UI5Element {
     get effectiveAccRole() {
         return this.accessibleRole.toLowerCase();
     }
+    get ariaDescriptionText() {
+        return this.accessibleDescription === "" ? undefined : this.accessibleDescription;
+    }
     get _hasPopup() {
         return this.accessibilityAttributes.hasPopup;
     }
@@ -225,6 +228,9 @@ __decorate([
 __decorate([
     property({ type: Object })
 ], Link.prototype, "accessibilityAttributes", void 0);
+__decorate([
+    property()
+], Link.prototype, "accessibleDescription", void 0);
 __decorate([
     property()
 ], Link.prototype, "icon", void 0);

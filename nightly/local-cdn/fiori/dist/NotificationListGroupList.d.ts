@@ -15,6 +15,7 @@ declare class NotificationListGroupList extends List {
     onForwardAfter(): void;
     onItemTabIndexChange(): void;
     onItemFocused(): void;
+    _onfocusin(e: FocusEvent): void;
     focusItem(item: ListItemBase): void;
 }
 export default NotificationListGroupList;

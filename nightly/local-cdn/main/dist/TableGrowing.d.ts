@@ -92,7 +92,7 @@ declare class TableGrowing extends UI5Element implements ITableGrowing {
     _renderContent: boolean;
     static i18nBundle: I18nBundle;
     onTableActivate(table: Table): void;
-    onTableRendered(): void;
+    onTableAfterRendering(): void;
     onExitDOM(): void;
     onBeforeRendering(): void;
     hasGrowingComponent(): boolean;

@@ -321,6 +321,9 @@ let Button = Button_1 = class Button extends UI5Element {
     get ariaDescribedbyText() {
         return this.hasButtonType ? "ui5-button-hiddenText-type" : undefined;
     }
+    get ariaDescriptionText() {
+        return this.accessibleDescription === "" ? undefined : this.accessibleDescription;
+    }
     get _isSubmit() {
         return this.type === ButtonType.Submit || this.submits;
     }
@@ -355,6 +358,9 @@ __decorate([
 __decorate([
     property({ type: Object })
 ], Button.prototype, "accessibilityAttributes", void 0);
+__decorate([
+    property()
+], Button.prototype, "accessibleDescription", void 0);
 __decorate([
     property()
 ], Button.prototype, "type", void 0);

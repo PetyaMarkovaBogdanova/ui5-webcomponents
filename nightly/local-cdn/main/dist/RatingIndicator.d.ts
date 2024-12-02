@@ -123,6 +123,7 @@ declare class RatingIndicator extends UI5Element {
     _onkeydown(e: KeyboardEvent): void;
     _onfocusin(): void;
     _onfocusout(): void;
+    get halfStarIconName(): "favorite" | "unfavorite";
     get effectiveTabIndex(): string;
     get ratingTooltip(): string | undefined;
     get defaultTooltip(): string;

@@ -130,7 +130,10 @@ ToolbarButton = __decorate([
      * @public
      */
     ,
-    event("click")
+    event("click", {
+        bubbles: true,
+        cancelable: true,
+    })
 ], ToolbarButton);
 registerToolbarItem(ToolbarButton);
 ToolbarButton.define();
