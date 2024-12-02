@@ -1149,6 +1149,7 @@ class ShellBar extends UI5Element {
 				show: !!this.assistant.length && this._isFullVariant,
 				domOrder: this.assistant.length ? (++domOrder) : -1,
 				press: () => { },
+				tooltip: this.assistant.length ? (this.assistant[0].getAttribute("text") || this.assistant[0].getAttribute("title") || undefined) : undefined,
 			},
 			{
 				icon: "bell",
@@ -1160,6 +1161,7 @@ class ShellBar extends UI5Element {
 				show: this.showNotifications && this._isFullVariant,
 				domOrder: this.showNotifications ? (++domOrder) : -1,
 				press: this._handleNotificationsPress.bind(this),
+				tooltip: this._notificationsText,
 			},
 			// sort feedback and help to always be last
 			...this.items.sort((a, b) => {
@@ -1183,7 +1185,7 @@ class ShellBar extends UI5Element {
 					custom: true,
 					title: item.title,
 					stableDomRef: item.stableDomRef,
-					tooltip: this._notificationsText,
+					tooltip: item.title || item.text,
 				};
 			}),
 			{
