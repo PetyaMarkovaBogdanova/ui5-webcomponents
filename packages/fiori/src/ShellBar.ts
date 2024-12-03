@@ -601,12 +601,11 @@ class ShellBar extends UI5Element {
 		};
 
 		this._handleResize = throttle(() => {
-			const shouldSearchBeOpen = this._isXXLBreakpoint || this.breakpointSize === "XL" || this.breakpointSize === "L";
 			this.menuPopover = this._getMenuPopover();
 			this.overflowPopover = this._getOverflowPopover();
 			this.overflowPopover.open = false;
 			if (this._lastOffsetWidth !== this.offsetWidth) {
-				this.showSearchField = shouldSearchBeOpen;
+				this.showSearchField = false;
 				this._overflowActions();
 			}
 		}, RESIZE_THROTTLE_RATE);
