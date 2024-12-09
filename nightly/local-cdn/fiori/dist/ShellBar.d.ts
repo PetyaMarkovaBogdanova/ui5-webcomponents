@@ -14,7 +14,6 @@ import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import type { ClassMap, AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
 import type ListItemBase from "@ui5/webcomponents/dist/ListItemBase.js";
 import type PopoverHorizontalAlign from "@ui5/webcomponents/dist/types/PopoverHorizontalAlign.js";
-import type ShellBarVariant from "./types/ShellBarVariant.js";
 import type ShellBarItem from "./ShellBarItem.js";
 type LowercaseString<T> = T extends string ? Lowercase<T> : never;
 type ShellBarLogoAccessibilityAttributes = {
@@ -147,13 +146,12 @@ declare class ShellBar extends UI5Element {
      */
     showSearchField: boolean;
     /**
-     * Defines the mode Shellbar is presented in.
+     * Defines, if the Search Field effective collapsed/expanded state.
      *
      * @default false
-     * @public
-     * @since 2.5.0
+     * @private
      */
-    variant: `${ShellBarVariant}`;
+    _showSearchField: boolean;
     /**
      * Defines additional accessibility attributes on different areas of the component.
      *
@@ -191,7 +189,7 @@ declare class ShellBar extends UI5Element {
     /**
      * @private
      */
-    breakpointSize?: string;
+    breakpointSize: string;
     /**
      * @private
      */
@@ -200,10 +198,9 @@ declare class ShellBar extends UI5Element {
     _menuPopoverItems: Array<HTMLElement>;
     _menuPopoverExpanded: boolean;
     _overflowPopoverExpanded: boolean;
-    _isXXLBreakpoint: boolean;
     _isSBreakpoint: boolean;
-    hasVisibleAdditionalContextStart: boolean;
-    hasVisibleAdditionalContextEnd: boolean;
+    hasVisibleStartContent: boolean;
+    hasVisibleEndContent: boolean;
     _cachedHiddenContent: Array<HTMLElement>;
     /**
      * Defines the assistant slot.
@@ -269,13 +266,13 @@ declare class ShellBar extends UI5Element {
      * @public
      * @since 2.5.0
      */
-    additionalContextStart: Array<HTMLElement>;
+    startContent: Array<HTMLElement>;
     /**
      * Define the items displayed in the end of the additional content area.
      * @public
      * @since 2.5.0
      */
-    additionalContextEnd: Array<HTMLElement>;
+    endContent: Array<HTMLElement>;
     static i18nBundle: I18nBundle;
     overflowPopover?: Popover | null;
     menuPopover?: Popover | null;
@@ -285,14 +282,15 @@ declare class ShellBar extends UI5Element {
     _hiddenIcons: Array<IShelBarItemInfo>;
     _handleResize: ResizeObserverCallback;
     _overflowNotifications: string | null;
-    _showSearchField: boolean;
     _skipLayout: boolean;
     _lastOffsetWidth: number;
     _lessSearchSpace: boolean;
+    _searchOpenByInteraction: boolean;
     _headerPress: () => void;
     static get FIORI_3_BREAKPOINTS(): number[];
     static get FIORI_3_BREAKPOINTS_MAP(): Record<string, string>;
     constructor();
+    _searchBarInitialState(): void;
     _onKeyDown(e: KeyboardEvent): void;
     _focusNextItem(items: HTMLElement[], currentIndex: number): void;
     _focusPreviousItem(items: HTMLElement[], currentIndex: number): void;
@@ -310,6 +308,9 @@ declare class ShellBar extends UI5Element {
     _overflowPopoverAfterClose(): void;
     _logoKeyup(e: KeyboardEvent): void;
     _logoKeydown(e: KeyboardEvent): void;
+    _calculateCSSREMValue(styleSet: CSSStyleDeclaration, propertyName: string): number;
+    _parsePxValue(styleSet: CSSStyleDeclaration, propertyName: string): number;
+    domCalculatedValues(cssVar: string): number;
     onBeforeRendering(): void;
     get additionalContextSorted(): HTMLElement[];
     get additionalContextContainer(): HTMLElement | null;
@@ -435,11 +436,10 @@ declare class ShellBar extends UI5Element {
     get _productsText(): string;
     get _searchText(): string;
     get _overflowText(): string;
-    get _isFullVariant(): boolean;
     get hasAdditionalContext(): boolean;
     get showAdditionalContext(): boolean;
-    get _hasVisibleAdditionalContextStart(): boolean;
-    get _hasVisibleAdditionalContextEnd(): boolean;
+    get _hasVisibleStartContent(): boolean;
+    get _hasVisibleEndContent(): boolean;
     get itemsToOverflow(): HTMLElement[];
     get separatorsWidth(): number;
     get searchFieldActualWidth(): number;
