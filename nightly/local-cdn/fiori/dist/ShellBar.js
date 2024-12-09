@@ -172,7 +172,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._skipLayout = false;
         this._lastOffsetWidth = 0;
         this._lessSearchSpace = false;
-        this._searchOpenByInteraction = false;
         this._menuPopoverItems = [];
         this._hiddenIcons = [];
         this._itemsInfo = [];
@@ -203,11 +202,12 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     _searchBarInitialState() {
         const spacerWidth = this.shadowRoot.querySelector(".ui5-shellbar-spacer") ? this.shadowRoot.querySelector(".ui5-shellbar-spacer").getBoundingClientRect().width : 0;
+        const searchFieldWidth = this.domCalculatedValues("--_ui5_shellbar_search_field_width");
         if (this.showSearchField) {
             if ((spacerWidth <= 16 || this.additionalCoontextHidden.length !== 0) && this._showSearchField === true) {
                 this._showSearchField = false;
             }
-            if (spacerWidth > 450 && this.additionalCoontextHidden.length === 0 && this._showSearchField === false && this._showFullWidthSearch === false) {
+            if (spacerWidth > searchFieldWidth && this.additionalCoontextHidden.length === 0 && this._showSearchField === false && this._showFullWidthSearch === false) {
                 this._showSearchField = true;
             }
         }
@@ -442,9 +442,10 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     _handleActionsOverflow() {
         const itemsToOverflow = this.itemsToOverflow;
         const container = this.shadowRoot.querySelector(".ui5-shellbar-overflow-container-right");
+        const searchFieldWidth = this.searchField[0].offsetWidth;
         const nonDisappearingItems = Array.from(container.querySelectorAll(".ui5-shellbar-no-overflow-button"));
         const nonDisappearingItemsWidth = nonDisappearingItems.reduce((acc, el) => acc + el.offsetWidth + this.domCalculatedValues("--_ui5-shellbar-overflow-button-margin"), 0);
-        const totalWidth = container.offsetWidth - nonDisappearingItemsWidth - this.separatorsWidth;
+        const totalWidth = container.offsetWidth - nonDisappearingItemsWidth - this.separatorsWidth - searchFieldWidth;
         let usedWidth = 0;
         let hiddenItems = 0;
         let restoreVisibility = false;
@@ -542,7 +543,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 input.focus();
             }
         }, 100);
-        this._searchOpenByInteraction = true;
     }
     async _handleActionListClick() {
         if (!this._defaultItemPressPrevented) {

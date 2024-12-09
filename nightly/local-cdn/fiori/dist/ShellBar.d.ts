@@ -285,7 +285,6 @@ declare class ShellBar extends UI5Element {
     _skipLayout: boolean;
     _lastOffsetWidth: number;
     _lessSearchSpace: boolean;
-    _searchOpenByInteraction: boolean;
     _headerPress: () => void;
     static get FIORI_3_BREAKPOINTS(): number[];
     static get FIORI_3_BREAKPOINTS_MAP(): Record<string, string>;
