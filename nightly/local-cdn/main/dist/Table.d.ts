@@ -133,6 +133,9 @@ type TableRowClickEventDetail = {
  * Keep in mind that you can use either the compat/Table, or the main/Table - you can't use them both as they both define the `ui5-table` tag name.
  */
 declare class Table extends UI5Element {
+    eventDetails: {
+        "row-click": TableRowClickEventDetail;
+    };
     /**
      * Defines the rows of the component.
      *

@@ -8,7 +8,7 @@ var TreeItemBase_1;
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import { isLeft, isRight } from "@ui5/webcomponents-base/dist/Keys.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
@@ -249,9 +249,6 @@ TreeItemBase = TreeItemBase_1 = __decorate([
      */
     ,
     event("toggle", {
-        detail: {
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -261,9 +258,6 @@ TreeItemBase = TreeItemBase_1 = __decorate([
      */
     ,
     event("step-in", {
-        detail: {
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -273,9 +267,6 @@ TreeItemBase = TreeItemBase_1 = __decorate([
      */
     ,
     event("step-out", {
-        detail: {
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
 ], TreeItemBase);

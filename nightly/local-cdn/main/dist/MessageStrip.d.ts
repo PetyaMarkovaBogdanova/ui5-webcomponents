@@ -53,6 +53,9 @@ type DesignTypeAnnouncemnt = Record<MessageStripDesign, string>;
  * **Note:** Although this slot accepts HTML Elements, it is strongly recommended that you only use text in order to preserve the intended design.
  */
 declare class MessageStrip extends UI5Element {
+    eventDetails: {
+        close: void;
+    };
     /**
      * Defines the component type.
      * @default "Information"

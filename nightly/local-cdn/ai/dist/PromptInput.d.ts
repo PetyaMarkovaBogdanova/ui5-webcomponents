@@ -21,6 +21,11 @@ import type { IInputSuggestionItem, InputEventDetail } from "@ui5/webcomponents/
  * @experimental The **@ui5/webcomponents-ai** package is under development and considered experimental - components' APIs are subject to change.
  */
 declare class PromptInput extends UI5Element {
+    eventDetails: {
+        submit: void;
+        input: void;
+        change: void;
+    };
     /**
      * Defines the value of the component.
      *

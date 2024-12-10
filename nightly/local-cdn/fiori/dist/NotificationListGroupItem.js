@@ -9,7 +9,7 @@ import { isSpace, isPlus, isMinus, isLeft, isRight, } from "@ui5/webcomponents-b
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
 import BusyIndicator from "@ui5/webcomponents/dist/BusyIndicator.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";

@@ -11,6 +11,10 @@ type DirectionStart = "left" | "right";
  * @public
  */
 declare abstract class SliderBase extends UI5Element {
+    eventDetails: {
+        "change": void;
+        "input": void;
+    };
     /**
      * Defines the minimum value of the slider.
      * @default 0

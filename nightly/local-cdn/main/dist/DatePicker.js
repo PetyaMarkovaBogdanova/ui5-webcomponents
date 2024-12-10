@@ -8,7 +8,7 @@ var DatePicker_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import CalendarDate from "@ui5/webcomponents-localization/dist/dates/CalendarDate.js";
 import modifyDateBy from "@ui5/webcomponents-localization/dist/dates/modifyDateBy.js";
@@ -328,7 +328,7 @@ let DatePicker = DatePicker_1 = class DatePicker extends DateComponentBase {
             this.value = value;
             this._updateValueState(); // Change the value state to Error/None, but only if needed
         }
-        events.forEach((e) => {
+        events.forEach(e => {
             if (!this.fireDecoratorEvent(e, { value, valid })) {
                 executeEvent = false;
             }
@@ -650,20 +650,6 @@ DatePicker = DatePicker_1 = __decorate([
      */
     ,
     event("change", {
-        detail: {
-            /**
-             * @public
-             */
-            value: {
-                type: String,
-            },
-            /**
-             * @public
-             */
-            valid: {
-                type: Boolean,
-            },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -675,20 +661,6 @@ DatePicker = DatePicker_1 = __decorate([
      */
     ,
     event("input", {
-        detail: {
-            /**
-             * @public
-             */
-            value: {
-                type: String,
-            },
-            /**
-             * @public
-             */
-            valid: {
-                type: Boolean,
-            },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -702,20 +674,6 @@ DatePicker = DatePicker_1 = __decorate([
      */
     ,
     event("value-state-change", {
-        detail: {
-            /**
-             * @public
-             */
-            valueState: {
-                type: String,
-            },
-            /**
-             * @public
-             */
-            valid: {
-                type: Boolean,
-            },
-        },
         bubbles: true,
         cancelable: true,
     })

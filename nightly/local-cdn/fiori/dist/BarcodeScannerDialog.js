@@ -13,7 +13,7 @@ import Button from "@ui5/webcomponents/dist/Button.js";
 import BusyIndicator from "@ui5/webcomponents/dist/BusyIndicator.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -361,16 +361,6 @@ BarcodeScannerDialog = BarcodeScannerDialog_1 = __decorate([
      */
     ,
     event("scan-success", {
-        detail: {
-            /**
-             * @public
-             */
-            text: { type: String },
-            /**
-             * @public
-             */
-            rawBytes: { type: Object },
-        },
         bubbles: true,
     })
     /**
@@ -380,12 +370,6 @@ BarcodeScannerDialog = BarcodeScannerDialog_1 = __decorate([
      */
     ,
     event("scan-error", {
-        detail: {
-            /**
-             * @public
-             */
-            message: { type: String },
-        },
         bubbles: true,
     })
 ], BarcodeScannerDialog);

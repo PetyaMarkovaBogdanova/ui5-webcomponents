@@ -76,6 +76,11 @@ type ComboBoxSelectionChangeEventDetail = {
  * @since 1.0.0-rc.6
  */
 declare class ComboBox extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        "change": void;
+        "input": void;
+        "selection-change": ComboBoxSelectionChangeEventDetail;
+    };
     /**
      * Defines the value of the component.
      * @default ""

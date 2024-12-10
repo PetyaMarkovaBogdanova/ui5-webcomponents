@@ -74,6 +74,14 @@ type SelectLiveChangeEventDetail = {
  * @since 0.8.0
  */
 declare class Select extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        "change": SelectChangeEventDetail;
+        "live-change": SelectLiveChangeEventDetail;
+        "open": void;
+        "close": void;
+        "selected-item-changed": void;
+        "input": void;
+    };
     static i18nBundle: I18nBundle;
     /**
      * Defines whether the component is in disabled state.

@@ -9,7 +9,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isSpace, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import TableGrowingMode from "./types/TableGrowingMode.js";
@@ -68,13 +68,6 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
          */
         this.type = "Button";
         /**
-         * Disables the growing feature.
-         *
-         * @default false
-         * @public
-         */
-        this.disabled = false;
-        /**
          * Defines the active state of the growing button.
          * Used for keyboard interaction.
          * @private
@@ -99,9 +92,6 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
             focusRow ||= this._table?.rows[0];
             focusRow?.focus();
         }
-        if (this.disabled) {
-            return;
-        }
         if (this._renderContent !== this.hasGrowingComponent()) {
             this._invalidate++;
             return;
@@ -124,9 +114,6 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
         this._invalidateTable();
     }
     hasGrowingComponent() {
-        if (this.disabled) {
-            return false;
-        }
         if (this.type === TableGrowingMode.Scroll) {
             return !!this._table && this._table._scrollContainer.clientHeight >= this._table._tableElement.scrollHeight;
         }
@@ -226,9 +213,6 @@ __decorate([
 __decorate([
     property()
 ], TableGrowing.prototype, "growingSubText", void 0);
-__decorate([
-    property({ type: Boolean })
-], TableGrowing.prototype, "disabled", void 0);
 __decorate([
     property({ type: Boolean })
 ], TableGrowing.prototype, "_activeState", void 0);

@@ -1,13 +1,14 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import { type ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import UserMenuAccount from "./UserMenuAccount.js";
-import UserMenuItem from "./UserMenuItem.js";
+import type UserMenuAccount from "./UserMenuAccount.js";
+import type UserMenuItem from "./UserMenuItem.js";
 import "@ui5/webcomponents-icons/dist/add-employee.js";
 import "@ui5/webcomponents-icons/dist/edit.js";
 import "@ui5/webcomponents-icons/dist/person-placeholder.js";
 import "@ui5/webcomponents-icons/dist/log.js";
 import "@ui5/webcomponents-icons/dist/user-settings.js";
+import "@ui5/webcomponents-icons/dist/decline.js";
 type UserMenuItemClickEventDetail = {
     item: UserMenuItem;
 };
@@ -34,6 +35,14 @@ type UserMenuOtherAccountClickEventDetail = {
  * @since 2.5.0
  */
 declare class UserMenu extends UI5Element {
+    eventDetails: {
+        "avatar-click": void;
+        "manage-account-click": void;
+        "add-account-click": void;
+        "change-account": UserMenuOtherAccountClickEventDetail;
+        "item-click": UserMenuItemClickEventDetail;
+        "sign-out-click": void;
+    };
     /**
      * Defines if the User Menu is opened.
      *
@@ -89,6 +98,7 @@ declare class UserMenu extends UI5Element {
      */
     _selectedAccount: UserMenuAccount;
     onBeforeRendering(): void;
+    get _isPhone(): boolean;
     _handleAvatarClick(): void;
     _handleManageAccountClick(): void;
     _handleAddAccountClick(): void;
@@ -101,10 +111,12 @@ declare class UserMenu extends UI5Element {
     _handleMenuItemClick(e: CustomEvent<UserMenuItemClickEventDetail>): void;
     _handleMenuItemClose(): void;
     _handlePopoverAfterClose(): void;
+    _handleDeclineClick(): void;
     _openItemSubMenu(item: UserMenuItem): void;
     _closeItemSubMenu(item: UserMenuItem): void;
     _closeUserMenu(): void;
     get _otherAccounts(): UserMenuAccount[];
+    get _declineButtonTooltip(): string;
     get _manageAccountButtonText(): string;
     get _otherAccountsButtonText(): string;
     get _signOutButtonText(): string;

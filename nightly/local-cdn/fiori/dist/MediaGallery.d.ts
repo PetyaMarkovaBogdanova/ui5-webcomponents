@@ -58,6 +58,11 @@ type MediaGallerySelectionChangeEventDetail = {
  * @since 1.1.0
  */
 declare class MediaGallery extends UI5Element {
+    eventDetails: {
+        "selection-change": MediaGallerySelectionChangeEventDetail;
+        "overflow-click": void;
+        "display-area-click": void;
+    };
     /**
      * If set to `true`, all thumbnails are rendered in a scrollable container.
      * If `false`, only up to five thumbnails are rendered, followed by

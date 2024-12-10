@@ -9,7 +9,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
@@ -588,7 +588,7 @@ let Input = Input_1 = class Input extends UI5Element {
         });
     }
     _handleSelect() {
-        this.fireDecoratorEvent("select", {});
+        this.fireDecoratorEvent("select");
     }
     _handleInput(e) {
         const inputDomRef = this.getInputDOMRefSync();
@@ -796,8 +796,6 @@ let Input = Input_1 = class Input extends UI5Element {
                 }
                 inputRef && (inputRef.value = this.value);
             }
-            // Angular two way data binding
-            this.fireDecoratorEvent("value-changed");
             this.fireResetSelectionChange();
         }
     }
@@ -1250,14 +1248,6 @@ Input = Input_1 = __decorate([
         bubbles: true,
     })
     /**
-     * Fired to make Angular two way data binding work properly.
-     * @private
-     */
-    ,
-    event("value-changed", {
-        bubbles: true,
-    })
-    /**
      * Fired when the value of the component changes at each keystroke,
      * and when a suggestion item has been selected.
      * @public
@@ -1286,12 +1276,6 @@ Input = Input_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-            * @public
-            */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -1312,16 +1296,6 @@ Input = Input_1 = __decorate([
      */
     ,
     event("suggestion-scroll", {
-        detail: {
-            /**
-            * @public
-            */
-            scrollTop: { type: Number },
-            /**
-            * @public
-            */
-            scrollContainer: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**

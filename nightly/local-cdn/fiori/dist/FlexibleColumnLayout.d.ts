@@ -111,6 +111,9 @@ type UserDefinedColumnLayouts = {
  * @since 1.0.0-rc.8
  */
 declare class FlexibleColumnLayout extends UI5Element {
+    eventDetails: {
+        "layout-change": FlexibleColumnLayoutLayoutChangeEventDetail;
+    };
     /**
     * Defines the columns layout and their proportion.
     *

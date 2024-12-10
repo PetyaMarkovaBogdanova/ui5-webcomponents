@@ -7,6 +7,9 @@ import type { TimePickerClockChangeEventDetail } from "./TimePickerClock.js";
  * Fired when the picker is being closed.
  */
 declare class TimeSelectionClocks extends TimePickerInternals {
+    eventDetails: TimePickerInternals["eventDetails"] & {
+        "close-picker": void;
+    };
     /**
      * Flag for pressed Space key
      */

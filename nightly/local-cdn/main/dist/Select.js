@@ -8,7 +8,7 @@ var Select_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isUp, isDown, isEnter, isEscape, isHome, isEnd, isShow, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -699,12 +699,6 @@ Select = Select_1 = __decorate([
      */
     ,
     event("change", {
-        detail: {
-            /**
-            * @public
-            */
-            selectedOption: { type: HTMLElement },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -717,12 +711,6 @@ Select = Select_1 = __decorate([
      */
     ,
     event("live-change", {
-        detail: {
-            /**
-            * @public
-            */
-            selectedOption: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**

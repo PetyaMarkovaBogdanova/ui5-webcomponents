@@ -105,6 +105,14 @@ type DatePickerInputEventDetail = {
  * @public
  */
 declare class DatePicker extends DateComponentBase implements IFormInputElement {
+    eventDetails: DateComponentBase["eventDetails"] & {
+        change: DatePickerChangeEventDetail;
+        "value-changed": DatePickerChangeEventDetail;
+        input: DatePickerInputEventDetail;
+        "value-state-change": DatePickerValueStateChangeEventDetail;
+        open: void;
+        close: void;
+    };
     /**
      * Defines a formatted date value.
      * @default ""
@@ -241,7 +249,7 @@ declare class DatePicker extends DateComponentBase implements IFormInputElement 
      * @protected
      */
     _modifyDateValue(amount: number, unit: string, preserveDate?: boolean): void;
-    _updateValueAndFireEvents(value: string, normalizeValue: boolean, events: Array<string>, updateValue?: boolean): void;
+    _updateValueAndFireEvents(value: string, normalizeValue: boolean, events: Array<"change" | "value-changed" | "input">, updateValue?: boolean): void;
     _updateValueState(): void;
     _getInput(): Input;
     /**

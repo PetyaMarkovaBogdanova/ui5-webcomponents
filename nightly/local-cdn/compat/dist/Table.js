@@ -8,7 +8,7 @@ var Table_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
@@ -877,12 +877,6 @@ Table = Table_1 = __decorate([
      */
     ,
     event("row-click", {
-        detail: {
-            /**
-            * @public
-            */
-            row: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -893,14 +887,6 @@ Table = Table_1 = __decorate([
      */
     ,
     event("popin-change", {
-        detail: {
-            /**
-            * @public
-            */
-            poppedColumns: {
-                type: Array,
-            },
-        },
         bubbles: true,
     })
     /**
@@ -924,16 +910,6 @@ Table = Table_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             */
-            selectedRows: { type: Array },
-            /**
-             * @public
-             */
-            previouslySelectedRows: { type: Array },
-        },
         bubbles: true,
     })
 ], Table);

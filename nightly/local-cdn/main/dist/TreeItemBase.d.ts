@@ -19,6 +19,11 @@ type TreeItemBaseStepOutEventDetail = TreeItemBaseEventDetail;
  * @public
  */
 declare class TreeItemBase extends ListItem {
+    eventDetails: ListItem["eventDetails"] & {
+        toggle: TreeItemBaseToggleEventDetail;
+        "step-in": TreeItemBaseStepInEventDetail;
+        "step-out": TreeItemBaseStepOutEventDetail;
+    };
     /**
      * Defines the indentation of the tree list item. Use level 1 for tree list items, representing top-level tree nodes.
      * @protected

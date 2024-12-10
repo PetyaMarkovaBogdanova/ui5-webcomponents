@@ -69,6 +69,9 @@ type NavigationMenuClickEventDetail = MenuItemClickEventDetail & {
  * @public
  */
 declare class SideNavigation extends UI5Element {
+    eventDetails: {
+        "selection-change": SideNavigationSelectionChangeEventDetail;
+    };
     /**
      * Defines whether the `ui5-side-navigation` is expanded or collapsed.
      *
@@ -81,7 +84,7 @@ declare class SideNavigation extends UI5Element {
      *
      * @public
      */
-    items: Array<SideNavigationGroup | SideNavigationItem>;
+    items: Array<SideNavigationItemBase>;
     /**
      * Defines the fixed items at the bottom of the component.
      *
@@ -89,7 +92,7 @@ declare class SideNavigation extends UI5Element {
      *
      * @public
      */
-    fixedItems: Array<SideNavigationGroup | SideNavigationItem>;
+    fixedItems: Array<SideNavigationItemBase>;
     /**
      * Defines the header of the `ui5-side-navigation`.
      *

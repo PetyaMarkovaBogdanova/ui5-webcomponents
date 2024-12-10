@@ -21,6 +21,14 @@ import "@ui5/webcomponents-icons/dist/edit.js";
  * @since 1.0.0-rc.7
  */
 declare class UploadCollectionItem extends ListItem {
+    eventDetails: ListItem["eventDetails"] & {
+        "file-name-click": void;
+        "rename": void;
+        "terminate": void;
+        "retry": void;
+        "_focus-requested": void;
+        "_uci-delete": void;
+    };
     /**
      * Holds an instance of `File` associated with this item.
      * @default null

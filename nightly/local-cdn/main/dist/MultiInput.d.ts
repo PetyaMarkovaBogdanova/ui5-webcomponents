@@ -36,6 +36,10 @@ type MultiInputTokenDeleteEventDetail = {
  * @public
  */
 declare class MultiInput extends Input implements IFormInputElement {
+    eventDetails: Input["eventDetails"] & {
+        "value-help-trigger": void;
+        "token-delete": MultiInputTokenDeleteEventDetail;
+    };
     /**
      * Determines whether a value help icon will be visualized in the end of the input.
      * Pressing the icon will fire `value-help-trigger` event.

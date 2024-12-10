@@ -11,6 +11,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import AriaHasPopup from "@ui5/webcomponents-base/dist/types/AriaHasPopup.js";
+import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import "@ui5/webcomponents-icons/dist/nav-back.js";
 import ListItem from "./ListItem.js";
 import ResponsivePopover from "./ResponsivePopover.js";
@@ -133,6 +134,13 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
         this._menuItems.forEach(item => {
             item._siblingsWithIcon = siblingsWithIcon;
         });
+    }
+    async focus(focusOptions) {
+        await renderFinished();
+        if (this.hasSubmenu && this.isSubMenuOpen) {
+            return this._menuItems[0].focus(focusOptions);
+        }
+        return super.focus(focusOptions);
     }
     get _focusable() {
         return true;

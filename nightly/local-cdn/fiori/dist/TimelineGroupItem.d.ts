@@ -18,6 +18,9 @@ import type { ITimelineItem } from "./Timeline.js";
  * @since 2.1.0
  */
 declare class TimelineGroupItem extends UI5Element implements ITimelineItem {
+    eventDetails: {
+        "toggle": void;
+    };
     /**
      * Defines the text of the button that expands and collapses the group.
      * @default undefined

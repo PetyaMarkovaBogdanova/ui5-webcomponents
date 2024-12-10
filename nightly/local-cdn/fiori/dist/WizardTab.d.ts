@@ -20,6 +20,10 @@ type WizardTabInfo = {
  * @private
  */
 declare class WizardTab extends UI5Element implements ITabbable {
+    eventDetails: {
+        "focused": void;
+        "selection-change-requested": void;
+    };
     /**
      * Defines the `icon` of the step.
      * @default undefined

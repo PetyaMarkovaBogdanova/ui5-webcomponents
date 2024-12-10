@@ -8,7 +8,7 @@ var Token_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isBackSpace, isSpace, isDelete, isSpaceCtrl, } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -197,10 +197,6 @@ Token = Token_1 = __decorate([
      */
     ,
     event("delete", {
-        detail: {
-            "backSpace": { type: Boolean },
-            "delete": { type: Boolean },
-        },
         bubbles: true,
     })
 ], Token);

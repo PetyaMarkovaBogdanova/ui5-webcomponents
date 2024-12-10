@@ -197,6 +197,7 @@ declare class Popover extends Popup {
      * @private
      */
     calcPlacement(targetRect: DOMRect, popoverSize: PopoverSize): CalculatedPlacement;
+    getRTLCorrectionLeft(): number;
     /**
      * Calculates the position for the arrow.
      * @private

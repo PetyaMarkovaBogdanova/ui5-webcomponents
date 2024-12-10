@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var DynamicPageHeaderActions_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";

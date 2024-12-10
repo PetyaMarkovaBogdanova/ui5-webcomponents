@@ -23,6 +23,10 @@ type CalendarLegendItemSelectionChangeEventDetail = {
  * @since 1.23.0
  */
 declare class CalendarLegend extends UI5Element {
+    eventDetails: {
+        "_calendar-legend-selection-change": CalendarLegendItemSelectionChangeEventDetail;
+        "_calendar-legend-focus-out": void;
+    };
     /**
      * Hides the Today item in the legend.
      * @default false

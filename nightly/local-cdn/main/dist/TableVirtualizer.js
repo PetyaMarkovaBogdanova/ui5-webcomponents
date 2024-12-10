@@ -9,7 +9,7 @@ import { isUp, isUpShift, isDown, isDownShift, isPageUp, isPageDown, isHome, isE
 import UI5Element, {} from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getTabbableElements } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
 import { throttle } from "./TableUtils.js";
@@ -244,18 +244,7 @@ TableVirtualizer = __decorate([
      * @public
      */
     ,
-    event("range-change", {
-        detail: {
-            /**
-             * @public
-             */
-            first: { type: Number },
-            /**
-             * @public
-             */
-            last: { type: Number },
-        },
-    })
+    event("range-change")
 ], TableVirtualizer);
 TableVirtualizer.define();
 export default TableVirtualizer;

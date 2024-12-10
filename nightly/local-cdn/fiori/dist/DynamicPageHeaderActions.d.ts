@@ -23,6 +23,12 @@ import "@ui5/webcomponents-icons/dist/pushpin-on.js";
  * @private
  */
 declare class DynamicPageHeaderActions extends UI5Element {
+    eventDetails: {
+        "expand-button-click": void;
+        "pin-button-click": void;
+        "expand-button-hover-in": void;
+        "expand-button-hover-out": void;
+    };
     /**
      * Defines whether the header is pinned.
      *

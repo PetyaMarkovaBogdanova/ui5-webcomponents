@@ -1,6 +1,7 @@
 import type UI5Element from "../UI5Element.js";
 declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () => void) => {
     new (): {
+        eventDetails: object;
         __id?: string;
         _suppressInvalidation: boolean;
         _changedState: Array<import("../UI5Element.js").ChangeInfo>;
@@ -58,12 +59,12 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
         getFocusDomRefAsync(): Promise<HTMLElement | undefined>;
         focus(focusOptions?: FocusOptions): Promise<void>;
         fireEvent<T>(name: string, data?: T, cancelable?: boolean, bubbles?: boolean): boolean;
-        fireDecoratorEvent<T>(name: string, data?: T): boolean;
+        fireDecoratorEvent<N extends never>(name: N, data?: object[N] | undefined): boolean;
         _fireEvent<T>(name: string, data?: T | undefined, cancelable?: boolean, bubbles?: boolean): boolean;
         getEventData(name: string): {
-            detail: Record<string, object>;
-            cancelable: boolean;
-            bubbles: boolean;
+            detail?: Record<string, object>;
+            cancelable?: boolean;
+            bubbles?: boolean;
         };
         getSlottedNodes<T = Node>(slotName: string): Array<T>;
         attachComponentStateFinalized(callback: () => void): void;

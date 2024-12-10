@@ -41,6 +41,10 @@ type NotificationListGroupItemToggleEventDetail = {
  * @public
  */
 declare class NotificationListGroupItem extends NotificationListItemBase {
+    eventDetails: NotificationListItemBase["eventDetails"] & {
+        toggle: NotificationListGroupItemToggleEventDetail;
+        "load-more": void;
+    };
     /**
      * Defines if the group is collapsed or expanded.
      * @default false

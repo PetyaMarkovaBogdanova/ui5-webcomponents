@@ -16,10 +16,10 @@ import type { ListSelectionChangeEventDetail } from "./List.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 type BreadcrumbsItemClickEventDetail = {
     item: BreadcrumbsItem;
-    altKey: boolean;
-    ctrlKey: boolean;
-    metaKey: boolean;
-    shiftKey: boolean;
+    altKey?: boolean;
+    ctrlKey?: boolean;
+    metaKey?: boolean;
+    shiftKey?: boolean;
 };
 type FocusAdaptor = ITabbable & {
     getlabelWrapper: () => Element | null;
@@ -55,6 +55,9 @@ type FocusAdaptor = ITabbable & {
  * @since 1.0.0-rc.15
  */
 declare class Breadcrumbs extends UI5Element {
+    eventDetails: {
+        "item-click": BreadcrumbsItemClickEventDetail;
+    };
     /**
      * Defines the visual appearance of the last BreadcrumbsItem.
      *
@@ -104,6 +107,11 @@ declare class Breadcrumbs extends UI5Element {
      * @private
      */
     _getFocusableItems(): ITabbable[];
+    /**
+     * Returns the translatable accessible name for the popover
+     * @private
+     */
+    get _accessibleNamePopover(): string;
     _onfocusin(e: FocusEvent): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;

@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import { registerToolbarItem } from "./ToolbarRegistry.js";
 // Templates
 import ToolbarSelectTemplate from "./generated/templates/ToolbarSelectTemplate.lit.js";
@@ -132,12 +132,6 @@ ToolbarSelect = __decorate([
      */
     ,
     event("change", {
-        detail: {
-            /**
-            * @public
-            */
-            selectedOption: { type: HTMLElement },
-        },
         bubbles: true,
         cancelable: true,
     })

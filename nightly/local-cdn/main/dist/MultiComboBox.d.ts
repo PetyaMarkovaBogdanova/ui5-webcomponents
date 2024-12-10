@@ -87,6 +87,13 @@ type MultiComboboxItemWithSelection = {
  * @csspart token-\{index\} - Used to style each token(where `token-0` corresponds to the first item)
  */
 declare class MultiComboBox extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        change: void;
+        input: void;
+        open: void;
+        close: void;
+        "selection-change": MultiComboBoxSelectionChangeEventDetail;
+    };
     /**
      * Defines the value of the component.
      *

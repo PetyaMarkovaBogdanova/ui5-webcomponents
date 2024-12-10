@@ -66,6 +66,13 @@ type VSDInternalSettings = {
  * @public
  */
 declare class ViewSettingsDialog extends UI5Element {
+    eventDetails: {
+        "confirm": ViewSettingsDialogConfirmEventDetail;
+        "cancel": ViewSettingsDialogCancelEventDetail;
+        "before-open": void;
+        "open": void;
+        "close": void;
+    };
     /**
      * Defines the initial sort order.
      * @default false

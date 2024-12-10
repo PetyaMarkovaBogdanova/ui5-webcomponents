@@ -24,6 +24,9 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
  * @csspart additional-text - Used to style the additional text of the CardHeader
  */
 declare class CardHeader extends UI5Element {
+    eventDetails: {
+        click: void;
+    };
     /**
      * Defines the title text.
      * @default undefined

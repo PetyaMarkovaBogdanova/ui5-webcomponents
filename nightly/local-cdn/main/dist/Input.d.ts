@@ -108,6 +108,16 @@ type InputSuggestionScrollEventDetail = {
  * @csspart clear-icon - Used to style the clear icon, which can be pressed to clear user input text
  */
 declare class Input extends UI5Element implements SuggestionComponent, IFormInputElement {
+    eventDetails: {
+        "change": InputEventDetail;
+        "input": InputEventDetail;
+        "select": void;
+        "selection-change": InputSelectionChangeEventDetail;
+        "type-ahead": void;
+        "suggestion-scroll": InputSuggestionScrollEventDetail;
+        "open": void;
+        "close": void;
+    };
     /**
      * Defines whether the component is in disabled state.
      *

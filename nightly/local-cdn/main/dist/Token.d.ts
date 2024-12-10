@@ -5,8 +5,8 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { IIcon } from "./Icon.js";
 import type { IToken } from "./MultiInput.js";
 type TokenDeleteEventDetail = {
-    backSpace: boolean;
-    delete: boolean;
+    backSpace?: boolean;
+    delete?: boolean;
 };
 /**
  * @class
@@ -25,6 +25,10 @@ type TokenDeleteEventDetail = {
  * @public
  */
 declare class Token extends UI5Element implements IToken {
+    eventDetails: {
+        "select": void;
+        "delete": TokenDeleteEventDetail;
+    };
     /**
      * Defines the text of the token.
      * @default undefined

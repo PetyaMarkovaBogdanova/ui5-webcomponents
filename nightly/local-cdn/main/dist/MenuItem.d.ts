@@ -166,6 +166,7 @@ declare class MenuItem extends ListItem implements IMenuItem {
     get acessibleNameText(): string;
     get isSeparator(): boolean;
     onBeforeRendering(): void;
+    focus(focusOptions?: FocusOptions): Promise<void>;
     get _focusable(): boolean;
     get _accInfo(): {
         role: string;

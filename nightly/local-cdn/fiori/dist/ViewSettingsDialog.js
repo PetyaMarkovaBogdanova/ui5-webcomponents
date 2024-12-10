@@ -8,7 +8,7 @@ var ViewSettingsDialog_1;
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
@@ -296,7 +296,7 @@ let ViewSettingsDialog = ViewSettingsDialog_1 = class ViewSettingsDialog extends
         else {
             this._restoreSettings(this._confirmedSettings);
         }
-        this.fireDecoratorEvent("before-open", {});
+        this.fireDecoratorEvent("before-open");
     }
     afterDialogOpen() {
         this._dialog?.querySelector("[ui5-list]")?.focusFirstItem();
@@ -572,28 +572,6 @@ ViewSettingsDialog = ViewSettingsDialog_1 = __decorate([
      */
     ,
     event("confirm", {
-        detail: {
-            /**
-             * @public
-             */
-            sortOrder: { type: String },
-            /**
-             * @public
-             */
-            sortBy: { type: String },
-            /**
-             * @public
-             */
-            sortByItem: { type: HTMLElement },
-            /**
-             * @public
-             */
-            sortDescending: { type: Boolean },
-            /**
-             * @public
-             */
-            filters: { type: Array },
-        },
         bubbles: true,
     })
     /**
@@ -607,28 +585,6 @@ ViewSettingsDialog = ViewSettingsDialog_1 = __decorate([
      */
     ,
     event("cancel", {
-        detail: {
-            /**
-             * @public
-             */
-            sortOrder: { type: String },
-            /**
-             * @public
-             */
-            sortBy: { type: String },
-            /**
-             * @public
-             */
-            sortByItem: { type: HTMLElement },
-            /**
-             * @public
-             */
-            sortDescending: { type: Boolean },
-            /**
-             * @public
-             */
-            filters: { type: Array },
-        },
         bubbles: true,
     })
     /**

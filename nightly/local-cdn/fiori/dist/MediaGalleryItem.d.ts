@@ -26,6 +26,11 @@ import type { IMediaGalleryItem } from "./MediaGallery.js";
  * @since 1.1.0
  */
 declare class MediaGalleryItem extends UI5Element implements IMediaGalleryItem {
+    eventDetails: {
+        click: {
+            item: MediaGalleryItem;
+        };
+    };
     /**
      * Defines the selected state of the component.
      * @default false

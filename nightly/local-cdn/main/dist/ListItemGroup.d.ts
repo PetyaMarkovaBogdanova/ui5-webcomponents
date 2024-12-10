@@ -28,6 +28,10 @@ type ListItemGroupMoveEventDetail = {
  * @since 2.0.0
  */
 declare class ListItemGroup extends UI5Element {
+    eventDetails: {
+        "move-over": ListItemGroupMoveEventDetail;
+        "move": ListItemGroupMoveEventDetail;
+    };
     /**
      * Defines the header text of the <code>ui5-li-group</code>.
      * @public

@@ -32,6 +32,10 @@ type YearPickerNavigateEventDetail = {
  * @private
  */
 declare class YearPicker extends CalendarPart implements ICalendarPicker {
+    eventDetails: CalendarPart["eventDetails"] & {
+        "change": YearPickerChangeEventDetail;
+        "navigate": YearPickerNavigateEventDetail;
+    };
     /**
      * An array of UTC timestamps representing the selected date
      * or dates depending on the capabilities of the picker component.

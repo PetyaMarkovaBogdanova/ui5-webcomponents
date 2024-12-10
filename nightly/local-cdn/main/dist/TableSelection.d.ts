@@ -41,6 +41,9 @@ import type TableRowBase from "./TableRowBase.js";
  * @experimental This web component is available since 2.0 with an experimental flag and its API and behavior are subject to change.
  */
 declare class TableSelection extends UI5Element implements ITableFeature {
+    eventDetails: {
+        change: void;
+    };
     /**
      * Defines the selection mode.
      *

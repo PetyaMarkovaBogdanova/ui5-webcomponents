@@ -61,6 +61,9 @@ type CarouselNavigateEventDetail = {
  * @csspart content - Used to style the content of the component
  */
 declare class Carousel extends UI5Element {
+    eventDetails: {
+        navigate: CarouselNavigateEventDetail;
+    };
     /**
      * Defines the accessible name of the component.
      * @default undefined

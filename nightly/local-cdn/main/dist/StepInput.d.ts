@@ -5,7 +5,7 @@ import type { Timeout } from "@ui5/webcomponents-base/dist/types.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import "@ui5/webcomponents-icons/dist/less.js";
 import "@ui5/webcomponents-icons/dist/add.js";
-import Input from "./Input.js";
+import Input, { type InputEventDetail } from "./Input.js";
 import InputType from "./types/InputType.js";
 type StepInputValueStateChangeEventDetail = {
     valueState: `${ValueState}`;
@@ -53,6 +53,11 @@ type StepInputValueStateChangeEventDetail = {
  * @public
  */
 declare class StepInput extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        change: void;
+        input: InputEventDetail;
+        "value-state-change": StepInputValueStateChangeEventDetail;
+    };
     /**
      * Defines a value of the component.
      * @default 0
@@ -186,6 +191,7 @@ declare class StepInput extends UI5Element implements IFormInputElement {
     get innerInput(): HTMLInputElement;
     get inputOuter(): Element;
     _onButtonFocusOut(): void;
+    _onInput(e: CustomEvent<InputEventDetail>): void;
     _onInputFocusIn(): void;
     _onInputFocusOut(): void;
     _setButtonState(): void;

@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var UploadCollection_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
@@ -221,10 +221,9 @@ UploadCollection = UploadCollection_1 = __decorate([
      * @public
      * @native
      */
-    ,
-    event("drop", {
-        bubbles: true,
-    })
+    // @event("drop", {
+    // 	bubbles: true,
+    // })
     /**
      * Fired when the delete button of any item is pressed.
      * @param {HTMLElement} item The `ui5-upload-collection-item` which was deleted.
@@ -232,12 +231,6 @@ UploadCollection = UploadCollection_1 = __decorate([
      */
     ,
     event("item-delete", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -248,12 +241,6 @@ UploadCollection = UploadCollection_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             */
-            selectedItems: { type: Array },
-        },
         bubbles: true,
     })
 ], UploadCollection);

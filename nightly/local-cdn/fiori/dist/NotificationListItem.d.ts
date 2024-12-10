@@ -63,6 +63,10 @@ type NotificationListItemPressEventDetail = {
  * @csspart title-text - Used to style the titleText of the notification list item
  */
 declare class NotificationListItem extends NotificationListItemBase {
+    eventDetails: NotificationListItemBase["eventDetails"] & {
+        _press: NotificationListItemPressEventDetail;
+        close: NotificationListItemCloseEventDetail;
+    };
     /**
     * Defines if the `titleText` and `description` should wrap,
     * they truncate by default.

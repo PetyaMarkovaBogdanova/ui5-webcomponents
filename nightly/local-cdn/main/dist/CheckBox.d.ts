@@ -50,6 +50,10 @@ import type WrappingType from "./types/WrappingType.js";
  * @csspart icon - Used to style the icon of the `ui5-checkbox`
  */
 declare class CheckBox extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        change: void;
+        "value-changed": void;
+    };
     /**
      * Receives id(or many ids) of the elements that label the component
      * @default undefined

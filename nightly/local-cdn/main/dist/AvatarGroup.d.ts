@@ -85,6 +85,10 @@ type AvatarGroupClickEventDetail = {
  * @public
  */
 declare class AvatarGroup extends UI5Element {
+    eventDetails: {
+        "click": AvatarGroupClickEventDetail;
+        "overflow": void;
+    };
     /**
      * Defines the mode of the `AvatarGroup`.
      * @default "Group"

@@ -63,6 +63,7 @@ import "@ui5/webcomponents-icons/dist/information.js";
  * @csspart footer - Used to style the footer of the component
  */
 declare class Dialog extends Popup {
+    eventDetails: Popup["eventDetails"];
     /**
      * Defines the header text.
      *

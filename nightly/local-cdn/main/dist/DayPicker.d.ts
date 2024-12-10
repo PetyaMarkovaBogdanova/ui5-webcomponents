@@ -48,6 +48,10 @@ type DayPickerNavigateEventDetail = {
  * @private
  */
 declare class DayPicker extends CalendarPart implements ICalendarPicker {
+    eventDetails: {
+        "change": DayPickerChangeEventDetail;
+        "navigate": DayPickerNavigateEventDetail;
+    };
     /**
      * An array of UTC timestamps representing the selected date or dates depending on the capabilities of the picker component.
      * @default []

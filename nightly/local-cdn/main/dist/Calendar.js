@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var Calendar_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
@@ -345,9 +345,9 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
     /**
      * The user clicked the "month" button in the header
      */
-    onHeaderShowMonthPress(e) {
+    onHeaderShowMonthPress() {
         this.showMonth();
-        this.fireDecoratorEvent("show-month-view", e);
+        this.fireDecoratorEvent("show-month-view");
     }
     showMonth() {
         this._currentPickerDOM._autoFocus = false;
@@ -356,9 +356,9 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
     /**
      * The user clicked the "year" button in the header
      */
-    onHeaderShowYearPress(e) {
+    onHeaderShowYearPress() {
         this.showYear();
-        this.fireDecoratorEvent("show-year-view", e);
+        this.fireDecoratorEvent("show-year-view");
     }
     showYear() {
         this._currentPickerDOM._autoFocus = false;
@@ -484,11 +484,11 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
     _onkeydown(e) {
         if (isF4(e) && this._currentPicker !== "month") {
             this._currentPicker = "month";
-            this.fireDecoratorEvent("show-month-view", e);
+            this.fireDecoratorEvent("show-month-view");
         }
         if (isF4Shift(e) && this._currentPicker !== "year") {
             this._currentPicker = "year";
-            this.fireDecoratorEvent("show-year-view", e);
+            this.fireDecoratorEvent("show-year-view");
         }
     }
     _onLegendFocusOut() {
@@ -531,14 +531,14 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
         }
         if (isEnter(e)) {
             this.showMonth();
-            this.fireDecoratorEvent("show-month-view", e);
+            this.fireDecoratorEvent("show-month-view");
         }
     }
     onMonthButtonKeyUp(e) {
         if (isSpace(e)) {
             e.preventDefault();
             this.showMonth();
-            this.fireDecoratorEvent("show-month-view", e);
+            this.fireDecoratorEvent("show-month-view");
         }
     }
     onYearButtonKeyDown(e) {
@@ -547,13 +547,13 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
         }
         if (isEnter(e)) {
             this.showYear();
-            this.fireDecoratorEvent("show-year-view", e);
+            this.fireDecoratorEvent("show-year-view");
         }
     }
     onYearButtonKeyUp(e) {
         if (isSpace(e)) {
             this.showYear();
-            this.fireDecoratorEvent("show-year-view", e);
+            this.fireDecoratorEvent("show-year-view");
         }
     }
     onPrevButtonClick(e) {
@@ -660,17 +660,6 @@ Calendar = Calendar_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             */
-            selectedDates: { type: Array },
-            /**
-             * @public
-             */
-            selectedValues: { type: Array },
-            timestamp: { type: Number },
-        },
         bubbles: true,
         cancelable: true,
     }),

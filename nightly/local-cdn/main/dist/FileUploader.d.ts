@@ -39,6 +39,10 @@ type FileUploaderChangeEventDetail = {
  * @public
  */
 declare class FileUploader extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        "change": FileUploaderChangeEventDetail;
+        "file-size-exceed": FileUploaderFileSizeExceedEventDetail;
+    };
     /**
      * Comma-separated list of file types that the component should accept.
      *

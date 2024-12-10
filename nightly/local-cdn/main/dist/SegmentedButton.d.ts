@@ -34,6 +34,9 @@ type SegmentedButtonSelectionChangeEventDetail = {
  * @public
  */
 declare class SegmentedButton extends UI5Element {
+    eventDetails: {
+        "selection-change": SegmentedButtonSelectionChangeEventDetail;
+    };
     /**
      * Defines the accessible ARIA name of the component.
      * @default undefined

@@ -8,7 +8,7 @@ var SegmentedButton_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
@@ -193,18 +193,11 @@ SegmentedButton = SegmentedButton_1 = __decorate([
     })
     /**
      * Fired when the selected item changes.
-     * @param {Array<ISegmentedButtonItem>} selectedItems an array of selected items.
+     * @param {Array<ISegmentedButtonItem>} selectedItems an array of selected items. Since: 1.14.0
      * @public
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             * @since 1.14.0
-             */
-            selectedItems: { type: Array },
-        },
         bubbles: true,
     })
 ], SegmentedButton);

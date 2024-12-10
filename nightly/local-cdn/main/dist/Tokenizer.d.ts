@@ -61,6 +61,12 @@ declare enum ClipboardDataOperation {
  * @experimental This component is availabe since 2.0 under an experimental flag and its API and behaviour are subject to change.
  */
 declare class Tokenizer extends UI5Element {
+    eventDetails: {
+        "token-delete": TokenizerTokenDeleteEventDetail;
+        "selection-change": TokenizerSelectionChangeEventDetail;
+        "show-more-items-press": void;
+        "before-more-popover-open": void;
+    };
     /**
      * Defines whether the component is read-only.
      *

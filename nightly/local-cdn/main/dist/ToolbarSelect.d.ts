@@ -23,6 +23,11 @@ type ToolbarSelectChangeEventDetail = SelectChangeEventDetail;
  * @since 1.17.0
  */
 declare class ToolbarSelect extends ToolbarItem {
+    eventDetails: ToolbarItem["eventDetails"] & {
+        change: ToolbarSelectChangeEventDetail;
+        open: void;
+        close: void;
+    };
     /**
      * Defines the width of the select.
      *

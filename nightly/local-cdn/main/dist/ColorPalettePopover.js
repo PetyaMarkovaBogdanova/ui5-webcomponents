@@ -9,7 +9,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
@@ -181,14 +181,6 @@ ColorPalettePopover = ColorPalettePopover_1 = __decorate([
      */
     ,
     event("item-click", {
-        detail: {
-            /**
-             * @public
-             */
-            color: {
-                type: String,
-            },
-        },
         bubbles: true,
     })
     /**

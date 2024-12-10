@@ -26,6 +26,7 @@ type ResponsivePopoverBeforeCloseEventDetail = PopupBeforeCloseEventDetail;
  * @csspart footer - Used to style the footer of the component
  */
 declare class ResponsivePopover extends Popover {
+    eventDetails: Popover["eventDetails"];
     /**
      * Defines if only the content would be displayed (without header and footer) in the popover on Desktop.
      * By default both the header and footer would be displayed.
@@ -62,9 +63,10 @@ declare class ResponsivePopover extends Popover {
     get _displayHeader(): boolean;
     get _displayFooter(): boolean;
     get _closeDialogAriaLabel(): string;
-    _beforeDialogOpen(e: CustomEvent<PopupBeforeCloseEventDetail>): void;
-    _afterDialogClose(e: CustomEvent): void;
-    _propagateDialogEvent(e: CustomEvent): void;
+    _beforeDialogOpen(): void;
+    _afterDialogOpen(): void;
+    _beforeDialogClose(e: CustomEvent<PopupBeforeCloseEventDetail>): void;
+    _afterDialogClose(): void;
     get isModal(): boolean;
 }
 export default ResponsivePopover;

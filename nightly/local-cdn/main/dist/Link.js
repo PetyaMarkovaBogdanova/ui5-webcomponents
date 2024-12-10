@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var Link_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -266,24 +266,6 @@ Link = Link_1 = __decorate([
      */
     ,
     event("click", {
-        detail: {
-            /**
-             * @public
-             */
-            altKey: { type: Boolean },
-            /**
-             * @public
-             */
-            ctrlKey: { type: Boolean },
-            /**
-             * @public
-             */
-            metaKey: { type: Boolean },
-            /**
-             * @public
-             */
-            shiftKey: { type: Boolean },
-        },
         bubbles: true,
         cancelable: true,
     })

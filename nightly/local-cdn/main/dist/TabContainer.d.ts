@@ -99,6 +99,11 @@ interface ITab extends UI5Element {
  * @csspart tabstrip - Used to style the tabstrip of the component
  */
 declare class TabContainer extends UI5Element {
+    eventDetails: {
+        "tab-select": TabContainerTabSelectEventDetail;
+        "move-over": TabContainerMoveEventDetail;
+        "move": TabContainerMoveEventDetail;
+    };
     /**
      * Defines whether the tab content is collapsed.
      * @default false

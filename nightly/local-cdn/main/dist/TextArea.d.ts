@@ -38,6 +38,13 @@ type ExceededText = {
  * @csspart textarea - Used to style the native textarea
  */
 declare class TextArea extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        "change": void;
+        "input": void;
+        "select": void;
+        "scroll": void;
+        "value-changed": void;
+    };
     /**
      * Defines the value of the component.
      * @formEvents change input

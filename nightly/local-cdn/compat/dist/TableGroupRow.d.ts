@@ -19,6 +19,9 @@ import TableMode from "./types/TableMode.js";
  * @csspart group-row - Used to style the native `tr` element
  */
 declare class TableGroupRow extends UI5Element implements ITableRow {
+    eventDetails: {
+        _focused: FocusEvent;
+    };
     /**
      * Defines the mode of the row
      * @default "None"

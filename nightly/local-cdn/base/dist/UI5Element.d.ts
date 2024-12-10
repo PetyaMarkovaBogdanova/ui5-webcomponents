@@ -26,6 +26,8 @@ type InvalidationInfo = ChangeInfo & {
 };
 type ChildChangeListener = (param: InvalidationInfo) => void;
 type SlotChangeListener = (this: HTMLSlotElement, ev: Event) => void;
+export type NotEqual<X, Y> = true extends Equal<X, Y> ? false : true;
+export type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends (<T>() => T extends Y ? 1 : 2) ? true : false;
 /**
  * @class
  * Base class for all UI5 Web Components
@@ -34,6 +36,9 @@ type SlotChangeListener = (this: HTMLSlotElement, ev: Event) => void;
  * @public
  */
 declare abstract class UI5Element extends HTMLElement {
+    eventDetails: NotEqual<typeof this, typeof UI5Element> extends true ? object : {
+        [k: string]: any;
+    };
     __id?: string;
     _suppressInvalidation: boolean;
     _changedState: Array<ChangeInfo>;
@@ -273,12 +278,12 @@ declare abstract class UI5Element extends HTMLElement {
      * @param data - additional data for the event
      * @returns false, if the event was cancelled (preventDefault called), true otherwise
      */
-    fireDecoratorEvent<T>(name: string, data?: T): boolean;
+    fireDecoratorEvent<N extends keyof this["eventDetails"]>(name: N, data?: this["eventDetails"][N] | undefined): boolean;
     _fireEvent<T>(name: string, data?: T, cancelable?: boolean, bubbles?: boolean): boolean;
     getEventData(name: string): {
-        detail: Record<string, object>;
-        cancelable: boolean;
-        bubbles: boolean;
+        detail?: Record<string, object>;
+        cancelable?: boolean;
+        bubbles?: boolean;
     };
     /**
      * Returns the actual children, associated with a slot.

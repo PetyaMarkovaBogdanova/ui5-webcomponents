@@ -10,7 +10,7 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
@@ -654,7 +654,6 @@ let List = List_1 = class List extends UI5Element {
                 return;
             }
             this.focusPreviouslyFocusedItem();
-            e.stopImmediatePropagation();
         }
         e.stopImmediatePropagation();
         this.setForwardingFocus(false);
@@ -998,12 +997,6 @@ List = List_1 = __decorate([
      */
     ,
     event("item-click", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -1018,12 +1011,6 @@ List = List_1 = __decorate([
      */
     ,
     event("item-close", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -1036,12 +1023,6 @@ List = List_1 = __decorate([
      */
     ,
     event("item-toggle", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -1054,12 +1035,6 @@ List = List_1 = __decorate([
      */
     ,
     event("item-delete", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -1071,30 +1046,6 @@ List = List_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             */
-            selectedItems: { type: Array },
-            /**
-             * @public
-             */
-            previouslySelectedItems: { type: Array },
-            /**
-             * protected, holds the event target item
-             * @protected
-             */
-            targetItem: { type: HTMLElement },
-            /**
-             * protected, indicates if the user used the selection components to change the selection
-             * @protected
-             */
-            selectionComponentPressed: { type: Boolean },
-            /**
-             * @private
-             */
-            key: { type: String },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -1114,9 +1065,6 @@ List = List_1 = __decorate([
      */
     ,
     event("item-focused", {
-        detail: {
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -1130,20 +1078,6 @@ List = List_1 = __decorate([
      */
     ,
     event("move-over", {
-        detail: {
-            /**
-             * @public
-             */
-            originalEvent: { type: Event },
-            /**
-             * @public
-             */
-            source: { type: Object },
-            /**
-             * @public
-             */
-            destination: { type: Object },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -1157,20 +1091,6 @@ List = List_1 = __decorate([
      */
     ,
     event("move", {
-        detail: {
-            /**
-             * @public
-             */
-            originalEvent: { type: Event },
-            /**
-             * @public
-             */
-            source: { type: Object },
-            /**
-             * @public
-             */
-            destination: { type: Object },
-        },
         bubbles: true,
     })
 ], List);

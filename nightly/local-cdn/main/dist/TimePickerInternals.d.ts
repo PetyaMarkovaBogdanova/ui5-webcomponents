@@ -53,6 +53,9 @@ type TimePickerEntityProperties = {
  * @private
  */
 declare class TimePickerInternals extends UI5Element {
+    eventDetails: {
+        change: TimeSelectionChangeEventDetail;
+    };
     /**
      * Defines a formatted time value.
      * @default undefined

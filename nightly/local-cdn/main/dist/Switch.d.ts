@@ -35,6 +35,10 @@ import SwitchDesign from "./types/SwitchDesign.js";
  * @csspart handle - Used to style the handle of the switch
  */
 declare class Switch extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        change: void;
+        "value-changed": void;
+    };
     /**
      * Defines the component design.
      *

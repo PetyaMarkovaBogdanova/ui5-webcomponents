@@ -34,6 +34,14 @@ type TableRowF7PressEventDetail = {
  * @csspart popin-row - Used to style the `tr` element when a row pops in
  */
 declare class TableRow extends UI5Element implements ITableRow {
+    eventDetails: {
+        "row-click": TableRowClickEventDetail;
+        "_focused": FocusEvent;
+        "_forward-before": TableRowForwardBeforeEventDetail;
+        "_forward-after": TableRowForwardAfterEventDetail;
+        "selection-requested": TableRowSelectionRequestedEventDetail;
+        "f7-pressed": TableRowF7PressEventDetail;
+    };
     /**
      * Defines the visual indication and behavior of the component.
      *

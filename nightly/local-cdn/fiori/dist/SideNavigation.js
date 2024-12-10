@@ -12,7 +12,7 @@ import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
 import NavigationMenu from "@ui5/webcomponents/dist/NavigationMenu.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
@@ -108,7 +108,9 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
     }
     onBeforeRendering() {
         super.onBeforeRendering();
-        this._getAllItems(this.items).concat(this._getAllItems(this.fixedItems)).forEach(item => {
+        this._getAllItems(this.items)
+            .concat(this._getAllItems(this.fixedItems))
+            .forEach(item => {
             item.sideNavCollapsed = this.collapsed;
             item.inPopover = this.inPopover;
             item.sideNavigation = this;
@@ -363,7 +365,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
         return this._getSelectableItems(items).find(item => item._selected);
     }
     get overflowItems() {
-        return (this.items).reduce((result, item) => {
+        return this.items.reduce((result, item) => {
             return result.concat(item.overflowItems);
         }, new Array());
     }
@@ -492,12 +494,6 @@ SideNavigation = SideNavigation_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
         cancelable: true,
     })

@@ -33,6 +33,9 @@ type ToolbarMinWidthChangeEventDetail = {
  * @since 1.17.0
  */
 declare class Toolbar extends UI5Element {
+    eventDetails: {
+        "_min-content-width-change": ToolbarMinWidthChangeEventDetail;
+    };
     static i18nBundle: I18nBundle;
     /**
      * Indicated the direction in which the Toolbar items will be aligned.

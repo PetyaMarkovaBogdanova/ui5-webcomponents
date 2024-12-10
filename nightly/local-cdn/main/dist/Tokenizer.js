@@ -8,7 +8,7 @@ var Tokenizer_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
@@ -900,12 +900,6 @@ Tokenizer = Tokenizer_1 = __decorate([
      */
     ,
     event("token-delete", {
-        detail: {
-            /**
-            * @public
-            */
-            tokens: { type: Array },
-        },
         bubbles: true,
     })
     /**
@@ -916,9 +910,6 @@ Tokenizer = Tokenizer_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            tokens: { type: Array },
-        },
         bubbles: true,
     })
     /**

@@ -156,7 +156,6 @@ let Popover = Popover_1 = class Popover extends Popup {
         }
         const opener = this.getOpenerHTMLElement(this.opener);
         if (!opener) {
-            console.warn("Valid opener id is required. It must be defined before opening the popover."); // eslint-disable-line
             return;
         }
         if (this.isOpenerOutsideViewport(opener.getBoundingClientRect())) {
@@ -198,7 +197,13 @@ let Popover = Popover_1 = class Popover extends Popup {
             return opener;
         }
         const rootNode = this.getRootNode();
-        const openerHTMLElement = rootNode instanceof Document ? rootNode.getElementById(opener) : document.getElementById(opener);
+        if (!(rootNode instanceof ShadowRoot || rootNode instanceof Document)) {
+            return;
+        }
+        let openerHTMLElement = rootNode.getElementById(opener);
+        if (rootNode instanceof ShadowRoot && !openerHTMLElement) {
+            openerHTMLElement = document.getElementById(opener);
+        }
         if (openerHTMLElement && this._isUI5Element(openerHTMLElement)) {
             return openerHTMLElement.getFocusDomRef();
         }
@@ -430,12 +435,16 @@ let Popover = Popover_1 = class Popover extends Popup {
         }
         const borderRadius = Number.parseInt(window.getComputedStyle(this).getPropertyValue("border-radius"));
         const arrowPos = this.getArrowPosition(targetRect, popoverSize, left, top, isVertical, borderRadius);
+        this._left += this.getRTLCorrectionLeft();
         return {
             arrow: arrowPos,
             top: this._top,
             left: this._left,
             placement,
         };
+    }
+    getRTLCorrectionLeft() {
+        return parseFloat(window.getComputedStyle(this).left) - this.getBoundingClientRect().left;
     }
     /**
      * Calculates the position for the arrow.

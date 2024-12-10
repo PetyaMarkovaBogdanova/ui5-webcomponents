@@ -60,6 +60,9 @@ import type PanelAccessibleRole from "./types/PanelAccessibleRole.js";
  * @csspart content - Used to style the wrapper of the content.
  */
 declare class Panel extends UI5Element {
+    eventDetails: {
+        toggle: void;
+    };
     /**
      * This property is used to set the header text of the component.
      * The text is visible in both expanded and collapsed states.

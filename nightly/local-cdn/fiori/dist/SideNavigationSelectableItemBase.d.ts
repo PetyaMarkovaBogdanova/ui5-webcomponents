@@ -6,6 +6,9 @@ import SideNavigationItemBase from "./SideNavigationItemBase.js";
  * @public
  */
 declare class SideNavigationSelectableItemBase extends SideNavigationItemBase {
+    eventDetails: SideNavigationItemBase["eventDetails"] & {
+        "click": void;
+    };
     /**
      * Defines the icon of the item.
      *

@@ -83,6 +83,9 @@ type DynamicSideContentLayoutChangeEventDetail = {
  * @slot {Array<HTMLElement>} default - Defines the main content.
  */
 declare class DynamicSideContent extends UI5Element {
+    eventDetails: {
+        "layout-change": DynamicSideContentLayoutChangeEventDetail;
+    };
     /**
      * Defines the visibility of the main content.
      * @default false

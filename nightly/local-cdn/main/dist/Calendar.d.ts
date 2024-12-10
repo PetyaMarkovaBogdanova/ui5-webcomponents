@@ -150,6 +150,11 @@ type SpecialCalendarDateT = {
  * @since 1.0.0-rc.11
  */
 declare class Calendar extends CalendarPart {
+    eventDetails: CalendarPart["eventDetails"] & {
+        "selection-change": CalendarSelectionChangeEventDetail;
+        "show-month-view": void;
+        "show-year-view": void;
+    };
     /**
      * Defines the type of selection used in the calendar component.
      * Accepted property values are:
@@ -229,12 +234,12 @@ declare class Calendar extends CalendarPart {
     /**
      * The user clicked the "month" button in the header
      */
-    onHeaderShowMonthPress(e: CustomEvent): void;
+    onHeaderShowMonthPress(): void;
     showMonth(): void;
     /**
      * The user clicked the "year" button in the header
      */
-    onHeaderShowYearPress(e: CustomEvent): void;
+    onHeaderShowYearPress(): void;
     showYear(): void;
     get _currentPickerDOM(): ICalendarPicker;
     /**

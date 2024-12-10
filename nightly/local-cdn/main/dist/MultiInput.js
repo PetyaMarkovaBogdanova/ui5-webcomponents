@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var MultiInput_1;
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import { isShow, isBackSpace, isLeft, isRight, isRightCtrl, isHome, isEnd, isDown, } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -321,12 +321,6 @@ MultiInput = MultiInput_1 = __decorate([
      */
     ,
     event("token-delete", {
-        detail: {
-            /**
-             * @public
-             */
-            tokens: { type: Array },
-        },
         bubbles: true,
     })
 ], MultiInput);

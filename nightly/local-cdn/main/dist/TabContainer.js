@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var TabContainer_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
@@ -1201,16 +1201,6 @@ TabContainer = TabContainer_1 = __decorate([
      */
     ,
     event("tab-select", {
-        detail: {
-            /**
-             * @public
-             */
-            tab: { type: HTMLElement },
-            /**
-             * @public
-             */
-            tabIndex: { type: Number },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -1225,16 +1215,6 @@ TabContainer = TabContainer_1 = __decorate([
      */
     ,
     event("move-over", {
-        detail: {
-            /**
-             * @public
-             */
-            source: { type: Object },
-            /**
-             * @public
-             */
-            destination: { type: Object },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -1248,16 +1228,6 @@ TabContainer = TabContainer_1 = __decorate([
      */
     ,
     event("move", {
-        detail: {
-            /**
-             * @public
-             */
-            source: { type: Object },
-            /**
-             * @public
-             */
-            destination: { type: Object },
-        },
         bubbles: true,
     })
 ], TabContainer);

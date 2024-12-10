@@ -77,6 +77,13 @@ type TimePickerInputEventDetail = TimePickerChangeInputEventDetail;
  * @since 1.0.0-rc.6
  */
 declare class TimePicker extends UI5Element implements IFormInputElement {
+    eventDetails: {
+        change: TimePickerChangeEventDetail;
+        "value-changed": TimePickerChangeEventDetail;
+        input: TimePickerInputEventDetail;
+        open: void;
+        close: void;
+    };
     /**
      * Defines a formatted time value.
      * @default ""
@@ -234,7 +241,7 @@ declare class TimePicker extends UI5Element implements IFormInputElement {
     onInputsPopoverAfterOpen(): void;
     onInputsPopoverAfterClose(): void;
     _handleInputClick(e: MouseEvent): void;
-    _updateValueAndFireEvents(value: string, normalizeValue: boolean, eventsNames: Array<string>): void;
+    _updateValueAndFireEvents(value: string, normalizeValue: boolean, eventsNames: Array<"input" | "change" | "value-changed">): void;
     _updateValueState(): void;
     _handleInputChange(e: CustomEvent): void;
     _handleInputLiveChange(e: CustomEvent): void;

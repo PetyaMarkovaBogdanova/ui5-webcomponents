@@ -17,7 +17,7 @@ import Carousel from "@ui5/webcomponents/dist/Carousel.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import MediaGalleryItem from "./MediaGalleryItem.js";
 import MediaGalleryItemLayout from "./types/MediaGalleryItemLayout.js";
 import MediaGalleryLayout from "./types/MediaGalleryLayout.js";
@@ -412,12 +412,6 @@ MediaGallery = MediaGallery_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**

@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 /**
  * Interface for components that may be slotted inside `ui5-shellbar` as items
@@ -52,9 +52,6 @@ ShellBarItem = __decorate([
      */
     ,
     event("click", {
-        detail: {
-            targetRef: { type: HTMLElement },
-        },
         bubbles: true,
         cancelable: true,
     })

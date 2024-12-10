@@ -34,6 +34,10 @@ type MonthPickerNavigateEventDetail = {
  * @private
  */
 declare class MonthPicker extends CalendarPart implements ICalendarPicker {
+    eventDetails: CalendarPart["eventDetails"] & {
+        change: MonthPickerChangeEventDetail;
+        navigate: MonthPickerNavigateEventDetail;
+    };
     /**
      * An array of UTC timestamps representing the selected date
      * or dates depending on the capabilities of the picker component.

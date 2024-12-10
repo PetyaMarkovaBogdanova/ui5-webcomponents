@@ -21,6 +21,9 @@ type ToolbarButtonAccessibilityAttributes = ButtonAccessibilityAttributes;
  * @since 1.17.0
  */
 declare class ToolbarButton extends ToolbarItem {
+    eventDetails: ToolbarItem["eventDetails"] & {
+        "click": void;
+    };
     /**
      * Defines if the action is disabled.
      *

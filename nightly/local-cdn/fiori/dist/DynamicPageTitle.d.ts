@@ -37,6 +37,9 @@ import Title from "@ui5/webcomponents/dist/Title.js";
  * @since 2.0.0
  */
 declare class DynamicPageTitle extends UI5Element {
+    eventDetails: {
+        "_toggle-title": void;
+    };
     /**
      * Defines if the title is snapped.
      *

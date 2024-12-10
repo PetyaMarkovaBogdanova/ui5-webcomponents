@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
@@ -164,16 +164,6 @@ ListItemGroup = __decorate([
      */
     ,
     event("move-over", {
-        detail: {
-            /**
-             * @public
-             */
-            source: { type: Object },
-            /**
-             * @public
-             */
-            destination: { type: Object },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -188,16 +178,6 @@ ListItemGroup = __decorate([
      */
     ,
     event("move", {
-        detail: {
-            /**
-             * @public
-             */
-            source: { type: Object },
-            /**
-             * @public
-             */
-            destination: { type: Object },
-        },
         bubbles: true,
     })
 ], ListItemGroup);

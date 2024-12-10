@@ -19,6 +19,9 @@ type ShellBarItemClickEventDetail = {
  * @public
  */
 declare class ShellBarItem extends UI5Element {
+    eventDetails: {
+        click: ShellBarItemClickEventDetail;
+    };
     /**
      * Defines the name of the item's icon.
      * @default undefined

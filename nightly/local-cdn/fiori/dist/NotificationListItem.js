@@ -10,7 +10,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import query from "@ui5/webcomponents-base/dist/decorators/query.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
 import BusyIndicator from "@ui5/webcomponents/dist/BusyIndicator.js";
@@ -479,14 +479,6 @@ NotificationListItem = NotificationListItem_1 = __decorate([
      */
     ,
     event("close", {
-        detail: {
-            /**
-             * @public
-             */
-            item: {
-                type: HTMLElement,
-            },
-        },
         bubbles: true,
     })
 ], NotificationListItem);

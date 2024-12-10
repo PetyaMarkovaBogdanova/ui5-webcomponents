@@ -117,6 +117,9 @@ type StepInfo = {
  * @csspart step-content - Used to style a `ui5-wizard-step` container.
  */
 declare class Wizard extends UI5Element {
+    eventDetails: {
+        "step-change": WizardStepChangeEventDetail;
+    };
     /**
      * Defines how the content of the `ui5-wizard` would be visualized.
      * @public

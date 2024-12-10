@@ -40,6 +40,9 @@ type ColorPaletteItemClickEventDetail = {
  * @public
  */
 declare class ColorPalette extends UI5Element {
+    eventDetails: {
+        "item-click": ColorPaletteItemClickEventDetail;
+    };
     /**
      * Defines whether the user can see the last used colors in the bottom of the component
      * @private

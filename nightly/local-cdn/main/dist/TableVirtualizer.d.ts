@@ -39,6 +39,9 @@ type RangeChangeEventDetail = {
  * @experimental This component is not intended to be used in a productive enviroment. The API is under development and may be changed in the future.
  */
 declare class TableVirtualizer extends UI5Element implements ITableFeature {
+    eventDetails: {
+        "range-change": RangeChangeEventDetail;
+    };
     /**
      * Defines the height of the rows in the table.
      *

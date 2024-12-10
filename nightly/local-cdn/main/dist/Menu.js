@@ -9,12 +9,13 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import { isLeft, isRight, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isPhone, isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
 import ResponsivePopover from "./ResponsivePopover.js";
 import Button from "./Button.js";
@@ -148,6 +149,14 @@ let Menu = Menu_1 = class Menu extends UI5Element {
             }
         }
     }
+    async focus(focusOptions) {
+        await renderFinished();
+        const firstMenuItem = this._menuItems[0];
+        if (firstMenuItem) {
+            return firstMenuItem.focus(focusOptions);
+        }
+        return super.focus(focusOptions);
+    }
     _startOpenTimeout(item) {
         clearTimeout(this._timeout);
         this._timeout = setTimeout(() => {
@@ -263,22 +272,7 @@ Menu = Menu_1 = __decorate([
      * @public
      */
     ,
-    event("item-click", {
-        detail: {
-            /**
-             * @public
-             */
-            item: {
-                type: HTMLElement,
-            },
-            /**
-             * @public
-             */
-            text: {
-                type: String,
-            },
-        },
-    })
+    event("item-click")
     /**
      * Fired before the menu is opened. This event can be cancelled, which will prevent the menu from opening. **This event does not bubble.**
      *
@@ -289,17 +283,7 @@ Menu = Menu_1 = __decorate([
      * @param { HTMLElement } item The `ui5-menu-item` that triggers opening of the sub-menu or undefined when fired upon root menu opening.
      */
     ,
-    event("before-open", {
-        detail: {
-            /**
-             * @public
-             * @since 1.14.0
-             */
-            item: {
-                type: HTMLElement,
-            },
-        },
-    })
+    event("before-open")
     /**
      * Fired after the menu is opened. **This event does not bubble.**
      * @public
@@ -315,16 +299,7 @@ Menu = Menu_1 = __decorate([
      * @since 1.10.0
      */
     ,
-    event("before-close", {
-        detail: {
-            /**
-             * @public
-             */
-            escPressed: {
-                type: Boolean,
-            },
-        },
-    })
+    event("before-close")
     /**
      * Fired after the menu is closed. **This event does not bubble.**
      * @public

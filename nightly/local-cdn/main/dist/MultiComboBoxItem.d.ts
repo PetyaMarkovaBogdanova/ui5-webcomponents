@@ -1,6 +1,7 @@
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ComboBoxItem from "./ComboBoxItem.js";
 import type { IMultiComboBoxItem } from "./MultiComboBox.js";
+import type { SelectionRequestEventDetail } from "./ListItem.js";
 /**
  * @class
  * The `ui5-mcb-item` represents the item for a `ui5-multi-combobox`.
@@ -10,6 +11,9 @@ import type { IMultiComboBoxItem } from "./MultiComboBox.js";
  * @public
  */
 declare class MultiComboBoxItem extends ComboBoxItem implements IMultiComboBoxItem {
+    eventDetails: ComboBoxItem["eventDetails"] & {
+        "_selection-requested": SelectionRequestEventDetail;
+    };
     /**
      * Defines the selected state of the component.
      * @default false

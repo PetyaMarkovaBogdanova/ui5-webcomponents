@@ -48,6 +48,10 @@ import Button from "./Button.js";
  * @since 1.1.0
  */
 declare class SplitButton extends UI5Element {
+    eventDetails: {
+        click: void;
+        "arrow-click": void;
+    };
     /**
      * Defines the icon to be displayed as graphical element within the component.
      * The SAP-icons font provides numerous options.

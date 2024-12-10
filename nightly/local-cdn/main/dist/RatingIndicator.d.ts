@@ -42,6 +42,9 @@ type Star = {
  * @since 1.0.0-rc.8
  */
 declare class RatingIndicator extends UI5Element {
+    eventDetails: {
+        change: void;
+    };
     /**
      * The indicated value of the rating.
      *

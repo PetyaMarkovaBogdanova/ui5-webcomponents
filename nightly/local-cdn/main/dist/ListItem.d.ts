@@ -48,6 +48,13 @@ type ListItemAccessibilityAttributes = Pick<AccessibilityAttributes, "hasPopup" 
  * @public
  */
 declare abstract class ListItem extends ListItemBase {
+    eventDetails: ListItemBase["eventDetails"] & {
+        "detail-click": {
+            item: ListItem;
+            selected: boolean;
+        };
+        "_selection-requested": SelectionRequestEventDetail;
+    };
     /**
      * Defines the visual indication and behavior of the list items.
      * Available options are `Active` (by default), `Inactive`, `Detail` and `Navigation`.

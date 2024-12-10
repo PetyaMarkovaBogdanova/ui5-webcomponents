@@ -46,7 +46,7 @@ type ShellBarMenuItemClickEventDetail = {
     item: HTMLElement;
 };
 type ShellBarAdditionalContextItemDisappearsEventDetail = {
-    items: Array<HTMLElement>;
+    items: Array<HTMLElement | null>;
 };
 type ShellBarSearchButtonEventDetail = {
     targetRef: HTMLElement;
@@ -102,6 +102,15 @@ interface IShelBarItemInfo {
  * @since 0.8.0
  */
 declare class ShellBar extends UI5Element {
+    eventDetails: {
+        "notifications-click": ShellBarNotificationsClickEventDetail;
+        "profile-click": ShellBarProfileClickEventDetail;
+        "product-switch-click": ShellBarProductSwitchClickEventDetail;
+        "logo-click": ShellBarLogoClickEventDetail;
+        "menu-item-click": ShellBarMenuItemClickEventDetail;
+        "search-button-click": ShellBarSearchButtonEventDetail;
+        "additional-context-disappears": ShellBarAdditionalContextItemDisappearsEventDetail;
+    };
     /**
      * Defines the `primaryTitle`.
      *
@@ -285,6 +294,7 @@ declare class ShellBar extends UI5Element {
     _skipLayout: boolean;
     _lastOffsetWidth: number;
     _lessSearchSpace: boolean;
+    _searchButtonInteraction: boolean;
     _headerPress: () => void;
     static get FIORI_3_BREAKPOINTS(): number[];
     static get FIORI_3_BREAKPOINTS_MAP(): Record<string, string>;

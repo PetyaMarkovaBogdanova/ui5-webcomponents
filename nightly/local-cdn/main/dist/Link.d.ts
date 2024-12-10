@@ -54,6 +54,9 @@ type LinkAccessibilityAttributes = Pick<AccessibilityAttributes, "expanded" | "h
  * **Note:** Although this slot accepts HTML Elements, it is strongly recommended that you only use text in order to preserve the intended design.
  */
 declare class Link extends UI5Element implements ITabbable {
+    eventDetails: {
+        "click": LinkClickEventDetail;
+    };
     /**
      * Defines whether the component is disabled.
      *

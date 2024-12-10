@@ -10,7 +10,7 @@ import { isSpace, isEnter, isSpaceShift } from "@ui5/webcomponents-base/dist/Key
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import ProductSwitchItemTemplate from "./generated/templates/ProductSwitchItemTemplate.lit.js";
 // Styles
@@ -97,8 +97,8 @@ let ProductSwitchItem = class ProductSwitchItem extends UI5Element {
     _onfocusout() {
         this.active = false;
     }
-    _onfocusin(e) {
-        this.fireDecoratorEvent("_focused", e);
+    _onfocusin() {
+        this.fireDecoratorEvent("_focused");
     }
     _fireItemClick() {
         this.fireDecoratorEvent("click", { item: this });

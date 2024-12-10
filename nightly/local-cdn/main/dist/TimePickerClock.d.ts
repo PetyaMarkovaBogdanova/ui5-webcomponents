@@ -58,6 +58,9 @@ type TimePickerClockSelectedItem = TimePickerClockItem & TimePickerClockSelectio
  * @private
  */
 declare class TimePickerClock extends UI5Element {
+    eventDetails: {
+        "change": TimePickerClockChangeEventDetail;
+    };
     /**
      * Determines whether the component is displayed as disabled.
      * @default false

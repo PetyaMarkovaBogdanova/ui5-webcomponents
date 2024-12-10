@@ -120,19 +120,21 @@ let ResponsivePopover = ResponsivePopover_1 = class ResponsivePopover extends Po
     get _closeDialogAriaLabel() {
         return ResponsivePopover_1.i18nBundle.getText(RESPONSIVE_POPOVER_CLOSE_DIALOG_BUTTON);
     }
-    _beforeDialogOpen(e) {
+    _beforeDialogOpen() {
         this._opened = true;
         this.open = true;
-        this._propagateDialogEvent(e);
+        this.fireDecoratorEvent("before-open");
     }
-    _afterDialogClose(e) {
+    _afterDialogOpen() {
+        this.fireDecoratorEvent("open");
+    }
+    _beforeDialogClose(e) {
+        this.fireDecoratorEvent("before-close", e.detail);
+    }
+    _afterDialogClose() {
         this._opened = false;
         this.open = false;
-        this._propagateDialogEvent(e);
-    }
-    _propagateDialogEvent(e) {
-        const type = e.type.replace("ui5-", "");
-        this.fireDecoratorEvent(type, e.detail);
+        this.fireDecoratorEvent("close");
     }
     get isModal() {
         if (!isPhone()) {

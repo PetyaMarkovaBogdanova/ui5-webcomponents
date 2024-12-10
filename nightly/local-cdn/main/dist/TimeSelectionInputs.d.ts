@@ -20,6 +20,9 @@ import InputType from "./types/InputType.js";
  * @private
  */
 declare class TimeSelectionInputs extends TimePickerInternals {
+    eventDetails: TimePickerInternals["eventDetails"] & {
+        "close-inputs": void;
+    };
     _editedInput: number;
     _editedInputValue?: string;
     get enterHoursLabel(): string;

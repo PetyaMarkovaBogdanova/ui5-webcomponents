@@ -75,6 +75,17 @@ type WalkCallback = (item: TreeItemBase, level: number, index: number) => void;
  * @since 1.0.0-rc.8
  */
 declare class Tree extends UI5Element {
+    eventDetails: {
+        "item-toggle": TreeItemToggleEventDetail;
+        "item-mouseover": TreeItemMouseoverEventDetail;
+        "item-mouseout": TreeItemMouseoutEventDetail;
+        "item-click": TreeItemClickEventDetail;
+        "item-delete": TreeItemDeleteEventDetail;
+        "item-focus": TreeItemFocusEventDetail;
+        "selection-change": TreeSelectionChangeEventDetail;
+        "move": TreeMoveEventDetail;
+        "move-over": TreeMoveEventDetail;
+    };
     /**
      * Defines the selection mode of the component. Since the tree uses a `ui5-list` to display its structure,
      * the tree modes are exactly the same as the list modes, and are all applicable.

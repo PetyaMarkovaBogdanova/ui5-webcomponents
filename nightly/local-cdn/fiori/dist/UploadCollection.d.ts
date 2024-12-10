@@ -31,6 +31,10 @@ type UploadCollectionItemDeleteEventDetail = {
  * @since 1.0.0-rc.7
  */
 declare class UploadCollection extends UI5Element {
+    eventDetails: {
+        "item-delete": UploadCollectionItemDeleteEventDetail;
+        "selection-change": UploadCollectionSelectionChangeEventDetail;
+    };
     /**
      * Defines the selection mode of the `ui5-upload-collection`.
      *

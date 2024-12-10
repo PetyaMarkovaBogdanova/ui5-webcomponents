@@ -31,6 +31,11 @@ type BarcodeScannerDialogScanErrorEventDetail = {
  * @since 1.0.0-rc.15
  */
 declare class BarcodeScannerDialog extends UI5Element {
+    eventDetails: {
+        close: void;
+        "scan-success": BarcodeScannerDialogScanSuccessEventDetail;
+        "scan-error": BarcodeScannerDialogScanErrorEventDetail;
+    };
     /**
      * Defines the header HTML Element.
      *

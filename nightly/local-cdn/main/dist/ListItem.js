@@ -10,7 +10,7 @@ import { isSpace, isEnter, isDelete, isF2, } from "@ui5/webcomponents-base/dist/
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getFirstFocusableElement } from "@ui5/webcomponents-base/dist/util/FocusableElements.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/decline.js";
@@ -387,9 +387,6 @@ ListItem = ListItem_1 = __decorate([
      */
     ,
     event("detail-click", {
-        bubbles: true,
-    }),
-    event("_focused", {
         bubbles: true,
     }),
     event("_selection-requested", {

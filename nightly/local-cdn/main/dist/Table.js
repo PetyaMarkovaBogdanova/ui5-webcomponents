@@ -10,7 +10,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
@@ -447,12 +447,6 @@ Table = Table_1 = __decorate([
      */
     ,
     event("row-click", {
-        detail: {
-            /**
-             * @public
-             */
-            row: { type: TableRow },
-        },
         bubbles: true,
     })
 ], Table);

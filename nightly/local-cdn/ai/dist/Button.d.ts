@@ -31,6 +31,9 @@ import ButtonState from "./ButtonState.js";
  * @experimental The Button and ButtonState web components are availabe since 2.0 under an experimental flag and their API and behaviour are subject to change.
  */
 declare class Button extends UI5Element {
+    eventDetails: {
+        click: void;
+    };
     /**
      * Defines the component design.
      * @default "Default"

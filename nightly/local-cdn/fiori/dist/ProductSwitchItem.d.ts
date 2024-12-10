@@ -24,6 +24,12 @@ import type { IProductSwitchItem } from "./ProductSwitch.js";
  * @since 1.0.0-rc.5
  */
 declare class ProductSwitchItem extends UI5Element implements IProductSwitchItem {
+    eventDetails: {
+        click: {
+            item: ProductSwitchItem;
+        };
+        _focused: void;
+    };
     /**
      * Defines the title of the component.
      * @default undefined
@@ -95,7 +101,7 @@ declare class ProductSwitchItem extends UI5Element implements IProductSwitchItem
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
     _onfocusout(): void;
-    _onfocusin(e: FocusEvent): void;
+    _onfocusin(): void;
     _fireItemClick(): void;
 }
 export default ProductSwitchItem;

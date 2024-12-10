@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 // Template
 import TimePickerClockTemplate from "./generated/templates/TimePickerClockTemplate.lit.js";
@@ -467,9 +467,9 @@ let TimePickerClock = class TimePickerClock extends UI5Element {
             // the new value is set, fire event
             setTimeout(() => {
                 this.fireDecoratorEvent("change", {
-                    "value": newValue,
-                    "stringValue": this._getStringValue(newValue),
-                    "finalChange": true,
+                    value: newValue,
+                    stringValue: this._getStringValue(newValue),
+                    finalChange: true,
                 });
             }, ANIMATION_DELAY_EVENT);
         }
@@ -515,9 +515,9 @@ let TimePickerClock = class TimePickerClock extends UI5Element {
         const realValue = this._fixReplacementValue(value);
         this.selectedValue = realValue;
         this.fireDecoratorEvent("change", {
-            "value": realValue,
-            "stringValue": this._getStringValue(realValue),
-            "finalChange": false,
+            value: realValue,
+            stringValue: this._getStringValue(realValue),
+            finalChange: false,
         });
         this._updateSelectedValueObject(realValue);
     }
@@ -690,20 +690,6 @@ TimePickerClock = __decorate([
      */
     ,
     event("change", {
-        detail: {
-            /**
-             * @public
-             */
-            value: { type: Number },
-            /**
-             * @public
-             */
-            stringValue: { type: String },
-            /**
-             * @public
-             */
-            finalChange: { type: Boolean },
-        },
         bubbles: true,
     })
 ], TimePickerClock);

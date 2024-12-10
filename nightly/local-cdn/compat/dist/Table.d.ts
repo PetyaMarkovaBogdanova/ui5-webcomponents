@@ -110,6 +110,12 @@ declare enum TableFocusTargetElement {
  * @public
  */
 declare class Table extends UI5Element {
+    eventDetails: {
+        "row-click": TableRowClickEventDetail;
+        "popin-change": TablePopinChangeEventDetail;
+        "load-more": void;
+        "selection-change": TableSelectionChangeEventDetail;
+    };
     /**
      * Defines the text that will be displayed when there is no data and `hideNoData` is not present.
      * @default undefined

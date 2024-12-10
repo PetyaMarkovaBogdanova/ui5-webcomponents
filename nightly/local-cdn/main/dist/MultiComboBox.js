@@ -9,7 +9,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
@@ -992,8 +992,6 @@ let MultiComboBox = MultiComboBox_1 = class MultiComboBox extends UI5Element {
         const changePrevented = !this.fireDecoratorEvent("selection-change", {
             items: this._getSelectedItems(),
         });
-        // Angular 2 way data binding
-        this.fireDecoratorEvent("value-changed");
         return changePrevented;
     }
     _getList() {
@@ -1598,9 +1596,7 @@ MultiComboBox = MultiComboBox_1 = __decorate([
      * @public
      */
     ,
-    event("open", {
-        bubbles: true,
-    })
+    event("open")
     /**
      * Fired when the dropdown is closed.
      * @since 2.0.0
@@ -1615,12 +1611,6 @@ MultiComboBox = MultiComboBox_1 = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             */
-            items: { type: (Array) },
-        },
         bubbles: true,
         cancelable: true,
     })

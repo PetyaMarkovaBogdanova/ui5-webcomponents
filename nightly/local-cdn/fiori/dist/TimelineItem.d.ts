@@ -13,6 +13,9 @@ import TimelineLayout from "./types/TimelineLayout.js";
  * @public
  */
 declare class TimelineItem extends UI5Element implements ITimelineItem {
+    eventDetails: {
+        "name-click": void;
+    };
     /**
      * Defines the icon to be displayed as graphical element within the `ui5-timeline-item`.
      * SAP-icons font provides numerous options.

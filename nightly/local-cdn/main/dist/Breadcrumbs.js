@@ -9,7 +9,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import { locationOpen } from "@ui5/webcomponents-base/dist/Location.js";
@@ -20,7 +20,7 @@ import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.j
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import BreadcrumbsDesign from "./types/BreadcrumbsDesign.js";
 import BreadcrumbsItem from "./BreadcrumbsItem.js";
-import { BREADCRUMB_ITEM_POS, BREADCRUMBS_ARIA_LABEL, BREADCRUMBS_OVERFLOW_ARIA_LABEL, BREADCRUMBS_CANCEL_BUTTON, } from "./generated/i18n/i18n-defaults.js";
+import { BREADCRUMB_ITEM_POS, BREADCRUMBS_ARIA_LABEL, BREADCRUMBS_OVERFLOW_ARIA_LABEL, BREADCRUMBS_CANCEL_BUTTON, FORM_SELECTABLE_AVALIABLE_VALUES, } from "./generated/i18n/i18n-defaults.js";
 import Link from "./Link.js";
 import Label from "./Label.js";
 import ResponsivePopover from "./ResponsivePopover.js";
@@ -159,6 +159,13 @@ let Breadcrumbs = Breadcrumbs_1 = class Breadcrumbs extends UI5Element {
             items.push(this._labelFocusAdaptor);
         }
         return items;
+    }
+    /**
+     * Returns the translatable accessible name for the popover
+     * @private
+     */
+    get _accessibleNamePopover() {
+        return Breadcrumbs_1.i18nBundle.getText(FORM_SELECTABLE_AVALIABLE_VALUES);
     }
     _onfocusin(e) {
         const target = e.target, labelWrapper = this.getCurrentLocationLabelWrapper(), currentItem = (target === labelWrapper) ? this._labelFocusAdaptor : target;
@@ -488,28 +495,6 @@ Breadcrumbs = Breadcrumbs_1 = __decorate([
      */
     ,
     event("item-click", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-            /**
-             * @public
-             */
-            altKey: { type: Boolean },
-            /**
-             * @public
-             */
-            ctrlKey: { type: Boolean },
-            /**
-             * @public
-             */
-            metaKey: { type: Boolean },
-            /**
-             * @public
-             */
-            shiftKey: { type: Boolean },
-        },
         bubbles: true,
         cancelable: true,
     })

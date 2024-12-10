@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var UserMenu_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import { customElement, slot, event, property, } from "@ui5/webcomponents-base/dist/decorators.js";
+import { customElement, slot, eventStrict as event, property, } from "@ui5/webcomponents-base/dist/decorators.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
 import Avatar from "@ui5/webcomponents/dist/Avatar.js";
@@ -21,8 +21,7 @@ import ListItemCustom from "@ui5/webcomponents/dist/ListItemCustom.js";
 import Tag from "@ui5/webcomponents/dist/Tag.js";
 import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import UserMenuAccount from "./UserMenuAccount.js";
-import UserMenuItem from "./UserMenuItem.js";
+import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import UserMenuTemplate from "./generated/templates/UserMenuTemplate.lit.js";
 import UserMenuCss from "./generated/themes/UserMenu.css.js";
 // Icons
@@ -31,8 +30,9 @@ import "@ui5/webcomponents-icons/dist/edit.js";
 import "@ui5/webcomponents-icons/dist/person-placeholder.js";
 import "@ui5/webcomponents-icons/dist/log.js";
 import "@ui5/webcomponents-icons/dist/user-settings.js";
+import "@ui5/webcomponents-icons/dist/decline.js";
 // Texts
-import { USER_MENU_OTHER_ACCOUNT_BUTTON_TXT, USER_MENU_MANAGE_ACCOUNT_BUTTON_TXT, USER_MENU_SIGN_OUT_BUTTON_TXT, USER_MENU_POPOVER_ACCESSIBLE_NAME, USER_MENU_EDIT_AVATAR_TXT, USER_MENU_ADD_ACCOUNT_TXT, } from "./generated/i18n/i18n-defaults.js";
+import { USER_MENU_OTHER_ACCOUNT_BUTTON_TXT, USER_MENU_MANAGE_ACCOUNT_BUTTON_TXT, USER_MENU_SIGN_OUT_BUTTON_TXT, USER_MENU_POPOVER_ACCESSIBLE_NAME, USER_MENU_EDIT_AVATAR_TXT, USER_MENU_ADD_ACCOUNT_TXT, USER_MENU_CLOSE_BUTTON_TXT, } from "./generated/i18n/i18n-defaults.js";
 /**
  * @class
  * ### Overview
@@ -86,6 +86,9 @@ let UserMenu = UserMenu_1 = class UserMenu extends UI5Element {
     onBeforeRendering() {
         this._selectedAccount = this.accounts.find(account => account.selected) || this.accounts[0];
     }
+    get _isPhone() {
+        return isPhone();
+    }
     _handleAvatarClick() {
         this.fireDecoratorEvent("avatar-click");
     }
@@ -133,6 +136,9 @@ let UserMenu = UserMenu_1 = class UserMenu extends UI5Element {
     _handlePopoverAfterClose() {
         this.open = false;
     }
+    _handleDeclineClick() {
+        this._closeUserMenu();
+    }
     _openItemSubMenu(item) {
         if (!item._popover || item._popover.open) {
             return;
@@ -156,6 +162,9 @@ let UserMenu = UserMenu_1 = class UserMenu extends UI5Element {
     }
     get _otherAccounts() {
         return this.accounts.filter(account => account !== this._selectedAccount);
+    }
+    get _declineButtonTooltip() {
+        return UserMenu_1.i18nBundle.getText(USER_MENU_CLOSE_BUTTON_TXT);
     }
     get _manageAccountButtonText() {
         return UserMenu_1.i18nBundle.getText(USER_MENU_MANAGE_ACCOUNT_BUTTON_TXT);
@@ -259,10 +268,6 @@ UserMenu = UserMenu_1 = __decorate([
      */
     ,
     event("change-account", {
-        detail: {
-            prevSelectedAccount: { type: UserMenuAccount },
-            selectedAccount: { type: UserMenuAccount },
-        },
         cancelable: true,
     })
     /**
@@ -272,9 +277,6 @@ UserMenu = UserMenu_1 = __decorate([
      */
     ,
     event("item-click", {
-        detail: {
-            item: { type: UserMenuItem },
-        },
         cancelable: true,
     })
     /**

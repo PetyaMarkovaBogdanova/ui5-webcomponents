@@ -12,7 +12,7 @@ import DragRegistry from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegi
 import { findClosestPosition } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
 import Orientation from "@ui5/webcomponents-base/dist/types/Orientation.js";
 import MovePlacement from "@ui5/webcomponents-base/dist/types/MovePlacement.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import DropIndicator from "./DropIndicator.js";
 import TreeItem from "./TreeItem.js";
@@ -338,12 +338,6 @@ Tree = __decorate([
      */
     ,
     event("item-toggle", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -355,12 +349,6 @@ Tree = __decorate([
      */
     ,
     event("item-mouseover", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -371,12 +359,6 @@ Tree = __decorate([
      */
     ,
     event("item-mouseout", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -386,12 +368,6 @@ Tree = __decorate([
      */
     ,
     event("item-click", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
         cancelable: true,
     })
@@ -405,12 +381,6 @@ Tree = __decorate([
      */
     ,
     event("item-delete", {
-        detail: {
-            /**
-             * @public
-             */
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -420,9 +390,6 @@ Tree = __decorate([
      */
     ,
     event("item-focus", {
-        detail: {
-            item: { type: HTMLElement },
-        },
         bubbles: true,
     })
     /**
@@ -435,34 +402,12 @@ Tree = __decorate([
      */
     ,
     event("selection-change", {
-        detail: {
-            /**
-             * @public
-             */
-            selectedItems: { type: Array },
-            /**
-             * @public
-             */
-            previouslySelectedItems: { type: Array },
-            /**
-             * @public
-             */
-            targetItem: { type: HTMLElement },
-        },
         bubbles: true,
     }),
     event("move", {
-        detail: {
-            source: { type: Object },
-            destination: { type: Object },
-        },
         bubbles: true,
     }),
     event("move-over", {
-        detail: {
-            source: { type: Object },
-            destination: { type: Object },
-        },
         bubbles: true,
         cancelable: true,
     })

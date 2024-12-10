@@ -32,6 +32,9 @@ import type TagSize from "./types/TagSize.js";
  * @public
  */
 declare class Tag extends UI5Element {
+    eventDetails: {
+        click: void;
+    };
     /**
      * Defines the design type of the component.
      * @default "Neutral"
