@@ -217,6 +217,9 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             if (spacerWidth > searchFieldWidth && this.additionalContextHidden.length === 0 && this._showSearchField === false && this._showFullWidthSearch === false) {
                 this._showSearchField = true;
             }
+            if (this.additionalContext.length === 0 && this._showSearchField === false && this._showFullWidthSearch === false) {
+                this._showSearchField = true;
+            }
         }
     }
     _onKeyDown(e) {
@@ -953,7 +956,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         return ShellBar_1.i18nBundle.getText(SHELLBAR_PRODUCT_SWITCH_BTN);
     }
     get _showFullWidthSearch() {
-        const size = this._handleBarBreakpoints();
+        const size = this.breakpointSize;
         const searchBtnHidden = !!this.shadowRoot.querySelector(".ui5-shellbar-search-button.ui5-shellbar-hidden-button");
         return size === "S" || searchBtnHidden || this._lessSearchSpace;
     }
