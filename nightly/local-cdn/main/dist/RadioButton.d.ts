@@ -134,7 +134,7 @@ declare class RadioButton extends UI5Element implements IFormInputElement {
      * @since 1.1.0
      */
     accessibleNameRef?: string;
-    _tabIndex?: string;
+    _tabIndex?: number;
     /**
      * Defines the active state (pressed or not) of the component.
      * @default false
@@ -171,16 +171,11 @@ declare class RadioButton extends UI5Element implements IFormInputElement {
     _onfocusout(): void;
     toggle(): this;
     canToggle(): boolean;
-    get classes(): {
-        inner: {
-            "ui5-radio-inner--hoverable": boolean;
-        };
-    };
-    get effectiveAriaDisabled(): "true" | null;
+    get effectiveAriaDisabled(): true | undefined;
     get ariaLabelText(): string;
     get effectiveAriaDescribedBy(): string | undefined;
     get hasValueState(): boolean;
     get valueStateText(): string;
-    get effectiveTabIndex(): string | undefined;
+    get effectiveTabIndex(): number | undefined;
 }
 export default RadioButton;

@@ -17,14 +17,15 @@ import UI5Date from "@ui5/webcomponents-localization/dist/dates/UI5Date.js";
 import DateFormat from "@ui5/webcomponents-localization/dist/DateFormat.js";
 import Button from "./Button.js";
 import ToggleButton from "./ToggleButton.js";
-import SegmentedButton from "./SegmentedButton.js";
+import SegmentedButton, {} from "./SegmentedButton.js";
+import SegmentedButtonItem from "./SegmentedButtonItem.js";
 import Calendar from "./Calendar.js";
 import DatePicker from "./DatePicker.js";
 import TimeSelectionClocks from "./TimeSelectionClocks.js";
 // i18n texts
 import { TIMEPICKER_SUBMIT_BUTTON, TIMEPICKER_CANCEL_BUTTON, DATETIME_DESCRIPTION, DATETIME_PICKER_DATE_BUTTON, DATETIME_PICKER_TIME_BUTTON, DATETIMEPICKER_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
 // Template
-import DateTimePickerTemplate from "./generated/templates/DateTimePickerTemplate.lit.js";
+import DateTimePickerTemplate from "./DateTimePickerTemplate.js";
 // Styles
 import DateTimePickerCss from "./generated/themes/DateTimePicker.css.js";
 import DateTimePickerPopoverCss from "./generated/themes/DateTimePickerPopover.css.js";
@@ -155,6 +156,7 @@ let DateTimePicker = DateTimePicker_1 = class DateTimePicker extends DatePicker 
      */
     get classes() {
         return {
+            // Remove after deliting the hbs template, the classes are added in the jsx template
             picker: {
                 "ui5-dt-picker-content--phone": this.phone,
             },
@@ -289,8 +291,8 @@ let DateTimePicker = DateTimePicker_1 = class DateTimePicker extends DatePicker 
      * @param e
      */
     _dateTimeSwitchChange(e) {
-        const target = e.target;
-        this._showTimeView = target.getAttribute("key") === "Time";
+        const selectedItem = e.detail.selectedItems[0];
+        this._showTimeView = selectedItem.getAttribute("data-ui5-key") === "Time";
     }
     /**
      * @override
@@ -364,6 +366,7 @@ DateTimePicker = DateTimePicker_1 = __decorate([
             Button,
             ToggleButton,
             SegmentedButton,
+            SegmentedButtonItem,
             TimeSelectionClocks,
         ],
     })

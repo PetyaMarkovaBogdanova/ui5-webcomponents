@@ -2,6 +2,7 @@ import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/In
 import DatePicker from "./DatePicker.js";
 import type { DatePickerChangeEventDetail as DateRangePickerChangeEventDetail, DatePickerInputEventDetail as DateRangePickerInputEventDetail } from "./DatePicker.js";
 import type { CalendarSelectionChangeEventDetail } from "./Calendar.js";
+import type CalendarSelectionMode from "./types/CalendarSelectionMode.js";
 /**
  * @class
  *
@@ -69,7 +70,7 @@ declare class DateRangePicker extends DatePicker implements IFormInputElement {
      * Required by DatePicker.js
      * @override
      */
-    get _calendarSelectionMode(): string;
+    get _calendarSelectionMode(): `${CalendarSelectionMode}`;
     /**
      * Required by DatePicker.js - set the calendar focus on the first selected date (or today if not set)
      * @override

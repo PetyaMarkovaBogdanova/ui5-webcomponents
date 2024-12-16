@@ -9,7 +9,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import executeTemplate from "@ui5/webcomponents-base/dist/renderer/executeTemplate.js";
 import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
@@ -25,9 +25,9 @@ import Icon from "./Icon.js";
 import Button from "./Button.js";
 import ListItemCustom from "./ListItemCustom.js";
 // Templates
-import TabTemplate from "./generated/templates/TabTemplate.lit.js";
-import TabInStripTemplate from "./generated/templates/TabInStripTemplate.lit.js";
-import TabInOverflowTemplate from "./generated/templates/TabInOverflowTemplate.lit.js";
+import TabTemplate from "./TabTemplate.js";
+import TabInStripTemplate from "./TabInStripTemplate.js";
+import TabInOverflowTemplate from "./TabInOverflowTemplate.js";
 // Styles
 import css from "./generated/themes/Tab.css.js";
 import stripCss from "./generated/themes/TabInStrip.css.js";
@@ -327,6 +327,16 @@ let Tab = Tab_1 = class Tab extends UI5Element {
             e.target.removeAttribute("data-moving");
         }
     }
+    captureRef(ref) {
+        if (ref) {
+            ref.realTabReference = this;
+        }
+    }
+    captureButtonRef(ref) {
+        if (ref) {
+            ref.tab = this;
+        }
+    }
 };
 __decorate([
     property()
@@ -382,7 +392,7 @@ Tab = Tab_1 = __decorate([
     customElement({
         tag: "ui5-tab",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: TabTemplate,
         styles: css,
         dependencies: [

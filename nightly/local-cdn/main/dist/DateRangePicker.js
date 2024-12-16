@@ -12,7 +12,7 @@ import CalendarDate from "@ui5/webcomponents-localization/dist/dates/CalendarDat
 import modifyDateBy from "@ui5/webcomponents-localization/dist/dates/modifyDateBy.js";
 import getTodayUTCTimestamp from "@ui5/webcomponents-localization/dist/dates/getTodayUTCTimestamp.js";
 import { DATERANGE_DESCRIPTION, DATERANGEPICKER_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
-import DateRangePickerTemplate from "./generated/templates/DateRangePickerTemplate.lit.js";
+import DateRangePickerTemplate from "./DateRangePickerTemplate.js";
 // Styles
 import DateRangePickerCss from "./generated/themes/DateRangePicker.css.js";
 import DatePicker from "./DatePicker.js";

@@ -33,7 +33,7 @@ type ColorPalettePopoverItemClickEventDetail = ColorPaletteItemClickEventDetail;
 declare class ColorPalettePopover extends UI5Element {
     eventDetails: {
         "item-click": ColorPalettePopoverItemClickEventDetail;
-        close: void;
+        "close": void;
     };
     /**
      * Defines whether the user can see the last used colors in the bottom of the component

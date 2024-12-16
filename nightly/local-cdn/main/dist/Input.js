@@ -6,14 +6,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var Input_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import {} from "@ui5/webcomponents-base";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
-// @ts-ignore
+// @ts-expect-error
 import encodeXML from "@ui5/webcomponents-base/dist/sap/base/security/encodeXML.js";
 import { isPhone, isAndroid, } from "@ui5/webcomponents-base/dist/Device.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
@@ -24,17 +25,11 @@ import { submitForm } from "@ui5/webcomponents-base/dist/features/InputElementsF
 import { getAssociatedLabelForTexts, getAllAccessibleNameRefTexts, registerUI5Element, deregisterUI5Element, } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { getCaretPosition, setCaretPosition } from "@ui5/webcomponents-base/dist/util/Caret.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
-import "@ui5/webcomponents-icons/dist/decline.js";
-import "@ui5/webcomponents-icons/dist/not-editable.js";
-import "@ui5/webcomponents-icons/dist/error.js";
-import "@ui5/webcomponents-icons/dist/alert.js";
-import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
-import "@ui5/webcomponents-icons/dist/information.js";
 import InputType from "./types/InputType.js";
 import Popover from "./Popover.js";
 import Icon from "./Icon.js";
 // Templates
-import InputTemplate from "./generated/templates/InputTemplate.lit.js";
+import InputTemplate from "./InputTemplate.js";
 import { StartsWith } from "./Filters.js";
 import { VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, VALUE_STATE_ERROR, VALUE_STATE_WARNING, VALUE_STATE_TYPE_SUCCESS, VALUE_STATE_TYPE_INFORMATION, VALUE_STATE_TYPE_ERROR, VALUE_STATE_TYPE_WARNING, INPUT_SUGGESTIONS, INPUT_SUGGESTIONS_TITLE, INPUT_SUGGESTIONS_ONE_HIT, INPUT_SUGGESTIONS_MORE_HITS, INPUT_SUGGESTIONS_NO_HIT, INPUT_CLEAR_ICON_ACC_NAME, INPUT_AVALIABLE_VALUES, FORM_TEXTFIELD_REQUIRED, } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -337,6 +332,8 @@ let Input = Input_1 = class Input extends UI5Element {
         const innerInput = this.getInputDOMRefSync();
         if (this.showSuggestions && this.Suggestions?._getPicker()) {
             this._listWidth = this.Suggestions._getListWidth();
+            // disabled ItemNavigation from the list since we are not using it
+            this.Suggestions._getList()._itemNavigation._getItems = () => [];
         }
         if (this._performTextSelection) {
             // this is required to syncronize lit-html input's value and user's input
@@ -591,11 +588,16 @@ let Input = Input_1 = class Input extends UI5Element {
         this.fireDecoratorEvent("select");
     }
     _handleInput(e) {
+        const eventType = (e.detail && e.detail.inputType) || "";
+        this._input(e, eventType);
+    }
+    _handleNativeInput(e) {
+        const eventType = e.inputType || "";
+        this._input(e, eventType);
+    }
+    _input(e, eventType) {
         const inputDomRef = this.getInputDOMRefSync();
         const emptyValueFiredOnNumberInput = this.value && this.isTypeNumber && !inputDomRef.value;
-        const eventType = e.inputType
-            || (e.detail && e.detail.inputType)
-            || "";
         this._keepInnerValue = false;
         const allowedEventTypes = [
             "deleteWordBackward",
@@ -913,6 +915,9 @@ let Input = Input_1 = class Input extends UI5Element {
         return Input_1.i18nBundle.getText(INPUT_AVALIABLE_VALUES);
     }
     get inputType() {
+        return this.type;
+    }
+    get inputNativeType() {
         return this.type.toLowerCase();
     }
     get isTypeNumber() {
@@ -928,21 +933,18 @@ let Input = Input_1 = class Input extends UI5Element {
         const ariaHasPopupDefault = this.showSuggestions ? "dialog" : undefined;
         const ariaAutoCompleteDefault = this.showSuggestions ? "list" : undefined;
         const ariaDescribedBy = this._inputAccInfo.ariaDescribedBy ? `${this.suggestionsTextId} ${this.valueStateTextId} ${this._inputAccInfo.ariaDescribedBy}`.trim() : `${this.suggestionsTextId} ${this.valueStateTextId}`.trim();
-        const info = {
-            "input": {
-                "ariaRoledescription": this._inputAccInfo && (this._inputAccInfo.ariaRoledescription || undefined),
-                "ariaDescribedBy": ariaDescribedBy || undefined,
-                "ariaInvalid": this.valueState === ValueState.Negative ? "true" : undefined,
-                "ariaHasPopup": this._inputAccInfo.ariaHasPopup ? this._inputAccInfo.ariaHasPopup : ariaHasPopupDefault,
-                "ariaAutoComplete": this._inputAccInfo.ariaAutoComplete ? this._inputAccInfo.ariaAutoComplete : ariaAutoCompleteDefault,
-                "role": this._inputAccInfo && this._inputAccInfo.role,
-                "ariaControls": this._inputAccInfo && this._inputAccInfo.ariaControls,
-                "ariaExpanded": this._inputAccInfo && this._inputAccInfo.ariaExpanded,
-                "ariaDescription": this._inputAccInfo && this._inputAccInfo.ariaDescription,
-                "ariaLabel": (this._inputAccInfo && this._inputAccInfo.ariaLabel) || this._accessibleLabelsRefTexts || this.accessibleName || this._associatedLabelsTexts || undefined,
-            },
+        return {
+            "ariaRoledescription": this._inputAccInfo && (this._inputAccInfo.ariaRoledescription || undefined),
+            "ariaDescribedBy": ariaDescribedBy || undefined,
+            "ariaInvalid": this.valueState === ValueState.Negative ? true : undefined,
+            "ariaHasPopup": this._inputAccInfo.ariaHasPopup ? this._inputAccInfo.ariaHasPopup : ariaHasPopupDefault,
+            "ariaAutoComplete": this._inputAccInfo.ariaAutoComplete ? this._inputAccInfo.ariaAutoComplete : ariaAutoCompleteDefault,
+            "role": this._inputAccInfo && this._inputAccInfo.role,
+            "ariaControls": this._inputAccInfo && this._inputAccInfo.ariaControls,
+            "ariaExpanded": this._inputAccInfo && this._inputAccInfo.ariaExpanded,
+            "ariaDescription": this._inputAccInfo && this._inputAccInfo.ariaDescription,
+            "ariaLabel": (this._inputAccInfo && this._inputAccInfo.ariaLabel) || this._accessibleLabelsRefTexts || this.accessibleName || this._associatedLabelsTexts || undefined,
         };
-        return info;
     }
     get nativeInputAttributes() {
         return {
@@ -1225,7 +1227,7 @@ Input = Input_1 = __decorate([
         tag: "ui5-input",
         languageAware: true,
         formAssociated: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: InputTemplate,
         styles: [
             inputStyles,
@@ -1317,6 +1319,14 @@ Input = Input_1 = __decorate([
         bubbles: true,
     })
 ], Input);
+// declare module "@ui5/webcomponents-base/jsx-runtime" {
+// 	// eslint-disable-next-line @typescript-eslint/no-namespace
+// 	namespace JSX {
+// 		interface IntrinsicElements {
+// 			"ui5-input": Input["_jsxProps"];
+// 		}
+// 	}
+// }
 Input.define();
 export default Input;
 //# sourceMappingURL=Input.js.map

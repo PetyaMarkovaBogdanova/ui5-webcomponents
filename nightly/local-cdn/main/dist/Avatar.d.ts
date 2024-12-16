@@ -5,11 +5,10 @@ import type { ITabbable } from "@ui5/webcomponents-base/dist/delegate/ItemNaviga
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type { IAvatarGroupItem } from "./AvatarGroup.js";
 import Icon from "./Icon.js";
-import type AvatarSize from "./types/AvatarSize.js";
+import AvatarSize from "./types/AvatarSize.js";
 import type AvatarShape from "./types/AvatarShape.js";
 import type AvatarColorScheme from "./types/AvatarColorScheme.js";
 import "@ui5/webcomponents-icons/dist/employee.js";
-import "@ui5/webcomponents-icons/dist/alert.js";
 type AvatarAccessibilityAttributes = Pick<AccessibilityAttributes, "hasPopup">;
 /**
  * @class
@@ -163,11 +162,10 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
      * @since 1.7.0
      */
     badge: Array<HTMLElement>;
-    _onclick?: (e: MouseEvent) => void;
     static i18nBundle: I18nBundle;
     _handleResizeBound: ResizeObserverCallback;
     constructor();
-    get tabindex(): string;
+    get tabindex(): number | undefined;
     /**
      * Returns the effective avatar size.
      * @default "S"
@@ -181,14 +179,13 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
      */
     get еffectiveBackgroundColor(): AvatarColorScheme;
     get _role(): "button" | "img";
-    get _ariaHasPopup(): ("dialog" | "grid" | "listbox" | "menu" | "tree") | undefined;
+    get _ariaHasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
     get _interactive(): boolean;
     get validInitials(): string | null | undefined;
     get accessibleNameText(): string | undefined;
     get hasImage(): boolean;
     get initialsContainer(): HTMLObjectElement | null;
     get fallBackIconDomRef(): Icon | null;
-    onBeforeRendering(): void;
     onAfterRendering(): Promise<void>;
     onEnterDOM(): void;
     onExitDOM(): void;
@@ -196,11 +193,11 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
     _checkInitials(): void;
     showFallbackIcon(): void;
     showInitials(): void;
-    _onClickHandler(e: MouseEvent): void;
+    _onclick(e: MouseEvent): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
     _fireClick(): void;
-    _getAriaHasPopup(): ("dialog" | "grid" | "listbox" | "menu" | "tree") | undefined;
+    _getAriaHasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
 }
 export default Avatar;
 export type { AvatarAccessibilityAttributes, };

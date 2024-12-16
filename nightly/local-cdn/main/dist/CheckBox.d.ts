@@ -1,10 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import "@ui5/webcomponents-icons/dist/accept.js";
-import "@ui5/webcomponents-icons/dist/complete.js";
-import "@ui5/webcomponents-icons/dist/border.js";
-import "@ui5/webcomponents-icons/dist/tri-state.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import type WrappingType from "./types/WrappingType.js";
 /**
@@ -51,7 +47,7 @@ import type WrappingType from "./types/WrappingType.js";
  */
 declare class CheckBox extends UI5Element implements IFormInputElement {
     eventDetails: {
-        change: void;
+        "change": void;
         "value-changed": void;
     };
     /**
@@ -199,9 +195,9 @@ declare class CheckBox extends UI5Element implements IFormInputElement {
     get ariaDescribedBy(): string | undefined;
     get hasValueState(): boolean;
     get valueStateText(): string | undefined;
-    get effectiveTabIndex(): string | undefined;
+    get effectiveTabIndex(): number | undefined;
+    get tabbable(): boolean;
     get isCompletelyChecked(): boolean;
     get isDisplayOnly(): boolean;
-    get displayOnlyIcon(): "complete" | "tri-state" | "border";
 }
 export default CheckBox;

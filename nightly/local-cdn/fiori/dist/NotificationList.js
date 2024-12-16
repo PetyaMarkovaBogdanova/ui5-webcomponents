@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var NotificationList_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
@@ -14,7 +14,7 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import NotificationListInternal from "./NotificationListInternal.js";
 // Template
-import NotificationListTemplate from "./generated/templates/NotificationListTemplate.lit.js";
+import NotificationListTemplate from "./NotificationListTemplate.js";
 // Styles
 import NotificationListCss from "./generated/themes/NotificationList.css.js";
 // Texts
@@ -94,7 +94,7 @@ __decorate([
 NotificationList = NotificationList_1 = __decorate([
     customElement({
         tag: "ui5-notification-list",
-        renderer: litRender,
+        renderer: jsxRenderer,
         languageAware: true,
         styles: [NotificationListCss],
         template: NotificationListTemplate,

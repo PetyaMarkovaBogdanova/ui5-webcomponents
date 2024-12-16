@@ -9,8 +9,8 @@ import SemanticColor from "./types/SemanticColor.js";
 import ListItemType from "./types/ListItemType.js";
 import type { TabContainerStripInfo, TabContainerOverflowInfo, ITab } from "./TabContainer.js";
 import ListItemCustom from "./ListItemCustom.js";
-import TabInStripTemplate from "./generated/templates/TabInStripTemplate.lit.js";
-import TabInOverflowTemplate from "./generated/templates/TabInOverflowTemplate.lit.js";
+import TabInStripTemplate from "./TabInStripTemplate.js";
+import TabInOverflowTemplate from "./TabInOverflowTemplate.js";
 interface TabInStrip extends HTMLElement {
     realTabReference: Tab;
 }
@@ -102,7 +102,6 @@ declare class Tab extends UI5Element implements ITabbable, ITab {
     _forcedMixedMode?: boolean;
     _getElementInStrip?: () => HTMLElement | undefined;
     _getElementInOverflow?: () => HTMLElement | undefined;
-    _individualSlot?: string;
     _forcedPosinset?: number;
     _forcedSetsize?: number;
     _forcedStyleInOverflow?: Record<string, any>;
@@ -152,7 +151,7 @@ declare class Tab extends UI5Element implements ITabbable, ITab {
     get expandButtonTitle(): string;
     get _roleDescription(): string | undefined;
     get _ariaHasPopup(): "menu" | undefined;
-    get semanticIconName(): "error" | "alert" | "sys-enter-2" | null;
+    get semanticIconName(): "alert" | "error" | "sys-enter-2" | null;
     get _designDescription(): string | null;
     get semanticIconClasses(): string;
     get overflowClasses(): string;
@@ -161,6 +160,12 @@ declare class Tab extends UI5Element implements ITabbable, ITab {
     static get overflowTemplate(): typeof TabInOverflowTemplate;
     _ondragstart(e: DragEvent): void;
     _ondragend(e: DragEvent): void;
+    captureRef(ref: HTMLElement & {
+        realTabReference?: UI5Element;
+    } | null): void;
+    captureButtonRef(ref: HTMLElement & {
+        tab?: UI5Element;
+    } | null): void;
 }
 export default Tab;
 export type { TabInStrip, TabInOverflow, };

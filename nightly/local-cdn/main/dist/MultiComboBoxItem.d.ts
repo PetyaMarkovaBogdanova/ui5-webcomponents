@@ -12,7 +12,7 @@ import type { SelectionRequestEventDetail } from "./ListItem.js";
  */
 declare class MultiComboBoxItem extends ComboBoxItem implements IMultiComboBoxItem {
     eventDetails: ComboBoxItem["eventDetails"] & {
-        "_selection-requested": SelectionRequestEventDetail;
+        "selection-requested": SelectionRequestEventDetail;
     };
     /**
      * Defines the selected state of the component.

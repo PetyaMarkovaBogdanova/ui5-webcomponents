@@ -14,16 +14,15 @@ interface IFormItem extends UI5Element {
     colsM?: number;
     colsS?: number;
     columnSpan?: number;
+    headerText?: string;
 }
 type GroupItemsInfo = {
     groupItem: IFormItem;
-    classes: string;
     items: Array<ItemsInfo>;
     accessibleNameRef: string | undefined;
 };
 type ItemsInfo = {
     item: IFormItem;
-    classes: string;
 };
 /**
  * @class
@@ -278,7 +277,7 @@ declare class Form extends UI5Element {
     get hasHeader(): boolean;
     get hasCustomHeader(): boolean;
     get effectiveАccessibleNameRef(): string | undefined;
-    get effectiveAccessibleRole(): string | undefined;
+    get effectiveAccessibleRole(): "form" | "region";
     get groupItemsInfo(): Array<GroupItemsInfo>;
     get itemsInfo(): Array<ItemsInfo>;
     getItemsInfo(items?: Array<IFormItem>): Array<ItemsInfo>;

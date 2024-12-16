@@ -68,10 +68,10 @@ declare class ExpandableText extends UI5Element {
     get _textForToggle(): string;
     get _closeButtonText(): string;
     get _accessibilityAttributesForToggle(): LinkAccessibilityAttributes;
-    get _accessibleNameForToggle(): string | null;
+    get _accessibleNameForToggle(): string | undefined;
     _handlePopoverClose(): void;
     _handleToggleClick(): void;
     _handleToggleMousedown(e: MouseEvent): void;
-    _handleCloseButtonClick(e: CustomEvent): void;
+    _handleCloseButtonClick(e: MouseEvent): void;
 }
 export default ExpandableText;

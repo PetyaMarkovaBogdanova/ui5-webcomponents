@@ -5,7 +5,6 @@ import type { MenuItemClickEventDetail } from "@ui5/webcomponents/dist/Menu.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type { ITabbable } from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
-import "@ui5/webcomponents-icons/dist/overflow.js";
 import type SideNavigationItemBase from "./SideNavigationItemBase.js";
 import type SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
 import SideNavigationItem from "./SideNavigationItem.js";
@@ -107,7 +106,7 @@ declare class SideNavigation extends UI5Element {
      */
     _popoverContents: SideNavigationPopoverContents;
     inPopover: boolean;
-    _menuPopoverItems: Array<HTMLElement>;
+    _menuPopoverItems: Array<SideNavigationItem>;
     _isOverflow: boolean;
     _flexibleItemNavigation: ItemNavigation;
     _fixedItemNavigation: ItemNavigation;
@@ -140,11 +139,6 @@ declare class SideNavigation extends UI5Element {
     get showHeader(): boolean;
     get hasFixedItems(): boolean;
     get _rootRole(): "none" | undefined;
-    get classes(): {
-        root: {
-            "ui5-sn-collapsed": boolean;
-        };
-    };
     getEnabledFixedItems(): Array<ITabbable>;
     getEnabledFlexibleItems(): Array<ITabbable>;
     getEnabledItems(items: Array<SideNavigationItem | SideNavigationGroup>): Array<ITabbable>;
@@ -159,15 +153,18 @@ declare class SideNavigation extends UI5Element {
     _getFocusableItems(items: Array<SideNavigationItem | SideNavigationGroup>): Array<SideNavigationItemBase>;
     _getAllItems(items: Array<SideNavigationItem | SideNavigationGroup>): Array<SideNavigationItemBase>;
     _findSelectedItem(items: Array<SideNavigationItem | SideNavigationGroup>): SideNavigationSelectableItemBase | undefined;
-    get overflowItems(): Array<HTMLElement>;
-    _handleItemClick(e: KeyboardEvent | PointerEvent, item: SideNavigationSelectableItemBase): void;
+    get overflowItems(): Array<SideNavigationItem>;
+    _handleItemClick(e: KeyboardEvent | MouseEvent, item: SideNavigationSelectableItemBase): void;
     _handleOverflowClick(): void;
-    _getOverflowItems(): Array<SideNavigationSelectableItemBase>;
+    _getOverflowItems(): Array<SideNavigationItem>;
     _selectItem(item: SideNavigationSelectableItemBase): void;
     get _overflowItem(): SideNavigationItem | null;
     get isOverflow(): boolean;
     _onkeydownOverflow(e: KeyboardEvent): void;
     _onkeyupOverflow(e: KeyboardEvent): void;
+    captureRef(ref: HTMLElement & {
+        associatedItem?: UI5Element;
+    } | null): void;
 }
 export default SideNavigation;
 export type { SideNavigationSelectionChangeEventDetail, };

@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ListItemGroup from "./ListItemGroup.js";
-import ComboBoxItemGroupTemplate from "./generated/templates/ComboBoxItemGroupTemplate.lit.js";
+import ComboBoxItemGroupTemplate from "./ComboBoxItemGroupTemplate.js";
 /**
  * @class
  * The `ui5-cb-group-item` is type of suggestion item,

@@ -1,5 +1,6 @@
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
+import type ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import SliderBase from "./SliderBase.js";
 /**
  * @class
@@ -70,7 +71,7 @@ declare class Slider extends SliderBase implements IFormInputElement {
     _handlePositionFromStart: number;
     _lastValidInputValue: string;
     _tooltipInputValue: string;
-    _tooltipInputValueState: string;
+    _tooltipInputValueState: `${ValueState}`;
     get formFormattedValue(): string;
     static i18nBundle: I18nBundle;
     constructor();

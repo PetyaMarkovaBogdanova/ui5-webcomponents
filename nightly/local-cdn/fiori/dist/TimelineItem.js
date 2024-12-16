@@ -9,15 +9,12 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
 import Link from "@ui5/webcomponents/dist/Link.js";
-import TimelineItemTemplate from "./generated/templates/TimelineItemTemplate.lit.js";
-import TimelineLayout from "./types/TimelineLayout.js";
+import TimelineItemTemplate from "./TimelineItemTemplate.js";
 // Styles
 import TimelineItemCss from "./generated/themes/TimelineItem.css.js";
-const SHORT_LINE_WIDTH = "ShortLineWidth";
-const LARGE_LINE_WIDTH = "LargeLineWidth";
 /**
  * @class
  *
@@ -76,20 +73,6 @@ let TimelineItem = class TimelineItem extends UI5Element {
     focusLink() {
         this.shadowRoot.querySelector("[ui5-link]")?.focus();
     }
-    get classes() {
-        return {
-            indicator: {
-                "ui5-tli-indicator": true,
-                "ui5-tli-indicator-short-line": this.forcedLineWidth === SHORT_LINE_WIDTH,
-                "ui5-tli-indicator-large-line": this.forcedLineWidth === LARGE_LINE_WIDTH,
-            },
-            bubbleArrowPosition: {
-                "ui5-tli-bubble-arrow": true,
-                "ui5-tli-bubble-arrow--left": this.layout === TimelineLayout.Vertical,
-                "ui5-tli-bubble-arrow--top": this.layout === TimelineLayout.Horizontal,
-            },
-        };
-    }
     get isGroupItem() {
         return false;
     }
@@ -142,7 +125,7 @@ __decorate([
 TimelineItem = __decorate([
     customElement({
         tag: "ui5-timeline-item",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: TimelineItemCss,
         template: TimelineItemTemplate,
         dependencies: [

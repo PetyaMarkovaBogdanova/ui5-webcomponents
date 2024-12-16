@@ -8,10 +8,9 @@ var SliderBase_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { isPhone, supportsTouch } from "@ui5/webcomponents-base/dist/Device.js";
-import "@ui5/webcomponents-icons/dist/direction-arrows.js";
 import { isEscape, isHome, isEnd, isUp, isDown, isRight, isLeft, isUpCtrl, isDownCtrl, isRightCtrl, isLeftCtrl, isPlus, isMinus, isPageUp, isPageDown, isF2, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 // Styles
 import sliderBaseStyles from "./generated/themes/SliderBase.css.js";
@@ -118,13 +117,6 @@ class SliderBase extends UI5Element {
             max: undefined,
             labelInterval: undefined,
         };
-        const handleTouchStartEvent = (e) => {
-            this._onmousedown(e);
-        };
-        this._ontouchstart = {
-            handleEvent: handleTouchStartEvent,
-            passive: true,
-        };
     }
     _handleMove(e) { } // eslint-disable-line
     _handleUp(e) { } // eslint-disable-line
@@ -160,7 +152,7 @@ class SliderBase extends UI5Element {
         };
     }
     static get renderer() {
-        return litRender;
+        return jsxRender;
     }
     static get styles() {
         return sliderBaseStyles;
@@ -610,7 +602,7 @@ class SliderBase extends UI5Element {
         return Math.max(this.min, this.max);
     }
     get _tabIndex() {
-        return this.disabled ? "-1" : "0";
+        return this.disabled ? -1 : 0;
     }
     get _ariaDescribedByHandleText() {
         return this.editableTooltip ? "ui5-slider-InputDesc" : undefined;

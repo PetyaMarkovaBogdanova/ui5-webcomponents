@@ -84,7 +84,7 @@ declare class TimePickerInternals extends UI5Element {
      * Contains calendar type.
      * @private
      */
-    _calendarType?: CalendarType;
+    _calendarType?: `${CalendarType}`;
     /**
      * Contains currently available Time Picker components depending on time format.
      * @private
@@ -170,7 +170,7 @@ declare class TimePickerInternals extends UI5Element {
     _secondsChange(seconds: number): void;
     _buttonAmPm(): SegmentedButton | null | undefined;
     _createPeriodComponent(): void;
-    _periodChange(evt: PointerEvent): void;
+    _periodChange(evt: MouseEvent): void;
     _calculatePeriodChange(period: string): void;
     /**
      * Shifts hours value with +/- 12 depending on hour value and day period.

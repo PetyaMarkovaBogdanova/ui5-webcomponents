@@ -9,8 +9,8 @@ import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
@@ -18,7 +18,7 @@ import { isSpace, isEnter, isDown, isLeft, isUp, isRight, } from "@ui5/webcompon
 import Label from "./Label.js";
 import RadioButtonGroup from "./RadioButtonGroup.js";
 // Template
-import RadioButtonTemplate from "./generated/templates/RadioButtonTemplate.lit.js";
+import RadioButtonTemplate from "./RadioButtonTemplate.js";
 // i18n
 import { VALUE_STATE_ERROR, VALUE_STATE_WARNING, VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, FORM_SELECTABLE_REQUIRED2, } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -263,15 +263,8 @@ let RadioButton = RadioButton_1 = class RadioButton extends UI5Element {
     canToggle() {
         return !(this.disabled || this.readonly || this.checked);
     }
-    get classes() {
-        return {
-            inner: {
-                "ui5-radio-inner--hoverable": !this.disabled && !this.readonly && isDesktop(),
-            },
-        };
-    }
     get effectiveAriaDisabled() {
-        return (this.disabled || this.readonly) ? "true" : null;
+        return (this.disabled || this.readonly) ? true : undefined;
     }
     get ariaLabelText() {
         return [getEffectiveAriaLabelText(this), this.text].filter(Boolean).join(" ");
@@ -299,12 +292,12 @@ let RadioButton = RadioButton_1 = class RadioButton extends UI5Element {
     get effectiveTabIndex() {
         const tabindex = this.getAttribute("tabindex");
         if (this.disabled) {
-            return "-1";
+            return -1;
         }
         if (this.name) {
             return this._tabIndex;
         }
-        return tabindex || "0";
+        return tabindex ? parseInt(tabindex) : 0;
     }
 };
 __decorate([
@@ -341,7 +334,7 @@ __decorate([
     property()
 ], RadioButton.prototype, "accessibleNameRef", void 0);
 __decorate([
-    property()
+    property({ type: Number })
 ], RadioButton.prototype, "_tabIndex", void 0);
 __decorate([
     property({ type: Boolean })
@@ -360,7 +353,7 @@ RadioButton = RadioButton_1 = __decorate([
         tag: "ui5-radio-button",
         languageAware: true,
         formAssociated: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: RadioButtonTemplate,
         styles: radioButtonCss,
         dependencies: [Label],

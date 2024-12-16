@@ -10,17 +10,17 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isUp, isDown, isUpCtrl, isDownCtrl, isUpShift, isDownShift, isUpShiftCtrl, isDownShiftCtrl, isPageUpShift, isPageDownShift, isEscape, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import StepInputTemplate from "./generated/templates/StepInputTemplate.lit.js";
+import StepInputTemplate from "./StepInputTemplate.js";
 import { STEPINPUT_DEC_ICON_TITLE, STEPINPUT_INC_ICON_TITLE } from "./generated/i18n/i18n-defaults.js";
 import "@ui5/webcomponents-icons/dist/less.js";
 import "@ui5/webcomponents-icons/dist/add.js";
 import Icon from "./Icon.js";
-import Input, {} from "./Input.js";
+import Input from "./Input.js";
 import InputType from "./types/InputType.js";
 // Styles
 import StepInputCss from "./generated/themes/StepInput.css.js";
@@ -137,14 +137,8 @@ let StepInput = StepInput_1 = class StepInput extends UI5Element {
     get decIconTitle() {
         return StepInput_1.i18nBundle.getText(STEPINPUT_DEC_ICON_TITLE);
     }
-    get decIconName() {
-        return "less";
-    }
     get incIconTitle() {
         return StepInput_1.i18nBundle.getText(STEPINPUT_INC_ICON_TITLE);
-    }
-    get incIconName() {
-        return "add";
     }
     get _decIconClickable() {
         return !this._decIconDisabled && !this.readonly && !this.disabled;
@@ -282,14 +276,14 @@ let StepInput = StepInput_1 = class StepInput extends UI5Element {
             }
         }
     }
-    _incValue(e) {
-        if (this._incIconClickable && e.isTrusted && !this.disabled && !this.readonly) {
+    _incValue() {
+        if (this._incIconClickable && !this.disabled && !this.readonly) {
             this._modifyValue(this.step, true);
             this._previousValue = this.value;
         }
     }
-    _decValue(e) {
-        if (this._decIconClickable && e.isTrusted && !this.disabled && !this.readonly) {
+    _decValue() {
+        if (this._decIconClickable && !this.disabled && !this.readonly) {
             this._modifyValue(-this.step, true);
             this._previousValue = this.value;
         }
@@ -517,7 +511,7 @@ StepInput = StepInput_1 = __decorate([
     customElement({
         tag: "ui5-step-input",
         formAssociated: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: StepInputCss,
         template: StepInputTemplate,
         dependencies: [

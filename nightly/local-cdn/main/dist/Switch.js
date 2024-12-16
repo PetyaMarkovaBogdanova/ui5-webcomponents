@@ -9,9 +9,8 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
-import { isDesktop, isSafari } from "@ui5/webcomponents-base/dist/Device.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import "@ui5/webcomponents-icons/dist/accept.js";
@@ -21,7 +20,7 @@ import Icon from "./Icon.js";
 import SwitchDesign from "./types/SwitchDesign.js";
 import { FORM_CHECKABLE_REQUIRED } from "./generated/i18n/i18n-defaults.js";
 // Template
-import SwitchTemplate from "./generated/templates/SwitchTemplate.lit.js";
+import SwitchTemplate from "./SwitchTemplate.js";
 // Styles
 import switchCss from "./generated/themes/Switch.css.js";
 /**
@@ -146,20 +145,7 @@ let Switch = Switch_1 = class Switch extends UI5Element {
         return this.graphical ? "" : this.textOff;
     }
     get effectiveTabIndex() {
-        return this.disabled ? undefined : "0";
-    }
-    get classes() {
-        const hasLabel = this.graphical || this.textOn || this.textOff;
-        return {
-            main: {
-                "ui5-switch--desktop": isDesktop(),
-                "ui5-switch--disabled": this.disabled,
-                "ui5-switch--checked": this.checked,
-                "ui5-switch--semantic": this.graphical,
-                "ui5-switch--no-label": !hasLabel,
-                "ui5-switch--safari": isSafari(),
-            },
-        };
+        return this.disabled ? undefined : 0;
     }
     get effectiveAriaDisabled() {
         return this.disabled ? "true" : undefined;
@@ -216,7 +202,7 @@ Switch = Switch_1 = __decorate([
         formAssociated: true,
         languageAware: true,
         styles: switchCss,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: SwitchTemplate,
         dependencies: [Icon],
         shadowRootOptions: { delegatesFocus: true },

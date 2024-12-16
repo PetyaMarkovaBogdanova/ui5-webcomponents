@@ -1,4 +1,3 @@
-import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type NotificationListItem from "../../NotificationListItem.js";
-declare function block0(this: NotificationListItem, context: UI5Element, tags: string[], suffix: string | undefined): import("lit-html").TemplateResult;
-export default block0;
+declare function template(this: NotificationListItem): import("lit-html").TemplateResult;
+export default template;

@@ -1,7 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import type { ClassMap } from "@ui5/webcomponents-base/dist/types.js";
 import "@ui5/webcomponents-icons/dist/accept.js";
 import "@ui5/webcomponents-icons/dist/decline.js";
 import "@ui5/webcomponents-icons/dist/less.js";
@@ -133,7 +132,7 @@ declare class Switch extends UI5Element implements IFormInputElement {
     get formValidity(): ValidityStateFlags;
     formElementAnchor(): Promise<HTMLElement | undefined>;
     get formFormattedValue(): "on" | null;
-    get sapNextIcon(): "less" | "accept";
+    get sapNextIcon(): "accept" | "less";
     _onclick(): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
@@ -142,8 +141,7 @@ declare class Switch extends UI5Element implements IFormInputElement {
     get hasNoLabel(): boolean;
     get _textOn(): string | undefined;
     get _textOff(): string | undefined;
-    get effectiveTabIndex(): "0" | undefined;
-    get classes(): ClassMap;
+    get effectiveTabIndex(): 0 | undefined;
     get effectiveAriaDisabled(): "true" | undefined;
     get accessibilityOnText(): string | undefined;
     get accessibilityOffText(): string | undefined;

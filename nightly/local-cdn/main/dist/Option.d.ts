@@ -16,6 +16,7 @@ import ListItemBase from "./ListItemBase.js";
  * @public
  */
 declare class Option extends ListItemBase implements IOption {
+    eventDetails: ListItemBase["eventDetails"];
     /**
      * Defines the text of the component.
      *

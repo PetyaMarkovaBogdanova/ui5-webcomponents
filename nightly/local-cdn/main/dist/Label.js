@@ -6,13 +6,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var Label_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
+import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { LABEL_COLON } from "./generated/i18n/i18n-defaults.js";
 // Template
-import LabelTemplate from "./generated/templates/LabelTemplate.lit.js";
+import LabelTemplate from "./LabelTemplate.js";
 // Styles
 import labelCss from "./generated/themes/Label.css.js";
 /**
@@ -100,7 +100,7 @@ __decorate([
 Label = Label_1 = __decorate([
     customElement({
         tag: "ui5-label",
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: LabelTemplate,
         styles: labelCss,
         languageAware: true,

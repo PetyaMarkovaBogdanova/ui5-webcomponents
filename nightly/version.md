@@ -1,5 +1,5 @@
-commit 393d1fa53064d63ff0f72d0c2ea318fc6201e8a3
+commit 5e429a4083caf02aae547a448d25b91c6f4754df
 Author: PetyaMarkovaBogdanova <petya.markova@sap.com>
-Date:   Mon Dec 9 14:15:10 2024 +0200
+Date:   Mon Dec 16 13:38:59 2024 +0200
 
-    fix(ui5-shellbar): fix searchbar beharviour
+    Merge branch 'chore-shellbar-evolution' of github.com:SAP/ui5-webcomponents into chore-shellbar-evolution

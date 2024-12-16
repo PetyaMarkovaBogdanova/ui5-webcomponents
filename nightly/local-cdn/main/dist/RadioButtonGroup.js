@@ -95,14 +95,14 @@ class RadioButtonGroup {
             }
             if (hasCheckedRadio) {
                 if (activeElement.hasAttribute("ui5-radio-button") && activeElement.readonly) {
-                    radioBtn._tabIndex = activeElement === radioBtn && radioBtn.readonly ? "0" : "-1";
+                    radioBtn._tabIndex = activeElement === radioBtn && radioBtn.readonly ? 0 : -1;
                 }
                 else {
-                    radioBtn._tabIndex = radioBtn.checked ? "0" : "-1";
+                    radioBtn._tabIndex = radioBtn.checked ? 0 : -1;
                 }
             }
             else {
-                radioBtn._tabIndex = idx === 0 ? "0" : "-1";
+                radioBtn._tabIndex = idx === 0 ? 0 : -1;
             }
         });
     }

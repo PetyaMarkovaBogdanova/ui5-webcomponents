@@ -8,10 +8,10 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isSpace, isEnter, isSpaceShift } from "@ui5/webcomponents-base/dist/Keys.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
-import WizardTabTemplate from "./generated/templates/WizardTabTemplate.lit.js";
+import WizardTabTemplate from "./WizardTabTemplate.js";
 import WizardTabCss from "./generated/themes/WizardTab.css.js";
 /**
  * @class
@@ -82,9 +82,9 @@ let WizardTab = class WizardTab extends UI5Element {
             return;
         }
         if (this.selected || this.forcedTabIndex === "0") {
-            return "0";
+            return 0;
         }
-        return "-1";
+        return -1;
     }
     _onfocusin() {
         this.fireDecoratorEvent("focused");
@@ -131,10 +131,13 @@ __decorate([
 __decorate([
     property()
 ], WizardTab.prototype, "forcedTabIndex", void 0);
+__decorate([
+    property({ type: Object })
+], WizardTab.prototype, "_wizardTabAccInfo", void 0);
 WizardTab = __decorate([
     customElement({
         tag: "ui5-wizard-tab",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: WizardTabCss,
         template: WizardTabTemplate,
         dependencies: [Icon],

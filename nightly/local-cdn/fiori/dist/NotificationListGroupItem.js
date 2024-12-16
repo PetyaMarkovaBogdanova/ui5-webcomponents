@@ -24,6 +24,7 @@ import { NOTIFICATION_LIST_GROUP_ITEM_TXT, NOTIFICATION_LIST_GROUP_COLLAPSED, NO
 import NotificationListGroupItemTemplate from "./generated/templates/NotificationListGroupItemTemplate.lit.js";
 // Styles
 import NotificationListGroupItemCss from "./generated/themes/NotificationListGroupItem.css.js";
+import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 /**
  * @class
  *
@@ -146,7 +147,7 @@ let NotificationListGroupItem = NotificationListGroupItem_1 = class Notification
     }
     get loadMoreButton() {
         const innerList = this.getDomRef()?.querySelector("[ui5-notification-group-list]");
-        return innerList.getDomRef()?.querySelector("[growing-button-inner]");
+        return innerList.getDomRef()?.querySelector(".ui5-growing-button-inner");
     }
     async _onkeydown(e) {
         const isFocused = this.matches(":focus");
@@ -194,6 +195,7 @@ NotificationListGroupItem = NotificationListGroupItem_1 = __decorate([
     customElement({
         tag: "ui5-li-notification-group",
         languageAware: true,
+        renderer: litRender,
         styles: [
             NotificationListGroupItemCss,
         ],

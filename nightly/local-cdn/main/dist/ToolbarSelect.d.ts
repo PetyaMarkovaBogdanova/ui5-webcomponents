@@ -1,6 +1,6 @@
 import type ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import ToolbarSelectTemplate from "./generated/templates/ToolbarSelectTemplate.lit.js";
-import ToolbarPopoverSelectTemplate from "./generated/templates/ToolbarPopoverSelectTemplate.lit.js";
+import ToolbarSelectTemplate from "./ToolbarSelectTemplate.js";
+import ToolbarPopoverSelectTemplate from "./ToolbarPopoverSelectTemplate.js";
 import ToolbarItem from "./ToolbarItem.js";
 import type ToolbarSelectOption from "./ToolbarSelectOption.js";
 import type { SelectChangeEventDetail } from "./Select.js";

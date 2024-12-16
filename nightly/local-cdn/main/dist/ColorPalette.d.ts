@@ -11,7 +11,7 @@ import type ColorPicker from "./ColorPicker.js";
  * Interface for components that may be used inside a `ui5-color-palette` or `ui5-color-palette-popover`
  * @public
  */
-interface IColorPaletteItem extends HTMLElement, ITabbable {
+interface IColorPaletteItem extends UI5Element, ITabbable {
     value?: string;
     index?: number;
     selected?: boolean;
@@ -132,8 +132,8 @@ declare class ColorPalette extends UI5Element {
     /**
      * Returns the selected item.
      */
-    get selectedItem(): IColorPaletteItem | undefined;
-    get allColorsInPalette(): IColorPaletteItem[];
+    get selectedItem(): ColorPaletteItem | IColorPaletteItem | undefined;
+    get allColorsInPalette(): (ColorPaletteItem | IColorPaletteItem)[];
     get colorPaletteDialogTitle(): string | undefined;
     get colorPaletteDialogOKButton(): string | undefined;
     get colorPaletteCancelButton(): string | undefined;

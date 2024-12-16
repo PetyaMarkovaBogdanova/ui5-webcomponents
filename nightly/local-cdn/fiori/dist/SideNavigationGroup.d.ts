@@ -1,6 +1,4 @@
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
-import "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
 import SideNavigationItemBase from "./SideNavigationItemBase.js";
 import type SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
 import type SideNavigationItem from "./SideNavigationItem.js";
@@ -37,18 +35,17 @@ declare class SideNavigationGroup extends SideNavigationItemBase {
      */
     items: Array<SideNavigationItem>;
     static i18nBundle: I18nBundle;
-    get overflowItems(): Array<HTMLElement>;
+    get overflowItems(): Array<SideNavigationItem>;
     get selectableItems(): Array<SideNavigationSelectableItemBase>;
     get focusableItems(): Array<SideNavigationItemBase>;
     get allItems(): Array<SideNavigationItemBase>;
     get _groupId(): string | undefined;
     get _expanded(): boolean | undefined;
-    get _toggleIconName(): "navigation-down-arrow" | "navigation-right-arrow";
     get belowGroupClassName(): "" | "ui5-sn-item-group-below-group";
     get accDescription(): string;
-    _onkeydown: (e: KeyboardEvent) => void;
-    _onclick: () => void;
-    _onfocusin: (e: FocusEvent) => void;
+    _onkeydown(e: KeyboardEvent): void;
+    _onclick(): void;
+    _onfocusin(e: FocusEvent): void;
     _toggle(): void;
     get isSideNavigationGroup(): boolean;
 }

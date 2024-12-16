@@ -10,7 +10,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
 import ToggleButton from "@ui5/webcomponents/dist/ToggleButton.js";
 import { isLegacyThemeFamily } from "@ui5/webcomponents-base/dist/config/Theme.js";
@@ -19,7 +19,7 @@ import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import "@ui5/webcomponents-icons/dist/pushpin-off.js";
 import "@ui5/webcomponents-icons/dist/pushpin-on.js";
 // Template
-import DynamicPageHeaderActionsTemplate from "./generated/templates/DynamicPageHeaderActionsTemplate.lit.js";
+import DynamicPageHeaderActionsTemplate from "./DynamicPageHeaderActionsTemplate.js";
 // Styles
 import DynamicPageHeaderActionsCss from "./generated/themes/DynamicPageHeaderActions.css.js";
 // Texts
@@ -135,7 +135,7 @@ __decorate([
 DynamicPageHeaderActions = DynamicPageHeaderActions_1 = __decorate([
     customElement({
         tag: "ui5-dynamic-page-header-actions",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: DynamicPageHeaderActionsCss,
         template: DynamicPageHeaderActionsTemplate,
         dependencies: [Button, ToggleButton],

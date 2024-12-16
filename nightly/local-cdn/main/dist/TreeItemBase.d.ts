@@ -136,7 +136,7 @@ declare class TreeItemBase extends ListItem {
     get _toggleIconName(): "navigation-down-arrow" | "navigation-right-arrow";
     get _ariaLabel(): string;
     get _accInfo(): {
-        role: string;
+        role: "treeitem";
         ariaExpanded: boolean | undefined;
         ariaLevel: number;
         posinset: number;
@@ -144,7 +144,7 @@ declare class TreeItemBase extends ListItem {
         ariaSelectedText: string | undefined;
         listItemAriaLabel: string | undefined;
         ariaOwns: string | undefined;
-        ariaHaspopup: ("dialog" | "grid" | "listbox" | "menu" | "tree") | undefined;
+        ariaHaspopup: import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
         ariaLabel: string;
         ariaLabelRadioButton: string;
         ariaSelected?: boolean;

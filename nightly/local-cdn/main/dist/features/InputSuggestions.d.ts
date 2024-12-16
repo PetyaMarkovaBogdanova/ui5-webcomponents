@@ -97,7 +97,7 @@ declare class Suggestions extends ComponentFeature {
     _focusValueState(): void;
     _clearValueStateFocus(): void;
     _clearSelectedSuggestionAndaccInfo(): void;
-    static get dependencies(): (typeof Button | typeof Icon | typeof List | typeof SuggestionItem | typeof SuggestionItemGroup)[];
+    static get dependencies(): (typeof Icon | typeof Button | typeof List | typeof SuggestionItem | typeof SuggestionItemGroup)[];
 }
 export default Suggestions;
 export type { SuggestionComponent, };

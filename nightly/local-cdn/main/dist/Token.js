@@ -5,19 +5,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var Token_1;
+// eslint-disable-next-line max-classes-per-file
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isBackSpace, isSpace, isDelete, isSpaceCtrl, } from "@ui5/webcomponents-base/dist/Keys.js";
-import "@ui5/webcomponents-icons/dist/decline.js";
-import "@ui5/webcomponents-icons/dist/sys-cancel.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { TOKEN_ARIA_DELETABLE, TOKEN_ARIA_LABEL } from "./generated/i18n/i18n-defaults.js";
 import Icon from "./Icon.js";
-import TokenTemplate from "./generated/templates/TokenTemplate.lit.js";
+import TokenTemplate from "./TokenTemplate.js";
 // Styles
 import tokenStyles from "./generated/themes/Token.css.js";
 /**
@@ -84,6 +83,9 @@ let Token = Token_1 = class Token extends UI5Element {
          * @private
          */
         this._isVisible = false;
+        // fireMyEvent(name: keyof this["_events"]) {
+        // 	console.log(name);
+        // }
     }
     _handleSelect() {
         if (!this.toBeDeleted) {
@@ -118,6 +120,7 @@ let Token = Token_1 = class Token extends UI5Element {
     }
     onBeforeRendering() {
         this.toBeDeleted = false;
+        // this.fireMyEvent("select");
     }
     get tokenDeletableText() {
         return Token_1.i18nBundle.getText(TOKEN_ARIA_DELETABLE);
@@ -176,7 +179,7 @@ Token = Token_1 = __decorate([
     customElement({
         tag: "ui5-token",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: TokenTemplate,
         styles: tokenStyles,
         dependencies: [Icon],

@@ -12,7 +12,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { submitForm } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import getLocale from "@ui5/webcomponents-base/dist/locale/getLocale.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
@@ -26,8 +26,8 @@ import UI5Date from "@ui5/webcomponents-localization/dist/dates/UI5Date.js";
 import Icon from "./Icon.js";
 import Popover from "./Popover.js";
 import ResponsivePopover from "./ResponsivePopover.js";
-import TimePickerTemplate from "./generated/templates/TimePickerTemplate.lit.js";
-import Input from "./Input.js";
+import TimePickerTemplate from "./TimePickerTemplate.js";
+import Input, {} from "./Input.js";
 import Button from "./Button.js";
 import TimeSelectionClocks from "./TimeSelectionClocks.js";
 import TimeSelectionInputs from "./TimeSelectionInputs.js";
@@ -323,6 +323,9 @@ let TimePicker = TimePicker_1 = class TimePicker extends UI5Element {
         this._updateValueAndFireEvents(target.value, true, ["change", "value-changed"]);
     }
     _handleInputLiveChange(e) {
+        if (this._isPhone) {
+            e.preventDefault();
+        }
         const target = e.target;
         this._updateValueAndFireEvents(target.value, false, ["input"]);
     }
@@ -478,11 +481,6 @@ let TimePicker = TimePicker_1 = class TimePicker extends UI5Element {
             e.preventDefault();
         }
     }
-    _oninput(e) {
-        if (this._isPhone) {
-            e.preventDefault();
-        }
-    }
     get submitButtonLabel() {
         return TimePicker_1.i18nBundle.getText(TIMEPICKER_SUBMIT_BUTTON);
     }
@@ -544,7 +542,7 @@ TimePicker = TimePicker_1 = __decorate([
         languageAware: true,
         cldr: true,
         formAssociated: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: TimePickerTemplate,
         styles: [
             TimePickerCss,

@@ -10,17 +10,16 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import slideDown from "@ui5/webcomponents-base/dist/animations/slideDown.js";
 import slideUp from "@ui5/webcomponents-base/dist/animations/slideUp.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import Button from "./Button.js";
 import Icon from "./Icon.js";
-import PanelTemplate from "./generated/templates/PanelTemplate.lit.js";
+import PanelTemplate from "./PanelTemplate.js";
 import { PANEL_ICON } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import panelCss from "./generated/themes/Panel.css.js";
@@ -157,7 +156,7 @@ let Panel = Panel_1 = class Panel extends UI5Element {
         }
         return true;
     }
-    shouldNotAnimate() {
+    get shouldNotAnimate() {
         return this.noAnimation || getAnimationMode() === AnimationMode.None;
     }
     _headerClick(e) {
@@ -198,7 +197,7 @@ let Panel = Panel_1 = class Panel extends UI5Element {
             return;
         }
         this.collapsed = !this.collapsed;
-        if (this.shouldNotAnimate()) {
+        if (this.shouldNotAnimate) {
             this.fireDecoratorEvent("toggle");
             return;
         }
@@ -221,16 +220,6 @@ let Panel = Panel_1 = class Panel extends UI5Element {
     }
     _headerOnTarget(target) {
         return target.classList.contains("sapMPanelWrappingDiv");
-    }
-    get classes() {
-        return {
-            headerBtn: {
-                "ui5-panel-header-button-animated": !this.shouldNotAnimate(),
-            },
-            stickyHeaderClass: {
-                "ui5-panel-heading-wrapper-sticky": this.stickyHeader,
-            },
-        };
     }
     get toggleButtonTitle() {
         return Panel_1.i18nBundle.getText(PANEL_ICON);
@@ -266,10 +255,10 @@ let Panel = Panel_1 = class Panel extends UI5Element {
         return this.fixed && !this.effectiveAccessibleName ? `${this._id}-header-title` : undefined;
     }
     get headerAriaLevel() {
-        return this.headerLevel.slice(1);
+        return Number.parseInt(this.headerLevel.slice(1));
     }
     get headerTabIndex() {
-        return (this.header.length || this.fixed) ? "-1" : "0";
+        return (this.header.length || this.fixed) ? -1 : 0;
     }
     get headingWrapperAriaLevel() {
         return !this._hasHeader ? this.headerAriaLevel : undefined;
@@ -285,13 +274,6 @@ let Panel = Panel_1 = class Panel extends UI5Element {
     }
     get nonFocusableButton() {
         return !this.header.length;
-    }
-    get styles() {
-        return {
-            content: {
-                display: this._contentExpanded ? "block" : "none",
-            },
-        };
     }
 };
 __decorate([
@@ -341,7 +323,7 @@ Panel = Panel_1 = __decorate([
         tag: "ui5-panel",
         fastNavigation: true,
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: PanelTemplate,
         styles: panelCss,
         dependencies: [Button, Icon],

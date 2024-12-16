@@ -65,11 +65,6 @@ declare class Bar extends UI5Element {
     };
     constructor();
     handleResize(): void;
-    get classes(): {
-        root: {
-            "ui5-bar-root": boolean;
-        };
-    };
     onEnterDOM(): void;
     onExitDOM(): void;
 }

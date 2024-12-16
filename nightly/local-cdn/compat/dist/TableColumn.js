@@ -5,10 +5,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import TableColumnTemplate from "./generated/templates/TableColumnTemplate.lit.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
+import TableColumnTemplate from "./TableColumnTemplate.js";
 // Styles
 import tableColumnStyles from "./generated/themes/TableColumn.css.js";
 /**
@@ -90,7 +90,7 @@ TableColumn = __decorate([
     customElement({
         tag: "ui5-table-column",
         styles: tableColumnStyles,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: TableColumnTemplate,
     })
 ], TableColumn);

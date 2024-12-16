@@ -6,6 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var UploadCollectionItem_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
@@ -27,7 +28,7 @@ import "@ui5/webcomponents-icons/dist/stop.js";
 import "@ui5/webcomponents-icons/dist/edit.js";
 import { UPLOADCOLLECTIONITEM_CANCELBUTTON_TEXT, UPLOADCOLLECTIONITEM_RENAMEBUTTON_TEXT, UPLOADCOLLECTIONITEM_ERROR_STATE, UPLOADCOLLECTIONITEM_UPLOADING_STATE, UPLOADCOLLECTIONITEM_READY_STATE, UPLOADCOLLECTIONITEM_RETRY_BUTTON_TEXT, UPLOADCOLLECTIONITEM_TERMINATE_BUTTON_TEXT, UPLOADCOLLECTIONITEM_EDIT_BUTTON_TEXT, } from "./generated/i18n/i18n-defaults.js";
 // Template
-import UploadCollectionItemTemplate from "./generated/templates/UploadCollectionItemTemplate.lit.js";
+import UploadCollectionItemTemplate from "./UploadCollectionItemTemplate.js";
 // Styles
 import UploadCollectionItemCss from "./generated/themes/UploadCollectionItem.css.js";
 /**
@@ -186,7 +187,7 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
         }
     }
     _focus() {
-        this.fireDecoratorEvent("_focus-requested");
+        this.fireDecoratorEvent("focus-requested");
     }
     _onFileNameClick() {
         this.fireDecoratorEvent("file-name-click");
@@ -208,7 +209,7 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
         }
     }
     _onDelete() {
-        this.fireDecoratorEvent("_uci-delete");
+        this.fireDecoratorEvent("request-delete");
     }
     getFocusDomRef() {
         return this.getDomRef();
@@ -325,6 +326,7 @@ UploadCollectionItem = UploadCollectionItem_1 = __decorate([
     customElement({
         tag: "ui5-upload-collection-item",
         languageAware: true,
+        renderer: jsxRenderer,
         styles: [ListItem.styles, UploadCollectionItemCss],
         template: UploadCollectionItemTemplate,
         dependencies: [
@@ -382,14 +384,14 @@ UploadCollectionItem = UploadCollectionItem_1 = __decorate([
      * @private
      */
     ,
-    event("_focus-requested", {
+    event("focus-requested", {
         bubbles: true,
     })
     /**
      * @private
      */
     ,
-    event("_uci-delete", {
+    event("request-delete", {
         bubbles: true,
     })
 ], UploadCollectionItem);

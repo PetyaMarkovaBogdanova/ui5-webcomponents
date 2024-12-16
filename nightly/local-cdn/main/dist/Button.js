@@ -11,7 +11,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isSpace, isEnter, isEscape, isShift, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { getIconAccessibleName } from "@ui5/webcomponents-base/dist/asset-registries/Icons.js";
@@ -19,11 +19,11 @@ import { isDesktop, isSafari, } from "@ui5/webcomponents-base/dist/Device.js";
 import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
 import { submitForm, resetForm } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import { getEnableDefaultTooltips } from "@ui5/webcomponents-base/dist/config/Tooltips.js";
+import toLowercaseEnumValue from "@ui5/webcomponents-base/dist/util/toLowercaseEnumValue.js";
 import ButtonDesign from "./types/ButtonDesign.js";
 import ButtonType from "./types/ButtonType.js";
-import ButtonTemplate from "./generated/templates/ButtonTemplate.lit.js";
+import ButtonTemplate from "./ButtonTemplate.js";
 import Icon from "./Icon.js";
-import IconMode from "./types/IconMode.js";
 import { BUTTON_ARIA_TYPE_ACCEPT, BUTTON_ARIA_TYPE_REJECT, BUTTON_ARIA_TYPE_EMPHASIZED } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import buttonCss from "./generated/themes/Button.css.js";
@@ -173,16 +173,12 @@ let Button = Button_1 = class Button extends UI5Element {
             document.addEventListener("mouseup", this._deactivate);
             isGlobalHandlerAttached = true;
         }
-        const handleTouchStartEvent = () => {
-            if (this.nonInteractive) {
-                return;
-            }
-            this._setActiveState(true);
-        };
-        this._ontouchstart = {
-            handleEvent: handleTouchStartEvent,
-            passive: true,
-        };
+    }
+    _ontouchstart() {
+        if (this.nonInteractive) {
+            return;
+        }
+        this._setActiveState(true);
     }
     onEnterDOM() {
         if (isDesktop()) {
@@ -256,7 +252,7 @@ let Button = Button_1 = class Button extends UI5Element {
         }
     }
     _setActiveState(active) {
-        const eventPrevented = !this.fireDecoratorEvent("_active-state-change");
+        const eventPrevented = !this.fireDecoratorEvent("active-state-change");
         if (eventPrevented) {
             return;
         }
@@ -267,18 +263,6 @@ let Button = Button_1 = class Button extends UI5Element {
     }
     get hasButtonType() {
         return this.design !== ButtonDesign.Default && this.design !== ButtonDesign.Transparent;
-    }
-    get iconMode() {
-        if (!this.icon) {
-            return "";
-        }
-        return IconMode.Decorative;
-    }
-    get endIconMode() {
-        if (!this.endIcon) {
-            return "";
-        }
-        return IconMode.Decorative;
     }
     get isIconOnly() {
         return !willShowContent(this.text);
@@ -300,7 +284,7 @@ let Button = Button_1 = class Button extends UI5Element {
         return Button_1.i18nBundle.getText(Button_1.typeTextMappings()[this.design]);
     }
     get effectiveAccRole() {
-        return this.accessibleRole.toLowerCase();
+        return toLowercaseEnumValue(this.accessibleRole);
     }
     get tabIndexValue() {
         if (this.disabled) {
@@ -308,9 +292,9 @@ let Button = Button_1 = class Button extends UI5Element {
         }
         const tabindex = this.getAttribute("tabindex");
         if (tabindex) {
-            return tabindex;
+            return Number.parseInt(tabindex);
         }
-        return this.nonInteractive ? "-1" : this.forcedTabIndex;
+        return this.nonInteractive ? -1 : Number.parseInt(this.forcedTabIndex);
     }
     get showIconTooltip() {
         return getEnableDefaultTooltips() && this.iconOnly && !this.tooltip;
@@ -408,7 +392,7 @@ Button = Button_1 = __decorate([
         tag: "ui5-button",
         formAssociated: true,
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: ButtonTemplate,
         styles: buttonCss,
         dependencies: [Icon],
@@ -423,16 +407,15 @@ Button = Button_1 = __decorate([
      * @public
      * @native
      */
-    ,
-    event("click", {
-        bubbles: true,
-    })
+    // @event("click", {
+    // 	bubbles: true,
+    // })
     /**
      * Fired whenever the active state of the component changes.
      * @private
      */
     ,
-    event("_active-state-change", {
+    event("active-state-change", {
         bubbles: true,
         cancelable: true,
     })

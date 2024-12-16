@@ -24,7 +24,6 @@ declare abstract class TableCellBase extends UI5Element {
      * @public
      */
     horizontalAlign?: `${TableCellHorizontalAlign}`;
-    _individualSlot?: string;
     protected ariaRole: string;
     static i18nBundle: I18nBundle;
     onEnterDOM(): void;

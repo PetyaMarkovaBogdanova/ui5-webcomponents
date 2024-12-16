@@ -1,5 +1,4 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type AriaRole from "@ui5/webcomponents-base/dist/types/AriaRole.js";
 import type { ListSelectionChangeEventDetail } from "@ui5/webcomponents/dist/List.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import Popover from "@ui5/webcomponents/dist/Popover.js";
@@ -11,13 +10,12 @@ import "@ui5/webcomponents-icons/dist/bell.js";
 import "@ui5/webcomponents-icons/dist/overflow.js";
 import "@ui5/webcomponents-icons/dist/grid.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
-import type { ClassMap, AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
+import type { ClassMap, AccessibilityAttributes, AriaRole } from "@ui5/webcomponents-base";
 import type ListItemBase from "@ui5/webcomponents/dist/ListItemBase.js";
 import type PopoverHorizontalAlign from "@ui5/webcomponents/dist/types/PopoverHorizontalAlign.js";
 import type ShellBarItem from "./ShellBarItem.js";
-type LowercaseString<T> = T extends string ? Lowercase<T> : never;
 type ShellBarLogoAccessibilityAttributes = {
-    role?: Extract<LowercaseString<AriaRole>, "button" | "link">;
+    role?: Extract<AriaRole, "button" | "link">;
     name?: string;
 };
 type ShellBarProfileAccessibilityAttributes = Pick<AccessibilityAttributes, "name" | "expanded" | "hasPopup">;
@@ -288,6 +286,7 @@ declare class ShellBar extends UI5Element {
     _isInitialRendering: boolean;
     _defaultItemPressPrevented: boolean;
     menuItemsObserver: MutationObserver;
+    additionalContextObserver: MutationObserver;
     _hiddenIcons: Array<IShelBarItemInfo>;
     _handleResize: ResizeObserverCallback;
     _overflowNotifications: string | null;
@@ -391,7 +390,9 @@ declare class ShellBar extends UI5Element {
     _updateItemsInfo(newItems: Array<IShelBarItemInfo>): void;
     _updateOverflowNotifications(): void;
     _updateClonedMenuItems(): void;
+    _updateAdditionalContextItems(): void;
     _observeMenuItems(): void;
+    _observeAdditionalContextItems(): void;
     _getOverflowPopover(): Popover;
     _getMenuPopover(): Popover;
     isIconHidden(name: string): boolean;
@@ -434,6 +435,7 @@ declare class ShellBar extends UI5Element {
     get _additionalContextText(): string;
     get _searchFieldDescription(): string;
     get _additionalContextRole(): "group" | undefined;
+    get additionalContext(): HTMLElement[];
     get _rightChildRole(): "toolbar" | undefined;
     get _searchFieldExpanded(): boolean;
     get _searchFieldText(): string;
@@ -453,44 +455,44 @@ declare class ShellBar extends UI5Element {
     get separatorsWidth(): number;
     get searchFieldActualWidth(): number;
     get separators(): HTMLElement[];
-    get additionalCoontextHidden(): HTMLElement[];
+    get additionalContextHidden(): HTMLElement[];
     get accInfo(): {
         notifications: {
             title: string;
             accessibilityAttributes: {
                 expanded: boolean | "true" | "false" | undefined;
-                hasPopup: ("dialog" | "menu" | "grid" | "listbox" | "tree") | undefined;
+                hasPopup: import("@ui5/webcomponents-base").AriaHasPopup | undefined;
             };
         };
         profile: {
             title: string;
             accessibilityAttributes: {
-                hasPopup: ("dialog" | "menu" | "grid" | "listbox" | "tree") | undefined;
+                hasPopup: import("@ui5/webcomponents-base").AriaHasPopup | undefined;
                 expanded: boolean | "true" | "false" | undefined;
             };
         };
         products: {
             title: string;
             accessibilityAttributes: {
-                hasPopup: ("dialog" | "menu" | "grid" | "listbox" | "tree") | undefined;
+                hasPopup: import("@ui5/webcomponents-base").AriaHasPopup | undefined;
                 expanded: boolean | "true" | "false" | undefined;
             };
         };
         search: {
             title: string;
             accessibilityAttributes: {
-                hasPopup: ("dialog" | "menu" | "grid" | "listbox" | "tree") | undefined;
+                hasPopup: import("@ui5/webcomponents-base").AriaHasPopup | undefined;
             };
         };
         overflow: {
             title: string;
             accessibilityAttributes: {
-                hasPopup: string;
+                hasPopup: import("@ui5/webcomponents-base").AriaHasPopup;
                 expanded: boolean | "true" | "false";
             };
         };
     };
-    get accLogoRole(): "link" | "button";
+    get accLogoRole(): string;
 }
 export default ShellBar;
 export type { ShellBarAdditionalContextItemDisappearsEventDetail, ShellBarNotificationsClickEventDetail, ShellBarProfileClickEventDetail, ShellBarProductSwitchClickEventDetail, ShellBarLogoClickEventDetail, ShellBarMenuItemClickEventDetail, ShellBarAccessibilityAttributes, ShellBarSearchButtonEventDetail, };

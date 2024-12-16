@@ -2,10 +2,12 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
 import ToggleButton from "@ui5/webcomponents/dist/ToggleButton.js";
+import type { AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-up.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import "@ui5/webcomponents-icons/dist/pushpin-off.js";
 import "@ui5/webcomponents-icons/dist/pushpin-on.js";
+type DynamicPageHeaderActionsAccessibilityAttributes = Pick<AccessibilityAttributes, "controls">;
 /**
  * @class
  *
@@ -56,9 +58,7 @@ declare class DynamicPageHeaderActions extends UI5Element {
      * @protected
      * @default {}
      */
-    accessibilityAttributes: {
-        controls?: string;
-    };
+    accessibilityAttributes: DynamicPageHeaderActionsAccessibilityAttributes;
     static i18nBundle: I18nBundle;
     get arrowButtonIcon(): "slim-arrow-down" | "slim-arrow-up";
     get pinButtonIcon(): "pushpin-off" | "pushpin-on";

@@ -13,7 +13,7 @@ import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import { locationOpen } from "@ui5/webcomponents-base/dist/Location.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import { isSpace, isShow, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
@@ -28,9 +28,8 @@ import List from "./List.js";
 import ListItemStandard from "./ListItemStandard.js";
 import Icon from "./Icon.js";
 import Button from "./Button.js";
-import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 // Templates
-import BreadcrumbsTemplate from "./generated/templates/BreadcrumbsTemplate.lit.js";
+import BreadcrumbsTemplate from "./BreadcrumbsTemplate.js";
 // Styles
 import breadcrumbsCss from "./generated/themes/Breadcrumbs.css.js";
 import breadcrumbsPopoverCss from "./generated/themes/BreadcrumbsPopover.css.js";
@@ -468,7 +467,7 @@ Breadcrumbs = Breadcrumbs_1 = __decorate([
     customElement({
         tag: "ui5-breadcrumbs",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: BreadcrumbsTemplate,
         styles: [breadcrumbsCss, breadcrumbsPopoverCss],
         dependencies: [

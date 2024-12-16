@@ -11,7 +11,7 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ListItemBase from "./ListItemBase.js";
 import { GROUP_HEADER_TEXT } from "./generated/i18n/i18n-defaults.js";
 // Template
-import ListItemGroupHeaderTemplate from "./generated/templates/ListItemGroupHeaderTemplate.lit.js";
+import ListItemGroupHeaderTemplate from "./ListItemGroupHeaderTemplate.js";
 // Styles
 import ListItemGroupHeaderCss from "./generated/themes/ListItemGroupHeader.css.js";
 /**

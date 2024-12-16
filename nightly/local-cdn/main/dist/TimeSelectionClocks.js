@@ -15,7 +15,7 @@ import ToggleSpinButton from "./ToggleSpinButton.js";
 import SegmentedButton from "./SegmentedButton.js";
 import SegmentedButtonItem from "./SegmentedButtonItem.js";
 // Template
-import TimeSelectionClocksTemplate from "./generated/templates/TimeSelectionClocksTemplate.lit.js";
+import TimeSelectionClocksTemplate from "./TimeSelectionClocksTemplate.js";
 // Styles
 import TimeSelectionClocksCss from "./generated/themes/TimeSelectionClocks.css.js";
 /**

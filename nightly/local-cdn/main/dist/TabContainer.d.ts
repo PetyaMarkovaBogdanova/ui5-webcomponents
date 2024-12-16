@@ -1,5 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { AccessibilityAttributes, StyleData } from "@ui5/webcomponents-base/dist/types.js";
+import type { AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-up.js";
@@ -196,7 +196,7 @@ declare class TabContainer extends UI5Element {
     _hasScheduledPopoverOpen: boolean;
     _handleResizeBound: () => void;
     _setDraggedElement?: SetDraggedElementFunction;
-    static registerTabStyles(styles: StyleData): void;
+    static registerTabStyles(styles: string): void;
     static i18nBundle: I18nBundle;
     constructor();
     onBeforeRendering(): void;
@@ -209,7 +209,7 @@ declare class TabContainer extends UI5Element {
     _onHeaderFocusin(e: FocusEvent): void;
     _onDragStart(e: DragEvent): void;
     _onHeaderDragEnter(e: DragEvent): void;
-    _onHeaderDragOver(e: DragEvent, isLongDragOver: boolean): void;
+    _onHeaderDragOver(e: DragEvent, isLongDragOver?: boolean): void;
     _onHeaderDrop(e: DragEvent): void;
     _moveHeaderItem(tab: Tab, e: KeyboardEvent): void;
     _onHeaderDragLeave(e: DragEvent): void;
@@ -221,7 +221,7 @@ declare class TabContainer extends UI5Element {
     _setPopoverInitialFocus(): void;
     _getSelectedTabInOverflow(): TabInOverflow;
     _getFirstFocusableItemInOverflow(): TabInOverflow;
-    _findTabInOverflow(realTab: ITab): TabSeparatorInOverflow | TabInOverflow | undefined;
+    _findTabInOverflow(realTab: ITab): TabSeparatorInOverflow | undefined;
     _onTabStripKeyDown(e: KeyboardEvent): void;
     _onTabStripKeyUp(e: KeyboardEvent): void;
     _onHeaderItemSelect(tab: HTMLElement): void;
@@ -318,7 +318,7 @@ declare class TabContainer extends UI5Element {
     get nextIconACCName(): string;
     get overflowMenuTitle(): string;
     get tabsAtTheBottom(): boolean;
-    get overflowMenuIcon(): "slim-arrow-up" | "slim-arrow-down";
+    get overflowMenuIcon(): "slim-arrow-down" | "slim-arrow-up";
     get overflowButtonText(): string;
     get popoverCancelButtonText(): string;
     get accInvisibleText(): string;

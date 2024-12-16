@@ -11,13 +11,12 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import clamp from "@ui5/webcomponents-base/dist/util/clamp.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
-import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import debounce from "@ui5/webcomponents-base/dist/util/debounce.js";
 import { getFirstFocusableElement } from "@ui5/webcomponents-base/dist/util/FocusableElements.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
@@ -28,7 +27,7 @@ import { WIZARD_NAV_STEP_DEFAULT_HEADING, WIZARD_NAV_ARIA_ROLE_DESCRIPTION, WIZA
 import WizardTab from "./WizardTab.js";
 import WizardStep from "./WizardStep.js";
 // Template and Styles
-import WizardTemplate from "./generated/templates/WizardTemplate.lit.js";
+import WizardTemplate from "./WizardTemplate.js";
 import WizardCss from "./generated/themes/Wizard.css.js";
 import WizardPopoverCss from "./generated/themes/WizardPopover.css.js";
 const MIN_STEP_WIDTH_NO_TITLE = 64;
@@ -185,18 +184,6 @@ let Wizard = Wizard_1 = class Wizard extends UI5Element {
             getItemsCallback: () => this.enabledStepsInHeaderDOM,
         });
         this._onStepResize = this.onStepResize.bind(this);
-    }
-    get classes() {
-        return {
-            root: {
-                "ui5-wiz-root": true,
-            },
-            popover: {
-                "ui5-wizard-responsive-popover": true,
-                "ui5-wizard-popover": !isPhone(),
-                "ui5-wizard-dialog": isPhone(),
-            },
-        };
     }
     static get SCROLL_DEBOUNCE_RATE() {
         return 25;
@@ -829,7 +816,7 @@ Wizard = Wizard_1 = __decorate([
         tag: "ui5-wizard",
         languageAware: true,
         fastNavigation: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: [
             WizardCss,
             WizardPopoverCss,

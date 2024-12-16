@@ -1,7 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import "@ui5/webcomponents-icons/dist/paper-plane.js";
 import type { IInputSuggestionItem, InputEventDetail } from "@ui5/webcomponents/dist/Input.js";
 /**
  * @class

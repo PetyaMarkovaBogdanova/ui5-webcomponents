@@ -5,12 +5,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ListItem from "./ListItem.js";
 import Icon from "./Icon.js";
 import Avatar from "./Avatar.js";
-import ListItemStandardTemplate from "./generated/templates/ListItemStandardTemplate.lit.js";
+import ListItemStandardTemplate from "./ListItemStandardTemplate.js";
 /**
  * @class
  * The `ui5-li` represents the simplest type of item for a `ui5-list`.
@@ -129,6 +130,7 @@ __decorate([
 ListItemStandard = __decorate([
     customElement({
         tag: "ui5-li",
+        renderer: jsxRenderer,
         template: ListItemStandardTemplate,
         dependencies: [
             ...ListItem.dependencies,

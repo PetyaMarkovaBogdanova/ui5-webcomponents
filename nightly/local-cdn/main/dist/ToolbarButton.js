@@ -9,8 +9,8 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import Button from "./Button.js";
 import ToolbarItem from "./ToolbarItem.js";
-import ToolbarButtonTemplate from "./generated/templates/ToolbarButtonTemplate.lit.js";
-import ToolbarPopoverButtonTemplate from "./generated/templates/ToolbarPopoverButtonTemplate.lit.js";
+import ToolbarButtonTemplate from "./ToolbarButtonTemplate.js";
+import ToolbarPopoverButtonTemplate from "./ToolbarPopoverButtonTemplate.js";
 import ToolbarButtonPopoverCss from "./generated/themes/ToolbarButtonPopover.css.js";
 import { registerToolbarItem } from "./ToolbarRegistry.js";
 /**

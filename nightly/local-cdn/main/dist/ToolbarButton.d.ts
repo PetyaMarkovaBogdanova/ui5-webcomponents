@@ -2,8 +2,8 @@ import type { ButtonAccessibilityAttributes } from "./Button.js";
 import type ButtonDesign from "./types/ButtonDesign.js";
 import ToolbarItem from "./ToolbarItem.js";
 import type { IEventOptions } from "./ToolbarItem.js";
-import ToolbarButtonTemplate from "./generated/templates/ToolbarButtonTemplate.lit.js";
-import ToolbarPopoverButtonTemplate from "./generated/templates/ToolbarPopoverButtonTemplate.lit.js";
+import ToolbarButtonTemplate from "./ToolbarButtonTemplate.js";
+import ToolbarPopoverButtonTemplate from "./ToolbarPopoverButtonTemplate.js";
 type ToolbarButtonAccessibilityAttributes = ButtonAccessibilityAttributes;
 /**
  * @class

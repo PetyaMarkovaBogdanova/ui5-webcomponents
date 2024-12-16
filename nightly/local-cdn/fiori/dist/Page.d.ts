@@ -86,7 +86,6 @@ declare class Page extends UI5Element {
             bottom: string | 0;
             top: string;
         };
-        footer: {};
     };
 }
 export default Page;

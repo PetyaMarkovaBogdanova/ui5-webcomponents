@@ -55,7 +55,7 @@ type LinkAccessibilityAttributes = Pick<AccessibilityAttributes, "expanded" | "h
  */
 declare class Link extends UI5Element implements ITabbable {
     eventDetails: {
-        "click": LinkClickEventDetail;
+        click: LinkClickEventDetail;
     };
     /**
      * Defines whether the component is disabled.
@@ -193,15 +193,15 @@ declare class Link extends UI5Element implements ITabbable {
     onEnterDOM(): void;
     onBeforeRendering(): void;
     _isCrossOrigin(href: string): boolean;
-    get effectiveTabIndex(): string;
+    get effectiveTabIndex(): number;
     get ariaLabelText(): string | undefined;
     get hasLinkType(): boolean;
     static typeTextMappings(): Record<string, I18nText>;
     get linkTypeText(): string;
     get parsedRef(): string | undefined;
-    get effectiveAccRole(): string;
+    get effectiveAccRole(): "button" | "link";
     get ariaDescriptionText(): string | undefined;
-    get _hasPopup(): ("dialog" | "grid" | "listbox" | "menu" | "tree") | undefined;
+    get _hasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
     _onclick(e: MouseEvent | KeyboardEvent): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;

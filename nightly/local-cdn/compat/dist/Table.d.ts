@@ -14,7 +14,7 @@ import TableMode from "./types/TableMode.js";
  * Interface for components that may be slotted inside a `ui5-table` as rows
  * @public
  */
-interface ITableRow extends HTMLElement, ITabbable {
+interface ITableRow extends UI5Element, ITabbable {
     mode: `${TableMode}`;
     selected: boolean;
     forcedBusy: boolean;
@@ -291,7 +291,7 @@ declare class Table extends UI5Element {
      * Switches focus between column header, last focused item, and "More" button (if applicable).
      * @private
      */
-    _handleArrowAlt(e: KeyboardEvent): void;
+    _handleArrowAlt(e: KeyboardEvent): void | Promise<void>;
     /**
      * Determines the type of the currently focused element.
      * @private

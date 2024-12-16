@@ -9,11 +9,11 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ToggleButton from "@ui5/webcomponents/dist/ToggleButton.js";
 import TimelineLayout from "./types/TimelineLayout.js";
 import TimelineItem from "./TimelineItem.js";
-import TimelineGroupItemTemplate from "./generated/templates/TimelineGroupItemTemplate.lit.js";
+import TimelineGroupItemTemplate from "./TimelineGroupItemTemplate.js";
 // Styles
 import TimelineGroupItemCss from "./generated/themes/TimelineGroupItem.css.js";
 const SHORT_LINE_WIDTH = "ShortLineWidth";
@@ -152,7 +152,7 @@ __decorate([
 TimelineGroupItem = __decorate([
     customElement({
         tag: "ui5-timeline-group-item",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: TimelineGroupItemCss,
         template: TimelineGroupItemTemplate,
         dependencies: [TimelineItem, ToggleButton],

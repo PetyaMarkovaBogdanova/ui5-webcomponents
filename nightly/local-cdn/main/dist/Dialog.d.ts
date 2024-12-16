@@ -1,8 +1,6 @@
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import Popup from "./Popup.js";
-import type { PopupBeforeCloseEventDetail as DialogBeforeCloseEventDetail } from "./Popup.js";
-import "@ui5/webcomponents-icons/dist/resize-corner.js";
 import "@ui5/webcomponents-icons/dist/error.js";
 import "@ui5/webcomponents-icons/dist/alert.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
@@ -169,12 +167,12 @@ declare class Dialog extends Popup {
      */
     get _displayHeader(): string | number | boolean;
     get _movable(): boolean;
-    get _headerTabIndex(): "0" | undefined;
+    get _headerTabIndex(): 0 | undefined;
     get _showResizeHandle(): boolean;
     get _minHeight(): number;
     get hasValueState(): boolean;
     get _dialogStateIcon(): string;
-    get _role(): string | undefined;
+    get _role(): "dialog" | "alertdialog" | undefined;
     _show(): void;
     onBeforeRendering(): void;
     onEnterDOM(): void;
@@ -191,7 +189,7 @@ declare class Dialog extends Popup {
     /**
      * Event handlers
      */
-    _onDragMouseDown(e: DragEvent): void;
+    _onDragMouseDown(e: MouseEvent): void;
     _onDragMouseMove(e: MouseEvent): void;
     _onDragMouseUp(): void;
     _onDragOrResizeKeyDown(e: KeyboardEvent): void;
@@ -207,4 +205,3 @@ declare class Dialog extends Popup {
     _detachMouseResizeHandlers(): void;
 }
 export default Dialog;
-export type { DialogBeforeCloseEventDetail, };

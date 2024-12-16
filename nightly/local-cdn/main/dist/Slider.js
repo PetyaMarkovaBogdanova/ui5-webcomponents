@@ -13,7 +13,7 @@ import SliderBase from "./SliderBase.js";
 import Icon from "./Icon.js";
 import Input from "./Input.js";
 // Template
-import SliderTemplate from "./generated/templates/SliderTemplate.lit.js";
+import SliderTemplate from "./SliderTemplate.js";
 // Texts
 import { SLIDER_ARIA_DESCRIPTION, SLIDER_TOOLTIP_INPUT_DESCRIPTION, SLIDER_TOOLTIP_INPUT_LABEL, } from "./generated/i18n/i18n-defaults.js";
 /**

@@ -11,6 +11,7 @@ import ListItemBase from "./ListItemBase.js";
  * @private
  */
 declare class ListItemGroupHeader extends ListItemBase {
+    eventDetails: ListItemBase["eventDetails"];
     /**
      * Defines the text alternative of the component.
      *

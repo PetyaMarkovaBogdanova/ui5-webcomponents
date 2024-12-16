@@ -9,13 +9,13 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isTabNext } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import BusyIndicatorTextPlacement from "./types/BusyIndicatorTextPlacement.js";
 import Label from "./Label.js";
 // Template
-import BusyIndicatorTemplate from "./generated/templates/BusyIndicatorTemplate.lit.js";
+import BusyIndicatorTemplate from "./BusyIndicatorTemplate.js";
 import { BUSY_INDICATOR_TITLE } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import busyIndicatorCss from "./generated/themes/BusyIndicator.css.js";
@@ -118,13 +118,6 @@ let BusyIndicator = BusyIndicator_1 = class BusyIndicator extends UI5Element {
     get labelId() {
         return this.text ? `${this._id}-label` : undefined;
     }
-    get classes() {
-        return {
-            root: {
-                "ui5-busy-indicator-root": true,
-            },
-        };
-    }
     get textPosition() {
         return {
             top: this.text && this.textPlacement === BusyIndicatorTextPlacement.Top,
@@ -202,7 +195,7 @@ BusyIndicator = BusyIndicator_1 = __decorate([
         tag: "ui5-busy-indicator",
         languageAware: true,
         styles: busyIndicatorCss,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: BusyIndicatorTemplate,
         dependencies: [Label],
     })

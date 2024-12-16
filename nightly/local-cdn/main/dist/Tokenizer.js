@@ -11,7 +11,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
@@ -24,13 +24,13 @@ import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMRe
 import { isSpace, isSpaceCtrl, isSpaceShift, isLeftCtrl, isRightCtrl, isUpCtrl, isDownCtrl, isUpShift, isDownShift, isLeftShift, isRightShift, isLeftShiftCtrl, isRightShiftCtrl, isDeleteShift, isInsertCtrl, isEnd, isHome, isHomeShift, isEndShift, isPageUpShift, isPageDownShift, isHomeCtrl, isEndCtrl, isRight, isLeft, isUp, isDown, isEscape, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import ResponsivePopover from "./ResponsivePopover.js";
-import List from "./List.js";
+import List, {} from "./List.js";
 import ListSelectionMode from "./types/ListSelectionMode.js";
 import Title from "./Title.js";
 import Button from "./Button.js";
 import Icon from "./Icon.js";
 import ListItemStandard from "./ListItemStandard.js";
-import TokenizerTemplate from "./generated/templates/TokenizerTemplate.lit.js";
+import TokenizerTemplate from "./TokenizerTemplate.js";
 import { MULTIINPUT_SHOW_MORE_TOKENS, TOKENIZER_ARIA_LABEL, TOKENIZER_POPOVER_REMOVE, TOKENIZER_ARIA_CONTAIN_TOKEN, TOKENIZER_ARIA_CONTAIN_ONE_TOKEN, TOKENIZER_ARIA_CONTAIN_SEVERAL_TOKENS, TOKENIZER_SHOW_ALL_ITEMS, TOKENIZER_CLEAR_ALL, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import TokenizerCss from "./generated/themes/Tokenizer.css.js";
@@ -320,7 +320,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         }
     }
     async itemDelete(e) {
-        const token = e.detail.item.tokenRef;
+        const token = this.getTokenByRefId(e.detail.item.getAttribute("data-ui5-token-ref-id"));
         const tokensArray = this._tokens;
         // delay the token deletion in order to close the popover before removing token of the DOM
         if (tokensArray.length === 1) {
@@ -809,6 +809,9 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
     getPopover() {
         return this.shadowRoot.querySelector("[ui5-responsive-popover]");
     }
+    getTokenByRefId(refId) {
+        return this.tokens.find(token => token._id === refId);
+    }
 };
 __decorate([
     property({ type: Boolean })
@@ -875,7 +878,7 @@ Tokenizer = Tokenizer_1 = __decorate([
     customElement({
         tag: "ui5-tokenizer",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: TokenizerTemplate,
         styles: [
             TokenizerCss,

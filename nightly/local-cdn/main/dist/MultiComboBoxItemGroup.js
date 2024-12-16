@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import MultiComboBoxItemGroupTemplate from "./generated/templates/MultiComboBoxItemGroupTemplate.lit.js";
+import MultiComboBoxItemGroupTemplate from "./MultiComboBoxItemGroupTemplate.js";
 import ComboBoxItemGroup from "./ComboBoxItemGroup.js";
 /**
  * @class

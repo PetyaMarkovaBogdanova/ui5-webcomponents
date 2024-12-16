@@ -11,7 +11,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isSpace, isEnter, isF7, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getLastTabbableElement } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
@@ -19,7 +19,7 @@ import CheckBox from "@ui5/webcomponents/dist/CheckBox.js";
 import TableMode from "./types/TableMode.js";
 import TableRowType from "./types/TableRowType.js";
 import TableColumnPopinDisplay from "./types/TableColumnPopinDisplay.js";
-import TableRowTemplate from "./generated/templates/TableRowTemplate.lit.js";
+import TableRowTemplate from "./TableRowTemplate.js";
 import { ARIA_LABEL_ROW_SELECTION, LIST_ITEM_NOT_SELECTED, LIST_ITEM_SELECTED, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import tableRowStyles from "./generated/themes/TableRow.css.js";
@@ -38,7 +38,7 @@ import tableRowStyles from "./generated/themes/TableRow.css.js";
  */
 let TableRow = TableRow_1 = class TableRow extends UI5Element {
     constructor() {
-        super();
+        super(...arguments);
         /**
          * Defines the visual indication and behavior of the component.
          *
@@ -83,13 +83,9 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
         // Properties, set and handled by the Table
         this.tabbableElements = [];
         this._columnsInfoString = "";
-        const handleToushStartEvent = () => {
-            this.activate();
-        };
-        this._ontouchstart = {
-            handleEvent: handleToushStartEvent,
-            passive: true,
-        };
+    }
+    _ontouchstart() {
+        this.activate();
     }
     _onmouseup() {
         this.deactivate();
@@ -106,10 +102,10 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
         const elements = rowElements.map(getLastTabbableElement).filter(Boolean);
         const lastFocusableElement = elements.pop();
         if (isTabNext(e) && activeElement === (lastFocusableElement || this.root)) {
-            this.fireDecoratorEvent("_forward-after", { target: activeElement });
+            this.fireDecoratorEvent("forward-after", { target: activeElement });
         }
         if (isTabPrevious(e) && activeElement === this.root) {
-            this.fireDecoratorEvent("_forward-before", { target: activeElement });
+            this.fireDecoratorEvent("forward-before", { target: activeElement });
         }
         if (isSpace(e) && target.tagName.toLowerCase() === "tr") {
             e.preventDefault();
@@ -194,9 +190,9 @@ let TableRow = TableRow_1 = class TableRow extends UI5Element {
         }
     }
     get shouldPopin() {
-        return this._columnsInfo?.filter(el => {
+        return !!(this._columnsInfo?.filter(el => {
             return el.demandPopin || !el.visible;
-        }).length;
+        }).length);
     }
     get allColumnsPoppedIn() {
         return this._columnsInfo?.every(el => el.demandPopin && !el.visible);
@@ -329,7 +325,7 @@ TableRow = TableRow_1 = __decorate([
     customElement({
         tag: "ui5-table-row",
         styles: tableRowStyles,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: TableRowTemplate,
         dependencies: [CheckBox],
     })
@@ -353,14 +349,14 @@ TableRow = TableRow_1 = __decorate([
      * @private
      */
     ,
-    event("_forward-before", {
+    event("forward-before", {
         bubbles: true,
     })
     /**
      * @private
      */
     ,
-    event("_forward-after", {
+    event("forward-after", {
         bubbles: true,
     })
     /**

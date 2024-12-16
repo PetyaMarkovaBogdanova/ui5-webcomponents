@@ -16,7 +16,8 @@ import isValidPropertyName from "./util/isValidPropertyName.js";
 import { getSlotName, getSlottedNodesList } from "./util/SlotsHelper.js";
 import arraysAreEqual from "./util/arraysAreEqual.js";
 import { markAsRtlAware } from "./locale/RTLAwareRegistry.js";
-import executeTemplate, { getTagsToScope } from "./renderer/executeTemplate.js";
+import executeTemplate from "./renderer/executeTemplate.js";
+import { shouldScopeCustomElement } from "./CustomElementsScopeUtils.js";
 import { updateFormValue, setFormValue } from "./features/InputElementsFormSupport.js";
 import { getComponentFeature, subscribeForFeatureLoad } from "./FeaturesRegistry.js";
 import { getI18nBundle } from "./i18nBundle.js";
@@ -173,7 +174,7 @@ class UI5Element extends HTMLElement {
             // when an element is connected, check if it exists in the `dependencies` of the parent
             if (rootNode instanceof ShadowRoot && instanceOfUI5Element(rootNode.host)) {
                 const klass = rootNode.host.constructor;
-                const hasDependency = getTagsToScope(rootNode.host).includes(this.constructor.getMetadata().getPureTag());
+                const hasDependency = klass.tagsToScope.includes(this.constructor.getMetadata().getPureTag());
                 if (!hasDependency) {
                     // eslint-disable-next-line no-console
                     console.error(`[UI5-FWK] ${this.constructor.getMetadata().getTag()} not found in dependencies of ${klass.getMetadata().getTag()}`);
@@ -890,6 +891,19 @@ class UI5Element extends HTMLElement {
      */
     static get observedAttributes() {
         return this.getMetadata().getAttributesList();
+    }
+    /**
+     * Returns all tags, used inside component's template subject to scoping.
+     * returns {Array[]} // TODO add @
+     * @private
+     */
+    static get tagsToScope() {
+        const componentTag = this.getMetadata().getPureTag();
+        const tagsToScope = this.getUniqueDependencies().map((dep) => dep.getMetadata().getPureTag()).filter(shouldScopeCustomElement);
+        if (shouldScopeCustomElement(componentTag)) {
+            tagsToScope.push(componentTag);
+        }
+        return tagsToScope;
     }
     /**
      * @private

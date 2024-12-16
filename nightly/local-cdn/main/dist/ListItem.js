@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var ListItem_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import { isSpace, isEnter, isDelete, isF2, } from "@ui5/webcomponents-base/dist/Keys.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getFirstFocusableElement } from "@ui5/webcomponents-base/dist/util/FocusableElements.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
@@ -105,13 +106,6 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
                 this.active = false;
             }
         };
-        const handleTouchStartEvent = () => {
-            this._onmousedown();
-        };
-        this._ontouchstart = {
-            handleEvent: handleTouchStartEvent,
-            passive: true,
-        };
     }
     onBeforeRendering() {
         super.onBeforeRendering();
@@ -209,13 +203,13 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
         if (this.isInactive) {
             return;
         }
-        this.fireDecoratorEvent("_selection-requested", { item: this, selected: e.target.checked, selectionComponentPressed: true });
+        this.fireDecoratorEvent("selection-requested", { item: this, selected: e.target.checked, selectionComponentPressed: true });
     }
     onSingleSelectionComponentPress(e) {
         if (this.isInactive) {
             return;
         }
-        this.fireDecoratorEvent("_selection-requested", { item: this, selected: !e.target.checked, selectionComponentPressed: true });
+        this.fireDecoratorEvent("selection-requested", { item: this, selected: !e.target.checked, selectionComponentPressed: true });
     }
     activate() {
         if (this.type === ListItemType.Active || this.type === ListItemType.Navigation) {
@@ -223,7 +217,7 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
         }
     }
     onDelete() {
-        this.fireDecoratorEvent("_selection-requested", { item: this, selectionComponentPressed: false });
+        this.fireDecoratorEvent("selection-requested", { item: this, selectionComponentPressed: false });
     }
     onDetailClick() {
         this.fireDecoratorEvent("detail-click", { item: this, selected: this.selected });
@@ -233,6 +227,9 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
             return;
         }
         super.fireItemPress(e);
+        if (document.activeElement !== this) {
+            this.focus();
+        }
     }
     get isInactive() {
         return this.type === ListItemType.Inactive || this.type === ListItemType.Detail;
@@ -283,7 +280,7 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
         return undefined;
     }
     get listItemAccessibleRole() {
-        return this.accessibleRole.toLowerCase();
+        return (this._forcedAccessibleRole || this.accessibleRole.toLowerCase());
     }
     get ariaSelectedText() {
         let ariaSelectedText;
@@ -360,6 +357,9 @@ __decorate([
 ], ListItem.prototype, "accessibleRole", void 0);
 __decorate([
     property()
+], ListItem.prototype, "_forcedAccessibleRole", void 0);
+__decorate([
+    property()
 ], ListItem.prototype, "_selectionMode", void 0);
 __decorate([
     slot()
@@ -370,6 +370,7 @@ __decorate([
 ListItem = ListItem_1 = __decorate([
     customElement({
         languageAware: true,
+        renderer: jsxRenderer,
         styles: [
             ListItemBase.styles,
             listItemAdditionalTextCss,
@@ -389,7 +390,7 @@ ListItem = ListItem_1 = __decorate([
     event("detail-click", {
         bubbles: true,
     }),
-    event("_selection-requested", {
+    event("selection-requested", {
         bubbles: true,
     })
 ], ListItem);

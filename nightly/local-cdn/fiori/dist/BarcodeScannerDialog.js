@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var BarcodeScannerDialog_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import Dialog from "@ui5/webcomponents/dist/Dialog.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
 import BusyIndicator from "@ui5/webcomponents/dist/BusyIndicator.js";
@@ -21,7 +21,7 @@ import ZXing from "@ui5/webcomponents-fiori/dist/ssr-zxing.js";
 // Texts
 import { BARCODE_SCANNER_DIALOG_CANCEL_BUTTON_TXT, BARCODE_SCANNER_DIALOG_LOADING_TXT, } from "./generated/i18n/i18n-defaults.js";
 // Template
-import BarcodeScannerDialogTemplate from "./generated/templates/BarcodeScannerDialogTemplate.lit.js";
+import BarcodeScannerDialogTemplate from "./BarcodeScannerDialogTemplate.js";
 // Styles
 import BarcodeScannerDialogCss from "./generated/themes/BarcodeScannerDialog.css.js";
 // some tools handle named exports from UMD files and the window object is not assigned but the imports work (vitejs)
@@ -335,7 +335,7 @@ BarcodeScannerDialog = BarcodeScannerDialog_1 = __decorate([
     customElement({
         tag: "ui5-barcode-scanner-dialog",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: BarcodeScannerDialogTemplate,
         styles: [BarcodeScannerDialogCss],
         dependencies: [

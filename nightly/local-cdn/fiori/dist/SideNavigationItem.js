@@ -5,17 +5,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import { isLeft, isRight } from "@ui5/webcomponents-base/dist/Keys.js";
-import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
-import "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
-import "@ui5/webcomponents-icons/dist/circle-task-2.js";
-import "@ui5/webcomponents-icons/dist/arrow-right.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
 import SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
-import SideNavigationItemTemplate from "./generated/templates/SideNavigationItemTemplate.lit.js";
+import SideNavigationItemTemplate from "./SideNavigationItemTemplate.js";
 // Styles
 import SideNavigationItemCss from "./generated/themes/SideNavigationItem.css.js";
 /**
@@ -54,48 +50,6 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
          * @since 1.10.0
          */
         this._fixed = false;
-        this._onToggleClick = (e) => {
-            e.stopPropagation();
-            this.expanded = !this.expanded;
-        };
-        this._onkeydown = (e) => {
-            if (isLeft(e)) {
-                this.expanded = false;
-                return;
-            }
-            if (isRight(e)) {
-                this.expanded = true;
-                return;
-            }
-            super._onkeydown(e);
-        };
-        this._onkeyup = (e) => {
-            super._onkeyup(e);
-        };
-        this._onfocusin = (e) => {
-            super._onfocusin(e);
-        };
-        this._onclick = (e) => {
-            super._onclick(e);
-        };
-        this._onfocusout = () => {
-            if (!this.sideNavCollapsed) {
-                return;
-            }
-            this.getDomRef().classList.remove("ui5-sn-item-no-hover-effect");
-        };
-        this._onmouseenter = () => {
-            if (!this.sideNavCollapsed) {
-                return;
-            }
-            this.getDomRef().classList.remove("ui5-sn-item-no-hover-effect");
-        };
-        this._onmouseleave = () => {
-            if (!this.sideNavCollapsed || !this._selected) {
-                return;
-            }
-            this.getDomRef().classList.add("ui5-sn-item-no-hover-effect");
-        };
     }
     get overflowItems() {
         return [this];
@@ -139,9 +93,6 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
         }
         return this.expanded;
     }
-    get _toggleIconName() {
-        return this.expanded ? "navigation-down-arrow" : "navigation-right-arrow";
-    }
     get classesArray() {
         const classes = super.classesArray;
         if (!this.disabled && this.parentNode.collapsed && this.items.length) {
@@ -157,6 +108,48 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
             return this.selected || this.items.some(item => item.selected);
         }
         return this.selected;
+    }
+    _onToggleClick(e) {
+        e.stopPropagation();
+        this.expanded = !this.expanded;
+    }
+    _onkeydown(e) {
+        if (isLeft(e)) {
+            this.expanded = false;
+            return;
+        }
+        if (isRight(e)) {
+            this.expanded = true;
+            return;
+        }
+        super._onkeydown(e);
+    }
+    _onkeyup(e) {
+        super._onkeyup(e);
+    }
+    _onfocusin(e) {
+        super._onfocusin(e);
+    }
+    _onclick(e) {
+        super._onclick(e);
+    }
+    _onfocusout() {
+        if (!this.sideNavCollapsed) {
+            return;
+        }
+        this.getDomRef().classList.remove("ui5-sn-item-no-hover-effect");
+    }
+    _onmouseenter() {
+        if (!this.sideNavCollapsed) {
+            return;
+        }
+        this.getDomRef().classList.remove("ui5-sn-item-no-hover-effect");
+    }
+    _onmouseleave() {
+        if (!this.sideNavCollapsed || !this._selected) {
+            return;
+        }
+        this.getDomRef().classList.add("ui5-sn-item-no-hover-effect");
     }
     get isSideNavigationItem() {
         return true;
@@ -174,7 +167,7 @@ __decorate([
 SideNavigationItem = __decorate([
     customElement({
         tag: "ui5-side-navigation-item",
-        renderer: litRender,
+        renderer: jsxRender,
         template: SideNavigationItemTemplate,
         styles: SideNavigationItemCss,
         dependencies: [

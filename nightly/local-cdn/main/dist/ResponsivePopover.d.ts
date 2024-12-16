@@ -1,9 +1,7 @@
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import type { PopupBeforeCloseEventDetail } from "./Popup.js";
 import Popover from "./Popover.js";
 import Dialog from "./Dialog.js";
-import "@ui5/webcomponents-icons/dist/decline.js";
-type ResponsivePopoverBeforeCloseEventDetail = PopupBeforeCloseEventDetail;
+import type { PopupBeforeCloseEventDetail } from "./Popup.js";
 /**
  * @class
  *
@@ -50,6 +48,7 @@ declare class ResponsivePopover extends Popover {
     constructor();
     openPopup(): Promise<void>;
     _show(): Promise<void>;
+    _dialogCloseButtonClick(): void;
     /**
      * Closes the popover/dialog.
      * @override
@@ -70,4 +69,3 @@ declare class ResponsivePopover extends Popover {
     get isModal(): boolean;
 }
 export default ResponsivePopover;
-export type { ResponsivePopoverBeforeCloseEventDetail, };

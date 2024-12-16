@@ -9,6 +9,7 @@ import ListItemBase from "./ListItemBase.js";
  * @public
  */
 declare class ComboBoxItem extends ListItemBase implements IComboBoxItem {
+    eventDetails: ListItemBase["eventDetails"];
     /**
      * Defines the text of the component.
      * @default undefined

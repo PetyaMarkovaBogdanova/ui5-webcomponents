@@ -1,24 +1,19 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { ClassMap } from "@ui5/webcomponents-base/dist/types.js";
+import { type UI5CustomEvent } from "@ui5/webcomponents-base";
+import type { AriaAutoComplete, AriaRole, AriaHasPopup, ClassMap } from "@ui5/webcomponents-base/dist/types.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
-import "@ui5/webcomponents-icons/dist/decline.js";
-import "@ui5/webcomponents-icons/dist/not-editable.js";
-import "@ui5/webcomponents-icons/dist/error.js";
-import "@ui5/webcomponents-icons/dist/alert.js";
-import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
-import "@ui5/webcomponents-icons/dist/information.js";
 import type SuggestionItem from "./SuggestionItem.js";
 import type { SuggestionComponent } from "./features/InputSuggestions.js";
 import type InputSuggestions from "./features/InputSuggestions.js";
-import type { PopupScrollEventDetail } from "./Popup.js";
 import InputType from "./types/InputType.js";
 import Popover from "./Popover.js";
 import type { IIcon } from "./Icon.js";
 import type PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
 import type { ListItemClickEventDetail, ListSelectionChangeEventDetail } from "./List.js";
+import ResponsivePopover from "./ResponsivePopover.js";
 /**
  * Interface for components that represent a suggestion item, usable in `ui5-input`
  * @public
@@ -37,16 +32,18 @@ type NativeInputAttributes = {
     max?: number;
     step?: number;
 };
-type AccInfo = {
+type InputAccInfo = {
     ariaRoledescription?: string;
     ariaDescribedBy?: string;
-    ariaHasPopup?: string;
-    ariaAutoComplete?: string;
-    role?: string;
+    ariaHasPopup?: AriaHasPopup;
+    ariaAutoComplete?: AriaAutoComplete;
+    role?: AriaRole;
     ariaControls?: string;
-    ariaExpanded?: string;
+    ariaRequired?: boolean;
+    ariaExpanded?: boolean;
     ariaDescription?: string;
     ariaLabel?: string;
+    ariaInvalid?: boolean;
 };
 declare enum INPUT_ACTIONS {
     ACTION_ENTER = "enter",
@@ -276,7 +273,7 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      * @private
      */
     _isValueStateFocused: boolean;
-    _inputAccInfo: AccInfo;
+    _inputAccInfo: InputAccInfo;
     _nativeInputAttributes: NativeInputAttributes;
     _inputWidth?: number;
     _listWidth?: number;
@@ -384,9 +381,11 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     _handleChange(): void;
     _clear(): void;
     _iconMouseDown(): void;
-    _scroll(e: CustomEvent<PopupScrollEventDetail>): void;
+    _scroll(e: UI5CustomEvent<ResponsivePopover, "scroll">): void;
     _handleSelect(): void;
-    _handleInput(e: InputEvent | CustomEvent<InputEventDetail>): void;
+    _handleInput(e: CustomEvent<InputEventDetail>): void;
+    _handleNativeInput(e: InputEvent): void;
+    _input(e: CustomEvent<InputEventDetail> | InputEvent, eventType: string): void;
     _startsWithMatchingItems(str: string): Array<IInputSuggestionItemSelectable>;
     _getFirstMatchingItem(current: string): IInputSuggestionItemSelectable | undefined;
     _handleSelectionChange(e: CustomEvent<ListSelectionChangeEventDetail>): void;
@@ -450,23 +449,22 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     get _headerTitleText(): string;
     get clearIconAccessibleName(): string;
     get _popupLabel(): string;
-    get inputType(): string;
+    get inputType(): `${InputType}`;
+    get inputNativeType(): Lowercase<`${InputType}`>;
     get isTypeNumber(): boolean;
     get suggestionsTextId(): "" | "suggestionsText";
     get valueStateTextId(): "" | "valueStateDesc";
     get accInfo(): {
-        input: {
-            ariaRoledescription: string | undefined;
-            ariaDescribedBy: string | undefined;
-            ariaInvalid: string | undefined;
-            ariaHasPopup: string | undefined;
-            ariaAutoComplete: string | undefined;
-            role: string | undefined;
-            ariaControls: string | undefined;
-            ariaExpanded: string | undefined;
-            ariaDescription: string | undefined;
-            ariaLabel: string | undefined;
-        };
+        ariaRoledescription: string | undefined;
+        ariaDescribedBy: string | undefined;
+        ariaInvalid: boolean | undefined;
+        ariaHasPopup: AriaHasPopup | undefined;
+        ariaAutoComplete: "list" | "none" | "inline" | "both" | undefined;
+        role: import("@ui5/webcomponents-base/dist/thirdparty/preact/jsx.js").JSXInternal.AriaRole | undefined;
+        ariaControls: string | undefined;
+        ariaExpanded: boolean | undefined;
+        ariaDescription: string | undefined;
+        ariaLabel: string | undefined;
     };
     get nativeInputAttributes(): {
         min: number | undefined;
@@ -493,7 +491,7 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
             padding: string;
         };
     };
-    get suggestionSeparators(): string;
+    get suggestionSeparators(): "None";
     get shouldDisplayOnlyValueStateMessage(): boolean;
     get shouldDisplayDefaultValueStateMessage(): boolean;
     get hasValueState(): boolean;
@@ -535,4 +533,4 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     removeFractionalPart(value: string): string;
 }
 export default Input;
-export type { IInputSuggestionItem, IInputSuggestionItemSelectable, InputSuggestionScrollEventDetail, InputSelectionChangeEventDetail, InputEventDetail, };
+export type { InputAccInfo, IInputSuggestionItem, IInputSuggestionItemSelectable, InputSuggestionScrollEventDetail, InputSelectionChangeEventDetail, InputEventDetail, };

@@ -10,11 +10,11 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScopeUtils.js";
-import ColorPalettePopoverTemplate from "./generated/templates/ColorPalettePopoverTemplate.lit.js";
+import ColorPalettePopoverTemplate from "./ColorPalettePopoverTemplate.js";
 // Styles
 import ColorPalettePopoverCss from "./generated/themes/ColorPalettePopover.css.js";
 import ResponsivePopoverCommonCss from "./generated/themes/ResponsivePopoverCommon.css.js";
@@ -164,7 +164,7 @@ __decorate([
 ColorPalettePopover = ColorPalettePopover_1 = __decorate([
     customElement({
         tag: "ui5-color-palette-popover",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: [ResponsivePopoverCommonCss, ColorPalettePopoverCss],
         template: ColorPalettePopoverTemplate,
         dependencies: [

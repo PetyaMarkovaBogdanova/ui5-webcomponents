@@ -7,10 +7,19 @@ import CarouselArrowsPlacement from "./types/CarouselArrowsPlacement.js";
 import CarouselPageIndicatorType from "./types/CarouselPageIndicatorType.js";
 import type BackgroundDesign from "./types/BackgroundDesign.js";
 import type BorderDesign from "./types/BorderDesign.js";
-import "@ui5/webcomponents-icons/dist/slim-arrow-left.js";
-import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 type CarouselNavigateEventDetail = {
     selectedIndex: number;
+};
+type ItemsInfo = {
+    id: string;
+    item: HTMLElement & {
+        _individualSlot?: string;
+    };
+    tabIndex: number;
+    posinset: number;
+    setsize: number;
+    selected: boolean;
+    _individualSlot?: string;
 };
 /**
  * @class
@@ -221,18 +230,7 @@ declare class Carousel extends UI5Element {
      * Assuming that all items have the same width
      * @private
      */
-    get items(): {
-        id: string;
-        item: HTMLElement;
-        tabIndex: string;
-        posinset: string;
-        setsize: string;
-        styles: {
-            width: string;
-        };
-        classes: string;
-        selected: boolean;
-    }[];
+    get items(): Array<ItemsInfo>;
     get effectiveItemsPerPage(): number;
     isItemInViewport(index: number): boolean;
     isIndexInRange(index: number): boolean;
@@ -241,11 +239,6 @@ declare class Carousel extends UI5Element {
      */
     get renderNavigation(): boolean;
     get hasManyPages(): boolean;
-    get styles(): {
-        content: {
-            transform: string;
-        };
-    };
     get classes(): {
         viewport: {
             "ui5-carousel-viewport": boolean;
@@ -261,12 +254,6 @@ declare class Carousel extends UI5Element {
             [x: string]: boolean;
             "ui5-carousel-navigation-wrapper": boolean;
             "ui5-carousel-navigation-with-buttons": boolean;
-        };
-        navPrevButton: {
-            "ui5-carousel-navigation-button--hidden": boolean;
-        };
-        navNextButton: {
-            "ui5-carousel-navigation-button--hidden": boolean;
         };
     };
     get pagesCount(): number;

@@ -5,10 +5,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import MenuItem from "./MenuItem.js";
 import NavigationMenu from "./NavigationMenu.js";
-import NavigationMenuItemTemplate from "./generated/templates/NavigationMenuItemTemplate.lit.js";
+import NavigationMenuItemTemplate from "./NavigationMenuItemTemplate.js";
 // Styles
 import navigationMenuItemCss from "./generated/themes/NavigationMenuItem.css.js";
 import { NAVIGATION_MENU_POPOVER_HIDDEN_TEXT, } from "./generated/i18n/i18n-defaults.js";
@@ -64,6 +65,7 @@ __decorate([
 ], NavigationMenuItem.prototype, "target", void 0);
 NavigationMenuItem = __decorate([
     customElement({
+        renderer: jsxRenderer,
         tag: "ui5-navigation-menu-item",
         template: NavigationMenuItemTemplate,
         styles: [MenuItem.styles, navigationMenuItemCss],

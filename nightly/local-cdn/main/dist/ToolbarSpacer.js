@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import ToolbarSpacerTemplate from "./generated/templates/ToolbarSpacerTemplate.lit.js";
+import ToolbarSpacerTemplate from "./ToolbarSpacerTemplate.js";
 import ToolbarItem from "./ToolbarItem.js";
 import { registerToolbarItem } from "./ToolbarRegistry.js";
 /**

@@ -2,6 +2,10 @@ import type UI5Element from "../UI5Element.js";
 declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () => void) => {
     new (): {
         eventDetails: object;
+        _jsxEvents: Omit<import("@ui5/webcomponents-base/jsx-runtime").JSX.DOMAttributes<any>, "onClose" | "onToggle" | "onChange" | "onSelect" | "onInput"> & object;
+        _jsxProps: Pick<import("@ui5/webcomponents-base/jsx-runtime").JSX.AllHTMLAttributes<HTMLElement>, "contextmenu" | "slot" | "style" | "title" | "pattern" | "dir" | "id" | "accesskey" | "autocapitalize" | "autofocus" | "autocomplete" | "contenteditable" | "class" | "draggable" | "enterkeyhint" | "hidden" | "inputmode" | "lang" | "nonce" | "part" | "exportparts" | "spellcheck" | "tabIndex" | "tabindex" | "translate" | "ref"> & Partial<Omit<any, keyof HTMLElement>> & Partial<Omit<import("@ui5/webcomponents-base/jsx-runtime").JSX.DOMAttributes<any>, "onClose" | "onToggle" | "onChange" | "onSelect" | "onInput"> & object> & {
+            key?: any;
+        };
         __id?: string;
         _suppressInvalidation: boolean;
         _changedState: Array<import("../UI5Element.js").ChangeInfo>;
@@ -18,6 +22,7 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
         _doNotSyncAttributes: Set<string>;
         _state: import("../UI5ElementMetadata.js").State;
         _internals: ElementInternals;
+        _individualSlot?: string;
         _getRealDomRef?: () => HTMLElement;
         initializedProperties: Map<string, unknown>;
         _rendered: boolean;
@@ -414,6 +419,7 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
     renderer: import("../UI5Element.js").Renderer;
     readonly formAssociated: boolean;
     readonly observedAttributes: string[];
+    readonly tagsToScope: string[];
     _needsShadowDOM(): boolean;
     _generateAccessors(): void;
     metadata: import("../UI5ElementMetadata.js").Metadata;

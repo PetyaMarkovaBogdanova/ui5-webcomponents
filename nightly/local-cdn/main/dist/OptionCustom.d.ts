@@ -19,6 +19,7 @@ import ListItemBase from "./ListItemBase.js";
  * @public
  */
 declare class OptionCustom extends ListItemBase implements IOption {
+    eventDetails: ListItemBase["eventDetails"];
     /**
      * Defines the text, displayed inside the `ui5-select` input filed
      * when the option gets selected.

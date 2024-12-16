@@ -9,17 +9,16 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isShow, isBackSpace, isLeft, isRight, isRightCtrl, isHome, isEnd, isDown, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import { MULTIINPUT_ROLEDESCRIPTION_TEXT, MULTIINPUT_VALUE_HELP_LABEL } from "./generated/i18n/i18n-defaults.js";
 import Input from "./Input.js";
-import MultiInputTemplate from "./generated/templates/MultiInputTemplate.lit.js";
+import MultiInputTemplate from "./MultiInputTemplate.js";
 import styles from "./generated/themes/MultiInput.css.js";
 import Token from "./Token.js";
 import Tokenizer, { getTokensCountText } from "./Tokenizer.js";
 import Icon from "./Icon.js";
-import "@ui5/webcomponents-icons/dist/value-help.js";
 /**
  * @class
  * ### Overview
@@ -253,11 +252,9 @@ let MultiInput = MultiInput_1 = class MultiInput extends Input {
     get accInfo() {
         const ariaDescribedBy = `${this._tokensCountTextId} ${this.suggestionsTextId} ${this.valueStateTextId}`.trim();
         return {
-            "input": {
-                ...super.accInfo.input,
-                "ariaRoledescription": this.ariaRoleDescription,
-                "ariaDescribedBy": ariaDescribedBy,
-            },
+            ...super.accInfo,
+            "ariaRoledescription": this.ariaRoleDescription,
+            "ariaDescribedBy": ariaDescribedBy,
         };
     }
     get valueHelpLabel() {
@@ -291,7 +288,7 @@ __decorate([
 MultiInput = MultiInput_1 = __decorate([
     customElement({
         tag: "ui5-multi-input",
-        renderer: litRender,
+        renderer: jsxRenderer,
         formAssociated: true,
         template: MultiInputTemplate,
         styles: [Input.styles, styles],

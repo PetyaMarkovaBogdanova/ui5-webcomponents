@@ -8,10 +8,10 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 // Template
-import BarTemplate from "./generated/templates/BarTemplate.lit.js";
+import BarTemplate from "./BarTemplate.js";
 // Styles
 import BarCss from "./generated/themes/Bar.css.js";
 /**
@@ -75,13 +75,6 @@ let Bar = class Bar extends UI5Element {
         });
         bar.classList.toggle("ui5-bar-root-shrinked", needShrinked);
     }
-    get classes() {
-        return {
-            root: {
-                "ui5-bar-root": true,
-            },
-        };
-    }
     onEnterDOM() {
         ResizeHandler.register(this, this._handleResizeBound);
         this.getDomRef().querySelectorAll(".ui5-bar-content-container").forEach(child => {
@@ -111,7 +104,7 @@ Bar = __decorate([
     customElement({
         tag: "ui5-bar",
         fastNavigation: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: BarCss,
         template: BarTemplate,
     })

@@ -9,12 +9,12 @@ import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEff
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScopeUtils.js";
 import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 // Template
-import PageTemplate from "./generated/templates/PageTemplate.lit.js";
+import PageTemplate from "./PageTemplate.js";
 // Styles
 import PageCss from "./generated/themes/Page.css.js";
 /**
@@ -99,7 +99,6 @@ let Page = class Page extends UI5Element {
                 "bottom": this.footer.length && this._contentBottom,
                 "top": this._contentTop,
             },
-            footer: {},
         };
     }
 };
@@ -128,7 +127,7 @@ Page = __decorate([
     customElement({
         tag: "ui5-page",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: [
             PageCss,
             getEffectiveScrollbarStyle(),

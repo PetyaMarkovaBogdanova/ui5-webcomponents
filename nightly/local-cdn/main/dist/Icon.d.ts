@@ -167,7 +167,7 @@ declare class Icon extends UI5Element implements IIcon {
     */
     get _dir(): "ltr" | undefined;
     get effectiveAriaHidden(): "true" | undefined;
-    get _tabIndex(): "0" | undefined;
+    get _tabIndex(): 0 | undefined;
     get effectiveAccessibleRole(): "button" | "presentation" | "img";
     onEnterDOM(): void;
     onBeforeRendering(): Promise<void>;

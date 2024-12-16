@@ -12,9 +12,9 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isDown, isUp, } from "@ui5/webcomponents-base/dist/Keys.js";
-import ProductSwitchTemplate from "./generated/templates/ProductSwitchTemplate.lit.js";
+import ProductSwitchTemplate from "./ProductSwitchTemplate.js";
 import { PRODUCT_SWITCH_CONTAINER_LABEL, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import ProductSwitchCss from "./generated/themes/ProductSwitch.css.js";
@@ -129,7 +129,7 @@ __decorate([
 ProductSwitch = ProductSwitch_1 = __decorate([
     customElement({
         tag: "ui5-product-switch",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: ProductSwitchCss,
         template: ProductSwitchTemplate,
     })

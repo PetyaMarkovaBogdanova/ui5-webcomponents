@@ -1,12 +1,12 @@
+import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { ITabbable } from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import Input from "./Input.js";
 import Token from "./Token.js";
 import Tokenizer from "./Tokenizer.js";
 import type { TokenizerTokenDeleteEventDetail } from "./Tokenizer.js";
-import "@ui5/webcomponents-icons/dist/value-help.js";
 import type { InputSelectionChangeEventDetail as MultiInputSelectionChangeEventDetail } from "./Input.js";
-interface IToken extends HTMLElement, ITabbable {
+interface IToken extends UI5Element, ITabbable {
     text?: string;
     readonly: boolean;
     selected: boolean;
@@ -102,18 +102,16 @@ declare class MultiInput extends Input implements IFormInputElement {
      */
     get _placeholder(): string | undefined;
     get accInfo(): {
-        input: {
-            ariaRoledescription: string;
-            ariaDescribedBy: string;
-            ariaInvalid: string | undefined;
-            ariaHasPopup: string | undefined;
-            ariaAutoComplete: string | undefined;
-            role: string | undefined;
-            ariaControls: string | undefined;
-            ariaExpanded: string | undefined;
-            ariaDescription: string | undefined;
-            ariaLabel: string | undefined;
-        };
+        ariaRoledescription: string;
+        ariaDescribedBy: string;
+        ariaInvalid: boolean | undefined;
+        ariaHasPopup: import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
+        ariaAutoComplete: "list" | "none" | "inline" | "both" | undefined;
+        role: import("@ui5/webcomponents-base/dist/thirdparty/preact/jsx.js").JSXInternal.AriaRole | undefined;
+        ariaControls: string | undefined;
+        ariaExpanded: boolean | undefined;
+        ariaDescription: string | undefined;
+        ariaLabel: string | undefined;
     };
     get valueHelpLabel(): string;
     get ariaRoleDescription(): string;

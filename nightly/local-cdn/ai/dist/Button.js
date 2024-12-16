@@ -10,11 +10,11 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import MainButton from "@ui5/webcomponents/dist/Button.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
 import ButtonState from "./ButtonState.js";
-import ButtonTemplate from "./generated/templates/ButtonTemplate.lit.js";
+import ButtonTemplate from "./ButtonTemplate.js";
 // Styles
 import ButtonCss from "./generated/themes/Button.css.js";
 /**
@@ -212,7 +212,7 @@ Button = __decorate([
     customElement({
         tag: "ui5-ai-button",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: ButtonTemplate,
         styles: ButtonCss,
         dependencies: [MainButton, Icon, ButtonState],

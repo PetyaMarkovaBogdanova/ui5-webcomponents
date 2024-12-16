@@ -4,7 +4,7 @@ import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation
 import ScrollEnablement from "@ui5/webcomponents-base/dist/delegate/ScrollEnablement.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ResponsivePopover from "./ResponsivePopover.js";
-import List from "./List.js";
+import List, { type ListItemDeleteEventDetail } from "./List.js";
 import ListSelectionMode from "./types/ListSelectionMode.js";
 import type Token from "./Token.js";
 import type { IToken } from "./MultiInput.js";
@@ -198,7 +198,7 @@ declare class Tokenizer extends UI5Element {
      * @param forwardFocusToPrevious Indicates whether the focus will be forwarded to previous or next token after deletion.
      */
     deleteToken(token: Token, forwardFocusToPrevious?: boolean): void;
-    itemDelete(e: CustomEvent): Promise<void>;
+    itemDelete(e: CustomEvent<ListItemDeleteEventDetail>): Promise<void>;
     handleBeforeClose(): void;
     handleBeforeOpen(): void;
     handleAfterClose(): void;
@@ -266,6 +266,7 @@ declare class Tokenizer extends UI5Element {
      */
     _focusLastToken(): void;
     getPopover(): ResponsivePopover;
+    getTokenByRefId(refId: string): Token;
 }
 declare const getTokensCountText: (iTokenCount: number) => string;
 export default Tokenizer;

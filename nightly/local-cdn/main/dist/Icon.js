@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
@@ -14,7 +14,7 @@ import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import executeTemplate from "@ui5/webcomponents-base/dist/renderer/executeTemplate.js";
-import IconTemplate from "./generated/templates/IconTemplate.lit.js";
+import IconTemplate from "./IconTemplate.js";
 import IconMode from "./types/IconMode.js";
 // Styles
 import iconCss from "./generated/themes/Icon.css.js";
@@ -149,7 +149,7 @@ let Icon = class Icon extends UI5Element {
         return this.mode === IconMode.Decorative ? "true" : undefined;
     }
     get _tabIndex() {
-        return this.mode === IconMode.Interactive ? "0" : undefined;
+        return this.mode === IconMode.Interactive ? 0 : undefined;
     }
     get effectiveAccessibleRole() {
         switch (this.mode) {
@@ -244,7 +244,7 @@ Icon = __decorate([
         tag: "ui5-icon",
         languageAware: true,
         themeAware: true,
-        renderer: litRender,
+        renderer: jsxRender,
         template: IconTemplate,
         styles: iconCss,
     })

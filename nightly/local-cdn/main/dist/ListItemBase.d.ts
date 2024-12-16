@@ -17,11 +17,11 @@ type ListItemBasePressEventDetail = {
  */
 declare class ListItemBase extends UI5Element implements ITabbable {
     eventDetails: {
-        "_request-tabindex-change": FocusEvent;
+        "request-tabindex-change": FocusEvent;
         "_press": ListItemBasePressEventDetail;
         "_focused": FocusEvent;
-        "_forward-after": void;
-        "_forward-before": void;
+        "forward-after": void;
+        "forward-before": void;
     };
     /**
      * Defines the selected state of the component.
@@ -84,7 +84,7 @@ declare class ListItemBase extends UI5Element implements ITabbable {
     get _focusable(): boolean;
     get _pressable(): boolean;
     get hasConfigurableMode(): boolean;
-    get _effectiveTabIndex(): string | 0 | -1 | undefined;
+    get _effectiveTabIndex(): number | undefined;
 }
 export default ListItemBase;
 export type { ListItemBasePressEventDetail, };

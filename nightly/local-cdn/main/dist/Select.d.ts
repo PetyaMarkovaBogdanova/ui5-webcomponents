@@ -284,7 +284,7 @@ declare class Select extends UI5Element implements IFormInputElement {
     get isDisabled(): true | undefined;
     get _headerTitleText(): string;
     get _currentlySelectedOption(): IOption;
-    get _effectiveTabIndex(): "-1" | "0";
+    get _effectiveTabIndex(): "0" | "-1";
     /**
     * This method is relevant for sap_horizon theme only
     */

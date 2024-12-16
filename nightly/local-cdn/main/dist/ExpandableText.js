@@ -9,7 +9,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import Text from "./Text.js";
 import Link, {} from "./Link.js";
@@ -18,7 +18,7 @@ import Button from "./Button.js";
 import ExpandableTextOverflowMode from "./types/ExpandableTextOverflowMode.js";
 import { EXPANDABLE_TEXT_SHOW_LESS, EXPANDABLE_TEXT_SHOW_MORE, EXPANDABLE_TEXT_CLOSE, EXPANDABLE_TEXT_SHOW_LESS_POPOVER_ARIA_LABEL, EXPANDABLE_TEXT_SHOW_MORE_POPOVER_ARIA_LABEL, } from "./generated/i18n/i18n-defaults.js";
 // Template
-import ExpandableTextTemplate from "./generated/templates/ExpandableTextTemplate.lit.js";
+import ExpandableTextTemplate from "./ExpandableTextTemplate.js";
 // Styles
 import ExpandableTextCss from "./generated/themes/ExpandableText.css.js";
 /**
@@ -77,7 +77,7 @@ let ExpandableText = ExpandableText_1 = class ExpandableText extends UI5Element 
         if (this._usePopover) {
             return this.shadowRoot?.querySelector("[ui5-responsive-popover]");
         }
-        return this.shadowRoot?.querySelector("ui5-link");
+        return this.shadowRoot?.querySelector("[ui5-link]");
     }
     get _displayedText() {
         if (this._expanded && !this._usePopover) {
@@ -118,7 +118,7 @@ let ExpandableText = ExpandableText_1 = class ExpandableText extends UI5Element 
         if (this._usePopover) {
             return this._expanded ? ExpandableText_1.i18nBundle.getText(EXPANDABLE_TEXT_SHOW_LESS_POPOVER_ARIA_LABEL) : ExpandableText_1.i18nBundle.getText(EXPANDABLE_TEXT_SHOW_MORE_POPOVER_ARIA_LABEL);
         }
-        return null;
+        return undefined;
     }
     _handlePopoverClose() {
         if (!isPhone()) {
@@ -161,7 +161,7 @@ __decorate([
 ExpandableText = ExpandableText_1 = __decorate([
     customElement({
         tag: "ui5-expandable-text",
-        renderer: litRender,
+        renderer: jsxRender,
         styles: ExpandableTextCss,
         template: ExpandableTextTemplate,
         dependencies: [

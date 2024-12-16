@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import { getTabbableElements } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
@@ -75,7 +75,7 @@ let ListItemBase = class ListItemBase extends UI5Element {
         this.actionable = true;
     }
     _onfocusin(e) {
-        this.fireDecoratorEvent("_request-tabindex-change", e);
+        this.fireDecoratorEvent("request-tabindex-change", e);
         if (e.target !== this.getFocusDomRef()) {
             return;
         }
@@ -123,7 +123,7 @@ let ListItemBase = class ListItemBase extends UI5Element {
     }
     _handleTabNext(e) {
         if (this.shouldForwardTabAfter()) {
-            if (!this.fireDecoratorEvent("_forward-after")) {
+            if (!this.fireDecoratorEvent("forward-after")) {
                 e.preventDefault();
             }
         }
@@ -131,7 +131,7 @@ let ListItemBase = class ListItemBase extends UI5Element {
     _handleTabPrevious(e) {
         const target = e.target;
         if (this.shouldForwardTabBefore(target)) {
-            this.fireDecoratorEvent("_forward-before");
+            this.fireDecoratorEvent("forward-before");
         }
     }
     /**
@@ -175,7 +175,7 @@ let ListItemBase = class ListItemBase extends UI5Element {
         if (this.selected) {
             return 0;
         }
-        return this.forcedTabIndex;
+        return this.forcedTabIndex ? parseInt(this.forcedTabIndex) : undefined;
     }
 };
 __decorate([
@@ -201,10 +201,10 @@ __decorate([
 ], ListItemBase.prototype, "actionable", void 0);
 ListItemBase = __decorate([
     customElement({
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: [styles, draggableElementStyles],
     }),
-    event("_request-tabindex-change", {
+    event("request-tabindex-change", {
         bubbles: true,
     }),
     event("_press", {
@@ -213,11 +213,11 @@ ListItemBase = __decorate([
     event("_focused", {
         bubbles: true,
     }),
-    event("_forward-after", {
+    event("forward-after", {
         bubbles: true,
         cancelable: true,
     }),
-    event("_forward-before", {
+    event("forward-before", {
         bubbles: true,
     })
 ], ListItemBase);

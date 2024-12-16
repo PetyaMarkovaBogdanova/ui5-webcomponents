@@ -1,5 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import type ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import type { ColorRGB } from "@ui5/webcomponents-base/dist/util/ColorConversion.js";
 type ColorCoordinates = {
@@ -112,12 +113,12 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
     _handleMouseUp(): void;
     _handleMouseOut(e: MouseEvent): void;
     _handleMouseMove(e: MouseEvent): void;
-    _handleAlphaInput(e: CustomEvent): void;
+    _handleAlphaInputFromSlider(e: CustomEvent): void;
     _handleHueInput(e: CustomEvent): void;
     _handleHEXChange(e: CustomEvent | KeyboardEvent): void;
-    _handleRGBInputsChange(e: CustomEvent): void;
+    _handleRGBInputsChange(e: Event): void;
     _setMainColor(hueValue: number): void;
-    _handleAlphaChange(): void;
+    _handleAlphaChange(e: CustomEvent): void;
     _changeSelectedColor(x: number, y: number): void;
     _onkeydown(e: KeyboardEvent): void;
     _calculateColorFromCoordinates(x: number, y: number): {
@@ -137,7 +138,7 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
     get blueInputLabel(): string;
     get alphaInputLabel(): string;
     get inputsDisabled(): true | undefined;
-    get hexInputErrorState(): "Error" | undefined;
+    get hexInputErrorState(): `${ValueState}`;
     get _isDefaultPickerMode(): boolean;
     get styles(): {
         mainColor: {

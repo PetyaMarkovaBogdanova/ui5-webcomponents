@@ -13,7 +13,6 @@ import type { LinkClickEventDetail } from "./Link.js";
 import Label from "./Label.js";
 import ResponsivePopover from "./ResponsivePopover.js";
 import type { ListSelectionChangeEventDetail } from "./List.js";
-import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 type BreadcrumbsItemClickEventDetail = {
     item: BreadcrumbsItem;
     altKey?: boolean;

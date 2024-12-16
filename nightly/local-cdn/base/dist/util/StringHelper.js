@@ -15,6 +15,9 @@ const camelToKebabCase = (string) => {
     }
     return camelToKebabMap.get(string);
 };
+const pascalToKebabCase = (pascalString) => {
+    return camelToKebabCase(pascalString);
+};
 const toCamelCase = (parts) => {
     return parts.map((string, index) => {
         return index === 0 ? string.toLowerCase() : string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -30,5 +33,5 @@ const kebabToPascalCase = (src) => {
     kebabToPascalMap.set(src, result);
     return result;
 };
-export { kebabToCamelCase, camelToKebabCase, kebabToPascalCase };
+export { kebabToCamelCase, camelToKebabCase, pascalToKebabCase, kebabToPascalCase, };
 //# sourceMappingURL=StringHelper.js.map

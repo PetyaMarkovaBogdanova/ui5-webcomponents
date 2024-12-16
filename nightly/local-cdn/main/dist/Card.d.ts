@@ -68,13 +68,6 @@ declare class Card extends UI5Element {
      */
     loadingDelay: number;
     static i18nBundle: I18nBundle;
-    get classes(): {
-        root: {
-            "ui5-card-root": boolean;
-            "ui5-card--interactive": boolean;
-            "ui5-card--nocontent": boolean;
-        };
-    };
     get _hasHeader(): boolean;
     get _getAriaLabel(): string;
     get _ariaCardContentLabel(): string;

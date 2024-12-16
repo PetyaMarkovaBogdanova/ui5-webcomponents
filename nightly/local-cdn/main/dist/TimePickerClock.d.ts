@@ -59,7 +59,7 @@ type TimePickerClockSelectedItem = TimePickerClockItem & TimePickerClockSelectio
  */
 declare class TimePickerClock extends UI5Element {
     eventDetails: {
-        "change": TimePickerClockChangeEventDetail;
+        change: TimePickerClockChangeEventDetail;
     };
     /**
      * Determines whether the component is displayed as disabled.
@@ -264,6 +264,7 @@ declare class TimePickerClock extends UI5Element {
      * @param value
      */
     _setSelectedValue(value: number): void;
+    _captureClockRef(el: HTMLDivElement | null): void;
     /**
      * TouchStart/MouseDown event handler.
      * @param evt Event object
@@ -288,6 +289,7 @@ declare class TimePickerClock extends UI5Element {
      * MouseOut event handler.
      */
     _onMouseOut(): void;
+    noop(): boolean;
 }
 export default TimePickerClock;
 export type { TimePickerClockChangeEventDetail };

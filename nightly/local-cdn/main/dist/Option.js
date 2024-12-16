@@ -10,7 +10,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import ListItemBase from "./ListItemBase.js";
 import Icon from "./Icon.js";
 // Template
-import OptionTemplate from "./generated/templates/OptionTemplate.lit.js";
+import OptionTemplate from "./OptionTemplate.js";
 // Styles
 import optionBaseCss from "./generated/themes/OptionBase.css.js";
 import listItemIconCss from "./generated/themes/ListItemIcon.css.js";

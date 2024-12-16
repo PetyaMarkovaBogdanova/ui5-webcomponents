@@ -1,5 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { ChangeInfo } from "@ui5/webcomponents-base/dist/UI5Element.js";
+import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import "@ui5/webcomponents-icons/dist/overflow.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
@@ -94,8 +95,8 @@ declare class Toolbar extends UI5Element {
     popoverOpen: boolean;
     itemsWidthMeasured: boolean;
     ITEMS_WIDTH_MAP: Map<string, number>;
-    static get styles(): (string | import("@ui5/webcomponents-base/dist/types.js").StyleDataCSP | import("@ui5/webcomponents-base/dist/types.js").ComponentStylesData[])[];
-    static get dependencies(): (typeof UI5Element)[];
+    static get styles(): import("@ui5/webcomponents-base").ComponentStylesData[];
+    static get dependencies(): (typeof UI5Element | typeof Button | typeof Popover)[];
     constructor();
     /**
      * Read-only members
@@ -105,29 +106,17 @@ declare class Toolbar extends UI5Element {
     get subscribedEvents(): string[];
     get alwaysOverflowItems(): ToolbarItem[];
     get movableItems(): ToolbarItem[];
-    get overflowItems(): ({
-        toolbarTemplate: object;
-        toolbarPopoverTemplate: object;
-    } | null)[];
-    get standardItems(): ({
-        toolbarTemplate: object;
-        toolbarPopoverTemplate: object;
-    } | null)[];
+    get overflowItems(): {
+        toolbarTemplate: import("@ui5/webcomponents-base/dist/renderer/executeTemplate.js").TemplateFunction;
+        toolbarPopoverTemplate: import("@ui5/webcomponents-base/dist/renderer/executeTemplate.js").TemplateFunction;
+        context: ToolbarItem;
+    }[];
+    get standardItems(): {
+        toolbarTemplate: import("@ui5/webcomponents-base/dist/renderer/executeTemplate.js").TemplateFunction;
+        toolbarPopoverTemplate: import("@ui5/webcomponents-base/dist/renderer/executeTemplate.js").TemplateFunction;
+        context: ToolbarItem;
+    }[];
     get hideOverflowButton(): boolean;
-    get classes(): {
-        items: {
-            "ui5-tb-items": boolean;
-            "ui5-tb-items-full-width": boolean;
-        };
-        overflow: {
-            "ui5-overflow-list--alignleft": boolean;
-        };
-        overflowButton: {
-            "ui5-tb-item": boolean;
-            "ui5-tb-overflow-btn": boolean;
-            "ui5-tb-overflow-btn-hidden": boolean;
-        };
-    };
     get interactiveItemsCount(): number;
     /**
      * Accessibility
@@ -137,15 +126,15 @@ declare class Toolbar extends UI5Element {
     get ariaLabelText(): string | undefined;
     get accInfo(): {
         root: {
-            role: string | undefined;
+            role: "toolbar" | undefined;
             accessibleName: string | undefined;
         };
         overflowButton: {
             accessibleName: string;
             tooltip: string;
             accessibilityAttributes: {
-                expanded: boolean | "true" | "false" | undefined;
-                hasPopup: string;
+                expanded: boolean | "false" | "true" | undefined;
+                hasPopup: "menu";
             };
         };
     };
@@ -186,6 +175,7 @@ declare class Toolbar extends UI5Element {
      * Event Handlers
      */
     onOverflowPopoverClosed(): void;
+    onBeforeClose(e: UI5CustomEvent<Popover, "before-close">): void;
     onOverflowPopoverOpened(): void;
     onResize(): void;
     onInteract(e: CustomEvent): void;
@@ -195,10 +185,11 @@ declare class Toolbar extends UI5Element {
     attachListeners(): void;
     detachListeners(): void;
     onToolbarItemChange(): void;
-    getItemsInfo(items: Array<ToolbarItem>): ({
-        toolbarTemplate: object;
-        toolbarPopoverTemplate: object;
-    } | null)[];
+    getItemsInfo(items: Array<ToolbarItem>): {
+        toolbarTemplate: import("@ui5/webcomponents-base/dist/renderer/executeTemplate.js").TemplateFunction;
+        toolbarPopoverTemplate: import("@ui5/webcomponents-base/dist/renderer/executeTemplate.js").TemplateFunction;
+        context: ToolbarItem;
+    }[];
     getItemWidth(item: ToolbarItem): number;
     getCachedItemWidth(id: string): number | undefined;
     getItemByID(id: string): ToolbarItem | undefined;

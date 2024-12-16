@@ -5,10 +5,6 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import Popover from "./Popover.js";
 import type PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
-import "@ui5/webcomponents-icons/dist/error.js";
-import "@ui5/webcomponents-icons/dist/alert.js";
-import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
-import "@ui5/webcomponents-icons/dist/information.js";
 type TokenizedText = Array<string>;
 type IndexedTokenizedText = Array<{
     text: string;
@@ -247,26 +243,17 @@ declare class TextArea extends UI5Element implements IFormInputElement {
             "ui5-valuestatemessage--information": boolean;
         };
     };
-    get styles(): {
-        valueStateMsgPopover: {
-            "max-width": string;
-        };
-    };
     get tabIndex(): 0 | -1;
     get ariaLabelText(): string | undefined;
     get ariaDescribedBy(): string | undefined;
     get ariaValueStateHiddenText(): string | undefined;
     get valueStateDefaultText(): string;
-    get ariaInvalid(): "true" | null;
+    get _ariaInvalid(): "true" | undefined;
     get openValueStateMsgPopover(): boolean;
     get displayValueStateMessagePopover(): boolean;
     get hasCustomValueState(): boolean;
     get hasValueState(): boolean;
     get _valueStatePopoverHorizontalAlign(): `${PopoverHorizontalAlign}`;
-    /**
-     * This method is relevant for sap_horizon theme only
-     */
-    get _valueStateMessageIcon(): string;
     get valueStateTextMappings(): {
         Positive: string;
         Information: string;

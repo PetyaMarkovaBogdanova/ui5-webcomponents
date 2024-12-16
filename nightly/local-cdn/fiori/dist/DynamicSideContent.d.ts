@@ -1,5 +1,4 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { ClassMap } from "@ui5/webcomponents-base/dist/types.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import SideContentPosition from "./types/SideContentPosition.js";
 import SideContentVisibility from "./types/SideContentVisibility.js";
@@ -165,7 +164,16 @@ declare class DynamicSideContent extends UI5Element {
      * @public
      */
     toggleContents(): void;
-    get classes(): ClassMap;
+    get classes(): {
+        main: {
+            [x: string]: boolean;
+            "ui5-dsc-main": boolean;
+        };
+        side: {
+            [x: string]: boolean;
+            "ui5-dsc-side": boolean;
+        };
+    };
     get styles(): {
         root: {
             "flex-wrap": string;

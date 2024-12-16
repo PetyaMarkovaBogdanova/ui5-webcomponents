@@ -10,12 +10,12 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import { TIMELINE_ARIA_LABEL } from "./generated/i18n/i18n-defaults.js";
-import TimelineTemplate from "./generated/templates/TimelineTemplate.lit.js";
+import TimelineTemplate from "./TimelineTemplate.js";
 import TimelineItem from "./TimelineItem.js";
 import TimelineGroupItem from "./TimelineGroupItem.js";
 // Styles
@@ -169,7 +169,7 @@ Timeline = Timeline_1 = __decorate([
     customElement({
         tag: "ui5-timeline",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: TimelineCss,
         template: TimelineTemplate,
         dependencies: [TimelineItem, TimelineGroupItem],

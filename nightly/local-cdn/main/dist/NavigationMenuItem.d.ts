@@ -53,8 +53,8 @@ declare class NavigationMenuItem extends MenuItem {
     get isExternalLink(): boolean | "" | undefined;
     get _href(): string | undefined;
     get _accInfo(): {
-        role: string;
-        ariaHaspopup: "dialog" | "grid" | "listbox" | "menu" | "tree" | undefined;
+        role: "none" | "treeitem";
+        ariaHaspopup: "menu" | undefined;
         ariaKeyShortcuts: string | undefined;
         ariaHidden: boolean | undefined;
         ariaExpanded?: boolean;

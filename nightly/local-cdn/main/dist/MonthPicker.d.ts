@@ -6,13 +6,13 @@ import CalendarSelectionMode from "./types/CalendarSelectionMode.js";
 type Month = {
     timestamp: string;
     focusRef: boolean;
-    _tabIndex: string;
+    _tabIndex: number;
     selected: boolean;
-    ariaSelected: string;
+    ariaSelected: boolean;
     name: string;
     nameInSecType: string;
     disabled: boolean;
-    ariaDisabled: string | undefined;
+    ariaDisabled: boolean | undefined;
     classes: string;
     parts: string;
 };
@@ -56,7 +56,7 @@ declare class MonthPicker extends CalendarPart implements ICalendarPicker {
      * @since 2.2.0
      */
     selectionMode: `${CalendarSelectionMode}`;
-    _months: MonthInterval;
+    _monthsInterval: MonthInterval;
     _hidden: boolean;
     /**
      * When selectionMode="Range" and the first month in the range is selected, this is the currently hovered or focused month.

@@ -1,7 +1,3 @@
-import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
-import "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
-import "@ui5/webcomponents-icons/dist/circle-task-2.js";
-import "@ui5/webcomponents-icons/dist/arrow-right.js";
 import type SideNavigationItemBase from "./SideNavigationItemBase.js";
 import SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
 import type SideNavigationSubItem from "./SideNavigationSubItem.js";
@@ -45,7 +41,7 @@ declare class SideNavigationItem extends SideNavigationSelectableItemBase {
      * @public
      */
     items: Array<SideNavigationSubItem>;
-    get overflowItems(): Array<HTMLElement>;
+    get overflowItems(): Array<SideNavigationItem>;
     get selectableItems(): Array<SideNavigationSelectableItemBase>;
     get focusableItems(): Array<SideNavigationItemBase>;
     get allItems(): Array<SideNavigationItemBase>;
@@ -53,17 +49,16 @@ declare class SideNavigationItem extends SideNavigationSelectableItemBase {
     get _ariaChecked(): boolean | undefined;
     get _groupId(): string | undefined;
     get _expanded(): boolean | undefined;
-    get _toggleIconName(): "navigation-down-arrow" | "navigation-right-arrow";
     get classesArray(): string[];
     get _selected(): boolean;
-    _onToggleClick: (e: PointerEvent) => void;
-    _onkeydown: (e: KeyboardEvent) => void;
-    _onkeyup: (e: KeyboardEvent) => void;
-    _onfocusin: (e: FocusEvent) => void;
-    _onclick: (e: PointerEvent) => void;
-    _onfocusout: () => void;
-    _onmouseenter: () => void;
-    _onmouseleave: () => void;
+    _onToggleClick(e: PointerEvent): void;
+    _onkeydown(e: KeyboardEvent): void;
+    _onkeyup(e: KeyboardEvent): void;
+    _onfocusin(e: FocusEvent): void;
+    _onclick(e: MouseEvent): void;
+    _onfocusout(): void;
+    _onmouseenter(): void;
+    _onmouseleave(): void;
     get isSideNavigationItem(): boolean;
 }
 declare const isInstanceOfSideNavigationItem: (object: any) => object is SideNavigationItem;

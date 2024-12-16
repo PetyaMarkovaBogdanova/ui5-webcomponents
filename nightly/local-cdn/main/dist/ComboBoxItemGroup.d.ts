@@ -13,6 +13,7 @@ import type ComboBoxItem from "./ComboBoxItem.js";
  * @since 1.0.0-rc.15
  */
 declare class ComboBoxItemGroup extends ListItemGroup implements IComboBoxItem {
+    eventDetails: ListItemGroup["eventDetails"];
     /**
      * Defines the items of the <code>ui5-cb-item-group</code>.
      * @public

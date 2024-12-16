@@ -6,7 +6,7 @@ import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js";
 import "@ui5/webcomponents-icons/dist/time-entry-request.js";
 import Popover from "./Popover.js";
 import ResponsivePopover from "./ResponsivePopover.js";
-import Input from "./Input.js";
+import Input, { type InputAccInfo } from "./Input.js";
 import type { TimeSelectionChangeEventDetail } from "./TimePickerInternals.js";
 type TimePickerChangeInputEventDetail = {
     value: string;
@@ -189,12 +189,7 @@ declare class TimePicker extends UI5Element implements IFormInputElement {
     onBeforeRendering(): void;
     get dateAriaDescription(): string;
     get pickerAccessibleName(): string;
-    get accInfo(): {
-        ariaRoledescription: string;
-        ariaHasPopup: string;
-        ariaRequired: boolean;
-        ariaLabel: string | undefined;
-    };
+    get accInfo(): InputAccInfo;
     /**
      * Currently selected time represented as JavaScript Date instance
      * @public
@@ -283,7 +278,6 @@ declare class TimePicker extends UI5Element implements IFormInputElement {
      */
     _hideMobileKeyboard(): void;
     _onfocusin(e: FocusEvent): void;
-    _oninput(e: CustomEvent): void;
     get submitButtonLabel(): string;
     get cancelButtonLabel(): string;
     /**

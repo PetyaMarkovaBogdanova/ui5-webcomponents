@@ -7,10 +7,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var NavigationMenu_1;
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import Menu from "./Menu.js";
-import menuTemplate from "./generated/templates/NavigationMenuTemplate.lit.js";
+import NavigationMenuTemplate from "./NavigationMenuTemplate.js";
 // Styles
 import navigationMenuCss from "./generated/themes/NavigationMenu.css.js";
 import menuCss from "./generated/themes/Menu.css.js";
@@ -54,9 +54,9 @@ __decorate([
 NavigationMenu = NavigationMenu_1 = __decorate([
     customElement({
         tag: "ui5-navigation-menu",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: [menuCss, navigationMenuCss],
-        template: menuTemplate,
+        template: NavigationMenuTemplate,
     })
 ], NavigationMenu);
 NavigationMenu.define();

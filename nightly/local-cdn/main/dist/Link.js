@@ -9,15 +9,16 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
+import toLowercaseEnumValue from "@ui5/webcomponents-base/dist/util/toLowercaseEnumValue.js";
 import { getLocationHostname, getLocationPort, getLocationProtocol } from "@ui5/webcomponents-base/dist/Location.js";
 import LinkDesign from "./types/LinkDesign.js";
 // Template
-import LinkTemplate from "./generated/templates/LinkTemplate.lit.js";
+import LinkTemplate from "./LinkTemplate.js";
 import { LINK_SUBTLE, LINK_EMPHASIZED } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import linkCss from "./generated/themes/Link.css.js";
@@ -134,9 +135,9 @@ let Link = Link_1 = class Link extends UI5Element {
     }
     get effectiveTabIndex() {
         if (this.forcedTabIndex) {
-            return this.forcedTabIndex;
+            return Number.parseInt(this.forcedTabIndex);
         }
-        return (this.disabled || !this.textContent?.length) ? "-1" : "0";
+        return (this.disabled || !this.textContent?.length) ? -1 : 0;
     }
     get ariaLabelText() {
         return getEffectiveAriaLabelText(this);
@@ -157,7 +158,7 @@ let Link = Link_1 = class Link extends UI5Element {
         return (this.href && this.href.length > 0) ? this.href : undefined;
     }
     get effectiveAccRole() {
-        return this.accessibleRole.toLowerCase();
+        return toLowercaseEnumValue(this.accessibleRole);
     }
     get ariaDescriptionText() {
         return this.accessibleDescription === "" ? undefined : this.accessibleDescription;
@@ -250,7 +251,7 @@ Link = Link_1 = __decorate([
     customElement({
         tag: "ui5-link",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: LinkTemplate,
         styles: linkCss,
         dependencies: [Icon],

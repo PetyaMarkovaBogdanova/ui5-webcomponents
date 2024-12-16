@@ -5,7 +5,8 @@ import type { Timeout } from "@ui5/webcomponents-base/dist/types.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import "@ui5/webcomponents-icons/dist/less.js";
 import "@ui5/webcomponents-icons/dist/add.js";
-import Input, { type InputEventDetail } from "./Input.js";
+import Input from "./Input.js";
+import type { InputAccInfo, InputEventDetail } from "./Input.js";
 import InputType from "./types/InputType.js";
 type StepInputValueStateChangeEventDetail = {
     valueState: `${ValueState}`;
@@ -170,17 +171,12 @@ declare class StepInput extends UI5Element implements IFormInputElement {
     get formFormattedValue(): FormData | string | null;
     get type(): InputType;
     get decIconTitle(): string;
-    get decIconName(): string;
     get incIconTitle(): string;
-    get incIconName(): string;
     get _decIconClickable(): boolean;
     get _incIconClickable(): boolean;
     get _isFocused(): boolean;
     get _displayValue(): string;
-    get accInfo(): {
-        ariaRequired: boolean;
-        ariaLabel: string | undefined;
-    };
+    get accInfo(): InputAccInfo;
     get inputAttributes(): {
         min: number | undefined;
         max: number | undefined;
@@ -207,8 +203,8 @@ declare class StepInput extends UI5Element implements IFormInputElement {
      * @param fireChangeEvent if `true`, fires `change` event when the value is changed
      */
     _modifyValue(modifier: number, fireChangeEvent?: boolean): void;
-    _incValue(e: CustomEvent): void;
-    _decValue(e: CustomEvent): void;
+    _incValue(): void;
+    _decValue(): void;
     get _isValueWithCorrectPrecision(): boolean;
     _onInputChange(): void;
     _setDefaultInputValueIfNeeded(): void;

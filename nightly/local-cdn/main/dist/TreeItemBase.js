@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var TreeItemBase_1;
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import { isLeft, isRight } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -18,7 +19,7 @@ import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
 import "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
 import { TREE_ITEM_ARIA_LABEL, TREE_ITEM_EXPAND_NODE, TREE_ITEM_COLLAPSE_NODE, } from "./generated/i18n/i18n-defaults.js";
 // Template
-import TreeItemBaseTemplate from "./generated/templates/TreeItemBaseTemplate.lit.js";
+import TreeItemBaseTemplate from "./TreeItemBaseTemplate.js";
 // Styles
 import treeItemCss from "./generated/themes/TreeItem.css.js";
 /**
@@ -232,6 +233,7 @@ __decorate([
 TreeItemBase = TreeItemBase_1 = __decorate([
     customElement({
         languageAware: true,
+        renderer: jsxRenderer,
         template: TreeItemBaseTemplate,
         styles: [
             ListItem.styles,

@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import ListItemBase from "./ListItemBase.js";
-import ComboBoxItemTemplate from "./generated/templates/ComboBoxItemTemplate.lit.js";
+import ComboBoxItemTemplate from "./ComboBoxItemTemplate.js";
 import ComboboxItemCss from "./generated/themes/ComboBoxItem.css.js";
 /**
  * @class

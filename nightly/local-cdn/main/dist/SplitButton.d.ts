@@ -1,6 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import type ButtonDesign from "./types/ButtonDesign.js";
 import Button from "./Button.js";
 /**
@@ -95,7 +94,7 @@ declare class SplitButton extends UI5Element {
      * @default "0"
      * @private
      */
-    _tabIndex: string;
+    _tabIndex: number;
     /**
      * Indicates if there is Space key pressed
      * @default false
@@ -127,18 +126,14 @@ declare class SplitButton extends UI5Element {
      * @public
      */
     text: Array<Node>;
-    _textButtonPress: {
-        handleEvent: (e: MouseEvent) => void;
-        passive: boolean;
-    };
     _isDefaultActionPressed: boolean;
     _isKeyDownOperation: boolean;
     static i18nBundle: I18nBundle;
-    constructor();
     onBeforeRendering(): void;
     _handleMouseClick(e: MouseEvent): void;
     _onFocusOut(): void;
     _onFocusIn(): void;
+    handleTouchStart(e: TouchEvent | MouseEvent): void;
     _onInnerButtonFocusIn(e: FocusEvent): void;
     _onKeyDown(e: KeyboardEvent): void;
     _onKeyUp(e: KeyboardEvent): void;
@@ -193,7 +188,7 @@ declare class SplitButton extends UI5Element {
         arrowButton: {
             title: string;
             accessibilityAttributes: {
-                hasPopup: string;
+                hasPopup: "menu";
             };
         };
     };

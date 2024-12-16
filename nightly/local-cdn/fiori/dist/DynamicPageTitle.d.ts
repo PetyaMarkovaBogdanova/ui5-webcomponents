@@ -38,7 +38,7 @@ import Title from "@ui5/webcomponents/dist/Title.js";
  */
 declare class DynamicPageTitle extends UI5Element {
     eventDetails: {
-        "_toggle-title": void;
+        "toggle-title": void;
     };
     /**
      * Defines if the title is snapped.
@@ -151,18 +151,10 @@ declare class DynamicPageTitle extends UI5Element {
     onEnterDOM(): void;
     onExitDOM(): void;
     onBeforeRendering(): void;
-    get styles(): {
-        content: {
-            "min-width": string | undefined;
-        };
-        actions: {
-            "min-width": string | undefined;
-        };
-    };
     get hasContent(): boolean;
     get headingSlotName(): "heading" | "snappedHeading";
     get subheadingSlotName(): "subheading" | "snappedSubheading";
-    get _tabIndex(): "0" | undefined;
+    get _tabIndex(): 0 | undefined;
     get _headerExpanded(): boolean;
     get _ariaDescribedbyText(): string;
     get _ariaLabelledBy(): string | undefined;

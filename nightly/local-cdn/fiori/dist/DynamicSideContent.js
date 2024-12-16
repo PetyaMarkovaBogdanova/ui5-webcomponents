@@ -12,12 +12,12 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import SideContentPosition from "./types/SideContentPosition.js";
 import SideContentVisibility from "./types/SideContentVisibility.js";
 import SideContentFallDown from "./types/SideContentFallDown.js";
-import DynamicSideContentTemplate from "./generated/templates/DynamicSideContentTemplate.lit.js";
+import DynamicSideContentTemplate from "./DynamicSideContentTemplate.js";
 // Styles
 import DynamicSideContentCss from "./generated/themes/DynamicSideContent.css.js";
 // Texts
@@ -182,17 +182,17 @@ let DynamicSideContent = DynamicSideContent_1 = class DynamicSideContent extends
         }
     }
     get classes() {
-        const gridPrefix = "ui5-dsc-span", mcSpan = this._toggled ? this._scSpan : this._mcSpan, scSpan = this._toggled ? this._mcSpan : this._scSpan, classes = {
+        const gridPrefix = "ui5-dsc-span", mcSpan = this._toggled ? this._scSpan : this._mcSpan, scSpan = this._toggled ? this._mcSpan : this._scSpan;
+        return {
             main: {
                 "ui5-dsc-main": true,
+                [`${gridPrefix}-${mcSpan}`]: true,
             },
             side: {
                 "ui5-dsc-side": true,
+                [`${gridPrefix}-${scSpan}`]: true,
             },
         };
-        classes.main[`${gridPrefix}-${mcSpan}`] = true;
-        classes.side[`${gridPrefix}-${scSpan}`] = true;
-        return classes;
     }
     get styles() {
         const isToggled = this.breakpoint === this.sizeS && this._toggled, mcSpan = isToggled ? this._scSpan : this._mcSpan, scSpan = isToggled ? this._mcSpan : this._scSpan, contentHeight = this.breakpoint === this.sizeS && this.sideContentVisibility !== SideContentVisibility.AlwaysShow ? "100%" : "auto";
@@ -394,7 +394,7 @@ __decorate([
 DynamicSideContent = DynamicSideContent_1 = __decorate([
     customElement({
         tag: "ui5-dynamic-side-content",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: [DynamicSideContentCss, getEffectiveScrollbarStyle()],
         template: DynamicSideContentTemplate,
     })

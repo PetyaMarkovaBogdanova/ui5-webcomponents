@@ -1,6 +1,5 @@
 import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import Popup from "./Popup.js";
-import type { PopupBeforeCloseEventDetail as PopoverBeforeCloseEventDetail } from "./Popup.js";
 import PopoverPlacement from "./types/PopoverPlacement.js";
 import PopoverVerticalAlign from "./types/PopoverVerticalAlign.js";
 import PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
@@ -54,6 +53,7 @@ type CalculatedPlacement = {
  * @csspart footer - Used to style the footer of the component
  */
 declare class Popover extends Popup {
+    eventDetails: Popup["eventDetails"];
     /**
      * Defines the header text.
      *
@@ -185,10 +185,6 @@ declare class Popover extends Popup {
      * @returns The adjusted top in px.
      */
     _adjustForIOSKeyboard(top: number): number;
-    _getContainingBlockClientLocation(): DOMRect | {
-        left: number;
-        top: number;
-    };
     getPopoverSize(): PopoverSize;
     _showOutsideViewport(): void;
     _isUI5Element(el: HTMLElement): el is UI5Element;
@@ -244,4 +240,3 @@ declare class Popover extends Popup {
 declare const instanceOfPopover: (object: any) => object is Popover;
 export default Popover;
 export { instanceOfPopover };
-export type { PopoverBeforeCloseEventDetail, };

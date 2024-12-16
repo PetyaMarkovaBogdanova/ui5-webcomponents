@@ -23,7 +23,7 @@ import CalendarSelectionMode from "./types/CalendarSelectionMode.js";
 import CalendarPart from "./CalendarPart.js";
 import { DAY_PICKER_WEEK_NUMBER_TEXT, DAY_PICKER_NON_WORKING_DAY, DAY_PICKER_TODAY, LIST_ITEM_SELECTED, } from "./generated/i18n/i18n-defaults.js";
 // Template
-import DayPickerTemplate from "./generated/templates/DayPickerTemplate.lit.js";
+import DayPickerTemplate from "./DayPickerTemplate.js";
 // Styles
 import dayPickerCSS from "./generated/themes/DayPicker.css.js";
 const isBetween = (x, num1, num2) => x > Math.min(num1, num2) && x < Math.max(num1, num2);
@@ -134,15 +134,15 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
             const day = {
                 timestamp: timestamp.toString(),
                 focusRef: isFocused,
-                _tabIndex: isFocused ? "0" : "-1",
+                _tabIndex: isFocused ? 0 : -1,
                 selected: isSelected || isSelectedBetween,
                 day: tempDate.getDate(),
                 secondDay: this.hasSecondaryCalendarType ? tempSecondDate.getDate() : undefined,
                 _isSecondaryCalendarType: this.hasSecondaryCalendarType,
                 classes: `ui5-dp-item ui5-dp-wday${dayOfTheWeek}`,
                 ariaLabel,
-                ariaSelected: String(isSelected || isSelectedBetween),
-                ariaDisabled: isDisabled || isOtherMonth ? "true" : undefined,
+                ariaSelected: isSelected || isSelectedBetween,
+                ariaDisabled: isDisabled || isOtherMonth,
                 disabled: isDisabled,
                 type: specialDayType,
                 parts: "day-cell",
@@ -591,14 +591,6 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
             return true;
         }
         return this.hideWeekNumbers;
-    }
-    get classes() {
-        return {
-            root: {
-                "ui5-dp-root": true,
-                "ui5-dp-twocalendartypes": this.hasSecondaryCalendarType,
-            },
-        };
     }
     _isWeekend(oDate) {
         const localeData = getCachedLocaleDataInstance(getLocale());

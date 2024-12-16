@@ -16,7 +16,7 @@ import SegmentedButtonItem from "./SegmentedButtonItem.js";
 import InputType from "./types/InputType.js";
 import { TIMEPICKER_INPUTS_ENTER_HOURS, TIMEPICKER_INPUTS_ENTER_MINUTES, TIMEPICKER_INPUTS_ENTER_SECONDS, } from "./generated/i18n/i18n-defaults.js";
 // Template
-import TimeSelectionInputsTemplate from "./generated/templates/TimeSelectionInputsTemplate.lit.js";
+import TimeSelectionInputsTemplate from "./TimeSelectionInputsTemplate.js";
 // Styles
 import TimeSelectionInputsCss from "./generated/themes/TimeSelectionInputs.css.js";
 /**

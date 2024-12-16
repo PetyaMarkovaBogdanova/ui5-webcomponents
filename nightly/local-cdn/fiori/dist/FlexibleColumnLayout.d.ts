@@ -1,8 +1,7 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type AriaLandmarkRole from "@ui5/webcomponents-base/dist/types/AriaLandmarkRole.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/vertical-grip.js";
-import type { PassiveEventListenerObject } from "@ui5/webcomponents-base/dist/types.js";
+import type { PassiveEventListenerObject, AriaLandmarkRole } from "@ui5/webcomponents-base";
 import FCLLayout from "./types/FCLLayout.js";
 import type { LayoutConfiguration } from "./fcl-utils/FCLLayout.js";
 declare enum MEDIA {
@@ -30,7 +29,7 @@ type FlexibleColumnLayoutLayoutChangeEventDetail = {
     separatorsUsed: boolean;
     resized: boolean;
 };
-type FCLAccessibilityRoles = Extract<Lowercase<AriaLandmarkRole>, "none" | "complementary" | "contentinfo" | "main" | "region">;
+type FCLAccessibilityRoles = Extract<AriaLandmarkRole, "none" | "complementary" | "contentinfo" | "main" | "region">;
 type FCLAccessibilityAttributes = {
     startColumn?: {
         role: FCLAccessibilityRoles;
@@ -289,46 +288,6 @@ declare class FlexibleColumnLayout extends UI5Element {
     * @public
     */
     get visibleColumns(): number;
-    get classes(): {
-        root: {
-            "ui5-fcl-root": boolean;
-        };
-        columns: {
-            start: {
-                "ui5-fcl-column": boolean;
-                "ui5-fcl-column-animation": boolean;
-                "ui5-fcl-column--start": boolean;
-            };
-            middle: {
-                "ui5-fcl-column": boolean;
-                "ui5-fcl-column-animation": boolean;
-                "ui5-fcl-column--middle": boolean;
-            };
-            end: {
-                "ui5-fcl-column": boolean;
-                "ui5-fcl-column-animation": boolean;
-                "ui5-fcl-column--end": boolean;
-            };
-        };
-    };
-    get styles(): {
-        separator: {
-            start: {
-                display: string;
-            };
-            end: {
-                display: string;
-            };
-        };
-        grip: {
-            start: {
-                display: string;
-            };
-            end: {
-                display: string;
-            };
-        };
-    };
     get startColumnWidth(): string | number;
     get midColumnWidth(): string | number;
     get endColumnWidth(): string | number;
@@ -360,8 +319,8 @@ declare class FlexibleColumnLayout extends UI5Element {
     get accStartColumnRole(): FCLAccessibilityRoles | undefined;
     get accMiddleColumnRole(): FCLAccessibilityRoles | undefined;
     get accEndColumnRole(): FCLAccessibilityRoles | undefined;
-    get accStartSeparatorRole(): FCLAccessibilityRoles | "separator";
-    get accEndSeparatorRole(): FCLAccessibilityRoles | "separator";
+    get accStartSeparatorRole(): "separator" | FCLAccessibilityRoles;
+    get accEndSeparatorRole(): "separator" | FCLAccessibilityRoles;
     get _effectiveLayoutsByMedia(): LayoutConfiguration;
     get _accAttributes(): {
         columns: {

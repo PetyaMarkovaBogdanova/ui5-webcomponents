@@ -2,6 +2,7 @@ import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delega
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import "@ui5/webcomponents-icons/dist/date-time.js";
 import type ResponsivePopover from "./ResponsivePopover.js";
+import { type SegmentedButtonSelectionChangeEventDetail } from "./SegmentedButton.js";
 import type { CalendarSelectionChangeEventDetail } from "./Calendar.js";
 import DatePicker from "./DatePicker.js";
 import type { DatePickerChangeEventDetail as DateTimePickerChangeEventDetail, DatePickerInputEventDetail as DateTimePickerInputEventDetail } from "./DatePicker.js";
@@ -182,7 +183,7 @@ declare class DateTimePicker extends DatePicker implements IFormInputElement {
      * between the date and time views.
      * @param e
      */
-    _dateTimeSwitchChange(e: CustomEvent): void;
+    _dateTimeSwitchChange(e: CustomEvent<SegmentedButtonSelectionChangeEventDetail>): void;
     /**
      * @override
      */

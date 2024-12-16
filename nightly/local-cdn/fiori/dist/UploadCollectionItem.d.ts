@@ -26,8 +26,9 @@ declare class UploadCollectionItem extends ListItem {
         "rename": void;
         "terminate": void;
         "retry": void;
-        "_focus-requested": void;
+        "focus-requested": void;
         "_uci-delete": void;
+        "request-delete": void;
     };
     /**
      * Holds an instance of `File` associated with this item.
@@ -118,7 +119,7 @@ declare class UploadCollectionItem extends ListItem {
     _onInputKeyDown(e: KeyboardEvent): void;
     _onRename(): void;
     _onRenameKeyup(e: KeyboardEvent): void;
-    _onRenameCancel(e: KeyboardEvent): Promise<void>;
+    _onRenameCancel(e: KeyboardEvent | MouseEvent): Promise<void>;
     _onRenameCancelKeyup(e: KeyboardEvent): void;
     _focus(): void;
     _onFileNameClick(): void;

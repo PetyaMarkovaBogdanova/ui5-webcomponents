@@ -1,14 +1,11 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import Title from "@ui5/webcomponents/dist/Title.js";
+import Button from "@ui5/webcomponents/dist/Button.js";
 import { type ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
+import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type UserMenuAccount from "./UserMenuAccount.js";
 import type UserMenuItem from "./UserMenuItem.js";
-import "@ui5/webcomponents-icons/dist/add-employee.js";
-import "@ui5/webcomponents-icons/dist/edit.js";
-import "@ui5/webcomponents-icons/dist/person-placeholder.js";
-import "@ui5/webcomponents-icons/dist/log.js";
-import "@ui5/webcomponents-icons/dist/user-settings.js";
-import "@ui5/webcomponents-icons/dist/decline.js";
 type UserMenuItemClickEventDetail = {
     item: UserMenuItem;
 };
@@ -94,27 +91,52 @@ declare class UserMenu extends UI5Element {
     accounts: Array<UserMenuAccount>;
     static i18nBundle: I18nBundle;
     /**
+     * @default false
+     * @private
+     */
+    _titleMovedToHeader: boolean;
+    /**
+     * @default false
+     * @private
+     */
+    _manageAccountMovedToHeader: boolean;
+    /**
      * @private
      */
     _selectedAccount: UserMenuAccount;
+    /**
+     * @private
+     */
+    _observer?: IntersectionObserver;
+    /**
+     * @private
+     */
+    _responsivePopover?: ResponsivePopover;
+    /**
+     * @private
+     */
+    _selectedAccountTitleEl?: Title;
+    /**
+     * @private
+     */
+    _selectedAccountManageBtn?: Button;
     onBeforeRendering(): void;
+    onAfterRendering(): void;
     get _isPhone(): boolean;
-    _handleAvatarClick(): void;
+    _handleIntersection(entries: IntersectionObserverEntry[]): void;
+    _handleAvatarClick(e: CustomEvent): void;
     _handleManageAccountClick(): void;
     _handleAddAccountClick(): void;
-    _handleAccountSwitch(e: CustomEvent<{
-        item: ListItemClickEventDetail & {
-            associatedAccount: UserMenuAccount;
-        };
-    }>): void;
+    _handleAccountSwitch(e: CustomEvent<ListItemClickEventDetail>): void;
     _handleSignOutClick(): void;
-    _handleMenuItemClick(e: CustomEvent<UserMenuItemClickEventDetail>): void;
+    _handleMenuItemClick(e: CustomEvent<ListItemClickEventDetail>): void;
     _handleMenuItemClose(): void;
     _handlePopoverAfterClose(): void;
     _handleDeclineClick(): void;
     _openItemSubMenu(item: UserMenuItem): void;
     _closeItemSubMenu(item: UserMenuItem): void;
     _closeUserMenu(): void;
+    get _manageAccountVisibleInHeader(): boolean;
     get _otherAccounts(): UserMenuAccount[];
     get _declineButtonTooltip(): string;
     get _manageAccountButtonText(): string;
@@ -122,7 +144,12 @@ declare class UserMenu extends UI5Element {
     get _signOutButtonText(): string;
     get _editAvatarTooltip(): string;
     get _addAccountTooltip(): string;
+    get _closeDialogAriaLabel(): string;
     get accessibleNameText(): string;
+    getAccountByRefId(refId: string): UserMenuAccount;
+    captureRef(ref: HTMLElement & {
+        associatedAccount?: UI5Element;
+    } | null): void;
 }
 export default UserMenu;
 export type { UserMenuItemClickEventDetail, UserMenuOtherAccountClickEventDetail, };

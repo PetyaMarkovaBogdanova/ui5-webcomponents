@@ -29,7 +29,9 @@ type StepInfo = {
     pos: number;
     accInfo: AccessibilityInformation;
     refStepId: string;
-    styles: object;
+    styles: {
+        zIndex: number;
+    };
 };
 /**
  * @class
@@ -176,16 +178,6 @@ declare class Wizard extends UI5Element {
     _itemNavigation: ItemNavigation;
     _onStepResize: ResizeObserverCallback;
     constructor();
-    get classes(): {
-        root: {
-            "ui5-wiz-root": boolean;
-        };
-        popover: {
-            "ui5-wizard-responsive-popover": boolean;
-            "ui5-wizard-popover": boolean;
-            "ui5-wizard-dialog": boolean;
-        };
-    };
     static get SCROLL_DEBOUNCE_RATE(): number;
     onExitDOM(): void;
     onBeforeRendering(): void;
@@ -226,19 +218,19 @@ declare class Wizard extends UI5Element {
      * **Note:** the handler is bound in the template.
      * @private
      */
-    onSelectionChangeRequested(e: MouseEvent): void;
+    onSelectionChangeRequested(e: CustomEvent): void;
     /**
      * Handles user scrolling with debouncing.
      * **Note:** the handler is bound in the template.
      * @private
      */
-    onScroll(e: MouseEvent): void;
+    onScroll(e: Event): void;
     /**
      * Handles when a step in the header is focused in order to update the `ItemNavigation`.
      * **Note:** the handler is bound in the template.
      * @private
      */
-    onStepInHeaderFocused(e: FocusEvent): void;
+    onStepInHeaderFocused(e: CustomEvent): void;
     /**
      * Handles resize in order to:
      * (1) sync steps' scroll offset and selection
@@ -359,7 +351,7 @@ declare class Wizard extends UI5Element {
      * Sorter method for sorting an array in ascending order.
      * @private
      */
-    sortAscending(a: number, b: number): 1 | 0 | -1;
+    sortAscending(a: number, b: number): 0 | 1 | -1;
 }
 export type { WizardStepChangeEventDetail, };
 export default Wizard;

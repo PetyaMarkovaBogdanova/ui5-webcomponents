@@ -13,6 +13,7 @@ import ComboBoxItemGroup from "./ComboBoxItemGroup.js";
  * @since 2.0.0
  */
 declare class MultiComboBoxItemGroup extends ComboBoxItemGroup implements IMultiComboBoxItem {
+    eventDetails: ComboBoxItemGroup["eventDetails"];
     /**
      * Defines the items of the <code>ui5-mcb-item-group</code>.
      * @public

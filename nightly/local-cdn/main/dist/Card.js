@@ -10,9 +10,9 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
-import CardTemplate from "./generated/templates/CardTemplate.lit.js";
+import CardTemplate from "./CardTemplate.js";
 import Icon from "./Icon.js";
 import BusyIndicator from "./BusyIndicator.js";
 import { ARIA_ROLEDESCRIPTION_CARD, ARIA_LABEL_CARD_CONTENT, } from "./generated/i18n/i18n-defaults.js";
@@ -58,15 +58,6 @@ let Card = Card_1 = class Card extends UI5Element {
          */
         this.loadingDelay = 1000;
     }
-    get classes() {
-        return {
-            root: {
-                "ui5-card-root": true,
-                "ui5-card--interactive": this._hasHeader && this.header[0].interactive,
-                "ui5-card--nocontent": !this.content.length,
-            },
-        };
-    }
     get _hasHeader() {
         return !!this.header.length;
     }
@@ -103,7 +94,7 @@ Card = Card_1 = __decorate([
     customElement({
         tag: "ui5-card",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: CardTemplate,
         styles: cardCss,
         dependencies: [Icon, BusyIndicator],

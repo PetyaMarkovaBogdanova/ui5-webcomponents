@@ -13,16 +13,16 @@ import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEff
 import { isUp, isDown, isLeft, isRight, isUpShift, isDownShift, isLeftShift, isRightShift, } from "@ui5/webcomponents-base/dist/Keys.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
+import toLowercaseEnumValue from "@ui5/webcomponents-base/dist/util/toLowercaseEnumValue.js";
 import Popup from "./Popup.js";
 import Icon from "./Icon.js";
-import "@ui5/webcomponents-icons/dist/resize-corner.js";
 import "@ui5/webcomponents-icons/dist/error.js";
 import "@ui5/webcomponents-icons/dist/alert.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
 import "@ui5/webcomponents-icons/dist/information.js";
 import { DIALOG_HEADER_ARIA_ROLE_DESCRIPTION, DIALOG_HEADER_ARIA_DESCRIBEDBY_RESIZABLE, DIALOG_HEADER_ARIA_DESCRIBEDBY_DRAGGABLE, DIALOG_HEADER_ARIA_DESCRIBEDBY_DRAGGABLE_RESIZABLE, } from "./generated/i18n/i18n-defaults.js";
 // Template
-import DialogTemplate from "./generated/templates/DialogTemplate.lit.js";
+import DialogTemplate from "./DialogTemplate.js";
 // Styles
 import PopupsCommonCss from "./generated/themes/PopupsCommon.css.js";
 import dialogCSS from "./generated/themes/Dialog.css.js";
@@ -198,7 +198,7 @@ let Dialog = Dialog_1 = class Dialog extends Popup {
         return !this.stretch && this.onDesktop && (this.draggable || this.resizable);
     }
     get _headerTabIndex() {
-        return this._movable ? "0" : undefined;
+        return this._movable ? 0 : undefined;
     }
     get _showResizeHandle() {
         return this.resizable && this.onDesktop;
@@ -226,9 +226,9 @@ let Dialog = Dialog_1 = class Dialog extends Popup {
             return undefined;
         }
         if (this.state === ValueState.Negative || this.state === ValueState.Critical) {
-            return PopupAccessibleRole.AlertDialog.toLowerCase();
+            return toLowercaseEnumValue(PopupAccessibleRole.AlertDialog);
         }
-        return this.accessibleRole.toLowerCase();
+        return toLowercaseEnumValue(this.accessibleRole);
     }
     _show() {
         super._show();

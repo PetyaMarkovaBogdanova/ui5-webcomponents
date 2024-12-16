@@ -9,9 +9,9 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 // Template
-import FormTemplate from "./generated/templates/FormTemplate.lit.js";
+import FormTemplate from "./FormTemplate.js";
 // Styles
 import FormCss from "./generated/themes/Form.css.js";
 import Title from "./Title.js";
@@ -429,7 +429,6 @@ let Form = class Form extends UI5Element {
             return {
                 groupItem,
                 accessibleNameRef: groupItem.headerText ? `${groupItem._id}-group-header-text` : undefined,
-                classes: `ui5-form-column-spanL-${groupItem.colsL} ui5-form-column-spanXL-${groupItem.colsXl} ui5-form-column-spanM-${groupItem.colsM} ui5-form-column-spanS-${groupItem.colsS}`,
                 items: this.getItemsInfo(Array.from(groupItem.children)),
             };
         });
@@ -441,7 +440,12 @@ let Form = class Form extends UI5Element {
         return (items || this.items).map((item) => {
             return {
                 item,
+                // eslint-disable-next-line
+                // TODO: remove classes and classMap after deleting the hbs template
                 classes: item.columnSpan ? `ui5-form-item-span-${item.columnSpan}` : "",
+                classMap: {
+                    [`ui5-form-item-span-${item.columnSpan}`]: item.columnSpan !== undefined,
+                },
             };
         });
     }
@@ -577,7 +581,7 @@ __decorate([
 Form = __decorate([
     customElement({
         tag: "ui5-form",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: FormCss,
         template: FormTemplate,
         dependencies: [Title],
