@@ -286,6 +286,7 @@ declare class ShellBar extends UI5Element {
     _isInitialRendering: boolean;
     _defaultItemPressPrevented: boolean;
     menuItemsObserver: MutationObserver;
+    additionalContextObserver: MutationObserver;
     _hiddenIcons: Array<IShelBarItemInfo>;
     _handleResize: ResizeObserverCallback;
     _overflowNotifications: string | null;
@@ -334,6 +335,7 @@ declare class ShellBar extends UI5Element {
     _hideAdditionalContext(): void;
     _handleActionsOverflow(): IShelBarItemInfo[];
     _overflowActions(): void;
+    _updateAssistantIconVisibility(items: IShelBarItemInfo[]): void;
     _updateSeparatorsVisibility(): void;
     _toggleActionPopover(): void;
     onEnterDOM(): void;
@@ -389,7 +391,9 @@ declare class ShellBar extends UI5Element {
     _updateItemsInfo(newItems: Array<IShelBarItemInfo>): void;
     _updateOverflowNotifications(): void;
     _updateClonedMenuItems(): void;
+    _updateAdditionalContextItems(): void;
     _observeMenuItems(): void;
+    _observeAdditionalContextItems(): void;
     _getOverflowPopover(): Popover;
     _getMenuPopover(): Popover;
     isIconHidden(name: string): boolean;

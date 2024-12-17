@@ -182,6 +182,9 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this.menuItemsObserver = new MutationObserver(() => {
             this._updateClonedMenuItems();
         });
+        this.additionalContextObserver = new MutationObserver(() => {
+            this._updateAdditionalContextItems();
+        });
         this._headerPress = () => {
             this._updateClonedMenuItems();
             if (this.hasMenuItems) {
@@ -356,6 +359,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             return isHidden && isSet && !shouldStayOnScreen;
         });
         this._observeMenuItems();
+        this._observeAdditionalContextItems();
         this._updateSeparatorsVisibility();
     }
     get additionalContextSorted() {
@@ -409,6 +413,9 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 classes: `${info.classes} ${shouldStayOnScreen ? "" : "ui5-shellbar-hidden-button"} ui5-shellbar-button`,
             };
         });
+        // assistant is a slot, still described in the itemsInfo for the purpose of the overflow
+        // so if marked as hidden, it should be hidden separately
+        this._updateAssistantIconVisibility(newItems);
         this._updateItemsInfo(newItems);
     }
     _hideOverflowItems(hiddenItems, items) {
@@ -422,13 +429,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         }
         // assistant is a slot, still described in the itemsInfo for the purpose of the overflow
         // so if marked as hidden, it should be hidden separately
-        if (this.assistant.length) {
-            const assistantInfo = items.find(item => item.text === "Assistant");
-            this.assistant[0].classList.remove("ui5-shellbar-hidden-button");
-            if (assistantInfo && assistantInfo.classes.indexOf("ui5-shellbar-hidden-button") > 0) {
-                this.assistant[0].classList.add("ui5-shellbar-hidden-button");
-            }
-        }
+        this._updateAssistantIconVisibility(items);
         return hiddenItems;
     }
     _hideAdditionalContext() {
@@ -505,6 +506,15 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._updateItemsInfo(newItems);
         this._updateOverflowNotifications();
     }
+    _updateAssistantIconVisibility(items) {
+        if (this.assistant.length) {
+            const assistantInfo = items.find(item => item.text === "Assistant");
+            this.assistant[0].classList.remove("ui5-shellbar-hidden-button");
+            if (assistantInfo && assistantInfo.classes.indexOf("ui5-shellbar-hidden-button") > 0) {
+                this.assistant[0].classList.add("ui5-shellbar-hidden-button");
+            }
+        }
+    }
     _updateSeparatorsVisibility() {
         this.hasVisibleStartContent = this._hasVisibleStartContent;
         this.hasVisibleEndContent = this._hasVisibleEndContent;
@@ -524,6 +534,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     onExitDOM() {
         this.menuItemsObserver.disconnect();
+        this.additionalContextObserver.disconnect();
         ResizeHandler.deregister(this, this._handleResize);
     }
     _handleSearchIconPress() {
@@ -770,6 +781,9 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             this._menuPopoverItems.push(clonedItem);
         });
     }
+    _updateAdditionalContextItems() {
+        this._handleActionsOverflow();
+    }
     _observeMenuItems() {
         this.menuItems.forEach(item => {
             this.menuItemsObserver.observe(item, {
@@ -777,6 +791,17 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 childList: true,
                 subtree: true,
                 attributes: true,
+            });
+        });
+    }
+    _observeAdditionalContextItems() {
+        this.additionalContext.forEach(item => {
+            this.additionalContextObserver.observe(item, {
+                characterData: false,
+                childList: false,
+                subtree: false,
+                attributes: true,
+                attributeFilter: ["data-hide-order"],
             });
         });
     }
@@ -811,10 +836,14 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 product: {},
                 search: {
                     "ui5-shellbar-hidden-button": this.isIconHidden("search"),
+                    "ui5-shellbar-no-overflow-button": this.breakpointSize !== "S",
                 },
                 overflow: {
                     "ui5-shellbar-hidden-button": this._hiddenIcons.length === 0,
                     "ui5-shellbar-no-overflow-button": true,
+                },
+                assistant: {
+                    "ui5-shellbar-hidden-button": this.isIconHidden("assistant"),
                 },
             },
         };
