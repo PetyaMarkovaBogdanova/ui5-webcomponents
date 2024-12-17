@@ -182,9 +182,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this.menuItemsObserver = new MutationObserver(() => {
             this._updateClonedMenuItems();
         });
-        this.additionalContextObserver = new MutationObserver(() => {
-            this._updateAdditionalContextItems();
-        });
         this._headerPress = () => {
             this._updateClonedMenuItems();
             if (this.hasMenuItems) {
@@ -215,6 +212,9 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 this._showSearchField = false;
             }
             if (spacerWidth > searchFieldWidth && this.additionalContextHidden.length === 0 && this._showSearchField === false && this._showFullWidthSearch === false) {
+                this._showSearchField = true;
+            }
+            if (this.additionalContext.length === 0 && this._showSearchField === false && this._showFullWidthSearch === false) {
                 this._showSearchField = true;
             }
         }
@@ -356,7 +356,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             return isHidden && isSet && !shouldStayOnScreen;
         });
         this._observeMenuItems();
-        this._observeAdditionalContextItems();
         this._updateSeparatorsVisibility();
     }
     get additionalContextSorted() {
@@ -771,29 +770,12 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             this._menuPopoverItems.push(clonedItem);
         });
     }
-    _updateAdditionalContextItems() {
-        [this.startContent, this.endContent].forEach(context => context.forEach(item => {
-            const clonedItem = item.cloneNode(true);
-            clonedItem.removeAttribute("slot");
-            context.push(clonedItem);
-        }));
-    }
     _observeMenuItems() {
         this.menuItems.forEach(item => {
             this.menuItemsObserver.observe(item, {
                 characterData: true,
                 childList: true,
                 subtree: true,
-                attributes: true,
-            });
-        });
-    }
-    _observeAdditionalContextItems() {
-        [...this.endContent, ...this.startContent].forEach(item => {
-            this.additionalContextObserver.observe(item, {
-                characterData: false,
-                childList: false,
-                subtree: false,
                 attributes: true,
             });
         });
