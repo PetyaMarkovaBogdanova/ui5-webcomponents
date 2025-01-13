@@ -19,8 +19,6 @@ import StepInputTemplate from "./StepInputTemplate.js";
 import { STEPINPUT_DEC_ICON_TITLE, STEPINPUT_INC_ICON_TITLE } from "./generated/i18n/i18n-defaults.js";
 import "@ui5/webcomponents-icons/dist/less.js";
 import "@ui5/webcomponents-icons/dist/add.js";
-import Icon from "./Icon.js";
-import Input from "./Input.js";
 import InputType from "./types/InputType.js";
 // Styles
 import StepInputCss from "./generated/themes/StepInput.css.js";
@@ -514,10 +512,6 @@ StepInput = StepInput_1 = __decorate([
         renderer: jsxRenderer,
         styles: StepInputCss,
         template: StepInputTemplate,
-        dependencies: [
-            Icon,
-            Input,
-        ],
     })
     /**
      * Fired when the input operation has finished by pressing Enter or on focusout.

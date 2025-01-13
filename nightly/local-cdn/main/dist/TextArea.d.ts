@@ -3,7 +3,7 @@ import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
-import Popover from "./Popover.js";
+import type Popover from "./Popover.js";
 import type PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
 type TokenizedText = Array<string>;
 type IndexedTokenizedText = Array<{

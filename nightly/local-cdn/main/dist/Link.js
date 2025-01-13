@@ -22,7 +22,6 @@ import LinkTemplate from "./LinkTemplate.js";
 import { LINK_SUBTLE, LINK_EMPHASIZED } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import linkCss from "./generated/themes/Link.css.js";
-import Icon from "./Icon.js";
 /**
  * @class
  *
@@ -254,7 +253,6 @@ Link = Link_1 = __decorate([
         renderer: jsxRenderer,
         template: LinkTemplate,
         styles: linkCss,
-        dependencies: [Icon],
     })
     /**
      * Fired when the component is triggered either with a mouse/tap

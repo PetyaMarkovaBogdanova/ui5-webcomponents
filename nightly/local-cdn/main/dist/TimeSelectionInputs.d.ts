@@ -1,6 +1,6 @@
 import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js";
 import TimePickerInternals from "./TimePickerInternals.js";
-import Input from "./Input.js";
+import type Input from "./Input.js";
 import InputType from "./types/InputType.js";
 /**
  * @class

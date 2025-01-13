@@ -1,15 +1,9 @@
 import { ComponentFeature, registerComponentFeature } from "@ui5/webcomponents-base/dist/FeaturesRegistry.js";
-import Dialog from "../Dialog.js";
-import Button from "../Button.js";
-import ColorPicker from "../ColorPicker.js";
+import ColorPaletteMoreColorsTemplate from "./ColorPaletteMoreColorsTemplate.js";
 import { COLOR_PALETTE_DIALOG_CANCEL_BUTTON, COLOR_PALETTE_DIALOG_OK_BUTTON, COLOR_PALETTE_DIALOG_TITLE, } from "../generated/i18n/i18n-defaults.js";
 class ColorPaletteMoreColors extends ComponentFeature {
-    static get dependencies() {
-        return [
-            Dialog,
-            Button,
-            ColorPicker,
-        ];
+    get template() {
+        return ColorPaletteMoreColorsTemplate;
     }
     get colorPaletteDialogTitle() {
         return ColorPaletteMoreColors.i18nBundle.getText(COLOR_PALETTE_DIALOG_TITLE);

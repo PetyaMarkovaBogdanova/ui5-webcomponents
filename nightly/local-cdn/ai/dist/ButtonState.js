@@ -30,6 +30,16 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
  * @experimental The Button and ButtonState web components are availabe since 2.0 under an experimental flag and their API and behaviour are subject to change.
  */
 let ButtonState = class ButtonState extends UI5Element {
+    constructor() {
+        super(...arguments);
+        /**
+         * Defines if the component is in split button mode.
+         * @default false
+         * @since 2.6.0
+         * @public
+         */
+        this.splitMode = false;
+    }
 };
 __decorate([
     property()
@@ -43,6 +53,9 @@ __decorate([
 __decorate([
     property()
 ], ButtonState.prototype, "endIcon", void 0);
+__decorate([
+    property({ type: Boolean })
+], ButtonState.prototype, "splitMode", void 0);
 ButtonState = __decorate([
     customElement("ui5-ai-button-state")
 ], ButtonState);

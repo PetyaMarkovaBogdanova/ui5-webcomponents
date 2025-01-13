@@ -15,9 +15,6 @@ import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isEnter, isSpace } from "@ui5/webcomponents-base/dist/Keys.js";
 import { FILEUPLOAD_BROWSE, FILEUPLOADER_TITLE, VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, VALUE_STATE_ERROR, VALUE_STATE_WARNING, } from "./generated/i18n/i18n-defaults.js";
-import Input from "./Input.js";
-import Popover from "./Popover.js";
-import Icon from "./Icon.js";
 // Template
 import FileUploaderTemplate from "./FileUploaderTemplate.js";
 // Styles
@@ -121,7 +118,7 @@ let FileUploader = FileUploader_1 = class FileUploader extends UI5Element {
         });
     }
     _onclick() {
-        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
+        if (this.getFocusDomRef()?.matches(":has(:focus-within)")) {
             this._input.click();
         }
     }
@@ -362,11 +359,6 @@ FileUploader = FileUploader_1 = __decorate([
             ValueStateMessageCss,
         ],
         template: FileUploaderTemplate,
-        dependencies: [
-            Input,
-            Popover,
-            Icon,
-        ],
     })
     /**
      * Event is fired when the value of the file path has been changed.

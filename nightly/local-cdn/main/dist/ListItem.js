@@ -20,9 +20,6 @@ import Highlight from "./types/Highlight.js";
 import ListItemType from "./types/ListItemType.js";
 import ListSelectionMode from "./types/ListSelectionMode.js";
 import ListItemBase from "./ListItemBase.js";
-import RadioButton from "./RadioButton.js";
-import CheckBox from "./CheckBox.js";
-import Button from "./Button.js";
 import { DELETE, ARIA_LABEL_LIST_ITEM_CHECKBOX, ARIA_LABEL_LIST_ITEM_RADIO_BUTTON, LIST_ITEM_SELECTED, LIST_ITEM_NOT_SELECTED, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import styles from "./generated/themes/ListItem.css.js";
@@ -375,11 +372,6 @@ ListItem = ListItem_1 = __decorate([
             ListItemBase.styles,
             listItemAdditionalTextCss,
             styles,
-        ],
-        dependencies: [
-            Button,
-            RadioButton,
-            CheckBox,
         ],
     })
     /**

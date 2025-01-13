@@ -11,7 +11,6 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isLeft, isRight, } from "@ui5/webcomponents-base/dist/Keys.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import Icon from "@ui5/webcomponents/dist/Icon.js";
 import SideNavigationItemBase from "./SideNavigationItemBase.js";
 import SideNavigationGroupTemplate from "./SideNavigationGroupTemplate.js";
 import { SIDE_NAVIGATION_GROUP_HEADER_DESC, } from "./generated/i18n/i18n-defaults.js";
@@ -134,9 +133,6 @@ SideNavigationGroup = SideNavigationGroup_1 = __decorate([
         renderer: jsxRender,
         template: SideNavigationGroupTemplate,
         styles: SideNavigationGroupCss,
-        dependencies: [
-            Icon,
-        ],
     })
 ], SideNavigationGroup);
 SideNavigationGroup.define();

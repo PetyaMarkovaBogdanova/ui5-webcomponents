@@ -21,9 +21,6 @@ import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
 import SemanticColor from "./types/SemanticColor.js";
 import ListItemType from "./types/ListItemType.js";
 import TabContainer from "./TabContainer.js";
-import Icon from "./Icon.js";
-import Button from "./Button.js";
-import ListItemCustom from "./ListItemCustom.js";
 // Templates
 import TabTemplate from "./TabTemplate.js";
 import TabInStripTemplate from "./TabInStripTemplate.js";
@@ -395,11 +392,6 @@ Tab = Tab_1 = __decorate([
         renderer: jsxRenderer,
         template: TabTemplate,
         styles: css,
-        dependencies: [
-            Icon,
-            Button,
-            ListItemCustom,
-        ],
     })
 ], Tab);
 Tab.define();

@@ -8,7 +8,7 @@ import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
 import SemanticColor from "./types/SemanticColor.js";
 import ListItemType from "./types/ListItemType.js";
 import type { TabContainerStripInfo, TabContainerOverflowInfo, ITab } from "./TabContainer.js";
-import ListItemCustom from "./ListItemCustom.js";
+import type ListItemCustom from "./ListItemCustom.js";
 import TabInStripTemplate from "./TabInStripTemplate.js";
 import TabInOverflowTemplate from "./TabInOverflowTemplate.js";
 interface TabInStrip extends HTMLElement {

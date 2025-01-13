@@ -5,7 +5,7 @@ import type { Timeout } from "@ui5/webcomponents-base/dist/types.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import "@ui5/webcomponents-icons/dist/less.js";
 import "@ui5/webcomponents-icons/dist/add.js";
-import Input from "./Input.js";
+import type Input from "./Input.js";
 import type { InputAccInfo, InputEventDetail } from "./Input.js";
 import InputType from "./types/InputType.js";
 type StepInputValueStateChangeEventDetail = {

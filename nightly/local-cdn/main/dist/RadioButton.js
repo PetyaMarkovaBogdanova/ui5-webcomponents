@@ -15,7 +15,6 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { isSpace, isEnter, isDown, isLeft, isUp, isRight, } from "@ui5/webcomponents-base/dist/Keys.js";
-import Label from "./Label.js";
 import RadioButtonGroup from "./RadioButtonGroup.js";
 // Template
 import RadioButtonTemplate from "./RadioButtonTemplate.js";
@@ -356,7 +355,6 @@ RadioButton = RadioButton_1 = __decorate([
         renderer: jsxRenderer,
         template: RadioButtonTemplate,
         styles: radioButtonCss,
-        dependencies: [Label],
     })
     /**
      * Fired when the component checked state changes.

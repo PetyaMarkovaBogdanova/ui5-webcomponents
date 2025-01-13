@@ -1,6 +1,6 @@
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import Popover from "./Popover.js";
-import Dialog from "./Dialog.js";
+import type Dialog from "./Dialog.js";
 import type { PopupBeforeCloseEventDetail } from "./Popup.js";
 /**
  * @class

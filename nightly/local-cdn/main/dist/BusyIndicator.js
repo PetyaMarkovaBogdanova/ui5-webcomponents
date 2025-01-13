@@ -13,7 +13,6 @@ import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isTabNext } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import BusyIndicatorTextPlacement from "./types/BusyIndicatorTextPlacement.js";
-import Label from "./Label.js";
 // Template
 import BusyIndicatorTemplate from "./BusyIndicatorTemplate.js";
 import { BUSY_INDICATOR_TITLE } from "./generated/i18n/i18n-defaults.js";
@@ -197,7 +196,6 @@ BusyIndicator = BusyIndicator_1 = __decorate([
         styles: busyIndicatorCss,
         renderer: jsxRenderer,
         template: BusyIndicatorTemplate,
-        dependencies: [Label],
     })
 ], BusyIndicator);
 BusyIndicator.define();

@@ -13,8 +13,6 @@ import { registerToolbarItem } from "./ToolbarRegistry.js";
 import ToolbarSelectTemplate from "./ToolbarSelectTemplate.js";
 import ToolbarPopoverSelectTemplate from "./ToolbarPopoverSelectTemplate.js";
 import ToolbarItem from "./ToolbarItem.js";
-import Select from "./Select.js";
-import Option from "./Option.js";
 /**
  * @class
  *
@@ -123,7 +121,6 @@ __decorate([
 ToolbarSelect = __decorate([
     customElement({
         tag: "ui5-toolbar-select",
-        dependencies: [Select, Option],
     })
     /**
      * Fired when the selected option changes.

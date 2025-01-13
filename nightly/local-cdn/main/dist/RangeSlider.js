@@ -10,9 +10,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isEscape, isEnter, isHome, isEnd, } from "@ui5/webcomponents-base/dist/Keys.js";
 import SliderBase from "./SliderBase.js";
-import Icon from "./Icon.js";
 import RangeSliderTemplate from "./RangeSliderTemplate.js";
-import Input from "./Input.js";
 // Texts
 import { RANGE_SLIDER_ARIA_DESCRIPTION, RANGE_SLIDER_START_HANDLE_DESCRIPTION, RANGE_SLIDER_END_HANDLE_DESCRIPTION, SLIDER_TOOLTIP_INPUT_LABEL, SLIDER_TOOLTIP_INPUT_DESCRIPTION, } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -896,7 +894,6 @@ RangeSlider = RangeSlider_1 = __decorate([
         languageAware: true,
         formAssociated: true,
         template: RangeSliderTemplate,
-        dependencies: [Icon, Input],
         styles: [SliderBase.styles, rangeSliderStyles],
     })
 ], RangeSlider);

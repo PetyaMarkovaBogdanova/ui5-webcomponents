@@ -23,13 +23,7 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
 import { isSpace, isSpaceCtrl, isSpaceShift, isLeftCtrl, isRightCtrl, isUpCtrl, isDownCtrl, isUpShift, isDownShift, isLeftShift, isRightShift, isLeftShiftCtrl, isRightShiftCtrl, isDeleteShift, isInsertCtrl, isEnd, isHome, isHomeShift, isEndShift, isPageUpShift, isPageDownShift, isHomeCtrl, isEndCtrl, isRight, isLeft, isUp, isDown, isEscape, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import List, {} from "./List.js";
 import ListSelectionMode from "./types/ListSelectionMode.js";
-import Title from "./Title.js";
-import Button from "./Button.js";
-import Icon from "./Icon.js";
-import ListItemStandard from "./ListItemStandard.js";
 import TokenizerTemplate from "./TokenizerTemplate.js";
 import { MULTIINPUT_SHOW_MORE_TOKENS, TOKENIZER_ARIA_LABEL, TOKENIZER_POPOVER_REMOVE, TOKENIZER_ARIA_CONTAIN_TOKEN, TOKENIZER_ARIA_CONTAIN_ONE_TOKEN, TOKENIZER_ARIA_CONTAIN_SEVERAL_TOKENS, TOKENIZER_SHOW_ALL_ITEMS, TOKENIZER_CLEAR_ALL, } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -886,14 +880,6 @@ Tokenizer = Tokenizer_1 = __decorate([
             SuggestionsCss,
             TokenizerPopoverCss,
             getEffectiveScrollbarStyle(),
-        ],
-        dependencies: [
-            ResponsivePopover,
-            List,
-            ListItemStandard,
-            Title,
-            Button,
-            Icon,
         ],
     })
     /**

@@ -16,7 +16,6 @@ import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isEnter, isSpace, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
-import Button from "./Button.js";
 import AvatarSize from "./types/AvatarSize.js";
 import AvatarGroupType from "./types/AvatarGroupType.js";
 import AvatarColorScheme from "./types/AvatarColorScheme.js";
@@ -421,7 +420,6 @@ AvatarGroup = AvatarGroup_1 = __decorate([
         renderer: jsxRenderer,
         template: AvatarGroupTemplate,
         styles: AvatarGroupCss,
-        dependencies: [Button],
     })
     /**
      * Fired when the component is activated either with a

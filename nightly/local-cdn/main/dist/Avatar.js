@@ -21,7 +21,6 @@ import AvatarTemplate from "./AvatarTemplate.js";
 import { AVATAR_TOOLTIP } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import AvatarCss from "./generated/themes/Avatar.css.js";
-import Icon from "./Icon.js";
 import AvatarSize from "./types/AvatarSize.js";
 // Icon
 import "@ui5/webcomponents-icons/dist/employee.js";
@@ -306,7 +305,6 @@ Avatar = Avatar_1 = __decorate([
         renderer: jsxRenderer,
         styles: AvatarCss,
         template: AvatarTemplate,
-        dependencies: [Icon],
     })
     /**
      * Fired on mouseup, space and enter if avatar is interactive

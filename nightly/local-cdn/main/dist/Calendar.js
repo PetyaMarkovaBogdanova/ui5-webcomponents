@@ -23,15 +23,10 @@ import "@ui5/webcomponents-icons/dist/slim-arrow-left.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import CalendarDate from "./CalendarDate.js";
 import CalendarDateRange from "./CalendarDateRange.js";
+import "./SpecialCalendarDate.js";
 import CalendarPart from "./CalendarPart.js";
-import DayPicker from "./DayPicker.js";
-import MonthPicker from "./MonthPicker.js";
-import YearPicker from "./YearPicker.js";
 import CalendarSelectionMode from "./types/CalendarSelectionMode.js";
 import CalendarPickersMode from "./types/CalendarPickersMode.js";
-import CalendarLegend from "./CalendarLegend.js";
-import SpecialCalendarDate from "./SpecialCalendarDate.js";
-import Icon from "./Icon.js";
 // Default calendar for bundling
 import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js";
 // Template
@@ -638,16 +633,6 @@ Calendar = Calendar_1 = __decorate([
         fastNavigation: true,
         template: CalendarTemplate,
         styles: [calendarCSS, CalendarHeaderCss],
-        dependencies: [
-            SpecialCalendarDate,
-            CalendarDate,
-            CalendarDateRange,
-            DayPicker,
-            MonthPicker,
-            YearPicker,
-            CalendarLegend,
-            Icon,
-        ],
     })
     /**
      * Fired when the selected dates change.

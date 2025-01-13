@@ -6,12 +6,13 @@ import type { AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import BreadcrumbsDesign from "./types/BreadcrumbsDesign.js";
+import "./BreadcrumbsItem.js";
+import type BreadcrumbsItem from "./BreadcrumbsItem.js";
 import type BreadcrumbsSeparator from "./types/BreadcrumbsSeparator.js";
-import BreadcrumbsItem from "./BreadcrumbsItem.js";
-import Link from "./Link.js";
+import type Link from "./Link.js";
 import type { LinkClickEventDetail } from "./Link.js";
-import Label from "./Label.js";
-import ResponsivePopover from "./ResponsivePopover.js";
+import type Label from "./Label.js";
+import type ResponsivePopover from "./ResponsivePopover.js";
 import type { ListSelectionChangeEventDetail } from "./List.js";
 type BreadcrumbsItemClickEventDetail = {
     item: BreadcrumbsItem;

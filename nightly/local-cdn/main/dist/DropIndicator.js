@@ -144,7 +144,6 @@ DropIndicator = __decorate([
         renderer: jsxRenderer,
         styles: DropIndicatorCss,
         template: DropIndicatorTemplate,
-        dependencies: [],
     })
 ], DropIndicator);
 DropIndicator.define();

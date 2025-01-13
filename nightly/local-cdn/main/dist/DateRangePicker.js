@@ -16,7 +16,6 @@ import DateRangePickerTemplate from "./DateRangePickerTemplate.js";
 // Styles
 import DateRangePickerCss from "./generated/themes/DateRangePicker.css.js";
 import DatePicker from "./DatePicker.js";
-import CalendarDateRange from "./CalendarDateRange.js";
 const DEFAULT_DELIMITER = "-";
 /**
  * @class
@@ -325,7 +324,6 @@ DateRangePicker = DateRangePicker_1 = __decorate([
         tag: "ui5-daterange-picker",
         styles: [DatePicker.styles, DateRangePickerCss],
         template: DateRangePickerTemplate,
-        dependencies: [...DatePicker.dependencies, CalendarDateRange],
     })
 ], DateRangePicker);
 DateRangePicker.define();

@@ -383,7 +383,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
         menu.open = true;
     }
     getMenu() {
-        const menu = this.querySelector("ui5-menu");
+        const menu = this.querySelector("[ui5-menu]");
         return menu;
     }
     /**

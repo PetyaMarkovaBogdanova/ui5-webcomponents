@@ -1,6 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import { type LinkAccessibilityAttributes } from "./Link.js";
+import type { LinkAccessibilityAttributes } from "./Link.js";
 import ExpandableTextOverflowMode from "./types/ExpandableTextOverflowMode.js";
 import type TextEmptyIndicatorMode from "./types/TextEmptyIndicatorMode.js";
 /**

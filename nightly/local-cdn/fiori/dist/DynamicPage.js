@@ -26,7 +26,6 @@ import DynamicPageTemplate from "./DynamicPageTemplate.js";
 import DynamicPageCss from "./generated/themes/DynamicPage.css.js";
 import DynamicPageHeader from "./DynamicPageHeader.js";
 import DynamicPageTitle from "./DynamicPageTitle.js";
-import DynamicPageHeaderActions from "./DynamicPageHeaderActions.js";
 // Texts
 import { DYNAMIC_PAGE_ARIA_LABEL_EXPANDED_HEADER, DYNAMIC_PAGE_ARIA_LABEL_SNAPPED_HEADER, } from "./generated/i18n/i18n-defaults.js";
 const SCROLL_DEBOUNCE_RATE = 5; // ms
@@ -341,7 +340,6 @@ DynamicPage = DynamicPage_1 = __decorate([
         renderer: jsxRenderer,
         styles: DynamicPageCss,
         template: DynamicPageTemplate,
-        dependencies: [DynamicPageHeaderActions],
     })
     /**
      * Fired when the pin header button is toggled.

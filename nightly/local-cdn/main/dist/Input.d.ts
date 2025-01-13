@@ -1,5 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import { type UI5CustomEvent } from "@ui5/webcomponents-base";
+import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import type { AriaAutoComplete, AriaRole, AriaHasPopup, ClassMap } from "@ui5/webcomponents-base/dist/types.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
@@ -9,11 +9,11 @@ import type SuggestionItem from "./SuggestionItem.js";
 import type { SuggestionComponent } from "./features/InputSuggestions.js";
 import type InputSuggestions from "./features/InputSuggestions.js";
 import InputType from "./types/InputType.js";
-import Popover from "./Popover.js";
+import type Popover from "./Popover.js";
 import type { IIcon } from "./Icon.js";
 import type PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
 import type { ListItemClickEventDetail, ListSelectionChangeEventDetail } from "./List.js";
-import ResponsivePopover from "./ResponsivePopover.js";
+import type ResponsivePopover from "./ResponsivePopover.js";
 /**
  * Interface for components that represent a suggestion item, usable in `ui5-input`
  * @public
@@ -344,6 +344,7 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     _changeToBeFired?: boolean;
     _performTextSelection?: boolean;
     _isLatestValueFromSuggestions: boolean;
+    _isChangeTriggeredBySuggestion: boolean;
     static i18nBundle: I18nBundle;
     get formValidityMessage(): string;
     get _effectiveShowSuggestions(): boolean;

@@ -15,7 +15,6 @@ import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isSpace, isEnter, isF7, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getLastTabbableElement } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
-import CheckBox from "@ui5/webcomponents/dist/CheckBox.js";
 import TableMode from "./types/TableMode.js";
 import TableRowType from "./types/TableRowType.js";
 import TableColumnPopinDisplay from "./types/TableColumnPopinDisplay.js";
@@ -327,7 +326,6 @@ TableRow = TableRow_1 = __decorate([
         styles: tableRowStyles,
         renderer: jsxRenderer,
         template: TableRowTemplate,
-        dependencies: [CheckBox],
     })
     /**
      * Fired when a row in `Active` mode is clicked or `Enter` key is pressed.

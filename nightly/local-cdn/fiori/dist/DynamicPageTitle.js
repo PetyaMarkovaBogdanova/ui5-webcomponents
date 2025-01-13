@@ -16,8 +16,6 @@ import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.j
 import { isEnter, isSpace } from "@ui5/webcomponents-base/dist/Keys.js";
 import ToolbarItemOverflowBehavior from "@ui5/webcomponents/dist/types/ToolbarItemOverflowBehavior.js";
 import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
-import Icon from "@ui5/webcomponents/dist/Icon.js";
-import Title from "@ui5/webcomponents/dist/Title.js";
 // Template
 import DynamicPageTitleTemplate from "./DynamicPageTitleTemplate.js";
 // Styles
@@ -221,7 +219,6 @@ DynamicPageTitle = DynamicPageTitle_1 = __decorate([
         renderer: jsxRenderer,
         styles: DynamicPageTitleCss,
         template: DynamicPageTitleTemplate,
-        dependencies: [Title, Icon],
     })
     /**
      * Event is fired when the title is toggled.

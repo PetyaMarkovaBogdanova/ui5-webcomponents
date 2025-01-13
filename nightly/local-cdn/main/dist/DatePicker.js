@@ -23,12 +23,6 @@ import CalendarPickersMode from "./types/CalendarPickersMode.js";
 import "@ui5/webcomponents-icons/dist/appointment-2.js";
 import { DATEPICKER_OPEN_ICON_TITLE, DATEPICKER_DATE_DESCRIPTION, INPUT_SUGGESTIONS_TITLE, FORM_TEXTFIELD_REQUIRED, DATEPICKER_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
 import DateComponentBase from "./DateComponentBase.js";
-import Icon from "./Icon.js";
-import Button from "./Button.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import Calendar from "./Calendar.js";
-import CalendarDateComponent from "./CalendarDate.js";
-import Input, {} from "./Input.js";
 import InputType from "./types/InputType.js";
 import IconMode from "./types/IconMode.js";
 import DatePickerTemplate from "./DatePickerTemplate.js";
@@ -630,14 +624,6 @@ DatePicker = DatePicker_1 = __decorate([
             datePickerCss,
             ResponsivePopoverCommonCss,
             datePickerPopoverCss,
-        ],
-        dependencies: [
-            Icon,
-            ResponsivePopover,
-            Calendar,
-            CalendarDateComponent,
-            Input,
-            Button,
         ],
     })
     /**

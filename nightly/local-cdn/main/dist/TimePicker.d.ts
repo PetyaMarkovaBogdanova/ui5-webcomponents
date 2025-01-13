@@ -4,9 +4,10 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js";
 import "@ui5/webcomponents-icons/dist/time-entry-request.js";
-import Popover from "./Popover.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import Input, { type InputAccInfo } from "./Input.js";
+import type Popover from "./Popover.js";
+import type ResponsivePopover from "./ResponsivePopover.js";
+import type Input from "./Input.js";
+import type { InputAccInfo } from "./Input.js";
 import type { TimeSelectionChangeEventDetail } from "./TimePickerInternals.js";
 type TimePickerChangeInputEventDetail = {
     value: string;

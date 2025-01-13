@@ -14,7 +14,6 @@ import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import FormTemplate from "./FormTemplate.js";
 // Styles
 import FormCss from "./generated/themes/Form.css.js";
-import Title from "./Title.js";
 const additionalStylesMap = new Map();
 const StepColumn = {
     "S": 1,
@@ -584,7 +583,6 @@ Form = __decorate([
         renderer: jsxRenderer,
         styles: FormCss,
         template: FormTemplate,
-        dependencies: [Title],
     })
 ], Form);
 Form.define();

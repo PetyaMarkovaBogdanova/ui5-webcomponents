@@ -1,5 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import type RatingIndicatorSize from "./types/RatingIndicatorSize.js";
 type Star = {
     selected: boolean;
     index: number;
@@ -62,6 +63,13 @@ declare class RatingIndicator extends UI5Element {
      * @since 1.0.0-rc.15
      */
     max: number;
+    /**
+     * Defines the size of the component.
+     * @default "M"
+     * @public
+     * @since 2.6.0
+     */
+    size: `${RatingIndicatorSize}`;
     /**
      * Defines whether the component is disabled.
      *

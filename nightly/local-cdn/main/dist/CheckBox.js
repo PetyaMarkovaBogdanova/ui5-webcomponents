@@ -15,8 +15,6 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
-import Icon from "./Icon.js";
-import Label from "./Label.js";
 import { VALUE_STATE_ERROR, VALUE_STATE_WARNING, VALUE_STATE_SUCCESS, FORM_CHECKABLE_REQUIRED, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import checkboxCss from "./generated/themes/CheckBox.css.js";
@@ -348,10 +346,6 @@ CheckBox = CheckBox_1 = __decorate([
         renderer: jsxRenderer,
         template: CheckBoxTemplate,
         styles: checkboxCss,
-        dependencies: [
-            Label,
-            Icon,
-        ],
     })
     /**
      * Fired when the component checked state changes.

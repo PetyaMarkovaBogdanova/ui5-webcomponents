@@ -45,7 +45,6 @@ UserMenuItem = __decorate([
         tag: "ui5-user-menu-item",
         template: UserMenuItemTemplate,
         styles: [MenuItem.styles, userMenuItemCss],
-        dependencies: [...MenuItem.dependencies],
     })
 ], UserMenuItem);
 UserMenuItem.define();

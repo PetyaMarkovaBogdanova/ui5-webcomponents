@@ -44,11 +44,15 @@ type ShellBarMenuItemClickEventDetail = {
     item: HTMLElement;
 };
 type ShellBarAdditionalContextItemDisappearsEventDetail = {
-    items: Array<HTMLElement | null>;
+    items: Array<HTMLElement>;
 };
 type ShellBarSearchButtonEventDetail = {
     targetRef: HTMLElement;
     searchFieldVisible: boolean;
+};
+type ShellBarAssistantActionDisappearsEventDetail = {
+    item: HTMLElement;
+    isHidden: boolean;
 };
 interface IShelBarItemInfo {
     id: string;
@@ -108,6 +112,7 @@ declare class ShellBar extends UI5Element {
         "menu-item-click": ShellBarMenuItemClickEventDetail;
         "search-button-click": ShellBarSearchButtonEventDetail;
         "additional-context-disappears": ShellBarAdditionalContextItemDisappearsEventDetail;
+        "assistant-action-disappears": ShellBarAssistantActionDisappearsEventDetail;
     };
     /**
      * Defines the `primaryTitle`.
@@ -153,12 +158,13 @@ declare class ShellBar extends UI5Element {
      */
     showSearchField: boolean;
     /**
-     * Defines, if the Search Field effective collapsed/expanded state.
+     * .
      *
+     * Defines whether or not the search field is open by default
      * @default false
-     * @private
+     * @public
      */
-    _showSearchField: boolean;
+    showOpenSearchField: boolean;
     /**
      * Defines additional accessibility attributes on different areas of the component.
      *
@@ -205,7 +211,6 @@ declare class ShellBar extends UI5Element {
     _menuPopoverItems: Array<HTMLElement>;
     _menuPopoverExpanded: boolean;
     _overflowPopoverExpanded: boolean;
-    _isSBreakpoint: boolean;
     hasVisibleStartContent: boolean;
     hasVisibleEndContent: boolean;
     _cachedHiddenContent: Array<HTMLElement>;
@@ -290,10 +295,8 @@ declare class ShellBar extends UI5Element {
     _hiddenIcons: Array<IShelBarItemInfo>;
     _handleResize: ResizeObserverCallback;
     _overflowNotifications: string | null;
-    _skipLayout: boolean;
     _lastOffsetWidth: number;
-    _lessSearchSpace: boolean;
-    _searchButtonInteraction: boolean;
+    _observableContent: Array<HTMLElement>;
     _headerPress: () => void;
     static get FIORI_3_BREAKPOINTS(): number[];
     static get FIORI_3_BREAKPOINTS_MAP(): Record<string, string>;
@@ -393,7 +396,7 @@ declare class ShellBar extends UI5Element {
     _updateClonedMenuItems(): void;
     _updateAdditionalContextItems(): void;
     _observeMenuItems(): void;
-    _observeAdditionalContextItems(): void;
+    _observeAdditionalContextItems(): false | undefined;
     _getOverflowPopover(): Popover;
     _getMenuPopover(): Popover;
     isIconHidden(name: string): boolean;
@@ -457,6 +460,7 @@ declare class ShellBar extends UI5Element {
     get searchFieldActualWidth(): number;
     get separators(): HTMLElement[];
     get additionalContextHidden(): HTMLElement[];
+    get _lessSearchSpace(): boolean;
     get accInfo(): {
         notifications: {
             title: string;
@@ -494,6 +498,7 @@ declare class ShellBar extends UI5Element {
         };
     };
     get accLogoRole(): string;
+    get isSBreakPoint(): boolean;
 }
 export default ShellBar;
-export type { ShellBarAdditionalContextItemDisappearsEventDetail, ShellBarNotificationsClickEventDetail, ShellBarProfileClickEventDetail, ShellBarProductSwitchClickEventDetail, ShellBarLogoClickEventDetail, ShellBarMenuItemClickEventDetail, ShellBarAccessibilityAttributes, ShellBarSearchButtonEventDetail, };
+export type { ShellBarAdditionalContextItemDisappearsEventDetail, ShellBarNotificationsClickEventDetail, ShellBarProfileClickEventDetail, ShellBarProductSwitchClickEventDetail, ShellBarLogoClickEventDetail, ShellBarMenuItemClickEventDetail, ShellBarAccessibilityAttributes, ShellBarSearchButtonEventDetail, ShellBarAssistantActionDisappearsEventDetail, };

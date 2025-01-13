@@ -19,13 +19,9 @@ import clamp from "@ui5/webcomponents-base/dist/util/clamp.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import debounce from "@ui5/webcomponents-base/dist/util/debounce.js";
 import { getFirstFocusableElement } from "@ui5/webcomponents-base/dist/util/FocusableElements.js";
-import Button from "@ui5/webcomponents/dist/Button.js";
-import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
+import "./WizardStep.js";
 // Texts
 import { WIZARD_NAV_STEP_DEFAULT_HEADING, WIZARD_NAV_ARIA_ROLE_DESCRIPTION, WIZARD_NAV_ARIA_LABEL, WIZARD_LIST_ARIA_LABEL, WIZARD_LIST_ARIA_DESCRIBEDBY, WIZARD_ACTIONSHEET_STEPS_ARIA_LABEL, WIZARD_OPTIONAL_STEP_ARIA_LABEL, WIZARD_STEP_ARIA_LABEL, WIZARD_STEP_ACTIVE, WIZARD_STEP_INACTIVE, } from "./generated/i18n/i18n-defaults.js";
-// Step in header and content
-import WizardTab from "./WizardTab.js";
-import WizardStep from "./WizardStep.js";
 // Template and Styles
 import WizardTemplate from "./WizardTemplate.js";
 import WizardCss from "./generated/themes/Wizard.css.js";
@@ -823,12 +819,6 @@ Wizard = Wizard_1 = __decorate([
             getEffectiveScrollbarStyle(),
         ],
         template: WizardTemplate,
-        dependencies: [
-            WizardTab,
-            WizardStep,
-            ResponsivePopover,
-            Button,
-        ],
     })
     /**
      * Fired when the step is changed by user interaction - either with scrolling,

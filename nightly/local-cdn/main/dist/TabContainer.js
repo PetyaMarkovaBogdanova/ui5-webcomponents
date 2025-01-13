@@ -32,12 +32,6 @@ import handleDrop from "@ui5/webcomponents-base/dist/util/dragAndDrop/handleDrop
 import longDragOverHandler from "@ui5/webcomponents-base/dist/util/dragAndDrop/longDragOverHandler.js";
 import MovePlacement from "@ui5/webcomponents-base/dist/types/MovePlacement.js";
 import { TABCONTAINER_PREVIOUS_ICON_ACC_NAME, TABCONTAINER_NEXT_ICON_ACC_NAME, TABCONTAINER_OVERFLOW_MENU_TITLE, TABCONTAINER_END_OVERFLOW, TABCONTAINER_POPOVER_CANCEL_BUTTON, TABCONTAINER_SUBTABS_DESCRIPTION, } from "./generated/i18n/i18n-defaults.js";
-import Button from "./Button.js";
-import Icon from "./Icon.js";
-import List from "./List.js";
-import DropIndicator from "./DropIndicator.js";
-import ListItemCustom from "./ListItemCustom.js";
-import ResponsivePopover from "./ResponsivePopover.js";
 import TabContainerTabsPlacement from "./types/TabContainerTabsPlacement.js";
 import SemanticColor from "./types/SemanticColor.js";
 import TabLayout from "./types/TabLayout.js";
@@ -1158,14 +1152,6 @@ TabContainer = TabContainer_1 = __decorate([
         ],
         renderer: jsxRenderer,
         template: TabContainerTemplate,
-        dependencies: [
-            Button,
-            Icon,
-            List,
-            ResponsivePopover,
-            DropIndicator,
-            ListItemCustom,
-        ],
     })
     /**
      * Fired when a tab is selected.

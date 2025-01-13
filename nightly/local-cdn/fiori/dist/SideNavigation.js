@@ -9,9 +9,6 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
-import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
-import NavigationMenu from "@ui5/webcomponents/dist/NavigationMenu.js";
-import NavigationMenuItem from "@ui5/webcomponents/dist/NavigationMenuItem.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
@@ -20,10 +17,9 @@ import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation
 import { isPhone, isTablet, isCombi, } from "@ui5/webcomponents-base/dist/Device.js";
 import { isSpace, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
+import { isInstanceOfSideNavigationSelectableItemBase } from "./SideNavigationSelectableItemBase.js";
 import { isInstanceOfSideNavigationItemBase } from "./SideNavigationItemBase.js";
-import SideNavigationItem, { isInstanceOfSideNavigationItem } from "./SideNavigationItem.js";
-import SideNavigationSubItem from "./SideNavigationSubItem.js";
-import SideNavigationGroup from "./SideNavigationGroup.js";
+import { isInstanceOfSideNavigationItem } from "./SideNavigationItem.js";
 import SideNavigationTemplate from "./SideNavigationTemplate.js";
 import { SIDE_NAVIGATION_POPOVER_HIDDEN_TEXT, SIDE_NAVIGATION_COLLAPSED_LIST_ARIA_ROLE_DESC, SIDE_NAVIGATION_LIST_ARIA_ROLE_DESC, SIDE_NAVIGATION_OVERFLOW_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -159,6 +155,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
     }
     handlePopupItemClick(e) {
         const associatedItem = e.target.associatedItem;
+        e.stopPropagation();
         associatedItem.fireEvent("click");
         if (associatedItem.selected) {
             this.closePicker();
@@ -308,7 +305,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
         }
         overflowItem.classList.remove("ui5-sn-item-hidden");
         itemsHeight = overflowItem.offsetHeight;
-        const selectedItem = overflowItems.find(item => item._selected);
+        const selectedItem = overflowItems.filter(isInstanceOfSideNavigationSelectableItemBase).find(item => item._selected);
         if (selectedItem) {
             const selectedItemDomRef = selectedItem.getDomRef();
             const { marginTop, marginBottom } = window.getComputedStyle(selectedItemDomRef);
@@ -389,7 +386,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
         const overflowClass = "ui5-sn-item-hidden";
         const result = [];
         this.overflowItems.forEach(item => {
-            if (item.hasAttribute("ui5-side-navigation-item") && item.classList.contains(overflowClass)) {
+            if (isInstanceOfSideNavigationItem(item) && item.classList.contains(overflowClass)) {
                 result.push(item);
             }
         });
@@ -472,14 +469,6 @@ SideNavigation = SideNavigation_1 = __decorate([
         renderer: jsxRender,
         template: SideNavigationTemplate,
         styles: [SideNavigationCss, SideNavigationPopoverCss],
-        dependencies: [
-            ResponsivePopover,
-            SideNavigationGroup,
-            SideNavigationItem,
-            SideNavigationSubItem,
-            NavigationMenu,
-            NavigationMenuItem,
-        ],
     })
     /**
      * Fired when the selection has changed via user interaction

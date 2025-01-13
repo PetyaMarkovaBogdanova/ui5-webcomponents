@@ -18,7 +18,7 @@ import { isDown, isUp, } from "@ui5/webcomponents-base/dist/Keys.js";
 import ItemNavigationBehavior from "@ui5/webcomponents-base/dist/types/ItemNavigationBehavior.js";
 import CalendarLegendItemType from "./types/CalendarLegendItemType.js";
 import CalendarLegendTemplate from "./CalendarLegendTemplate.js";
-import CalendarLegendItem from "./CalendarLegendItem.js";
+import "./CalendarLegendItem.js";
 import { CAL_LEGEND_ROLE_DESCRIPTION } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import CalendarLegendCss from "./generated/themes/CalendarLegend.css.js";
@@ -170,7 +170,6 @@ CalendarLegend = CalendarLegend_1 = __decorate([
         renderer: jsxRenderer,
         styles: CalendarLegendCss,
         template: CalendarLegendTemplate,
-        dependencies: [CalendarLegendItem],
     }),
     event("calendar-legend-selection-change", {
         bubbles: true,

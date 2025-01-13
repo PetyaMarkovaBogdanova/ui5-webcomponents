@@ -1,7 +1,6 @@
 import hash2str from "./util/hash2str.js";
 import { pascalToKebabCase } from "./util/StringHelper.js";
 function convertEventScoping(type, props, key) {
-    const tag = type.getMetadata().getTag();
     const events = type.getMetadata().getEvents();
     Object.keys(props).forEach(prop => {
         if (prop.startsWith("on")) {

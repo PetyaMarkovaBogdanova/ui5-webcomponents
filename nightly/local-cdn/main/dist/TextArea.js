@@ -17,8 +17,6 @@ import { getEffectiveAriaLabelText, getAssociatedLabelForTexts } from "@ui5/webc
 import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isEscape } from "@ui5/webcomponents-base/dist/Keys.js";
-import Popover from "./Popover.js";
-import Icon from "./Icon.js";
 import TextAreaTemplate from "./TextAreaTemplate.js";
 import { VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, VALUE_STATE_ERROR, VALUE_STATE_WARNING, VALUE_STATE_TYPE_SUCCESS, VALUE_STATE_TYPE_INFORMATION, VALUE_STATE_TYPE_ERROR, VALUE_STATE_TYPE_WARNING, TEXTAREA_CHARACTERS_LEFT, TEXTAREA_CHARACTERS_EXCEEDED, FORM_TEXTFIELD_REQUIRED, } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -461,7 +459,6 @@ TextArea = TextArea_1 = __decorate([
         ],
         renderer: jsxRenderer,
         template: TextAreaTemplate,
-        dependencies: [Popover, Icon],
     })
     /**
      * Fired when the text has changed and the focus leaves the component.

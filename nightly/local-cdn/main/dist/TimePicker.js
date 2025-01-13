@@ -23,14 +23,7 @@ import getCachedLocaleDataInstance from "@ui5/webcomponents-localization/dist/ge
 import { isShow, isEnter, isPageUp, isPageDown, isPageUpShift, isPageDownShift, isPageUpShiftCtrl, isPageDownShiftCtrl, isTabNext, isTabPrevious, isF6Next, isF6Previous, } from "@ui5/webcomponents-base/dist/Keys.js";
 import "@ui5/webcomponents-icons/dist/time-entry-request.js";
 import UI5Date from "@ui5/webcomponents-localization/dist/dates/UI5Date.js";
-import Icon from "./Icon.js";
-import Popover from "./Popover.js";
-import ResponsivePopover from "./ResponsivePopover.js";
 import TimePickerTemplate from "./TimePickerTemplate.js";
-import Input, {} from "./Input.js";
-import Button from "./Button.js";
-import TimeSelectionClocks from "./TimeSelectionClocks.js";
-import TimeSelectionInputs from "./TimeSelectionInputs.js";
 import { TIMEPICKER_SUBMIT_BUTTON, TIMEPICKER_CANCEL_BUTTON, TIMEPICKER_INPUT_DESCRIPTION, TIMEPICKER_POPOVER_ACCESSIBLE_NAME, FORM_TEXTFIELD_REQUIRED, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import TimePickerCss from "./generated/themes/TimePicker.css.js";
@@ -548,15 +541,6 @@ TimePicker = TimePicker_1 = __decorate([
             TimePickerCss,
             ResponsivePopoverCommonCss,
             TimePickerPopoverCss,
-        ],
-        dependencies: [
-            Icon,
-            Popover,
-            ResponsivePopover,
-            TimeSelectionClocks,
-            TimeSelectionInputs,
-            Input,
-            Button,
         ],
     })
     /**

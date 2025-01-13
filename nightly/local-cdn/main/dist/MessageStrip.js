@@ -13,8 +13,6 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import MessageStripTemplate from "./MessageStripTemplate.js";
-import Icon from "./Icon.js";
-import Button from "./Button.js";
 import { MESSAGE_STRIP_CLOSE_BUTTON_INFORMATION, MESSAGE_STRIP_CLOSE_BUTTON_POSITIVE, MESSAGE_STRIP_CLOSE_BUTTON_NEGATIVE, MESSAGE_STRIP_CLOSE_BUTTON_CRITICAL, MESSAGE_STRIP_CLOSE_BUTTON_CUSTOM, MESSAGE_STRIP_CLOSABLE, MESSAGE_STRIP_ERROR, MESSAGE_STRIP_WARNING, MESSAGE_STRIP_SUCCESS, MESSAGE_STRIP_INFORMATION, MESSAGE_STRIP_CUSTOM, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import messageStripCss from "./generated/themes/MessageStrip.css.js";
@@ -176,7 +174,6 @@ MessageStrip = MessageStrip_1 = __decorate([
         renderer: jsxRenderer,
         template: MessageStripTemplate,
         styles: messageStripCss,
-        dependencies: [Icon, Button],
     })
     /**
      * Fired when the close button is pressed either with a

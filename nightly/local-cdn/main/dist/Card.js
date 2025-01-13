@@ -13,8 +13,6 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import CardTemplate from "./CardTemplate.js";
-import Icon from "./Icon.js";
-import BusyIndicator from "./BusyIndicator.js";
 import { ARIA_ROLEDESCRIPTION_CARD, ARIA_LABEL_CARD_CONTENT, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import cardCss from "./generated/themes/Card.css.js";
@@ -97,7 +95,6 @@ Card = Card_1 = __decorate([
         renderer: jsxRenderer,
         template: CardTemplate,
         styles: cardCss,
-        dependencies: [Icon, BusyIndicator],
     })
 ], Card);
 Card.define();

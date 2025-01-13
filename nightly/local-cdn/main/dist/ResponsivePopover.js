@@ -12,8 +12,6 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { RESPONSIVE_POPOVER_CLOSE_DIALOG_BUTTON } from "./generated/i18n/i18n-defaults.js";
 import ResponsivePopoverTemplate from "./ResponsivePopoverTemplate.js";
 import Popover from "./Popover.js";
-import Dialog from "./Dialog.js";
-import Button from "./Button.js";
 // Styles
 import ResponsivePopoverCss from "./generated/themes/ResponsivePopover.css.js";
 /**
@@ -162,11 +160,6 @@ ResponsivePopover = ResponsivePopover_1 = __decorate([
         tag: "ui5-responsive-popover",
         styles: [Popover.styles, ResponsivePopoverCss],
         template: ResponsivePopoverTemplate,
-        dependencies: [
-            ...Popover.dependencies,
-            Button,
-            Dialog,
-        ],
     })
 ], ResponsivePopover);
 ResponsivePopover.define();

@@ -14,7 +14,6 @@ import { isLeft, isRight } from "@ui5/webcomponents-base/dist/Keys.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import ListItem from "./ListItem.js";
-import Icon from "./Icon.js";
 import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
 import "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
 import { TREE_ITEM_ARIA_LABEL, TREE_ITEM_EXPAND_NODE, TREE_ITEM_COLLAPSE_NODE, } from "./generated/i18n/i18n-defaults.js";
@@ -238,10 +237,6 @@ TreeItemBase = TreeItemBase_1 = __decorate([
         styles: [
             ListItem.styles,
             treeItemCss,
-        ],
-        dependencies: [
-            ...ListItem.dependencies,
-            Icon,
         ],
     })
     /**

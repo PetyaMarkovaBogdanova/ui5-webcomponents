@@ -7,8 +7,8 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type ToolbarAlign from "./types/ToolbarAlign.js";
 import type ToolbarDesign from "./types/ToolbarDesign.js";
 import type ToolbarItem from "./ToolbarItem.js";
-import Button from "./Button.js";
-import Popover from "./Popover.js";
+import type Button from "./Button.js";
+import type Popover from "./Popover.js";
 type ToolbarMinWidthChangeEventDetail = {
     minWidth: number;
 };
@@ -96,7 +96,6 @@ declare class Toolbar extends UI5Element {
     itemsWidthMeasured: boolean;
     ITEMS_WIDTH_MAP: Map<string, number>;
     static get styles(): import("@ui5/webcomponents-base").ComponentStylesData[];
-    static get dependencies(): (typeof UI5Element | typeof Button | typeof Popover)[];
     constructor();
     /**
      * Read-only members

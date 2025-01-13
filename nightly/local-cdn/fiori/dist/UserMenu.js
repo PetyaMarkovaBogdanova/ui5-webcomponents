@@ -10,18 +10,6 @@ import { customElement, slot, eventStrict as event, property, } from "@ui5/webco
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import query from "@ui5/webcomponents-base/dist/decorators/query.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
-import Avatar from "@ui5/webcomponents/dist/Avatar.js";
-import Title from "@ui5/webcomponents/dist/Title.js";
-import Text from "@ui5/webcomponents/dist/Text.js";
-import Button from "@ui5/webcomponents/dist/Button.js";
-import Label from "@ui5/webcomponents/dist/Label.js";
-import Panel from "@ui5/webcomponents/dist/Panel.js";
-import Icon from "@ui5/webcomponents/dist/Icon.js";
-import Bar from "@ui5/webcomponents/dist/Bar.js";
-import List, {} from "@ui5/webcomponents/dist/List.js";
-import ListItemCustom from "@ui5/webcomponents/dist/ListItemCustom.js";
-import Tag from "@ui5/webcomponents/dist/Tag.js";
-import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import UserMenuTemplate from "./UserMenuTemplate.js";
@@ -176,8 +164,12 @@ let UserMenu = UserMenu_1 = class UserMenu extends UI5Element {
     _handleMenuItemClose() {
         this._closeUserMenu();
     }
+    _handlePopoverAfterOpen() {
+        this.fireDecoratorEvent("open");
+    }
     _handlePopoverAfterClose() {
         this.open = false;
+        this.fireDecoratorEvent("close");
     }
     _handleDeclineClick() {
         this._closeUserMenu();
@@ -300,20 +292,6 @@ UserMenu = UserMenu_1 = __decorate([
         renderer: jsxRenderer,
         template: UserMenuTemplate,
         styles: [UserMenuCss],
-        dependencies: [
-            ResponsivePopover,
-            Avatar,
-            Title,
-            Text,
-            Label,
-            Button,
-            Panel,
-            Icon,
-            Bar,
-            List,
-            ListItemCustom,
-            Tag,
-        ],
     })
     /**
      * Fired when the account avatar is selected.
@@ -353,8 +331,23 @@ UserMenu = UserMenu_1 = __decorate([
         cancelable: true,
     })
     /**
+     * Fired when a user menu is open.
+     * @public
+     * @since 2.6.0
+     */
+    ,
+    event("open")
+    /**
+     * Fired when a user menu is close.
+     * @public
+     * @since 2.6.0
+     */
+    ,
+    event("close")
+    /**
      * Fired when the "Sign Out" button is selected.
      * @public
+     * @since 2.6.0
      */
     ,
     event("sign-out-click", {

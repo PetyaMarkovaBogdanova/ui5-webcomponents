@@ -17,8 +17,6 @@ import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import Button from "./Button.js";
-import Icon from "./Icon.js";
 import PanelTemplate from "./PanelTemplate.js";
 import { PANEL_ICON } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -326,7 +324,6 @@ Panel = Panel_1 = __decorate([
         renderer: jsxRenderer,
         template: PanelTemplate,
         styles: panelCss,
-        dependencies: [Button, Icon],
     })
     /**
      * Fired when the component is expanded/collapsed by user interaction.

@@ -10,8 +10,6 @@ import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
-import Icon from "@ui5/webcomponents/dist/Icon.js";
-import Link from "@ui5/webcomponents/dist/Link.js";
 import TimelineItemTemplate from "./TimelineItemTemplate.js";
 // Styles
 import TimelineItemCss from "./generated/themes/TimelineItem.css.js";
@@ -128,10 +126,6 @@ TimelineItem = __decorate([
         renderer: jsxRenderer,
         styles: TimelineItemCss,
         template: TimelineItemTemplate,
-        dependencies: [
-            Icon,
-            Link,
-        ],
     })
     /**
      * Fired when the item name is pressed either with a

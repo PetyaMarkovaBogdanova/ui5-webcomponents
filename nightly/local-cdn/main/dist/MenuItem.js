@@ -14,10 +14,6 @@ import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import "@ui5/webcomponents-icons/dist/nav-back.js";
 import ListItem from "./ListItem.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import List from "./List.js";
-import Icon from "./Icon.js";
-import BusyIndicator from "./BusyIndicator.js";
 import MenuItemTemplate from "./MenuItemTemplate.js";
 import { MENU_BACK_BUTTON_ARIA_LABEL, MENU_CLOSE_BUTTON_ARIA_LABEL, MENU_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -247,7 +243,6 @@ MenuItem = MenuItem_1 = __decorate([
         renderer: jsxRenderer,
         template: MenuItemTemplate,
         styles: [ListItem.styles, menuItemCss],
-        dependencies: [...ListItem.dependencies, ResponsivePopover, List, BusyIndicator, Icon],
     })
 ], MenuItem);
 MenuItem.define();

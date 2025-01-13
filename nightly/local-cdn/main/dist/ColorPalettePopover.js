@@ -19,10 +19,6 @@ import ColorPalettePopoverTemplate from "./ColorPalettePopoverTemplate.js";
 import ColorPalettePopoverCss from "./generated/themes/ColorPalettePopover.css.js";
 import ResponsivePopoverCommonCss from "./generated/themes/ResponsivePopoverCommon.css.js";
 import { COLORPALETTE_POPOVER_TITLE, COLOR_PALETTE_DIALOG_CANCEL_BUTTON, } from "./generated/i18n/i18n-defaults.js";
-import Button from "./Button.js";
-import Title from "./Title.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import ColorPalette from "./ColorPalette.js";
 /**
  * @class
  *
@@ -167,12 +163,6 @@ ColorPalettePopover = ColorPalettePopover_1 = __decorate([
         renderer: jsxRenderer,
         styles: [ResponsivePopoverCommonCss, ColorPalettePopoverCss],
         template: ColorPalettePopoverTemplate,
-        dependencies: [
-            ResponsivePopover,
-            Button,
-            Title,
-            ColorPalette,
-        ],
     })
     /**
      * Fired when the user selects a color.

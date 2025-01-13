@@ -23,11 +23,11 @@ interface ITableFeature extends UI5Element {
      * Called when the table is activated.
      * @param table table instance
      */
-    onTableActivate(table: Table): void;
+    onTableActivate?(table: Table): void;
     /**
      * Called when the table finished rendering.
      */
-    onTableAfterRendering?(): void;
+    onTableAfterRendering?(table?: Table): void;
 }
 /**
  * Interface for components that can be slotted inside the <code>features</code> slot of the <code>ui5-table</code>

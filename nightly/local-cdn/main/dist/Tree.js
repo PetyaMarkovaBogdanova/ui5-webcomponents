@@ -16,10 +16,8 @@ import Orientation from "@ui5/webcomponents-base/dist/types/Orientation.js";
 import MovePlacement from "@ui5/webcomponents-base/dist/types/MovePlacement.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
-import DropIndicator from "./DropIndicator.js";
-import TreeItem from "./TreeItem.js";
-import TreeItemCustom from "./TreeItemCustom.js";
-import TreeList from "./TreeList.js";
+import "./TreeItem.js";
+import "./TreeItemCustom.js";
 import ListAccessibleRole from "./types/ListAccessibleRole.js";
 // Template
 import TreeTemplate from "./TreeTemplate.js";
@@ -294,12 +292,6 @@ Tree = __decorate([
         renderer: jsxRenderer,
         styles: TreeCss,
         template: TreeTemplate,
-        dependencies: [
-            TreeList,
-            TreeItem,
-            TreeItemCustom,
-            DropIndicator,
-        ],
     })
     /**
      * Fired when a tree item is expanded or collapsed.

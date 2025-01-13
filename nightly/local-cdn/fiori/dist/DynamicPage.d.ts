@@ -3,7 +3,7 @@ import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delega
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import DynamicPageHeader from "./DynamicPageHeader.js";
 import DynamicPageTitle from "./DynamicPageTitle.js";
-import DynamicPageHeaderActions from "./DynamicPageHeaderActions.js";
+import type DynamicPageHeaderActions from "./DynamicPageHeaderActions.js";
 /**
  * @class
  *

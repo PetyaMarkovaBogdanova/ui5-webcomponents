@@ -12,7 +12,6 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import NotificationListInternal from "./NotificationListInternal.js";
 // Template
 import NotificationListTemplate from "./NotificationListTemplate.js";
 // Styles
@@ -98,9 +97,6 @@ NotificationList = NotificationList_1 = __decorate([
         languageAware: true,
         styles: [NotificationListCss],
         template: NotificationListTemplate,
-        dependencies: [
-            NotificationListInternal,
-        ],
     })
     /**
      * Fired when an item is clicked.

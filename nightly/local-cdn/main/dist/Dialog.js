@@ -15,7 +15,6 @@ import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import toLowercaseEnumValue from "@ui5/webcomponents-base/dist/util/toLowercaseEnumValue.js";
 import Popup from "./Popup.js";
-import Icon from "./Icon.js";
 import "@ui5/webcomponents-icons/dist/error.js";
 import "@ui5/webcomponents-icons/dist/alert.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
@@ -487,10 +486,6 @@ Dialog = Dialog_1 = __decorate([
             PopupsCommonCss,
             dialogCSS,
             getEffectiveScrollbarStyle(),
-        ],
-        dependencies: [
-            Icon,
-            ...Popup.dependencies,
         ],
     })
 ], Dialog);

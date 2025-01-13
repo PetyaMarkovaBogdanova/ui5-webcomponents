@@ -16,9 +16,7 @@ import { MULTIINPUT_ROLEDESCRIPTION_TEXT, MULTIINPUT_VALUE_HELP_LABEL } from "./
 import Input from "./Input.js";
 import MultiInputTemplate from "./MultiInputTemplate.js";
 import styles from "./generated/themes/MultiInput.css.js";
-import Token from "./Token.js";
-import Tokenizer, { getTokensCountText } from "./Tokenizer.js";
-import Icon from "./Icon.js";
+import { getTokensCountText } from "./Tokenizer.js";
 /**
  * @class
  * ### Overview
@@ -292,15 +290,6 @@ MultiInput = MultiInput_1 = __decorate([
         formAssociated: true,
         template: MultiInputTemplate,
         styles: [Input.styles, styles],
-        get dependencies() {
-            return [
-                ...Input.dependencies,
-                Input,
-                Tokenizer,
-                Token,
-                Icon,
-            ];
-        },
     })
     /**
      * Fired when the value help icon is pressed

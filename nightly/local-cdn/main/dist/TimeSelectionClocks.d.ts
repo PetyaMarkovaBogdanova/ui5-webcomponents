@@ -1,7 +1,7 @@
 import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js";
 import TimePickerInternals from "./TimePickerInternals.js";
-import TimePickerClock from "./TimePickerClock.js";
-import ToggleSpinButton from "./ToggleSpinButton.js";
+import type TimePickerClock from "./TimePickerClock.js";
+import type ToggleSpinButton from "./ToggleSpinButton.js";
 import type { TimePickerClockChangeEventDetail } from "./TimePickerClock.js";
 /**
  * Fired when the picker is being closed.

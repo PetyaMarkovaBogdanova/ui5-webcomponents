@@ -156,7 +156,7 @@ let Table = Table_1 = class Table extends UI5Element {
             ResizeHandler.register(this, this._onResizeBound);
         }
         this._events.forEach(eventType => this.addEventListener(eventType, this._onEventBound));
-        this.features.forEach(feature => feature.onTableActivate(this));
+        this.features.forEach(feature => feature.onTableActivate?.(this));
         this._tableNavigation = new TableNavigation(this);
         this._tableDragAndDrop = new TableDragAndDrop(this);
     }
@@ -180,7 +180,7 @@ let Table = Table_1 = class Table extends UI5Element {
         this._refreshPopinState();
     }
     onAfterRendering() {
-        this.features.forEach(feature => feature.onTableAfterRendering?.());
+        this.features.forEach(feature => feature.onTableAfterRendering?.(this));
     }
     _getSelection() {
         return this.features.find(feature => isFeature(feature, "TableSelection"));
@@ -279,7 +279,7 @@ let Table = Table_1 = class Table extends UI5Element {
         });
     }
     _isFeature(feature) {
-        return Boolean(feature.onTableActivate && feature.onTableAfterRendering);
+        return Boolean(feature.onTableActivate || feature.onTableAfterRendering);
     }
     _isGrowingFeature(feature) {
         return Boolean(feature.loadMore && feature.hasGrowingComponent && this._isFeature(feature));

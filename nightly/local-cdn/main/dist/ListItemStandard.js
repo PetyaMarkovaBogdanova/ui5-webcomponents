@@ -9,8 +9,6 @@ import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ListItem from "./ListItem.js";
-import Icon from "./Icon.js";
-import Avatar from "./Avatar.js";
 import ListItemStandardTemplate from "./ListItemStandardTemplate.js";
 /**
  * @class
@@ -132,11 +130,6 @@ ListItemStandard = __decorate([
         tag: "ui5-li",
         renderer: jsxRenderer,
         template: ListItemStandardTemplate,
-        dependencies: [
-            ...ListItem.dependencies,
-            Icon,
-            Avatar,
-        ],
     })
 ], ListItemStandard);
 ListItemStandard.define();

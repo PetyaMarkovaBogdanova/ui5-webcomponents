@@ -1,8 +1,8 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import MovePlacement from "@ui5/webcomponents-base/dist/types/MovePlacement.js";
-import DropIndicator from "./DropIndicator.js";
+import type DropIndicator from "./DropIndicator.js";
 import type ListItemBase from "./ListItemBase.js";
-import ListItemGroupHeader from "./ListItemGroupHeader.js";
+import type ListItemGroupHeader from "./ListItemGroupHeader.js";
 type ListItemGroupMoveEventDetail = {
     source: {
         element: HTMLElement;

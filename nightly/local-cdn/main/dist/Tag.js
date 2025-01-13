@@ -14,7 +14,6 @@ import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import willShowContent from "@ui5/webcomponents-base/dist/util/willShowContent.js";
 import { isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
-import Icon from "./Icon.js";
 import "@ui5/webcomponents-icons/dist/sys-help-2.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
 import "@ui5/webcomponents-icons/dist/error.js";
@@ -220,9 +219,6 @@ Tag = Tag_1 = __decorate([
         renderer: jsxRenderer,
         template: TagTemplate,
         styles: tagCss,
-        dependencies: [
-            Icon,
-        ],
     })
     /**
      * Fired when the user clicks on an interactive tag.

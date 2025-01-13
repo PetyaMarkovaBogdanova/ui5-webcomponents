@@ -1,17 +1,18 @@
 import { ComponentFeature, registerComponentFeature } from "@ui5/webcomponents-base/dist/FeaturesRegistry.js";
 import generateHighlightedMarkup from "@ui5/webcomponents-base/dist/util/generateHighlightedMarkup.js";
-import List from "../List.js";
-import SuggestionItem from "../SuggestionItem.js";
-import Button from "../Button.js";
-import Icon from "../Icon.js";
+import "../SuggestionItem.js";
+import "../SuggestionItemGroup.js";
+import InputSuggestionsTemplate from "./InputSuggestionsTemplate.js";
 import { LIST_ITEM_POSITION, LIST_ITEM_GROUP_HEADER, } from "../generated/i18n/i18n-defaults.js";
-import SuggestionItemGroup from "../SuggestionItemGroup.js";
 /**
  * A class to manage the `Input` suggestion items.
  * @class
  * @private
  */
 class Suggestions extends ComponentFeature {
+    get template() {
+        return InputSuggestionsTemplate;
+    }
     constructor(component, slotName, highlight, handleFocus) {
         super();
         // The component, that the suggestion would plug into.
@@ -395,15 +396,6 @@ class Suggestions extends ComponentFeature {
     _clearSelectedSuggestionAndaccInfo() {
         this.accInfo = undefined;
         this.selectedItemIndex = 0;
-    }
-    static get dependencies() {
-        return [
-            SuggestionItem,
-            SuggestionItemGroup,
-            List,
-            Button,
-            Icon,
-        ];
     }
 }
 Suggestions.SCROLL_STEP = 60;

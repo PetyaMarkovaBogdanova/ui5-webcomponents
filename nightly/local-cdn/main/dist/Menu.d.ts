@@ -1,10 +1,12 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import { type UI5CustomEvent } from "@ui5/webcomponents-base";
+import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import type { Timeout } from "@ui5/webcomponents-base/dist/types.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import MenuItem from "./MenuItem.js";
+import type ResponsivePopover from "./ResponsivePopover.js";
+import type MenuItem from "./MenuItem.js";
+import "./MenuItem.js";
+import "./MenuSeparator.js";
 import type { ListItemClickEventDetail } from "./List.js";
 /**
  * Interface for components that may be slotted inside a `ui5-menu`.

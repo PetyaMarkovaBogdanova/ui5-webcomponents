@@ -1,15 +1,15 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
-import NavigationMenu from "@ui5/webcomponents/dist/NavigationMenu.js";
+import type ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
+import type NavigationMenu from "@ui5/webcomponents/dist/NavigationMenu.js";
 import type { MenuItemClickEventDetail } from "@ui5/webcomponents/dist/Menu.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type { ITabbable } from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type SideNavigationItemBase from "./SideNavigationItemBase.js";
 import type SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
-import SideNavigationItem from "./SideNavigationItem.js";
-import SideNavigationSubItem from "./SideNavigationSubItem.js";
-import SideNavigationGroup from "./SideNavigationGroup.js";
+import type SideNavigationItem from "./SideNavigationItem.js";
+import type SideNavigationSubItem from "./SideNavigationSubItem.js";
+import type SideNavigationGroup from "./SideNavigationGroup.js";
 type SideNavigationPopoverContents = {
     item: SideNavigationItem;
     subItems: Array<SideNavigationSubItem>;
@@ -153,7 +153,7 @@ declare class SideNavigation extends UI5Element {
     _getFocusableItems(items: Array<SideNavigationItem | SideNavigationGroup>): Array<SideNavigationItemBase>;
     _getAllItems(items: Array<SideNavigationItem | SideNavigationGroup>): Array<SideNavigationItemBase>;
     _findSelectedItem(items: Array<SideNavigationItem | SideNavigationGroup>): SideNavigationSelectableItemBase | undefined;
-    get overflowItems(): Array<SideNavigationItem>;
+    get overflowItems(): Array<HTMLElement>;
     _handleItemClick(e: KeyboardEvent | MouseEvent, item: SideNavigationSelectableItemBase): void;
     _handleOverflowClick(): void;
     _getOverflowItems(): Array<SideNavigationItem>;

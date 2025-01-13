@@ -19,15 +19,8 @@ import { isSpace, isShow, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js"
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import BreadcrumbsDesign from "./types/BreadcrumbsDesign.js";
-import BreadcrumbsItem from "./BreadcrumbsItem.js";
+import "./BreadcrumbsItem.js";
 import { BREADCRUMB_ITEM_POS, BREADCRUMBS_ARIA_LABEL, BREADCRUMBS_OVERFLOW_ARIA_LABEL, BREADCRUMBS_CANCEL_BUTTON, FORM_SELECTABLE_AVALIABLE_VALUES, } from "./generated/i18n/i18n-defaults.js";
-import Link from "./Link.js";
-import Label from "./Label.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import List from "./List.js";
-import ListItemStandard from "./ListItemStandard.js";
-import Icon from "./Icon.js";
-import Button from "./Button.js";
 // Templates
 import BreadcrumbsTemplate from "./BreadcrumbsTemplate.js";
 // Styles
@@ -470,16 +463,6 @@ Breadcrumbs = Breadcrumbs_1 = __decorate([
         renderer: jsxRenderer,
         template: BreadcrumbsTemplate,
         styles: [breadcrumbsCss, breadcrumbsPopoverCss],
-        dependencies: [
-            BreadcrumbsItem,
-            Link,
-            Label,
-            ResponsivePopover,
-            List,
-            ListItemStandard,
-            Icon,
-            Button,
-        ],
     })
     /**
      * Fires when a `BreadcrumbsItem` is clicked.

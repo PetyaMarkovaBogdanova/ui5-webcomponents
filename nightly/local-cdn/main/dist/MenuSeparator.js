@@ -9,7 +9,6 @@ import jsxRendererer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js"
 import menuSeparatorTemplate from "./MenuSeparatorTemplate.js";
 import menuSeparatorCss from "./generated/themes/MenuSeparator.css.js";
 import ListItemBase from "./ListItemBase.js";
-import ListItemCustom from "./ListItemCustom.js";
 /**
  * @class
  * The `ui5-menu-separator` represents a horizontal line to separate menu items inside a `ui5-menu`.
@@ -49,9 +48,6 @@ MenuSeparator = __decorate([
         renderer: jsxRendererer,
         styles: [menuSeparatorCss],
         template: menuSeparatorTemplate,
-        dependencies: [
-            ListItemCustom,
-        ],
     })
 ], MenuSeparator);
 MenuSeparator.define();

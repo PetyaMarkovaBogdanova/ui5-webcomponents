@@ -2,7 +2,8 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import CalendarLegendItemType from "./types/CalendarLegendItemType.js";
-import CalendarLegendItem from "./CalendarLegendItem.js";
+import "./CalendarLegendItem.js";
+import type CalendarLegendItem from "./CalendarLegendItem.js";
 type CalendarLegendItemSelectionChangeEventDetail = {
     item: CalendarLegendItem;
 };

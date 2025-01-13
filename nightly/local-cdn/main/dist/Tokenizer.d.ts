@@ -3,8 +3,9 @@ import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delega
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import ScrollEnablement from "@ui5/webcomponents-base/dist/delegate/ScrollEnablement.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import List, { type ListItemDeleteEventDetail } from "./List.js";
+import type ResponsivePopover from "./ResponsivePopover.js";
+import type List from "./List.js";
+import type { ListItemDeleteEventDetail } from "./List.js";
 import ListSelectionMode from "./types/ListSelectionMode.js";
 import type Token from "./Token.js";
 import type { IToken } from "./MultiInput.js";

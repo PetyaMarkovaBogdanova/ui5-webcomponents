@@ -10,8 +10,6 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isEscape } from "@ui5/webcomponents-base/dist/Keys.js";
 import SliderBase from "./SliderBase.js";
-import Icon from "./Icon.js";
-import Input from "./Input.js";
 // Template
 import SliderTemplate from "./SliderTemplate.js";
 // Texts
@@ -344,7 +342,6 @@ Slider = Slider_1 = __decorate([
         languageAware: true,
         formAssociated: true,
         template: SliderTemplate,
-        dependencies: [Icon, Input],
     })
 ], Slider);
 Slider.define();

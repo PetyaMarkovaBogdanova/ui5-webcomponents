@@ -16,7 +16,6 @@ import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.j
 import { supportsTouch } from "@ui5/webcomponents-base/dist/Device.js";
 import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
-import Icon from "@ui5/webcomponents/dist/Icon.js";
 import "@ui5/webcomponents-icons/dist/vertical-grip.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import { isLeft, isRight, isLeftShift, isRightShift, isHome, isEnd, } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -862,7 +861,6 @@ FlexibleColumnLayout = FlexibleColumnLayout_1 = __decorate([
         renderer: jsxRenderer,
         styles: FlexibleColumnLayoutCss,
         template: FlexibleColumnLayoutTemplate,
-        dependencies: [Icon],
     })
     /**
      * Fired when the layout changes via user interaction by dragging the separators

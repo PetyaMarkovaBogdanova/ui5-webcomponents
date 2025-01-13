@@ -110,7 +110,6 @@ declare class Carousel extends UI5Element {
      * Defines the visibility of the navigation arrows.
      * If set to true the navigation arrows will be hidden.
      *
-     * **Note:** The navigation arrows are always displayed on touch devices.
      * @since 1.0.0-rc.15
      * @default false
      * @public

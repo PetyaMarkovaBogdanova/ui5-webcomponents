@@ -12,9 +12,6 @@ import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
-import Input from "@ui5/webcomponents/dist/Input.js";
-import Label from "@ui5/webcomponents/dist/Label.js";
-import Button from "@ui5/webcomponents/dist/Button.js";
 import { isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { PROMPT_INPUT_CHARACTERS_LEFT, PROMPT_INPUT_CHARACTERS_EXCEEDED, } from "./generated/i18n/i18n-defaults.js";
 import PromptInputTemplate from "./PromptInputTemplate.js";
@@ -190,11 +187,6 @@ PromptInput = PromptInput_1 = __decorate([
         renderer: jsxRenderer,
         styles: PromptInputCss,
         template: PromptInputTemplate,
-        dependencies: [
-            Input,
-            Label,
-            Button,
-        ],
     })
     /**
      * Fired when the input operation has finished by pressing Enter

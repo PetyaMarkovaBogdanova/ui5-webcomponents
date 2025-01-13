@@ -3,15 +3,16 @@ import type { ChangeInfo } from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-left.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
+import "./SpecialCalendarDate.js";
 import CalendarPart from "./CalendarPart.js";
 import type { DayPickerChangeEventDetail } from "./DayPicker.js";
 import type { MonthPickerChangeEventDetail } from "./MonthPicker.js";
 import type { YearPickerChangeEventDetail } from "./YearPicker.js";
 import CalendarSelectionMode from "./types/CalendarSelectionMode.js";
 import CalendarPickersMode from "./types/CalendarPickersMode.js";
-import CalendarLegend from "./CalendarLegend.js";
+import type CalendarLegend from "./CalendarLegend.js";
 import type { CalendarLegendItemSelectionChangeEventDetail } from "./CalendarLegend.js";
-import SpecialCalendarDate from "./SpecialCalendarDate.js";
+import type SpecialCalendarDate from "./SpecialCalendarDate.js";
 import type CalendarLegendItemType from "./types/CalendarLegendItemType.js";
 import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js";
 interface ICalendarPicker {

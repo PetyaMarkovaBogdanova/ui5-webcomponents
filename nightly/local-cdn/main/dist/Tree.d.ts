@@ -1,8 +1,10 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import MovePlacement from "@ui5/webcomponents-base/dist/types/MovePlacement.js";
-import DropIndicator from "./DropIndicator.js";
+import type DropIndicator from "./DropIndicator.js";
+import "./TreeItem.js";
 import type TreeItemBase from "./TreeItemBase.js";
-import TreeList from "./TreeList.js";
+import "./TreeItemCustom.js";
+import type TreeList from "./TreeList.js";
 import type ListSelectionMode from "./types/ListSelectionMode.js";
 import ListAccessibleRole from "./types/ListAccessibleRole.js";
 import type { TreeItemBaseToggleEventDetail, TreeItemBaseStepInEventDetail, TreeItemBaseStepOutEventDetail } from "./TreeItemBase.js";

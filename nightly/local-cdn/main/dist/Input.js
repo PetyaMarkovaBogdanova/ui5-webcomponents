@@ -6,7 +6,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var Input_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import {} from "@ui5/webcomponents-base";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
@@ -26,8 +25,6 @@ import { getAssociatedLabelForTexts, getAllAccessibleNameRefTexts, registerUI5El
 import { getCaretPosition, setCaretPosition } from "@ui5/webcomponents-base/dist/util/Caret.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import InputType from "./types/InputType.js";
-import Popover from "./Popover.js";
-import Icon from "./Icon.js";
 // Templates
 import InputTemplate from "./InputTemplate.js";
 import { StartsWith } from "./Filters.js";
@@ -37,7 +34,6 @@ import inputStyles from "./generated/themes/Input.css.js";
 import ResponsivePopoverCommonCss from "./generated/themes/ResponsivePopoverCommon.css.js";
 import ValueStateMessageCss from "./generated/themes/ValueStateMessage.css.js";
 import SuggestionsCss from "./generated/themes/Suggestions.css.js";
-import ResponsivePopover from "./ResponsivePopover.js";
 // all sementic events
 var INPUT_EVENTS;
 (function (INPUT_EVENTS) {
@@ -260,6 +256,7 @@ let Input = Input_1 = class Input extends UI5Element {
         this.isTyping = false;
         // Indicates whether the value of the input is comming from a suggestion item
         this._isLatestValueFromSuggestions = false;
+        this._isChangeTriggeredBySuggestion = false;
         this._handleResizeBound = this._handleResize.bind(this);
         this._keepInnerValue = false;
         this._focusedAfterClear = false;
@@ -514,6 +511,7 @@ let Input = Input_1 = class Input extends UI5Element {
         }
         this._keepInnerValue = false;
         this.focused = false; // invalidating property
+        this._isChangeTriggeredBySuggestion = false;
         if (this.showClearIcon && !this._effectiveShowClearIcon) {
             this._clearIconClicked = false;
             this._handleChange();
@@ -547,9 +545,12 @@ let Input = Input_1 = class Input extends UI5Element {
             return;
         }
         const fireChange = () => {
-            this.fireDecoratorEvent(INPUT_EVENTS.CHANGE);
+            if (!this._isChangeTriggeredBySuggestion) {
+                this.fireDecoratorEvent(INPUT_EVENTS.CHANGE);
+            }
             this.previousValue = this.value;
             this.typedInValue = this.value;
+            this._isChangeTriggeredBySuggestion = false;
         };
         if (this.previousValue !== this.getInputDOMRefSync().value) {
             // if picker is open there might be a selected item, wait next tick to get the value applied
@@ -739,8 +740,8 @@ let Input = Input_1 = class Input extends UI5Element {
             return;
         }
         const Suggestions = getComponentFeature("InputSuggestions");
-        Suggestions.i18nBundle = Input_1.i18nBundle;
         if (Suggestions) {
+            Suggestions.i18nBundle = Input_1.i18nBundle;
             this.Suggestions = new Suggestions(this, "suggestionItems", true, false);
         }
     }
@@ -759,6 +760,7 @@ let Input = Input_1 = class Input extends UI5Element {
             this.lastConfirmedValue = itemText;
             this._performTextSelection = true;
             this.fireDecoratorEvent(INPUT_EVENTS.CHANGE);
+            this._isChangeTriggeredBySuggestion = true;
             // value might change in the change event handler
             this.typedInValue = this.value;
             this.previousValue = this.value;
@@ -1236,10 +1238,6 @@ Input = Input_1 = __decorate([
             SuggestionsCss,
         ],
         features: ["InputSuggestions"],
-        get dependencies() {
-            const Suggestions = getComponentFeature("InputSuggestions");
-            return [Popover, ResponsivePopover, Icon].concat(Suggestions ? Suggestions.dependencies : []);
-        },
     })
     /**
      * Fired when the input operation has finished by pressing Enter or on focusout.

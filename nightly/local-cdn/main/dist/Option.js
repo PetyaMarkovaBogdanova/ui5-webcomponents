@@ -8,7 +8,6 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import ListItemBase from "./ListItemBase.js";
-import Icon from "./Icon.js";
 // Template
 import OptionTemplate from "./OptionTemplate.js";
 // Styles
@@ -65,9 +64,6 @@ Option = __decorate([
             listItemAdditionalTextCss,
             listItemIconCss,
             optionBaseCss,
-        ],
-        dependencies: [
-            Icon,
         ],
     })
 ], Option);

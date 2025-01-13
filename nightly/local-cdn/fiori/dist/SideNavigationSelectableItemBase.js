@@ -97,6 +97,9 @@ let SideNavigationSelectableItemBase = class SideNavigationSelectableItemBase ex
             this.sideNavigation?._handleItemClick(e, this);
         }
     }
+    get isSideNavigationSelectableItemBase() {
+        return true;
+    }
 };
 __decorate([
     property()
@@ -130,5 +133,9 @@ SideNavigationSelectableItemBase = __decorate([
     ,
     customElement()
 ], SideNavigationSelectableItemBase);
+const isInstanceOfSideNavigationSelectableItemBase = (object) => {
+    return "isSideNavigationSelectableItemBase" in object;
+};
 export default SideNavigationSelectableItemBase;
+export { isInstanceOfSideNavigationSelectableItemBase, };
 //# sourceMappingURL=SideNavigationSelectableItemBase.js.map

@@ -2,10 +2,11 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
-import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
+import type ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
 import type WizardContentLayout from "./types/WizardContentLayout.js";
-import WizardTab from "./WizardTab.js";
-import WizardStep from "./WizardStep.js";
+import "./WizardStep.js";
+import type WizardTab from "./WizardTab.js";
+import type WizardStep from "./WizardStep.js";
 type WizardStepChangeEventDetail = {
     step: WizardStep;
     previousStep: WizardStep;

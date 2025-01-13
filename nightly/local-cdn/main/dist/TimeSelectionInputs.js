@@ -10,9 +10,6 @@ import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js"; // default calendar for bundling
 import { isEnter, isNumber, } from "@ui5/webcomponents-base/dist/Keys.js";
 import TimePickerInternals from "./TimePickerInternals.js";
-import Input from "./Input.js";
-import SegmentedButton from "./SegmentedButton.js";
-import SegmentedButtonItem from "./SegmentedButtonItem.js";
 import InputType from "./types/InputType.js";
 import { TIMEPICKER_INPUTS_ENTER_HOURS, TIMEPICKER_INPUTS_ENTER_MINUTES, TIMEPICKER_INPUTS_ENTER_SECONDS, } from "./generated/i18n/i18n-defaults.js";
 // Template
@@ -303,11 +300,6 @@ TimeSelectionInputs = __decorate([
         tag: "ui5-time-selection-inputs",
         styles: TimeSelectionInputsCss,
         template: TimeSelectionInputsTemplate,
-        dependencies: [
-            Input,
-            SegmentedButton,
-            SegmentedButtonItem,
-        ],
     }),
     event("close-inputs", {
         bubbles: true,

@@ -1,8 +1,8 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import Title from "@ui5/webcomponents/dist/Title.js";
-import Button from "@ui5/webcomponents/dist/Button.js";
-import { type ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
-import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
+import type Title from "@ui5/webcomponents/dist/Title.js";
+import type Button from "@ui5/webcomponents/dist/Button.js";
+import type { ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
+import type ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type UserMenuAccount from "./UserMenuAccount.js";
 import type UserMenuItem from "./UserMenuItem.js";
@@ -39,6 +39,8 @@ declare class UserMenu extends UI5Element {
         "change-account": UserMenuOtherAccountClickEventDetail;
         "item-click": UserMenuItemClickEventDetail;
         "sign-out-click": void;
+        "open": void;
+        "close": void;
     };
     /**
      * Defines if the User Menu is opened.
@@ -131,6 +133,7 @@ declare class UserMenu extends UI5Element {
     _handleSignOutClick(): void;
     _handleMenuItemClick(e: CustomEvent<ListItemClickEventDetail>): void;
     _handleMenuItemClose(): void;
+    _handlePopoverAfterOpen(): void;
     _handlePopoverAfterClose(): void;
     _handleDeclineClick(): void;
     _openItemSubMenu(item: UserMenuItem): void;

@@ -364,9 +364,10 @@ declare abstract class UI5Element extends HTMLElement {
     static styles: ComponentStylesData;
     /**
      * Returns an array with the dependencies for this UI5 Web Component, which could be:
-     *  - composed components (used in its shadow root or static area item)
+     *  - composed components (used in its shadow root)
      *  - slotted components that the component may need to communicate with
      *
+     * @deprecated no longer necessary for jsxRenderer-enabled components
      * @protected
      */
     static get dependencies(): Array<typeof UI5Element>;

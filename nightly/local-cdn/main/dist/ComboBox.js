@@ -37,20 +37,12 @@ import ComboBoxPopoverCss from "./generated/themes/ComboBoxPopover.css.js";
 import ResponsivePopoverCommonCss from "./generated/themes/ResponsivePopoverCommon.css.js";
 import ValueStateMessageCss from "./generated/themes/ValueStateMessage.css.js";
 import SuggestionsCss from "./generated/themes/Suggestions.css.js";
-import ComboBoxItem from "./ComboBoxItem.js";
-import Icon from "./Icon.js";
-import Popover from "./Popover.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import List from "./List.js";
-import BusyIndicator from "./BusyIndicator.js";
-import Button from "./Button.js";
-import ListItemStandard from "./ListItemStandard.js";
-import ComboBoxItemGroup, { isInstanceOfComboBoxItemGroup } from "./ComboBoxItemGroup.js";
-import ListItemGroup from "./ListItemGroup.js";
-import ListItemGroupHeader from "./ListItemGroupHeader.js";
+import "./ComboBoxItem.js";
+// eslint-disable-next-line
+import "./ComboBoxItemGroup.js";
+// eslint-disable-next-line
+import { isInstanceOfComboBoxItemGroup } from "./ComboBoxItemGroup.js";
 import PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
-import Input from "./Input.js";
-import SuggestionItem from "./SuggestionItem.js";
 const SKIP_ITEMS_SIZE = 10;
 var ValueStateIconMapping;
 (function (ValueStateIconMapping) {
@@ -1066,21 +1058,6 @@ ComboBox = ComboBox_1 = __decorate([
             SuggestionsCss,
         ],
         template: ComboBoxTemplate,
-        dependencies: [
-            ComboBoxItem,
-            Icon,
-            ResponsivePopover,
-            List,
-            BusyIndicator,
-            Button,
-            ListItemStandard,
-            ListItemGroup,
-            ListItemGroupHeader,
-            Popover,
-            ComboBoxItemGroup,
-            Input,
-            SuggestionItem,
-        ],
     })
     /**
      * Fired when the input operation has finished by pressing Enter, focusout or an item is selected.

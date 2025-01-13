@@ -3,7 +3,7 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type Toolbar from "@ui5/webcomponents/dist/Toolbar.js";
 import type { ToolbarMinWidthChangeEventDetail } from "@ui5/webcomponents/dist/Toolbar.js";
-import Title from "@ui5/webcomponents/dist/Title.js";
+import type Title from "@ui5/webcomponents/dist/Title.js";
 /**
  * @class
  *

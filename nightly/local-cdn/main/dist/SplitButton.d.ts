@@ -1,7 +1,8 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import type { AriaHasPopup } from "@ui5/webcomponents-base";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type ButtonDesign from "./types/ButtonDesign.js";
-import Button from "./Button.js";
+import type Button from "./Button.js";
 /**
  * @class
  *
@@ -57,7 +58,7 @@ declare class SplitButton extends UI5Element {
      *
      * Example:
      *
-     * See all the available icons in the [Icon Explorer](https://sdk.openui5.org/test-resources/sap/m/demokit/iconExplorer/webapp/index.html).
+     * See all available icons in the [Icon Explorer](https://sdk.openui5.org/test-resources/sap/m/demokit/iconExplorer/webapp/index.html).
      * @default undefined
      * @public
      */
@@ -119,6 +120,24 @@ declare class SplitButton extends UI5Element {
      * @private
      */
     _activeArrowButton: boolean;
+    /**
+     * Defines the display of the end icon as a graphical element within the default action of the component after the button text.
+     * The SAP-icons font provides different options.
+     *
+     * Example:
+     *
+     * See all available icons in the [Icon Explorer](https://sdk.openui5.org/test-resources/sap/m/demokit/iconExplorer/webapp/index.html).
+     * @default undefined
+     * @private
+     */
+    _endIcon?: string;
+    /**
+     * Defines the visibility of the arrow button of the component.
+     *
+     * @default false
+     * @private
+     */
+    _hideArrowButton: boolean;
     /**
      * Defines the text of the component.
      *
@@ -188,7 +207,8 @@ declare class SplitButton extends UI5Element {
         arrowButton: {
             title: string;
             accessibilityAttributes: {
-                hasPopup: "menu";
+                hasPopup: AriaHasPopup;
+                expanded: boolean;
             };
         };
     };

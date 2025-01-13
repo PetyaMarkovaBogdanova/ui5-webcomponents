@@ -15,13 +15,7 @@ import CalendarDate from "@ui5/webcomponents-localization/dist/dates/CalendarDat
 import "@ui5/webcomponents-icons/dist/date-time.js";
 import UI5Date from "@ui5/webcomponents-localization/dist/dates/UI5Date.js";
 import DateFormat from "@ui5/webcomponents-localization/dist/DateFormat.js";
-import Button from "./Button.js";
-import ToggleButton from "./ToggleButton.js";
-import SegmentedButton, {} from "./SegmentedButton.js";
-import SegmentedButtonItem from "./SegmentedButtonItem.js";
-import Calendar from "./Calendar.js";
 import DatePicker from "./DatePicker.js";
-import TimeSelectionClocks from "./TimeSelectionClocks.js";
 // i18n texts
 import { TIMEPICKER_SUBMIT_BUTTON, TIMEPICKER_CANCEL_BUTTON, DATETIME_DESCRIPTION, DATETIME_PICKER_DATE_BUTTON, DATETIME_PICKER_TIME_BUTTON, DATETIMEPICKER_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
 // Template
@@ -359,15 +353,6 @@ DateTimePicker = DateTimePicker_1 = __decorate([
             DatePicker.styles,
             DateTimePickerCss,
             DateTimePickerPopoverCss,
-        ],
-        dependencies: [
-            ...DatePicker.dependencies,
-            Calendar,
-            Button,
-            ToggleButton,
-            SegmentedButton,
-            SegmentedButtonItem,
-            TimeSelectionClocks,
         ],
     })
 ], DateTimePicker);

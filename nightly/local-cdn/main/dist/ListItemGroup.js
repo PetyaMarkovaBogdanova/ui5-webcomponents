@@ -14,13 +14,10 @@ import DragRegistry from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegi
 import { findClosestPosition } from "@ui5/webcomponents-base/dist/util/dragAndDrop/findClosestPosition.js";
 import Orientation from "@ui5/webcomponents-base/dist/types/Orientation.js";
 import MovePlacement from "@ui5/webcomponents-base/dist/types/MovePlacement.js";
-import DropIndicator from "./DropIndicator.js";
 // Template
 import ListItemGroupTemplate from "./ListItemGroupTemplate.js";
 // Styles
 import ListItemGroupCss from "./generated/themes/ListItemGroup.css.js";
-import ListItemStandard from "./ListItemStandard.js";
-import ListItemGroupHeader from "./ListItemGroupHeader.js";
 /**
  * @class
  * ### Overview
@@ -151,7 +148,6 @@ ListItemGroup = __decorate([
         languageAware: true,
         template: ListItemGroupTemplate,
         styles: [ListItemGroupCss],
-        dependencies: [ListItemStandard, ListItemGroupHeader, DropIndicator],
     })
     /**
      * Fired when a movable list item is moved over a potential drop target during a dragging operation.

@@ -11,10 +11,6 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
-import Text from "./Text.js";
-import Link, {} from "./Link.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import Button from "./Button.js";
 import ExpandableTextOverflowMode from "./types/ExpandableTextOverflowMode.js";
 import { EXPANDABLE_TEXT_SHOW_LESS, EXPANDABLE_TEXT_SHOW_MORE, EXPANDABLE_TEXT_CLOSE, EXPANDABLE_TEXT_SHOW_LESS_POPOVER_ARIA_LABEL, EXPANDABLE_TEXT_SHOW_MORE_POPOVER_ARIA_LABEL, } from "./generated/i18n/i18n-defaults.js";
 // Template
@@ -164,12 +160,6 @@ ExpandableText = ExpandableText_1 = __decorate([
         renderer: jsxRender,
         styles: ExpandableTextCss,
         template: ExpandableTextTemplate,
-        dependencies: [
-            Text,
-            Link,
-            ResponsivePopover,
-            Button,
-        ],
     })
 ], ExpandableText);
 ExpandableText.define();

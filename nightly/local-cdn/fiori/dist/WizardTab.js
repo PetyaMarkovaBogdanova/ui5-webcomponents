@@ -10,7 +10,6 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isSpace, isEnter, isSpaceShift } from "@ui5/webcomponents-base/dist/Keys.js";
-import Icon from "@ui5/webcomponents/dist/Icon.js";
 import WizardTabTemplate from "./WizardTabTemplate.js";
 import WizardTabCss from "./generated/themes/WizardTab.css.js";
 /**
@@ -140,7 +139,6 @@ WizardTab = __decorate([
         renderer: jsxRenderer,
         styles: WizardTabCss,
         template: WizardTabTemplate,
-        dependencies: [Icon],
     })
     /**
      * Fired when focus on a step.

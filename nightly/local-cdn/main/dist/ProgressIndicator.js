@@ -13,7 +13,6 @@ import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import Icon from "./Icon.js";
 import { VALUE_STATE_ERROR, VALUE_STATE_WARNING, VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, } from "./generated/i18n/i18n-defaults.js";
 // Template
 import ProgressIndicatorTemplate from "./ProgressIndicatorTemplate.js";
@@ -126,7 +125,6 @@ ProgressIndicator = ProgressIndicator_1 = __decorate([
         renderer: jsxRenderer,
         styles: ProgressIndicatorCss,
         template: ProgressIndicatorTemplate,
-        dependencies: [Icon],
     })
 ], ProgressIndicator);
 ProgressIndicator.define();

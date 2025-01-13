@@ -11,7 +11,6 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
-import CheckBox from "@ui5/webcomponents/dist/CheckBox.js";
 import TableGroupRowTemplate from "./TableGroupRowTemplate.js";
 import TableMode from "./types/TableMode.js";
 // Texts
@@ -98,9 +97,6 @@ TableGroupRow = TableGroupRow_1 = __decorate([
         styles: tableGroupRowStyles,
         renderer: jsxRenderer,
         template: TableGroupRowTemplate,
-        dependencies: [
-            CheckBox,
-        ],
     }),
     event("_focused", {
         bubbles: true,

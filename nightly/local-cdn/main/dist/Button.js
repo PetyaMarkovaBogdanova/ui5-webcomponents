@@ -23,7 +23,6 @@ import toLowercaseEnumValue from "@ui5/webcomponents-base/dist/util/toLowercaseE
 import ButtonDesign from "./types/ButtonDesign.js";
 import ButtonType from "./types/ButtonType.js";
 import ButtonTemplate from "./ButtonTemplate.js";
-import Icon from "./Icon.js";
 import { BUTTON_ARIA_TYPE_ACCEPT, BUTTON_ARIA_TYPE_REJECT, BUTTON_ARIA_TYPE_EMPHASIZED } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import buttonCss from "./generated/themes/Button.css.js";
@@ -395,7 +394,6 @@ Button = Button_1 = __decorate([
         renderer: jsxRenderer,
         template: ButtonTemplate,
         styles: buttonCss,
-        dependencies: [Icon],
         shadowRootOptions: { delegatesFocus: true },
     })
     /**

@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 /* eslint-disable no-bitwise */
 import { isUp, isUpShift, isDown, isDownShift, isPageUp, isPageDown, isHome, isEnd, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
-import UI5Element, {} from "@ui5/webcomponents-base/dist/UI5Element.js";
+import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
@@ -79,19 +79,19 @@ let TableVirtualizer = class TableVirtualizer extends UI5Element {
         this._onScrollBound = throttle(this._onScroll.bind(this));
         this._onRowInvalidateBound = this._onRowInvalidate.bind(this);
     }
-    onTableActivate(table) {
-        this._table = table;
-        this._scrollContainer.addEventListener("scroll", this._onScrollBound, { passive: true });
-        this._onScroll();
-    }
     onAfterRendering() {
         this._table && this._table._invalidate++;
     }
-    onTableAfterRendering() {
+    onTableAfterRendering(table) {
         if (!this._table) {
-            return;
+            this._table = table;
+            this._scrollContainer.addEventListener("scroll", this._onScrollBound, { passive: true });
+            this._updateRowsHeight();
+            this._onScroll();
         }
-        this._updateRowsHeight();
+        else {
+            this._updateRowsHeight();
+        }
         if (this._tabBlockingState & TabBlocking.Released) {
             const tabBlockingRow = this._table.rows.at(this._tabBlockingState & TabBlocking.Next ? -1 : 0);
             const tabForwardingElement = getTabbableElements(tabBlockingRow).at(this._tabBlockingState & TabBlocking.Next ? 0 : -1);
@@ -110,11 +110,13 @@ let TableVirtualizer = class TableVirtualizer extends UI5Element {
     reset() {
         this._lastRowPosition = -1;
         this._firstRowPosition = -1;
-        if (this._scrollContainer.scrollTop > 0) {
-            this._scrollContainer.scrollTop = 0;
-        }
-        else {
-            this._onScroll();
+        if (this._table) {
+            if (this._scrollContainer.scrollTop > 0) {
+                this._scrollContainer.scrollTop = 0;
+            }
+            else {
+                this._onScroll();
+            }
         }
     }
     get _scrollContainer() {
@@ -124,9 +126,6 @@ let TableVirtualizer = class TableVirtualizer extends UI5Element {
         return this._table.shadowRoot.getElementById("rows");
     }
     _onScroll() {
-        if (!this._table) {
-            return;
-        }
         const headerRow = this._table.headerRow[0];
         const headerHeight = headerRow.offsetHeight;
         let scrollTop = this._scrollContainer.scrollTop;

@@ -3,6 +3,8 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { ITabbable } from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type ToggleButton from "@ui5/webcomponents/dist/ToggleButton.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
+import "./TimelineItem.js";
+import "./TimelineGroupItem.js";
 import TimelineLayout from "./types/TimelineLayout.js";
 /**
  * Interface for components that may be slotted inside `ui5-timeline` as items

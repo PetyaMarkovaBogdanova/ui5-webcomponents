@@ -15,7 +15,6 @@ import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isBackSpace, isSpace, isDelete, isSpaceCtrl, } from "@ui5/webcomponents-base/dist/Keys.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { TOKEN_ARIA_DELETABLE, TOKEN_ARIA_LABEL } from "./generated/i18n/i18n-defaults.js";
-import Icon from "./Icon.js";
 import TokenTemplate from "./TokenTemplate.js";
 // Styles
 import tokenStyles from "./generated/themes/Token.css.js";
@@ -182,7 +181,6 @@ Token = Token_1 = __decorate([
         renderer: jsxRenderer,
         template: TokenTemplate,
         styles: tokenStyles,
-        dependencies: [Icon],
     })
     /**
      * Fired when the the component is selected by user interaction with mouse or by clicking space.

@@ -4,11 +4,12 @@ import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/In
 import CalendarPickersMode from "./types/CalendarPickersMode.js";
 import "@ui5/webcomponents-icons/dist/appointment-2.js";
 import DateComponentBase from "./DateComponentBase.js";
-import ResponsivePopover from "./ResponsivePopover.js";
-import Calendar from "./Calendar.js";
+import type ResponsivePopover from "./ResponsivePopover.js";
+import type Calendar from "./Calendar.js";
 import type { CalendarSelectionChangeEventDetail } from "./Calendar.js";
 import type CalendarSelectionMode from "./types/CalendarSelectionMode.js";
-import Input, { type InputAccInfo } from "./Input.js";
+import type Input from "./Input.js";
+import type { InputAccInfo } from "./Input.js";
 import InputType from "./types/InputType.js";
 import IconMode from "./types/IconMode.js";
 import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js";

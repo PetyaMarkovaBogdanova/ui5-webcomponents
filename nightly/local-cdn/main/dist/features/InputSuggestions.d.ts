@@ -1,13 +1,13 @@
 import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import { ComponentFeature } from "@ui5/webcomponents-base/dist/FeaturesRegistry.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import List from "../List.js";
+import type List from "../List.js";
 import type { ListItemClickEventDetail, ListSelectionChangeEventDetail } from "../List.js";
 import type ResponsivePopover from "../ResponsivePopover.js";
-import SuggestionItem from "../SuggestionItem.js";
-import Button from "../Button.js";
-import Icon from "../Icon.js";
-import SuggestionItemGroup from "../SuggestionItemGroup.js";
+import "../SuggestionItem.js";
+import "../SuggestionItemGroup.js";
+import type SuggestionItem from "../SuggestionItem.js";
+import InputSuggestionsTemplate from "./InputSuggestionsTemplate.js";
 import type { IInputSuggestionItem, IInputSuggestionItemSelectable } from "../Input.js";
 interface SuggestionComponent extends UI5Element {
     _isValueStateFocused: boolean;
@@ -46,6 +46,7 @@ declare class Suggestions extends ComponentFeature {
     attachedAfterClose?: boolean;
     static i18nBundle: I18nBundle;
     static SCROLL_STEP: number;
+    get template(): typeof InputSuggestionsTemplate;
     constructor(component: SuggestionComponent, slotName: string, highlight: boolean, handleFocus: boolean);
     onUp(e: KeyboardEvent): boolean;
     onDown(e: KeyboardEvent): boolean;
@@ -97,7 +98,6 @@ declare class Suggestions extends ComponentFeature {
     _focusValueState(): void;
     _clearValueStateFocus(): void;
     _clearSelectedSuggestionAndaccInfo(): void;
-    static get dependencies(): (typeof Icon | typeof Button | typeof List | typeof SuggestionItem | typeof SuggestionItemGroup)[];
 }
 export default Suggestions;
 export type { SuggestionComponent, };

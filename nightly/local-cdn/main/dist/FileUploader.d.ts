@@ -2,8 +2,8 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
-import Input from "./Input.js";
-import Popover from "./Popover.js";
+import type Input from "./Input.js";
+import type Popover from "./Popover.js";
 type FileData = {
     fileName: string;
     fileSize: number;
