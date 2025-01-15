@@ -133,7 +133,7 @@ declare class TreeItemBase extends ListItem {
     get requiresToggleButton(): boolean;
     get effectiveLevel(): number;
     get hasParent(): boolean;
-    get _toggleIconName(): "navigation-down-arrow" | "navigation-right-arrow";
+    get _toggleIconName(): "navigation-right-arrow" | "navigation-down-arrow";
     get _ariaLabel(): string;
     get _accInfo(): {
         role: "treeitem";

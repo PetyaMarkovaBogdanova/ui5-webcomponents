@@ -2,7 +2,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type { ClassMap } from "@ui5/webcomponents-base/dist/types.js";
-import type { MoveEventDetail as ListMoveEventDetail } from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
+import type { MoveEventDetail } from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ListSelectionMode from "./types/ListSelectionMode.js";
 import ListGrowingMode from "./types/ListGrowingMode.js";
@@ -35,6 +35,7 @@ type ListItemToggleEventDetail = {
 type ListItemClickEventDetail = {
     item: ListItemBase;
 };
+type ListMoveEventDetail = MoveEventDetail;
 /**
  * @class
  *

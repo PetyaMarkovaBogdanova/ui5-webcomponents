@@ -40,9 +40,11 @@ declare class TableHeaderRow extends TableRowBase {
     sticky: boolean;
     onBeforeRendering(): void;
     isHeaderRow(): boolean;
+    get _hasRowActions(): boolean;
     get _isSelectable(): boolean | undefined;
     get _isSelected(): boolean | undefined;
     get _i18nSelection(): string;
     get _i18nRowPopin(): string;
+    get _i18nRowActions(): string;
 }
 export default TableHeaderRow;

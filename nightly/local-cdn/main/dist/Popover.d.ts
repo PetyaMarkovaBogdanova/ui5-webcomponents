@@ -187,7 +187,7 @@ declare class Popover extends Popup {
     _adjustForIOSKeyboard(top: number): number;
     getPopoverSize(): PopoverSize;
     _showOutsideViewport(): void;
-    _isUI5Element(el: HTMLElement): el is UI5Element;
+    _isUI5AbstractElement(el: HTMLElement): el is UI5Element;
     get arrowDOM(): Element;
     /**
      * @private

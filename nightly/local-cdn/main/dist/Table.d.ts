@@ -1,7 +1,7 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import type { MoveEventDetail as TableMoveEventDetail } from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
+import type { MoveEventDetail } from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
 import TableRow from "./TableRow.js";
 import TableHeaderRow from "./TableHeaderRow.js";
 import type TableHeaderCell from "./TableHeaderCell.js";
@@ -10,9 +10,10 @@ import TableOverflowMode from "./types/TableOverflowMode.js";
 import TableNavigation from "./TableNavigation.js";
 import DropIndicator from "./DropIndicator.js";
 import TableDragAndDrop from "./TableDragAndDrop.js";
+import type TableRowActionBase from "./TableRowActionBase.js";
 import type TableVirtualizer from "./TableVirtualizer.js";
 /**
- * Interface for components that can be slotted inside the <code>features</code> slot of the <code>ui5-table</code>.
+ * Interface for components that can be slotted inside the `features` slot of the `ui5-table`.
  *
  * @public
  * @experimental
@@ -30,7 +31,7 @@ interface ITableFeature extends UI5Element {
     onTableAfterRendering?(table?: Table): void;
 }
 /**
- * Interface for components that can be slotted inside the <code>features</code> slot of the <code>ui5-table</code>
+ * Interface for components that can be slotted inside the `features` slot of the `ui5-table`
  * and provide growing/data loading functionality.
  * @public
  * @experimental
@@ -52,6 +53,17 @@ interface ITableGrowing extends ITableFeature {
  * @public
  */
 type TableRowClickEventDetail = {
+    row: TableRow;
+};
+type TableMoveEventDetail = MoveEventDetail;
+/**
+ * Fired when a row action is clicked.
+ * @param {TableRowActionBase} action The row action instance
+ * @param {TableRow} row The row instance
+ * @public
+ */
+type TableRowActionClickEventDetail = {
+    action: TableRowActionBase;
     row: TableRow;
 };
 /**
@@ -140,11 +152,12 @@ declare class Table extends UI5Element {
         "row-click": TableRowClickEventDetail;
         "move-over": TableMoveEventDetail;
         "move": TableMoveEventDetail;
+        "row-action-click": TableRowActionClickEventDetail;
     };
     /**
      * Defines the rows of the component.
      *
-     * Note: Use <code>ui5-table-row</code> for the intended design.
+     * **Note:** Use `ui5-table-row` for the intended design.
      *
      * @public
      */
@@ -152,7 +165,7 @@ declare class Table extends UI5Element {
     /**
      * Defines the header row of the component.
      *
-     * Note: Use <code>ui5-table-header-row</code> for the intended design.
+     * **Note:** Use `ui5-table-header-row` for the intended design.
      *
      * @public
      */
@@ -205,7 +218,7 @@ declare class Table extends UI5Element {
     /**
      * Defines if the loading indicator should be shown.
      *
-     * <b>Note:</b> When the component is loading, it is non-interactive.
+     * **Note:** When the component is loading, it is not interactive.
      * @default false
      * @public
      */
@@ -220,6 +233,16 @@ declare class Table extends UI5Element {
      * Defines the sticky top offset of the table, if other sticky elements outside of the table exist.
      */
     stickyTop: string;
+    /**
+     * Defines the maximum number of row actions that is displayed, which determines the width of the row action column.
+     *
+     * **Note:** It is recommended to use a maximum of 3 row actions, as exceeding this limit may take up too much space on smaller screens.
+     *
+     * @default 0
+     * @since 2.7.0
+     * @public
+     */
+    rowActionCount: number;
     _invalidate: number;
     _renderNavigated: boolean;
     static i18nBundle: I18nBundle;
@@ -255,7 +278,8 @@ declare class Table extends UI5Element {
     _setHeaderPopinState(headerCell: TableHeaderCell, inPopin: boolean, popinWidth: number): void;
     _isFeature(feature: any): boolean;
     _isGrowingFeature(feature: any): boolean;
-    _onRowPress(row: TableRow): void;
+    _onRowClick(row: TableRow): void;
+    _onRowActionClick(action: TableRowActionBase): void;
     get styles(): {
         table: {
             "grid-template-columns": string | undefined;
@@ -284,6 +308,7 @@ declare class Table extends UI5Element {
     get _scrollContainer(): HTMLElement;
     get isTable(): boolean;
     get dropIndicatorDOM(): DropIndicator | null;
+    get _hasRowActions(): boolean;
 }
 export default Table;
-export type { ITableFeature, ITableGrowing, TableRowClickEventDetail, TableMoveEventDetail as TableTableMoveEventDetail, };
+export type { ITableFeature, ITableGrowing, TableRowClickEventDetail, TableMoveEventDetail, TableRowActionClickEventDetail, };

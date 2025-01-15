@@ -57,6 +57,14 @@ declare class TableHeaderCell extends TableCellBase {
      * @public
      */
     importance: number;
+    /**
+     * The text for the column when it pops in.
+     *
+     * @default undefined
+     * @since 2.7.0
+     * @public
+     */
+    popinText?: string;
     _popin: boolean;
     protected ariaRole: string;
     _popinWidth: number;

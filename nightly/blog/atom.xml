@@ -2,11 +2,54 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://sap.github.io/ui5-webcomponents/nightly/blog</id>
     <title>UI5 Web Components Blog</title>
-    <updated>2024-07-03T10:00:00.000Z</updated>
+    <updated>2025-01-07T10:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://sap.github.io/ui5-webcomponents/nightly/blog"/>
     <subtitle>UI5 Web Components Blog</subtitle>
     <icon>https://sap.github.io/ui5-webcomponents/nightly/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Introducing JSX for web component templates]]></title>
+        <id>https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx</id>
+        <link href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx"/>
+        <updated>2025-01-07T10:00:00.000Z</updated>
+        <summary type="html"><![CDATA[We are proud to announce that the 2.6.0 release of the web components adds support for using JSX templates.]]></summary>
+        <content type="html"><![CDATA[<p>We are proud to announce that the 2.6.0 release of the web components adds support for using <a href="https://github.com/SAP/ui5-webcomponents/pull/10046" target="_blank" rel="noopener noreferrer">JSX templates</a>.</p>
+<p>Until now, Handlebars was the only templating language that could be used. The main goal of the project since the beginning was to have declarative renderers, and Handlebars served this purpose well. There were some drawbacks however.</p>
+<h2 class="anchor anchorWithStickyNavbar_fF9Z" id="own-hbs-compiler">Own HBS compiler<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#own-hbs-compiler" class="hash-link" aria-label="Direct link to Own HBS compiler" title="Direct link to Own HBS compiler">​</a></h2>
+<p>Since handlebars originally works with strings only and cannot update the DOM effectively, we had to build our own HBS -&gt; lit-html compiler. This added some technical debt, as not all features from Handlebars were implemented. It also added maintenance effort for a tool we had to update and evolve, when switching to TypeScript for example, or when encountering edge cases not previously considered.</p>
+<h2 class="anchor anchorWithStickyNavbar_fF9Z" id="development-experience">Development experience<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#development-experience" class="hash-link" aria-label="Direct link to Development experience" title="Direct link to Development experience">​</a></h2>
+<p>All templating languages are by default not understood by IDEs out of the box.</p>
+<p>Code completion is the biggest gap we were seeing - there was simply no way to tell the IDE what to do without writing a plugin, which would be further development effort.</p>
+<p>While we added type checking (the compiled HBS code is in a <code>.ts</code> file so there is some typechecking), it was never complete - type errors are shown in the console, not in the IDE. They were also only top level property type checks - no typechecks inside loops, no typechecks for events and event handlers.</p>
+<p>Code navigation was also missing - you could not click on a property in a HBS template to navigate to the property definition in the component itself.</p>
+<h2 class="anchor anchorWithStickyNavbar_fF9Z" id="jsx">JSX<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#jsx" class="hash-link" aria-label="Direct link to JSX" title="Direct link to JSX">​</a></h2>
+<p>JSX is an embeddable HTML-like syntax that gets transformed into JavaScript. It is written inside JavaScript and transformed to JavaScript, which means the TypeScript compiler can do all of the things it does out of the box - not only typechecking, but also provide code completion suggestions and do the code transformation. IDEs also have TypeScript integration, so nothing additional is required.</p>
+<h2 class="anchor anchorWithStickyNavbar_fF9Z" id="jsx-benefits-compared-to-hbs-templates">JSX benefits compared to HBS templates<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#jsx-benefits-compared-to-hbs-templates" class="hash-link" aria-label="Direct link to JSX benefits compared to HBS templates" title="Direct link to JSX benefits compared to HBS templates">​</a></h2>
+<p>What follows is a quick summary of all improvements offered by JSX.</p>
+<h3 class="anchor anchorWithStickyNavbar_fF9Z" id="declarative-️">Declarative ↔️<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#declarative-%EF%B8%8F" class="hash-link" aria-label="Direct link to Declarative ↔️" title="Direct link to Declarative ↔️">​</a></h3>
+<p>No change here, both are declarative.</p>
+<h3 class="anchor anchorWithStickyNavbar_fF9Z" id="type-checking-️">Type checking ↗️<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#type-checking-%EF%B8%8F" class="hash-link" aria-label="Direct link to Type checking ↗️" title="Direct link to Type checking ↗️">​</a></h3>
+<p>Full type checking - not only top-level properties, but also loops, events, event handlers, and code in the template as well.</p>
+<h3 class="anchor anchorWithStickyNavbar_fF9Z" id="code-completion-️">Code completion ↗️<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#code-completion-%EF%B8%8F" class="hash-link" aria-label="Direct link to Code completion ↗️" title="Direct link to Code completion ↗️">​</a></h3>
+<p>Full code completion - TypeScript knows exactly what properties are available for each tag, and what their respective values are. Type errors are shown in the IDE and quick fixes also work out of the box.</p>
+<h3 class="anchor anchorWithStickyNavbar_fF9Z" id="code-navigation-️">Code navigation ↗️<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#code-navigation-%EF%B8%8F" class="hash-link" aria-label="Direct link to Code navigation ↗️" title="Direct link to Code navigation ↗️">​</a></h3>
+<p>Using Cmd-Click on a property name or an event handler directly jumps to the code location in the component. This was not possible before.</p>
+<h3 class="anchor anchorWithStickyNavbar_fF9Z" id="debugging-templates-️">Debugging templates ↗️<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#debugging-templates-%EF%B8%8F" class="hash-link" aria-label="Direct link to Debugging templates ↗️" title="Direct link to Debugging templates ↗️">​</a></h3>
+<p>While it was possible to debug lit-html templates, they were big horizontal lines of template literal code and actually kind of hard to debug. JSX templates look like function calls with whitespaces and show a much better structure that is easier to debug.</p>
+<h3 class="anchor anchorWithStickyNavbar_fF9Z" id="no-ide-plugin-needed-️">No IDE plugin needed ↗️<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#no-ide-plugin-needed-%EF%B8%8F" class="hash-link" aria-label="Direct link to No IDE plugin needed ↗️" title="Direct link to No IDE plugin needed ↗️">​</a></h3>
+<p>All of the benefits above come without the need to write a plugin - IDEs are already integrated with TypeScript that provides all of the above features for free.</p>
+<h3 class="anchor anchorWithStickyNavbar_fF9Z" id="no-new-tooling-️">No new tooling ↗️<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#no-new-tooling-%EF%B8%8F" class="hash-link" aria-label="Direct link to No new tooling ↗️" title="Direct link to No new tooling ↗️">​</a></h3>
+<p>Transforming the template to JavaScript code is handled by the TypeScript compiler. There is absolutely no new code for the transformation step.</p>
+<h3 class="anchor anchorWithStickyNavbar_fF9Z" id="smaller-template-size-️">Smaller template size ↗️<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#smaller-template-size-%EF%B8%8F" class="hash-link" aria-label="Direct link to Smaller template size ↗️" title="Direct link to Smaller template size ↗️">​</a></h3>
+<p>Converting all of the <code>main</code> and <code>fiori</code> components (~140) reduced the gzip size of the bundle by roughly 20 kB.</p>
+<h2 class="anchor anchorWithStickyNavbar_fF9Z" id="technical-aspects">Technical aspects<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#technical-aspects" class="hash-link" aria-label="Direct link to Technical aspects" title="Direct link to Technical aspects">​</a></h2>
+<p>The JSX transformation creates a Virtual DOM, and the actual DOM updates are handled by <a href="https://preactjs.com/" target="_blank" rel="noopener noreferrer">Preact</a>. Preact has a big focus on performance and is very fast and small. Virtual DOM is theoretically slower when updating big lists (as their templates have to be rendered and the diff has to be run), but for the web components, this is not a problem, since the items of the components are coming from the applications and the component only renders a slot where the items will appear.</p>
+<h2 class="anchor anchorWithStickyNavbar_fF9Z" id="summary">Summary<a href="https://sap.github.io/ui5-webcomponents/nightly/blog/introducing-jsx#summary" class="hash-link" aria-label="Direct link to Summary" title="Direct link to Summary">​</a></h2>
+<p>The switch to JSX improves the web component development experience immensely. Not only is the development experience better, but in the process of migrating the existing components, a lot of bugs were caught that were simply missed in HBS. Size improvements and the good performance make this a real good step for the framework and for component developers.</p>
+<p>For more implementation details, you can check the <a href="https://sap.github.io/ui5-webcomponents/docs/development/templates/" target="_blank" rel="noopener noreferrer">template docs</a> and the <a href="https://github.com/SAP/ui5-webcomponents/pull/10046" target="_blank" rel="noopener noreferrer">PR</a></p>]]></content>
+        <category label="jsx" term="jsx"/>
+        <category label="template" term="template"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Announcing UI5 Web Components 2.0! A New Era Begins!]]></title>
         <id>https://sap.github.io/ui5-webcomponents/nightly/blog/releases/announcing-v2</id>

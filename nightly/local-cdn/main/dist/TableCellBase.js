@@ -48,11 +48,11 @@ __decorate([
     slot({ type: Node, "default": true })
 ], TableCellBase.prototype, "content", void 0);
 __decorate([
-    property({ type: Boolean })
-], TableCellBase.prototype, "_popin", void 0);
-__decorate([
     property()
 ], TableCellBase.prototype, "horizontalAlign", void 0);
+__decorate([
+    property({ type: Boolean })
+], TableCellBase.prototype, "_popin", void 0);
 __decorate([
     i18n("@ui5/webcomponents")
 ], TableCellBase, "i18nBundle", void 0);

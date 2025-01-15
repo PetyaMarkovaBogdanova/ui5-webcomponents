@@ -1,4 +1,4 @@
-import type { AccessibilityAttributes, UI5CustomEvent } from "@ui5/webcomponents-base";
+import type { AccessibilityAttributes } from "@ui5/webcomponents-base";
 import "@ui5/webcomponents-icons/dist/nav-back.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { ListItemAccessibilityAttributes } from "./ListItem.js";
@@ -37,6 +37,13 @@ type MenuItemAccessibilityAttributes = Pick<AccessibilityAttributes, "ariaKeySho
  * @public
  */
 declare class MenuItem extends ListItem implements IMenuItem {
+    eventDetails: ListItem["eventDetails"] & {
+        "before-open": MenuBeforeOpenEventDetail;
+        "open": void;
+        "before-close": MenuBeforeCloseEventDetail;
+        "close": void;
+        "close-menu": void;
+    };
     /**
      * Defines the text of the tree item.
      * @default undefined
@@ -191,7 +198,7 @@ declare class MenuItem extends ListItem implements IMenuItem {
     _close(): void;
     _beforePopoverOpen(e: CustomEvent): void;
     _afterPopoverOpen(): void;
-    _beforePopoverClose(e: UI5CustomEvent<ResponsivePopover, "before-close">): void;
+    _beforePopoverClose(e: CustomEvent): void;
     _afterPopoverClose(): void;
 }
 export default MenuItem;

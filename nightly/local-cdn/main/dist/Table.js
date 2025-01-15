@@ -128,7 +128,7 @@ let Table = Table_1 = class Table extends UI5Element {
         /**
          * Defines if the loading indicator should be shown.
          *
-         * <b>Note:</b> When the component is loading, it is non-interactive.
+         * **Note:** When the component is loading, it is not interactive.
          * @default false
          * @public
          */
@@ -143,6 +143,16 @@ let Table = Table_1 = class Table extends UI5Element {
          * Defines the sticky top offset of the table, if other sticky elements outside of the table exist.
          */
         this.stickyTop = "0";
+        /**
+         * Defines the maximum number of row actions that is displayed, which determines the width of the row action column.
+         *
+         * **Note:** It is recommended to use a maximum of 3 row actions, as exceeding this limit may take up too much space on smaller screens.
+         *
+         * @default 0
+         * @since 2.7.0
+         * @public
+         */
+        this.rowActionCount = 0;
         this._invalidate = 0;
         this._renderNavigated = false;
         this._events = ["keydown", "keyup", "click", "focusin", "focusout", "dragenter", "dragleave", "dragover", "drop"];
@@ -169,13 +179,14 @@ let Table = Table_1 = class Table extends UI5Element {
         }
     }
     onBeforeRendering() {
-        const renderNavigated = this._renderNavigated;
         this._renderNavigated = this.rows.some(row => row.navigated);
-        if (renderNavigated !== this._renderNavigated) {
-            this.rows.forEach(row => {
-                row._renderNavigated = this._renderNavigated;
-            });
+        if (this.headerRow[0]) {
+            this.headerRow[0]._rowActionCount = this.rowActionCount;
         }
+        this.rows.forEach(row => {
+            row._renderNavigated = this._renderNavigated;
+            row._rowActionCount = this.rowActionCount;
+        });
         this.style.setProperty(getScopedVarName("--ui5_grid_sticky_top"), this.stickyTop);
         this._refreshPopinState();
     }
@@ -284,8 +295,12 @@ let Table = Table_1 = class Table extends UI5Element {
     _isGrowingFeature(feature) {
         return Boolean(feature.loadMore && feature.hasGrowingComponent && this._isFeature(feature));
     }
-    _onRowPress(row) {
+    _onRowClick(row) {
         this.fireDecoratorEvent("row-click", { row });
+    }
+    _onRowActionClick(action) {
+        const row = action.parentElement;
+        this.fireDecoratorEvent("row-action-click", { action, row });
     }
     get styles() {
         const virtualizer = this._getVirtualizer();
@@ -323,6 +338,9 @@ let Table = Table_1 = class Table extends UI5Element {
             }
             return `minmax(${cell.width}, ${cell.width})`;
         }));
+        if (this.rowActionCount > 0) {
+            widths.push(`calc(var(${getScopedVarName("--_ui5_button_base_min_width")}) * ${this.rowActionCount} + var(${getScopedVarName("--_ui5_table_row_actions_gap")}) * ${this.rowActionCount - 1} + var(${getScopedVarName("--_ui5_table_cell_horizontal_padding")}) * 2)`);
+        }
         if (this._renderNavigated) {
             widths.push(`var(${getScopedVarName("--_ui5_table_navigated_cell_width")})`);
         }
@@ -382,6 +400,9 @@ let Table = Table_1 = class Table extends UI5Element {
     get dropIndicatorDOM() {
         return this.shadowRoot.querySelector("[ui5-drop-indicator]");
     }
+    get _hasRowActions() {
+        return this.rowActionCount > 0;
+    }
 };
 __decorate([
     slot({
@@ -424,6 +445,9 @@ __decorate([
     property()
 ], Table.prototype, "stickyTop", void 0);
 __decorate([
+    property({ type: Number })
+], Table.prototype, "rowActionCount", void 0);
+__decorate([
     property({ type: Number, noAttribute: true })
 ], Table.prototype, "_invalidate", void 0);
 __decorate([
@@ -455,7 +479,7 @@ Table = Table_1 = __decorate([
      */
     ,
     event("row-click", {
-        bubbles: true,
+        bubbles: false,
     })
     /**
      * Fired when a movable item is moved over a potential drop target during a dragging operation.
@@ -493,6 +517,17 @@ Table = Table_1 = __decorate([
     ,
     event("move", {
         bubbles: true,
+    })
+    /**
+     * Fired when a row action is clicked.
+     *
+     * @param {TableRowActionBase} action The row action instance
+     * @since 2.6.0
+     * @public
+     */
+    ,
+    event("row-action-click", {
+        bubbles: false,
     })
 ], Table);
 Table.define();

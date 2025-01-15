@@ -44,7 +44,7 @@ import ExpandableTextCss from "./generated/themes/ExpandableText.css.js";
  * @constructor
  * @extends UI5Element
  * @public
- * @since 2.5.0
+ * @since 2.6.0
  */
 let ExpandableText = ExpandableText_1 = class ExpandableText extends UI5Element {
     constructor() {
@@ -60,7 +60,7 @@ let ExpandableText = ExpandableText_1 = class ExpandableText extends UI5Element 
          * @default "InPlace"
          * @public
          */
-        this.overflowMode = ExpandableTextOverflowMode.InPlace;
+        this.overflowMode = "InPlace";
         /**
          * Specifies if an empty indicator should be displayed when there is no text.
          * @default "Off"

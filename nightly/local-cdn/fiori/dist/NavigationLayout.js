@@ -11,6 +11,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import browserScrollbarCSS from "@ui5/webcomponents/dist/generated/themes/BrowserScrollbar.css.js";
 import { isPhone, isTablet, isCombi, } from "@ui5/webcomponents-base/dist/Device.js";
+import NavigationLayoutMode from "./types/NavigationLayoutMode.js";
 // Template
 import NavigationLayoutTemplate from "./NavigationLayoutTemplate.js";
 // Styles
@@ -29,9 +30,10 @@ import NavigationLayoutCss from "./generated/themes/NavigationLayout.css.js";
  *
  * ### Responsive Behavior
  *
- * On desktop and tablet devices, the side navigation remains visible and can
- * be expanded or collapsed using the `sideCollapsed` property. On phone devices, the side navigation
- * is hidden by default but can be displayed using the same `sideCollapsed` property.
+ * On desktop and tablet devices, the side navigation is visible
+ * by default and can be expanded or collapsed using the `mode` property.
+ * On phone devices, the side navigation is hidden by default and can
+ * be displayed using the `mode` property.
  *
  * ### ES6 Module Import
  *
@@ -44,7 +46,17 @@ import NavigationLayoutCss from "./generated/themes/NavigationLayout.css.js";
 let NavigationLayout = class NavigationLayout extends UI5Element {
     constructor() {
         super(...arguments);
-        this._sideCollapsed = isPhone() || (isTablet() && !isCombi());
+        this._defaultSideCollapsed = isPhone() || (isTablet() && !isCombi());
+        /**
+         * Specifies the navigation layout mode.
+         * @default "Auto"
+         * @public
+         */
+        this.mode = "Auto";
+        /**
+         * @private
+         */
+        this.sideCollapsed = this._defaultSideCollapsed;
         /**
          * @private
          */
@@ -55,42 +67,44 @@ let NavigationLayout = class NavigationLayout extends UI5Element {
         this.isTablet = isTablet() && !isCombi();
     }
     /**
-     * Indicates whether the side navigation is collapsed.
-     * @default false
+     * Gets whether the side navigation is collapsed.
      * @public
      */
-    set sideCollapsed(value) {
-        this._sideCollapsed = value;
-        if (isPhone()) {
-            return;
-        }
-        const sideNavigation = this.sideContent[0];
-        if (sideNavigation) {
-            sideNavigation.collapsed = value;
-        }
-    }
-    get sideCollapsed() {
-        return this._sideCollapsed;
+    isSideCollapsed() {
+        this.calcSideCollapsed();
+        return this.sideCollapsed;
     }
     onBeforeRendering() {
+        this.calcSideCollapsed();
         if (isPhone()) {
             return;
         }
         const sideNavigation = this.sideContent[0];
         if (sideNavigation) {
-            sideNavigation.collapsed = this.sideCollapsed;
+            sideNavigation.collapsed = this.isSideCollapsed();
+        }
+    }
+    calcSideCollapsed() {
+        if (this.mode === NavigationLayoutMode.Auto) {
+            this.sideCollapsed = this._defaultSideCollapsed;
+        }
+        else {
+            this.sideCollapsed = this.mode === NavigationLayoutMode.Collapsed;
         }
     }
 };
+__decorate([
+    property()
+], NavigationLayout.prototype, "mode", void 0);
+__decorate([
+    property({ type: Boolean })
+], NavigationLayout.prototype, "sideCollapsed", void 0);
 __decorate([
     property({ type: Boolean })
 ], NavigationLayout.prototype, "isPhone", void 0);
 __decorate([
     property({ type: Boolean })
 ], NavigationLayout.prototype, "isTablet", void 0);
-__decorate([
-    property({ type: Boolean })
-], NavigationLayout.prototype, "sideCollapsed", null);
 __decorate([
     slot()
 ], NavigationLayout.prototype, "header", void 0);

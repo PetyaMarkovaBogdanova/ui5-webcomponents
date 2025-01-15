@@ -16,14 +16,14 @@ declare abstract class TableCellBase extends UI5Element {
      * @public
      */
     content: Array<Node>;
-    _popin: boolean;
     /**
      * Determines the horizontal alignment of table cells.
-     * **Note:** All values valid for justify-content can be used, not just the ones inside the enumeration.
+     *
      * @default undefined
      * @public
      */
     horizontalAlign?: `${TableCellHorizontalAlign}`;
+    _popin: boolean;
     protected ariaRole: string;
     static i18nBundle: I18nBundle;
     onEnterDOM(): void;

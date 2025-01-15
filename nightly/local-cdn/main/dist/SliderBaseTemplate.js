@@ -4,10 +4,10 @@ export default function SliderBaseTemplate(hooks) {
     return (_jsxs("div", { class: {
             "ui5-slider-root": true,
             "ui5-slider-root-phone": isPhone(),
-        }, onMouseDown: this._onmousedown, onTouchStart: this._onmousedown, onMouseOver: this._onmouseover, onMouseOut: this._onmouseout, onKeyDown: this._onkeydown, onKeyUp: this._onKeyupBase, part: "root-container", children: [(hooks?.handlesAriaText || handlesAriaText).call(this), _jsxs("div", { class: "ui5-slider-inner", children: [this.step && this.showTickmarks && _jsxs(_Fragment, { children: [_jsx("ul", { class: "ui5-slider-tickmarks", children: this.tickmarksObject.map(tm => _jsx(_Fragment, { children: tm ?
+        }, onMouseDown: this._onmousedown, onTouchStart: this._onmousedown, onMouseOver: this._onmouseover, onMouseOut: this._onmouseout, onKeyDown: this._onkeydown, onKeyUp: this._onKeyupBase, part: "root-container", children: [(hooks?.handlesAriaText || handlesAriaText).call(this), _jsxs("div", { class: "ui5-slider-inner", children: [!!this.step && this.showTickmarks && _jsxs(_Fragment, { children: [_jsx("ul", { class: "ui5-slider-tickmarks", children: this.tickmarksObject.map(tm => _jsx(_Fragment, { children: tm ?
                                         _jsx("li", { class: "ui5-slider-tickmark ui5-slider-tickmark-in-range" })
                                         :
-                                            _jsx("li", { class: "ui5-slider-tickmark" }) })) }), this.labelInterval &&
+                                            _jsx("li", { class: "ui5-slider-tickmark" }) })) }), !!this.labelInterval &&
                                 _jsx("ul", { class: {
                                         "ui5-slider-labels": true,
                                         "ui5-slider-hidden-labels": this._labelsOverlapping,

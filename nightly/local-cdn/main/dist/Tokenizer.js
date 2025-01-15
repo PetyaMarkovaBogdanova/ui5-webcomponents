@@ -95,6 +95,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
          *
          * **Note:** The `multiLine` property is in an experimental state and is a subject to change.
          * @default false
+         * @since 2.5.0
          * @public
          */
         this.multiLine = false;
@@ -103,6 +104,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
          *
          * **Note:** The `showClearAll` property is in an experimental state and is a subject to change.
          * @default false
+         * @since 2.5.0
          * @public
          */
         this.showClearAll = false;

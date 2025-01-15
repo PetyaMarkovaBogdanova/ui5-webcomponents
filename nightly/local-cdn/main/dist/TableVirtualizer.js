@@ -37,6 +37,7 @@ var TabBlocking;
  * `import "@ui5/webcomponents/dist/TableVirtualizer.js";`
  *
  * @constructor
+ * @since 2.5.0
  * @extends UI5Element
  * @public
  * @experimental This component is not intended to be used in a productive enviroment. The API is under development and may be changed in the future.
@@ -47,7 +48,7 @@ let TableVirtualizer = class TableVirtualizer extends UI5Element {
         /**
          * Defines the height of the rows in the table.
          *
-         * **Note:** This property is mandatory for the virtualization to work properly.
+         * **Note:** For virtualization to work properly, this property is mandatory.
          *
          * @default 45
          * @public
@@ -56,7 +57,7 @@ let TableVirtualizer = class TableVirtualizer extends UI5Element {
         /**
          * Defines the total count of rows in the table.
          *
-         * **Note:** This property is mandatory for the virtualization to work properly.
+         * **Note:** For virtualization to work properly, this property is mandatory.
          *
          * @default 100
          * @public

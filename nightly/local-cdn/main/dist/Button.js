@@ -397,18 +397,6 @@ Button = Button_1 = __decorate([
         shadowRootOptions: { delegatesFocus: true },
     })
     /**
-     * Fired when the component is activated either with a
-     * mouse/tap or by using the Enter or Space key.
-     *
-     * **Note:** The event will not be fired if the `disabled`
-     * property is set to `true`.
-     * @public
-     * @native
-     */
-    // @event("click", {
-    // 	bubbles: true,
-    // })
-    /**
      * Fired whenever the active state of the component changes.
      * @private
      */

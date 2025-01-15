@@ -207,6 +207,9 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         const scrollTop = this.scrollContainer.scrollTop;
         const headerHeight = this.dynamicPageHeader.getBoundingClientRect().height;
         const lastHeaderSnapped = this._headerSnapped;
+        if (this._headerSnapped && scrollTop > headerHeight) {
+            this.showHeaderInStickArea = false;
+        }
         const shouldSnap = !this._headerSnapped && scrollTop > headerHeight + SCROLL_THRESHOLD;
         const shouldExpand = this._headerSnapped && (scrollTop < headerHeight - SCROLL_THRESHOLD
             || (!scrollTop && !headerHeight));
@@ -243,6 +246,9 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
     }
     async onPinClick() {
         this.headerPinned = !this.headerPinned;
+        if (this.headerPinned) {
+            this.showHeaderInStickArea = true;
+        }
         this.fireDecoratorEvent("pin-button-toggle");
         await renderFinished();
         this.headerActions?.focusPinButton();

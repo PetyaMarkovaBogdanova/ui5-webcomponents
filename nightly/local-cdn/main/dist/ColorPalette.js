@@ -18,6 +18,7 @@ import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import { isSpace, isEnter, isDown, isUp, isTabNext, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getComponentFeature } from "@ui5/webcomponents-base/dist/FeaturesRegistry.js";
 import ColorPaletteTemplate from "./ColorPaletteTemplate.js";
+import "./ColorPaletteItem.js";
 import { COLORPALETTE_CONTAINER_LABEL, COLOR_PALETTE_MORE_COLORS_TEXT, COLOR_PALETTE_DEFAULT_COLOR_TEXT, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import ColorPaletteCss from "./generated/themes/ColorPalette.css.js";

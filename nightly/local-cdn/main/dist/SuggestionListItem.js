@@ -28,7 +28,7 @@ let SuggestionListItem = class SuggestionListItem extends ListItemStandard {
         return this.titleText.filter(node => node.nodeType !== Node.COMMENT_NODE).map(el => el.textContent).join("");
     }
     get hasDescription() {
-        return this.richDescription.length || this.description;
+        return this.richDescription.length > 0 || this.description;
     }
     get groupItem() {
         return false;

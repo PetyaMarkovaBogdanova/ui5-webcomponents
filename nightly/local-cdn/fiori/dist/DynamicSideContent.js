@@ -21,7 +21,7 @@ import DynamicSideContentTemplate from "./DynamicSideContentTemplate.js";
 // Styles
 import DynamicSideContentCss from "./generated/themes/DynamicSideContent.css.js";
 // Texts
-import { DSC_SIDE_ARIA_LABEL, } from "./generated/i18n/i18n-defaults.js";
+import { DSC_MAIN_ARIA_LABEL, DSC_SIDE_ARIA_LABEL, } from "./generated/i18n/i18n-defaults.js";
 // Breakpoint-related constants
 const S_M_BREAKPOINT = 720, // Breakpoint between S and M screen sizes
 M_L_BREAKPOINT = 1024, // Breakpoint between M and L screen sizes
@@ -150,6 +150,19 @@ let DynamicSideContent = DynamicSideContent_1 = class DynamicSideContent extends
          */
         this.equalSplit = false;
         /**
+        * Defines additional accessibility attributes on different areas of the component.
+        *
+        * The accessibilityAttributes object has the following fields:
+        *
+        *  - **mainContent**: `mainContent.ariaLabel` defines the aria-label of the main content area. Accepts any string.
+        *  - **sideContent**: `sideContent.ariaLabel` defines the aria-label of the side content area. Accepts any string.
+        *
+        * @default {}
+        * @public
+        * @since 2.6.0
+        */
+        this.accessibilityAttributes = {};
+        /**
          * @private
          */
         this._mcSpan = "0";
@@ -210,7 +223,12 @@ let DynamicSideContent = DynamicSideContent_1 = class DynamicSideContent extends
     }
     get accInfo() {
         return {
-            "label": DynamicSideContent_1.i18nBundle.getText(DSC_SIDE_ARIA_LABEL),
+            mainContent: {
+                ariaLabel: this.accessibilityAttributes.mainContent?.ariaLabel || DynamicSideContent_1.i18nBundle.getText(DSC_MAIN_ARIA_LABEL),
+            },
+            sideContent: {
+                ariaLabel: this.accessibilityAttributes.sideContent?.ariaLabel || DynamicSideContent_1.i18nBundle.getText(DSC_SIDE_ARIA_LABEL),
+            },
         };
     }
     get sizeS() {
@@ -373,6 +391,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], DynamicSideContent.prototype, "equalSplit", void 0);
+__decorate([
+    property({ type: Object })
+], DynamicSideContent.prototype, "accessibilityAttributes", void 0);
 __decorate([
     property({ noAttribute: true })
 ], DynamicSideContent.prototype, "_mcSpan", void 0);

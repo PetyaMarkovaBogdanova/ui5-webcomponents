@@ -37,7 +37,6 @@ import FormItemCss from "./generated/themes/FormItem.css.js";
  * @implements {IFormItem}
  * @public
  * @since 2.0.0
- * @experimental This component is availabe since 2.0 under an experimental flag and its API and behaviour are subject to change.
  * @extends UI5Element
  */
 let FormItem = class FormItem extends UI5Element {

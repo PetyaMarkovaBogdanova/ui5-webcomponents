@@ -8,6 +8,7 @@ var MenuItem_1;
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
@@ -162,7 +163,7 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
             this._popover.open = false;
         }
         this.selected = false;
-        this.fireEvent("close-menu", {});
+        this.fireDecoratorEvent("close-menu");
     }
     _close() {
         if (this._popover) {
@@ -171,17 +172,17 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
         this.selected = false;
     }
     _beforePopoverOpen(e) {
-        const prevented = !this.fireEvent("before-open", {}, true, false);
+        const prevented = !this.fireDecoratorEvent("before-open", {});
         if (prevented) {
             e.preventDefault();
         }
     }
     _afterPopoverOpen() {
         this.items[0]?.focus();
-        this.fireEvent("open", {}, false, false);
+        this.fireDecoratorEvent("open");
     }
     _beforePopoverClose(e) {
-        const prevented = !this.fireEvent("before-close", { escPressed: e.detail.escPressed }, true, false);
+        const prevented = !this.fireDecoratorEvent("before-close", { escPressed: e.detail.escPressed });
         if (prevented) {
             e.preventDefault();
             return;
@@ -190,12 +191,12 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
         if (e.detail.escPressed) {
             this.focus();
             if (isPhone()) {
-                this.fireEvent("close-menu", {});
+                this.fireDecoratorEvent("close-menu");
             }
         }
     }
     _afterPopoverClose() {
-        this.fireEvent("close", {}, false, false);
+        this.fireDecoratorEvent("close");
     }
 };
 __decorate([
@@ -244,6 +245,49 @@ MenuItem = MenuItem_1 = __decorate([
         template: MenuItemTemplate,
         styles: [ListItem.styles, menuItemCss],
     })
+    /**
+     * Fired before the menu is opened. This event can be cancelled, which will prevent the menu from opening.
+     *
+     * **Note:** Since 1.14.0 the event is also fired before a sub-menu opens.
+     * @public
+     * @since 1.10.0
+     * @param { HTMLElement } item The `ui5-menu-item` that triggers opening of the sub-menu or undefined when fired upon root menu opening.
+     */
+    ,
+    event("before-open", {
+        cancelable: true,
+    })
+    /**
+     * Fired after the menu is opened.
+     * @public
+     */
+    ,
+    event("open")
+    /**
+     * Fired when the menu is being closed.
+     * @private
+     */
+    ,
+    event("close-menu", {
+        bubbles: true,
+    })
+    /**
+     * Fired before the menu is closed. This event can be cancelled, which will prevent the menu from closing.
+     * @public
+     * @param {boolean} escPressed Indicates that `ESC` key has triggered the event.
+     * @since 1.10.0
+     */
+    ,
+    event("before-close", {
+        cancelable: true,
+    })
+    /**
+     * Fired after the menu is closed.
+     * @public
+     * @since 1.10.0
+     */
+    ,
+    event("close")
 ], MenuItem);
 MenuItem.define();
 export default MenuItem;

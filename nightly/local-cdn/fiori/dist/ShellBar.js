@@ -113,11 +113,11 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
          */
         this.showSearchField = false;
         /**
-         * .
-         *
          * Defines whether or not the search field is open by default
          * @default false
          * @public
+         * @since 2.6.1
+         * **Note:** The `showOpenSearchField` property is in an experimental state and is a subject to change.
          */
         this.showOpenSearchField = false;
         /**
@@ -213,7 +213,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             this.showSearchField = false;
             return;
         }
-        if ((spacerWidth <= 16 || this.additionalContextHidden.length !== 0) && this.showSearchField === true) {
+        if ((spacerWidth <= 0 || this.additionalContextHidden.length !== 0) && this.showSearchField === true) {
             this.showSearchField = false;
         }
         if (spacerWidth > searchFieldWidth && this.additionalContextHidden.length === 0 && this.showSearchField === false) {
@@ -366,7 +366,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     get additionalContextSorted() {
         return this.additionalContext.sort((a, b) => {
             return parseInt(a.getAttribute("data-hide-order") || "0") - parseInt(b.getAttribute("data-hide-order") || "0");
-        });
+        }).map(item => this.shadowRoot.querySelector(`#${item.slot}`)).filter(item => item !== null);
     }
     get additionalContextContainer() {
         return this.shadowRoot.querySelector(".ui5-shellbar-overflow-container-additional-content");
@@ -437,7 +437,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         for (let i = 0; i < additionalContextSorted.length; i++) {
             const item = additionalContextSorted[i];
             item.classList.remove("ui5-shellbar-hidden-button");
-            const itemWidth = item.offsetWidth + this.domCalculatedValues("--_ui5-shellbar-content-margin-start");
+            const itemWidth = item.offsetWidth + parseInt(getComputedStyle(item).getPropertyValue("margin-inline-start"));
             usedWidth += itemWidth;
             if (usedWidth > totalWidth) {
                 item.classList.add("ui5-shellbar-hidden-button");
@@ -457,12 +457,13 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         for (let i = 0; i < itemsToOverflow.length; i++) {
             // reset item visibility before calculating
             const item = itemsToOverflow[i];
+            const isAdditionalContext = this.additionalContextSorted.includes(item);
             if (item.classList.contains("ui5-shellbar-hidden-button")) {
                 item.classList.remove("ui5-shellbar-hidden-button");
                 restoreVisibility = true;
             }
-            const isAdditionalContext = this.additionalContextSorted.includes(item);
-            const gap = isAdditionalContext ? this.domCalculatedValues("--_ui5-shellbar-content-margin-start") : this.domCalculatedValues("--_ui5-shellbar-overflow-button-margin");
+            // exlcude the gap if an item is in the additional context as the wrapped element's width is already including the gap
+            const gap = isAdditionalContext ? 0 : parseInt(getComputedStyle(item).getPropertyValue("margin-inline-start"));
             const itemWidth = item.offsetWidth + gap;
             if (restoreVisibility) {
                 item.classList.add("ui5-shellbar-hidden-button");
@@ -486,7 +487,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._hideOverflowItems(hiddenItems, items);
         // last, start hiding the items that are in the additional context
         this._hideAdditionalContext();
-        if (this.additionalContextHidden.length && JSON.stringify(this.additionalContextHidden) !== JSON.stringify(this._cachedHiddenContent)) {
+        if (JSON.stringify(this.additionalContextHidden) !== JSON.stringify(this._cachedHiddenContent)) {
             this.fireDecoratorEvent("additional-context-disappears", { items: this.additionalContextHidden });
         }
         this._cachedHiddenContent = this.additionalContextHidden;
@@ -504,12 +505,11 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     _updateAssistantIconVisibility(items) {
         if (this.assistant.length) {
+            const assistantWrapper = this.shadowRoot.getElementById("assistant");
             const assistantInfo = items.find(item => item.text === "Assistant");
-            this.assistant[0].classList.remove("ui5-shellbar-hidden-button");
-            this.fireDecoratorEvent("assistant-action-disappears", { item: this.assistant[0], isHidden: false });
+            assistantWrapper && assistantWrapper.classList.remove("ui5-shellbar-hidden-button");
             if (assistantInfo && assistantInfo.classes.indexOf("ui5-shellbar-hidden-button") > 0) {
-                this.assistant[0].classList.add("ui5-shellbar-hidden-button");
-                this.fireDecoratorEvent("assistant-action-disappears", { item: this.assistant[0], isHidden: true });
+                assistantWrapper && assistantWrapper.classList.add("ui5-shellbar-hidden-button");
             }
         }
     }
@@ -995,10 +995,10 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         return !this.isSBreakPoint && this.hasAdditionalContext;
     }
     get _hasVisibleStartContent() {
-        return this.startContent.some(item => !item.classList.contains("ui5-shellbar-hidden-button"));
+        return this.startContent.some(item => this.shadowRoot.getElementById(item.slot) && !this.shadowRoot.getElementById(item.slot).classList.contains("ui5-shellbar-hidden-button"));
     }
     get _hasVisibleEndContent() {
-        return this.endContent.some(item => !item.classList.contains("ui5-shellbar-hidden-button"));
+        return this.endContent.some(item => this.shadowRoot.getElementById(item.slot) && !this.shadowRoot.getElementById(item.slot).classList.contains("ui5-shellbar-hidden-button"));
     }
     get itemsToOverflow() {
         const overflowActions = Array.from(this.shadowRoot.querySelectorAll(".ui5-shellbar-button:not(.ui5-shellbar-overflow-button):not(.ui5-shellbar-invisible-button):not(.ui5-shellbar-cancel-button):not(.ui5-shellbar-no-overflow-button)"));
@@ -1017,7 +1017,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         return [start, end];
     }
     get additionalContextHidden() {
-        return [...this.endContent, ...this.startContent].filter(item => item.classList.contains("ui5-shellbar-hidden-button"));
+        return [...this.endContent, ...this.startContent].filter(item => this.shadowRoot.getElementById(item.slot) && this.shadowRoot.getElementById(item.slot).classList.contains("ui5-shellbar-hidden-button"));
     }
     get _lessSearchSpace() {
         const targetContainer = this.shadowRoot.querySelector(".ui5-shellbar-spacer");
@@ -1244,24 +1244,11 @@ ShellBar = ShellBar_1 = __decorate([
      * @param {Array<HTMLElement>} array of all the items that disappeared from additional context slot
      * @public
      * @since 2.6.1
+     * **Note:** The `additional-context-disappears` event is in an experimental state and is a subject to change.
      */
     ,
     event("additional-context-disappears", {
         bubbles: true,
-        cancelable: true,
-    })
-    /**
-     * Fired, when the assistant action is hidden
-     *
-     * @param {HTMLElement} item DOM ref of the hidden assistant action
-     * @param {Boolean} isHidden whether the assistant action is hidden
-     * @public
-     * @since 2.6.1
-     */
-    ,
-    event("assistant-action-disappears", {
-        bubbles: true,
-        cancelable: false,
     })
 ], ShellBar);
 ShellBar.define();

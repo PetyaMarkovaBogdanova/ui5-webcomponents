@@ -1,5 +1,4 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import type { Timeout } from "@ui5/webcomponents-base/dist/types.js";
@@ -70,6 +69,7 @@ declare class Menu extends UI5Element {
         "open": void;
         "before-close": MenuBeforeCloseEventDetail;
         "close": void;
+        "close-menu": void;
     };
     /**
      * Defines the header text of the menu (displayed on mobile).
@@ -133,7 +133,7 @@ declare class Menu extends UI5Element {
     _itemKeyDown(e: KeyboardEvent): void;
     _beforePopoverOpen(e: CustomEvent): void;
     _afterPopoverOpen(): void;
-    _beforePopoverClose(e: UI5CustomEvent<ResponsivePopover, "before-close">): void;
+    _beforePopoverClose(e: CustomEvent): void;
     _afterPopoverClose(): void;
 }
 export default Menu;

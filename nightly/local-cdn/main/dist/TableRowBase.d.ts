@@ -14,6 +14,7 @@ import type Table from "./Table.js";
 declare abstract class TableRowBase extends UI5Element {
     cells: Array<TableCellBase>;
     _invalidate: number;
+    _rowActionCount: number;
     static i18nBundle: I18nBundle;
     onEnterDOM(): void;
     onBeforeRendering(): void;

@@ -240,7 +240,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
     getEnabledItems(items) {
         const result = new Array();
         this._getFocusableItems(items).forEach(item => {
-            if (item.classList.contains("ui5-sn-item-hidden")) {
+            if (this.collapsed && item.classList.contains("ui5-sn-item-hidden")) {
                 return;
             }
             if (!item.disabled) {

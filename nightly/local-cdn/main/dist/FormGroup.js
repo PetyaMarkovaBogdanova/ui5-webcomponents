@@ -32,7 +32,6 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
  * @public
  * @implements {IFormItem}
  * @since 2.0.0
- * @experimental This component is availabe since 2.0 under an experimental flag and its API and behaviour are subject to change.
  * @extends UI5Element
  */
 let FormGroup = class FormGroup extends UI5Element {

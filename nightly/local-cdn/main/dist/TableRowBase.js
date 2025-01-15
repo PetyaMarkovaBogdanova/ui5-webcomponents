@@ -28,6 +28,7 @@ let TableRowBase = TableRowBase_1 = class TableRowBase extends UI5Element {
     constructor() {
         super(...arguments);
         this._invalidate = 0;
+        this._rowActionCount = 0;
     }
     onEnterDOM() {
         this.setAttribute("role", "row");
@@ -99,6 +100,9 @@ let TableRowBase = TableRowBase_1 = class TableRowBase extends UI5Element {
 __decorate([
     property({ type: Number, noAttribute: true })
 ], TableRowBase.prototype, "_invalidate", void 0);
+__decorate([
+    property({ type: Number, noAttribute: true })
+], TableRowBase.prototype, "_rowActionCount", void 0);
 __decorate([
     i18n("@ui5/webcomponents")
 ], TableRowBase, "i18nBundle", void 0);

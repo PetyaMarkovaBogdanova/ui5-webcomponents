@@ -10,7 +10,7 @@ export default function DialogTemplate() {
     });
 }
 function beforeContent() {
-    return (_jsx(_Fragment, { children: this._displayHeader &&
+    return (_jsx(_Fragment, { children: !!this._displayHeader &&
             _jsx("header", { children: _jsxs("div", { class: "ui5-popup-header-root", id: "ui5-popup-header", role: "group", "aria-describedby": this.effectiveAriaDescribedBy, "aria-roledescription": this.ariaRoleDescriptionHeaderText, tabIndex: this._headerTabIndex, onKeyDown: this._onDragOrResizeKeyDown, onMouseDown: this._onDragMouseDown, part: "header", children: [this.hasValueState &&
                             _jsx(Icon, { class: "ui5-dialog-value-state-icon", name: this._dialogStateIcon }), this.header.length ?
                             _jsx("slot", { name: "header" })

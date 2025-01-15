@@ -25,12 +25,12 @@ export default function UserMenuTemplate() {
                 :
                     _jsx("div", { class: "ui5-pm-header", slot: "header", children: headerContent.call(this) }), this.showOtherAccounts &&
                 _jsxs(Panel, { collapsed: true, class: "ui5-pm-other-accounts", children: [_jsxs("div", { slot: "header", class: "ui5-user-menu-account-header", children: [_jsxs(Title, { slot: "header", level: "H4", children: [this._otherAccountsButtonText, " (", this._otherAccounts.length, ")"] }), this.showAddAccount &&
-                                    _jsx(Button, { slot: "header", class: "ui5-pm-add-account-btn", design: "Transparent", icon: addEmployee, onClick: this._handleAddAccountClick, tooltip: this._addAccountTooltip })] }), this._otherAccounts.length &&
+                                    _jsx(Button, { slot: "header", class: "ui5-pm-add-account-btn", design: "Transparent", icon: addEmployee, onClick: this._handleAddAccountClick, tooltip: this._addAccountTooltip })] }), this._otherAccounts.length > 0 &&
                             _jsx(List, { onItemClick: this._handleAccountSwitch, children: this._otherAccounts.map(account => _jsx(ListItemCustom, { ref: this.captureRef.bind(account), children: _jsxs("div", { class: "ui5-pm-other-accounts-content", children: [_jsx(Avatar, { slot: "image", size: "S", initials: account._initials, fallbackIcon: personPlaceholder, children: account.avatarSrc &&
                                                     _jsx("img", { src: account.avatarSrc }) }), _jsxs("div", { children: [account.titleText &&
                                                         _jsx(Title, { children: account.titleText }), account.subtitleText &&
                                                         _jsx(Label, { children: account.subtitleText }), account.description &&
-                                                        _jsx(Label, { children: account.description })] })] }) })) })] }), this.menuItems.length &&
+                                                        _jsx(Label, { children: account.description })] })] }) })) })] }), this.menuItems.length > 0 &&
                 _jsx(List, { class: "ui5-user-menu-list", selectionMode: "None", separators: "None", accessibleRole: "Menu", onItemClick: this._handleMenuItemClick, "onui5-close-menu": this._handleMenuItemClose, children: _jsx("slot", {}) }), _jsx("div", { slot: "footer", class: "ui5-pm-footer", children: _jsx(Button, { class: "ui5-pm-sign-out-btn", design: "Transparent", icon: log, onClick: this._handleSignOutClick, children: this._signOutButtonText }) })] }));
 }
 function headerContent() {

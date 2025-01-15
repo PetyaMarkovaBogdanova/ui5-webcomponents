@@ -112,7 +112,6 @@ declare class ShellBar extends UI5Element {
         "menu-item-click": ShellBarMenuItemClickEventDetail;
         "search-button-click": ShellBarSearchButtonEventDetail;
         "additional-context-disappears": ShellBarAdditionalContextItemDisappearsEventDetail;
-        "assistant-action-disappears": ShellBarAssistantActionDisappearsEventDetail;
     };
     /**
      * Defines the `primaryTitle`.
@@ -158,11 +157,11 @@ declare class ShellBar extends UI5Element {
      */
     showSearchField: boolean;
     /**
-     * .
-     *
      * Defines whether or not the search field is open by default
      * @default false
      * @public
+     * @since 2.6.1
+     * **Note:** The `showOpenSearchField` property is in an experimental state and is a subject to change.
      */
     showOpenSearchField: boolean;
     /**
@@ -276,13 +275,15 @@ declare class ShellBar extends UI5Element {
     /**
      * Define the items displayed in the start of the additional content area.
      * @public
-     * @since 2.5.0
+     * @since 2.6.1
+     * **Note:** The `startContent` slot is in an experimental state and is a subject to change.
      */
     startContent: Array<HTMLElement>;
     /**
      * Define the items displayed in the end of the additional content area.
      * @public
-     * @since 2.5.0
+     * @since 2.6.1
+     * **Note:** The `endContent` slot is in an experimental state and is a subject to change.
      */
     endContent: Array<HTMLElement>;
     static i18nBundle: I18nBundle;

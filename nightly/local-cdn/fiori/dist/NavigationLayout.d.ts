@@ -1,4 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import NavigationLayoutMode from "./types/NavigationLayoutMode.js";
 import type SideNavigation from "./SideNavigation.js";
 /**
  * @class
@@ -14,9 +15,10 @@ import type SideNavigation from "./SideNavigation.js";
  *
  * ### Responsive Behavior
  *
- * On desktop and tablet devices, the side navigation remains visible and can
- * be expanded or collapsed using the `sideCollapsed` property. On phone devices, the side navigation
- * is hidden by default but can be displayed using the same `sideCollapsed` property.
+ * On desktop and tablet devices, the side navigation is visible
+ * by default and can be expanded or collapsed using the `mode` property.
+ * On phone devices, the side navigation is hidden by default and can
+ * be displayed using the `mode` property.
  *
  * ### ES6 Module Import
  *
@@ -27,7 +29,17 @@ import type SideNavigation from "./SideNavigation.js";
  * @public
  */
 declare class NavigationLayout extends UI5Element {
-    _sideCollapsed: boolean;
+    _defaultSideCollapsed: boolean;
+    /**
+     * Specifies the navigation layout mode.
+     * @default "Auto"
+     * @public
+     */
+    mode: `${NavigationLayoutMode}`;
+    /**
+     * @private
+     */
+    sideCollapsed: boolean;
     /**
      * @private
      */
@@ -37,12 +49,10 @@ declare class NavigationLayout extends UI5Element {
      */
     isTablet: boolean;
     /**
-     * Indicates whether the side navigation is collapsed.
-     * @default false
+     * Gets whether the side navigation is collapsed.
      * @public
      */
-    set sideCollapsed(value: boolean);
-    get sideCollapsed(): boolean;
+    isSideCollapsed(): boolean;
     /**
      * Defines the header.
      * @public
@@ -59,5 +69,6 @@ declare class NavigationLayout extends UI5Element {
      */
     content: Array<HTMLElement>;
     onBeforeRendering(): void;
+    calcSideCollapsed(): void;
 }
 export default NavigationLayout;

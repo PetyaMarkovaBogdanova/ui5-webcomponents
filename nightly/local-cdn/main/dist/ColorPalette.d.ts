@@ -7,6 +7,7 @@ import type Button from "./Button.js";
 import type Dialog from "./Dialog.js";
 import type ColorPaletteMoreColors from "./features/ColorPaletteMoreColors.js";
 import type ColorPicker from "./ColorPicker.js";
+import "./ColorPaletteItem.js";
 /**
  * Interface for components that may be used inside a `ui5-color-palette` or `ui5-color-palette-popover`
  * @public

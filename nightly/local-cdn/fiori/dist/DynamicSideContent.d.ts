@@ -3,11 +3,17 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import SideContentPosition from "./types/SideContentPosition.js";
 import SideContentVisibility from "./types/SideContentVisibility.js";
 import SideContentFallDown from "./types/SideContentFallDown.js";
+import type { AccessibilityAttributes } from "@ui5/webcomponents-base";
 type DynamicSideContentLayoutChangeEventDetail = {
     currentBreakpoint: string;
     previousBreakpoint: string | undefined;
     mainContentVisible: boolean;
     sideContentVisible: boolean;
+};
+type DynamicSideContentAriaAccessibilityAttributes = Pick<AccessibilityAttributes, "ariaLabel">;
+type DynamicSideContentAccessibilityAttributes = {
+    mainContent?: DynamicSideContentAriaAccessibilityAttributes;
+    sideContent?: DynamicSideContentAriaAccessibilityAttributes;
 };
 /**
  * @class
@@ -133,6 +139,19 @@ declare class DynamicSideContent extends UI5Element {
      */
     equalSplit: boolean;
     /**
+    * Defines additional accessibility attributes on different areas of the component.
+    *
+    * The accessibilityAttributes object has the following fields:
+    *
+    *  - **mainContent**: `mainContent.ariaLabel` defines the aria-label of the main content area. Accepts any string.
+    *  - **sideContent**: `sideContent.ariaLabel` defines the aria-label of the side content area. Accepts any string.
+    *
+    * @default {}
+    * @public
+    * @since 2.6.0
+    */
+    accessibilityAttributes: DynamicSideContentAccessibilityAttributes;
+    /**
      * @private
      */
     _mcSpan: string;
@@ -185,9 +204,7 @@ declare class DynamicSideContent extends UI5Element {
             height: string;
         };
     };
-    get accInfo(): {
-        label: string;
-    };
+    get accInfo(): DynamicSideContentAccessibilityAttributes;
     get sizeS(): string;
     get sizeM(): string;
     get sizeL(): string;
@@ -208,4 +225,4 @@ declare class DynamicSideContent extends UI5Element {
     _setSpanSizes(mainSize: string, sideSize: string): void;
 }
 export default DynamicSideContent;
-export type { DynamicSideContentLayoutChangeEventDetail, };
+export type { DynamicSideContentLayoutChangeEventDetail, DynamicSideContentAccessibilityAttributes, };

@@ -30,13 +30,13 @@ import type TextEmptyIndicatorMode from "./types/TextEmptyIndicatorMode.js";
  * @constructor
  * @extends UI5Element
  * @public
- * @since 2.5.0
+ * @since 2.6.0
  */
 declare class ExpandableText extends UI5Element {
     /**
      * Text of the component.
      *
-     * @default ""
+     * @default undefined
      * @public
      */
     text?: string;

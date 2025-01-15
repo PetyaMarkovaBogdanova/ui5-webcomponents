@@ -117,9 +117,9 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         if (!item._popover || item._popover.open) {
             return;
         }
-        this.fireEvent("before-open", {
+        this.fireDecoratorEvent("before-open", {
             item,
-        }, false, false);
+        });
         item._popover.opener = item;
         item._popover.open = true;
         item.selected = true;
@@ -167,12 +167,12 @@ let Menu = Menu_1 = class Menu extends UI5Element {
     _itemClick(e) {
         const item = e.detail.item;
         if (!item._popover) {
-            const prevented = !this.fireEvent("item-click", {
+            const prevented = !this.fireDecoratorEvent("item-click", {
                 "item": item,
                 "text": item.text || "",
-            }, true, false);
+            });
             if (!prevented && this._popover) {
-                item.fireEvent("close-menu", {});
+                item.fireDecoratorEvent("close-menu");
             }
         }
         else {
@@ -200,7 +200,7 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         }
     }
     _beforePopoverOpen(e) {
-        const prevented = !this.fireEvent("before-open", {}, true, true);
+        const prevented = !this.fireDecoratorEvent("before-open", {});
         if (prevented) {
             this.open = false;
             e.preventDefault();
@@ -208,10 +208,10 @@ let Menu = Menu_1 = class Menu extends UI5Element {
     }
     _afterPopoverOpen() {
         this._menuItems[0]?.focus();
-        this.fireEvent("open", {}, false, true);
+        this.fireDecoratorEvent("open");
     }
     _beforePopoverClose(e) {
-        const prevented = !this.fireEvent("before-close", { escPressed: e.detail.escPressed }, true, true);
+        const prevented = !this.fireDecoratorEvent("before-close", { escPressed: e.detail.escPressed });
         if (prevented) {
             this.open = true;
             e.preventDefault();
@@ -254,42 +254,57 @@ Menu = Menu_1 = __decorate([
      * Fired when an item is being clicked.
      *
      * **Note:** Since 1.17.0 the event is preventable, allowing the menu to remain open after an item is pressed.
-     * @allowPreventDefault
      * @param { HTMLElement } item The currently clicked menu item.
      * @param { string } text The text of the currently clicked menu item.
      * @public
      */
     ,
-    event("item-click")
+    event("item-click", {
+        cancelable: true,
+    })
     /**
-     * Fired before the menu is opened. This event can be cancelled, which will prevent the menu from opening. **This event does not bubble.**
+     * Fired before the menu is opened. This event can be cancelled, which will prevent the menu from opening.
      *
      * **Note:** Since 1.14.0 the event is also fired before a sub-menu opens.
      * @public
-     * @allowPreventDefault
      * @since 1.10.0
      * @param { HTMLElement } item The `ui5-menu-item` that triggers opening of the sub-menu or undefined when fired upon root menu opening.
      */
     ,
-    event("before-open")
+    event("before-open", {
+        bubbles: true,
+        cancelable: true,
+    })
     /**
-     * Fired after the menu is opened. **This event does not bubble.**
+     * Fired after the menu is opened.
      * @public
      * @since 1.10.0
      */
     ,
-    event("open")
+    event("open", {
+        bubbles: true,
+    })
     /**
-     * Fired before the menu is closed. This event can be cancelled, which will prevent the menu from closing. **This event does not bubble.**
+     * Fired when the menu is being closed.
+     * @private
+     */
+    ,
+    event("close-menu", {
+        bubbles: true,
+    })
+    /**
+     * Fired before the menu is closed. This event can be cancelled, which will prevent the menu from closing.
      * @public
-     * @allowPreventDefault
      * @param {boolean} escPressed Indicates that `ESC` key has triggered the event.
      * @since 1.10.0
      */
     ,
-    event("before-close")
+    event("before-close", {
+        bubbles: true,
+        cancelable: true,
+    })
     /**
-     * Fired after the menu is closed. **This event does not bubble.**
+     * Fired after the menu is closed.
      * @public
      * @since 1.10.0
      */

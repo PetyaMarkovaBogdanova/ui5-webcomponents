@@ -863,6 +863,9 @@ class UI5Element extends HTMLElement {
     get isUI5Element() {
         return true;
     }
+    get isUI5AbstractElement() {
+        return !this.constructor._needsShadowDOM();
+    }
     get classes() {
         return {};
     }

@@ -81,8 +81,10 @@ let TableHeaderCell = class TableHeaderCell extends TableCellBase {
     }
     onBeforeRendering() {
         super.onBeforeRendering();
-        // overwrite setting of TableCellBase so that the TableHeaderCell always uses the slot variable
-        this.style.justifyContent = `var(--horizontal-align-${this._individualSlot})`;
+        if (this._individualSlot) {
+            // overwrite setting of TableCellBase so that the TableHeaderCell always uses the slot variable
+            this.style.justifyContent = `var(--horizontal-align-${this._individualSlot})`;
+        }
     }
 };
 __decorate([
@@ -97,6 +99,9 @@ __decorate([
 __decorate([
     property({ type: Number })
 ], TableHeaderCell.prototype, "importance", void 0);
+__decorate([
+    property()
+], TableHeaderCell.prototype, "popinText", void 0);
 __decorate([
     property({ type: Boolean, noAttribute: true })
 ], TableHeaderCell.prototype, "_popin", void 0);

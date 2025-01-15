@@ -3,7 +3,7 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
     new (): {
         eventDetails: object;
         _jsxEvents: Omit<import("@ui5/webcomponents-base/jsx-runtime").JSX.DOMAttributes<any>, "onClose" | "onToggle" | "onChange" | "onSelect" | "onInput"> & object;
-        _jsxProps: Pick<import("@ui5/webcomponents-base/jsx-runtime").JSX.AllHTMLAttributes<HTMLElement>, "contextmenu" | "slot" | "style" | "title" | "pattern" | "dir" | "id" | "accesskey" | "autocapitalize" | "autofocus" | "autocomplete" | "contenteditable" | "class" | "draggable" | "enterkeyhint" | "hidden" | "inputmode" | "lang" | "nonce" | "part" | "exportparts" | "spellcheck" | "tabIndex" | "tabindex" | "translate" | "ref"> & Partial<Omit<any, keyof HTMLElement>> & Partial<Omit<import("@ui5/webcomponents-base/jsx-runtime").JSX.DOMAttributes<any>, "onClose" | "onToggle" | "onChange" | "onSelect" | "onInput"> & object> & {
+        _jsxProps: Pick<import("@ui5/webcomponents-base/jsx-runtime").JSX.AllHTMLAttributes<HTMLElement>, "contextmenu" | "slot" | "style" | "title" | "pattern" | "dir" | "id" | "accesskey" | "autocapitalize" | "autofocus" | "autocomplete" | "contenteditable" | "class" | "draggable" | "enterkeyhint" | "hidden" | "inputmode" | "lang" | "nonce" | "part" | "exportparts" | "spellcheck" | "tabIndex" | "tabindex" | "translate" | "ref" | "inert"> & Partial<Omit<any, keyof HTMLElement>> & Partial<Omit<import("@ui5/webcomponents-base/jsx-runtime").JSX.DOMAttributes<any>, "onClose" | "onToggle" | "onChange" | "onSelect" | "onInput"> & object> & {
             key?: any;
         };
         __id?: string;
@@ -76,6 +76,7 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
         detachComponentStateFinalized(callback: () => void): void;
         readonly effectiveDir: string | undefined;
         readonly isUI5Element: boolean;
+        readonly isUI5AbstractElement: boolean;
         readonly classes: import("../types.js").ClassMap;
         readonly accessibilityInfo: import("../types.js").AccessibilityInfo;
         readonly validity: ValidityState;

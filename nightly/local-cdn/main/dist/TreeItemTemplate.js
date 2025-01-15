@@ -8,7 +8,7 @@ export default function TreeItemTemplate(hooks) {
     return TreeItemBaseTemplate.call(this, currentHooks);
 }
 function listItemContent() {
-    return _jsxs(_Fragment, { children: [_jsx("div", { class: "ui5-li-text-wrapper", children: this._showTitle &&
+    return _jsxs(_Fragment, { children: [_jsx("div", { class: "ui5-li-text-wrapper", children: !!this._showTitle &&
                     _jsxs("div", { part: "title", class: "ui5-li-title", children: [" ", this.text] }) }), this.additionalText &&
                 _jsx("span", { part: "additional-text", class: "ui5-li-additional-text", children: this.additionalText })] });
 }

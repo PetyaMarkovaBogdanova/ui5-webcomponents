@@ -11,7 +11,7 @@ import TableRowBase from "./TableRowBase.js";
 import TableHeaderRowTemplate from "./generated/templates/TableHeaderRowTemplate.lit.js";
 import TableHeaderRowStyles from "./generated/themes/TableHeaderRow.css.js";
 import TableHeaderCell from "./TableHeaderCell.js";
-import { TABLE_SELECTION, TABLE_ROW_POPIN, } from "./generated/i18n/i18n-defaults.js";
+import { TABLE_SELECTION, TABLE_ROW_POPIN, TABLE_ROW_ACTIONS, } from "./generated/i18n/i18n-defaults.js";
 /**
  * @class
  *
@@ -61,6 +61,9 @@ class TableHeaderRow extends TableRowBase {
     isHeaderRow() {
         return true;
     }
+    get _hasRowActions() {
+        return this._table ? this._table._hasRowActions : false;
+    }
     get _isSelectable() {
         return this._isMultiSelect;
     }
@@ -72,6 +75,9 @@ class TableHeaderRow extends TableRowBase {
     }
     get _i18nRowPopin() {
         return TableRowBase.i18nBundle.getText(TABLE_ROW_POPIN);
+    }
+    get _i18nRowActions() {
+        return TableRowBase.i18nBundle.getText(TABLE_ROW_ACTIONS);
     }
 };
 __decorate([

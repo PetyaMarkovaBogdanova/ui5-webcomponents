@@ -6,5 +6,5 @@ ${i.description}`).join("")}`),[...s.keys()].forEach(i=>{let o,r;i===g?(o=1,r={d
 WARNING! If your code uses features of the above web components, unavailable in ${r.description}, it might not work as expected!`:t=`${t}
 Since the above web components were defined by the same or newer version runtime, they should be compatible with your code.`}),t=`${t}
 
-To prevent other runtimes from defining tags that you use, consider using scoping or have third-party libraries use scoping: https://github.com/SAP/ui5-webcomponents/blob/main/docs/2-advanced/03-scoping.md.`,console.warn(t)};export{h as registerTag,w as isTagRegistered,$ as getAllRegisteredTags,y as recordTagRegistrationFailure};
+To prevent other runtimes from defining tags that you use, consider using scoping or have third-party libraries use scoping: https://github.com/SAP/ui5-webcomponents/blob/main/docs/2-advanced/06-scoping.md.`,console.warn(t)};export{h as registerTag,w as isTagRegistered,$ as getAllRegisteredTags,y as recordTagRegistrationFailure};
 //# sourceMappingURL=CustomElementsRegistry.js.map

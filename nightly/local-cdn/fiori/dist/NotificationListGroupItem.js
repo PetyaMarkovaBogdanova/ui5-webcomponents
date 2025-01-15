@@ -10,21 +10,17 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import Button from "@ui5/webcomponents/dist/Button.js";
-import BusyIndicator from "@ui5/webcomponents/dist/BusyIndicator.js";
-import Icon from "@ui5/webcomponents/dist/Icon.js";
-import NotificationListGroupList from "./NotificationListGroupList.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import NotificationListItemBase from "./NotificationListItemBase.js";
 // Icons
-import "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
-import "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
+import iconNavigationRightArrow from "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
+import iconNavigationDownArrow from "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
 // Texts
 import { NOTIFICATION_LIST_GROUP_ITEM_TXT, NOTIFICATION_LIST_GROUP_COLLAPSED, NOTIFICATION_LIST_GROUP_EXPANDED, NOTIFICATION_LIST_GROUP_ITEM_TOGGLE_ICON_COLLAPSE_TITLE, } from "./generated/i18n/i18n-defaults.js";
 // Templates
-import NotificationListGroupItemTemplate from "./generated/templates/NotificationListGroupItemTemplate.lit.js";
+import NotificationListGroupItemTemplate from "./NotificationListGroupItemTemplate.js";
 // Styles
 import NotificationListGroupItemCss from "./generated/themes/NotificationListGroupItem.css.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 /**
  * @class
  *
@@ -80,7 +76,7 @@ let NotificationListGroupItem = NotificationListGroupItem_1 = class Notification
     onBeforeRendering() {
         super.onBeforeRendering();
         this.items.forEach(item => {
-            item._ariaLevel = "2";
+            item._ariaLevel = 2;
         });
         if (this.loading) {
             this.clearChildBusyIndicator();
@@ -129,7 +125,7 @@ let NotificationListGroupItem = NotificationListGroupItem_1 = class Notification
         return false;
     }
     get groupCollapsedIcon() {
-        return this.collapsed ? "navigation-right-arrow" : "navigation-down-arrow";
+        return this.collapsed ? iconNavigationRightArrow : iconNavigationDownArrow;
     }
     toggleCollapsed() {
         this.collapsed = !this.collapsed;
@@ -195,17 +191,11 @@ NotificationListGroupItem = NotificationListGroupItem_1 = __decorate([
     customElement({
         tag: "ui5-li-notification-group",
         languageAware: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: [
             NotificationListGroupItemCss,
         ],
         template: NotificationListGroupItemTemplate,
-        dependencies: [
-            NotificationListGroupList,
-            Button,
-            Icon,
-            BusyIndicator,
-        ],
     })
     /**
      * Fired when the `ui5-li-notification-group` is expanded/collapsed by user interaction.

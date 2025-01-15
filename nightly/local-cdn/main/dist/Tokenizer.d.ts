@@ -82,6 +82,7 @@ declare class Tokenizer extends UI5Element {
      *
      * **Note:** The `multiLine` property is in an experimental state and is a subject to change.
      * @default false
+     * @since 2.5.0
      * @public
      */
     multiLine: boolean;
@@ -90,6 +91,7 @@ declare class Tokenizer extends UI5Element {
      *
      * **Note:** The `showClearAll` property is in an experimental state and is a subject to change.
      * @default false
+     * @since 2.5.0
      * @public
      */
     showClearAll: boolean;
