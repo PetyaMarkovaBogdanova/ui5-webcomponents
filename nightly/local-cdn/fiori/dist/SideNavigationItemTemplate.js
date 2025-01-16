@@ -2,7 +2,6 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "@ui5/webcompo
 import Icon from "@ui5/webcomponents/dist/Icon.js";
 import navRightArrow from "@ui5/webcomponents-icons/dist/navigation-right-arrow.js";
 import navDownArrow from "@ui5/webcomponents-icons/dist/navigation-down-arrow.js";
-import circleTask from "@ui5/webcomponents-icons/dist/circle-task-2.js";
 import arrowRight from "@ui5/webcomponents-icons/dist/arrow-right.js";
 export default function SideNavigationItemTemplate() {
     if (this.sideNavCollapsed) {
@@ -23,14 +22,14 @@ function MenuItemTemplate() {
 function TreeItemTemplate() {
     return (_jsxs("li", { id: this._id, class: "ui5-sn-list-li", role: "none", children: [this._href ?
                 _jsxs("a", { class: `ui5-sn-item ui5-sn-item-level1 ${this._classes}`, role: this.ariaRole, "data-sap-focus-ref": true, onKeyDown: this._onkeydown, onKeyUp: this._onkeyup, onClick: this._onclick, onFocusIn: this._onfocusin, tabIndex: this.effectiveTabIndex !== undefined ? parseInt(this.effectiveTabIndex) : undefined, "aria-expanded": this._expanded, "aria-current": this._ariaCurrent, "aria-selected": this.selected, title: this._tooltip, "aria-owns": this._groupId, href: this._href, target: this._target, children: [this.icon &&
-                            _jsx(Icon, { class: "ui5-sn-item-icon", name: this.icon }), _jsx("div", { class: "ui5-sn-item-text", children: this.text }), _jsx(Icon, { class: "ui5-sn-item-selection-icon", name: circleTask }), this.isExternalLink &&
+                            _jsx(Icon, { class: "ui5-sn-item-icon", name: this.icon }), _jsx("div", { class: "ui5-sn-item-text", children: this.text }), this.isExternalLink &&
                             _jsx(Icon, { class: "ui5-sn-item-external-link-icon", name: arrowRight }), !!this.items.length &&
                             _jsx(Icon, { class: "ui5-sn-item-toggle-icon", name: this.expanded ? navDownArrow : navRightArrow, 
                                 // @ts-expect-error
                                 onClick: this._onToggleClick })] })
                 :
                     _jsxs("div", { class: `ui5-sn-item ui5-sn-item-level1 ${this._classes}`, role: this.ariaRole, "data-sap-focus-ref": true, onKeyDown: this._onkeydown, onKeyUp: this._onkeyup, onClick: this._onclick, onFocusIn: this._onfocusin, tabIndex: this.effectiveTabIndex !== undefined ? parseInt(this.effectiveTabIndex) : undefined, "aria-expanded": this._expanded, "aria-current": this._ariaCurrent, "aria-selected": this.selected, title: this._tooltip, "aria-owns": this._groupId, children: [this.icon &&
-                                _jsx(Icon, { class: "ui5-sn-item-icon", name: this.icon }), _jsx("div", { class: "ui5-sn-item-text", children: this.text }), _jsx(Icon, { class: "ui5-sn-item-selection-icon", name: circleTask }), this.isExternalLink &&
+                                _jsx(Icon, { class: "ui5-sn-item-icon", name: this.icon }), _jsx("div", { class: "ui5-sn-item-text", children: this.text }), this.isExternalLink &&
                                 _jsx(Icon, { class: "ui5-sn-item-external-link-icon", name: arrowRight }), !!this.items.length &&
                                 _jsx(Icon, { class: "ui5-sn-item-toggle-icon", name: this.expanded ? navDownArrow : navRightArrow, 
                                     // @ts-expect-error

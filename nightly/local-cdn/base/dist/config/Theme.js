@@ -55,8 +55,7 @@ const getDefaultTheme = () => {
  * @returns {boolean}
  */
 const isTheme = (theme) => {
-    const currentTheme = getTheme();
-    return currentTheme === theme || currentTheme === `${theme}_exp`;
+    return getTheme() === theme;
 };
 /**
  * Returns if the currently set theme is part of legacy theme families ("sap_fiori_3").

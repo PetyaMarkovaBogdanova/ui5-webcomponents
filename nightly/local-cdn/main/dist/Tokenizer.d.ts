@@ -220,7 +220,6 @@ declare class Tokenizer extends UI5Element {
     _onfocusout(e: FocusEvent): void;
     _toggleTokenSelection(tokens: Array<Token>): void;
     _handleTokenSelection(e: KeyboardEvent | MouseEvent, deselectAll?: boolean): void;
-    _resetTokensVisibility(): void;
     get hasTokens(): boolean;
     get showEffectiveClearAll(): boolean;
     _fillClipboard(shortcutName: ClipboardDataOperation, tokens: Array<IToken>): void;

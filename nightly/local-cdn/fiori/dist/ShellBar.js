@@ -112,14 +112,15 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
          * @public
          */
         this.showSearchField = false;
-        /**
-         * Defines whether or not the search field is open by default
-         * @default false
-         * @public
-         * @since 2.6.1
-         * **Note:** The `showOpenSearchField` property is in an experimental state and is a subject to change.
-         */
-        this.showOpenSearchField = false;
+        // /**
+        //  * Defines whether or not the search field is open by default
+        //  * @default false
+        //  * @public
+        //  * @since 2.6.1
+        //  * **Note:** The `showOpenSearchField` property is in an experimental state and is a subject to change.
+        //  */
+        // @property({ type: Boolean })
+        // showOpenSearchField = false;
         /**
          * Defines additional accessibility attributes on different areas of the component.
          *
@@ -170,6 +171,9 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._cachedHiddenContent = [];
         this._lastOffsetWidth = 0;
         this._observableContent = [];
+        this._searchBarAutoOpen = false;
+        this._searchBarAutoClosed = false;
+        this._searchIconPressed = false;
         this._menuPopoverItems = [];
         this._hiddenIcons = [];
         this._itemsInfo = [];
@@ -197,11 +201,8 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             this.overflowPopover.open = false;
             if (this._lastOffsetWidth !== this.offsetWidth) {
                 this._overflowActions();
-                if (this.showOpenSearchField) {
+                if (this._searchBarAutoOpen) {
                     this._searchBarInitialState();
-                }
-                else if (this.showSearchField) {
-                    this.showSearchField = false;
                 }
             }
         }, RESIZE_THROTTLE_RATE);
@@ -211,16 +212,16 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         const searchFieldWidth = this.domCalculatedValues("--_ui5_shellbar_search_field_width");
         if (this._showFullWidthSearch) {
             this.showSearchField = false;
+            this._searchBarAutoClosed = true;
             return;
         }
         if ((spacerWidth <= 0 || this.additionalContextHidden.length !== 0) && this.showSearchField === true) {
             this.showSearchField = false;
+            this._searchBarAutoClosed = true;
         }
         if (spacerWidth > searchFieldWidth && this.additionalContextHidden.length === 0 && this.showSearchField === false) {
             this.showSearchField = true;
-        }
-        if (this.additionalContext.length === 0 && this.showSearchField === false) {
-            this.showSearchField = true;
+            this._searchBarAutoClosed = false;
         }
     }
     _onKeyDown(e) {
@@ -376,6 +377,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             this._lastOffsetWidth = this.offsetWidth;
             this._overflowActions();
         });
+        this._searchBarAutoOpen = this._searchBarAutoClosed || (this.showSearchField && !this._searchIconPressed);
     }
     /**
      * Closes the overflow area.
@@ -414,6 +416,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         // so if marked as hidden, it should be hidden separately
         this._updateAssistantIconVisibility(newItems);
         this._updateItemsInfo(newItems);
+        this._hideAdditionalContext();
     }
     _hideOverflowItems(hiddenItems, items) {
         for (let i = 0; hiddenItems > 0 && i < items.length; i++) {
@@ -447,9 +450,13 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     _handleActionsOverflow() {
         const itemsToOverflow = this.itemsToOverflow;
         const container = this.shadowRoot.querySelector(".ui5-shellbar-overflow-container-right");
+        const searchFieldWidth = this.searchField[0] ? this.searchField[0].offsetWidth : 0;
         const nonDisappearingItems = Array.from(container.querySelectorAll(".ui5-shellbar-no-overflow-button"));
         const nonDisappearingItemsWidth = nonDisappearingItems.reduce((acc, el) => acc + el.offsetWidth + this.domCalculatedValues("--_ui5-shellbar-overflow-button-margin"), 0);
-        const totalWidth = container.offsetWidth - nonDisappearingItemsWidth - this.separatorsWidth;
+        let totalWidth = container.offsetWidth - nonDisappearingItemsWidth - this.separatorsWidth;
+        if (this.additionalContext.length === 0) {
+            totalWidth -= searchFieldWidth;
+        }
         let usedWidth = 0;
         let hiddenItems = 0;
         let restoreVisibility = false;
@@ -528,7 +535,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         if (isDesktop()) {
             this.setAttribute("desktop", "");
         }
-        if (this.showOpenSearchField) {
+        if (this._searchBarAutoOpen) {
             setTimeout(() => this._searchBarInitialState(), 100);
         }
     }
@@ -544,10 +551,12 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             targetRef: searchButtonRef,
             searchFieldVisible: this.showSearchField,
         });
+        this._searchIconPressed = true;
         if (defaultPrevented) {
             return;
         }
         this.showSearchField = !this.showSearchField;
+        this._searchBarAutoOpen = this.showSearchField;
         if (!this.showSearchField) {
             return;
         }
@@ -992,7 +1001,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         return this.startContent.length > 0 || this.endContent.length > 0;
     }
     get showAdditionalContext() {
-        return !this.isSBreakPoint && this.hasAdditionalContext;
+        return this.hasAdditionalContext;
     }
     get _hasVisibleStartContent() {
         return this.startContent.some(item => this.shadowRoot.getElementById(item.slot) && !this.shadowRoot.getElementById(item.slot).classList.contains("ui5-shellbar-hidden-button"));
@@ -1090,9 +1099,6 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], ShellBar.prototype, "showSearchField", void 0);
-__decorate([
-    property({ type: Boolean })
-], ShellBar.prototype, "showOpenSearchField", void 0);
 __decorate([
     property({ type: Object })
 ], ShellBar.prototype, "accessibilityAttributes", void 0);

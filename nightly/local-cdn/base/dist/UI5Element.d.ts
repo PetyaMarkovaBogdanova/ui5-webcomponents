@@ -5,6 +5,7 @@ import type { Slot, SlotValue, State, PropertyValue, Metadata } from "./UI5Eleme
 import EventProvider from "./EventProvider.js";
 import type { TemplateFunction } from "./renderer/executeTemplate.js";
 import type { AccessibilityInfo, PromiseResolve, ComponentStylesData, ClassMap } from "./types.js";
+import type I18nBundle from "./i18nBundle.js";
 type Renderer = (instance: UI5Element, container: HTMLElement | DocumentFragment) => void;
 type ChangeInfo = {
     type: "property" | "slot";
@@ -386,10 +387,12 @@ declare abstract class UI5Element extends HTMLElement {
      * @deprecated use the "i18n" decorator for fetching message bundles and the "cldr" option in the "customElements" decorator for fetching CLDR
      */
     static onDefine(): Promise<void>;
-    static fetchI18nBundles(): Promise<import("./i18nBundle.js").default[]>;
+    static fetchI18nBundles(): Promise<I18nBundle[]>;
     static fetchCLDR(): Promise<void>;
     static asyncFinished: boolean;
     static definePromise: Promise<void> | undefined;
+    static i18nBundleStorage: Record<string, I18nBundle>;
+    static get i18nBundles(): Record<string, I18nBundle>;
     /**
      * Registers a UI5 Web Component in the browser window object
      * @public

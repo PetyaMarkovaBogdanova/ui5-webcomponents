@@ -77,11 +77,6 @@ let Token = Token_1 = class Token extends UI5Element {
          * @private
          */
         this.forcedTabIndex = "-1";
-        /**
-         * Indicates whether the token is visible or not.
-         * @private
-         */
-        this._isVisible = false;
         // fireMyEvent(name: keyof this["_events"]) {
         // 	console.log(name);
         // }
@@ -165,9 +160,6 @@ __decorate([
 __decorate([
     property({ noAttribute: true })
 ], Token.prototype, "forcedTabIndex", void 0);
-__decorate([
-    property({ type: Boolean, noAttribute: true })
-], Token.prototype, "_isVisible", void 0);
 __decorate([
     slot()
 ], Token.prototype, "closeIcon", void 0);

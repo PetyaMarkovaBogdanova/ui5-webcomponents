@@ -433,6 +433,8 @@ declare const getClassCopy: (klass: typeof UI5Element, constructorCallback: () =
     fetchCLDR(): Promise<void>;
     asyncFinished: boolean;
     definePromise: Promise<void> | undefined;
+    i18nBundleStorage: Record<string, import("../i18nBundle.js").default>;
+    readonly i18nBundles: Record<string, import("../i18nBundle.js").default>;
     define(): typeof UI5Element;
     getMetadata(): import("../UI5ElementMetadata.js").default;
 };

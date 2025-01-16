@@ -330,7 +330,6 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         }
         else {
             if (isPhone()) {
-                token._isVisible = false;
                 this._deletedDialogItems.push(token);
             }
             else {
@@ -359,16 +358,6 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         }
     }
     handleBeforeOpen() {
-        if (this.multiLine) {
-            this._resetTokensVisibility();
-            const focusedToken = this._tokens.find(token => token.focused);
-            focusedToken._isVisible = true;
-        }
-        else {
-            this._tokens.forEach(token => {
-                token._isVisible = true;
-            });
-        }
         const list = this._getList();
         const firstListItem = list.querySelectorAll("[ui5-li]")[0];
         list._itemNavigation.setCurrentItem(firstListItem);
@@ -378,9 +367,6 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         this.open = false;
         this._preventCollapse = false;
         this._focusedElementBeforeOpen = null;
-        this._tokens.forEach(token => {
-            token._isVisible = true;
-        });
     }
     handleDialogButtonPress(e) {
         const isOkButton = e.target.hasAttribute("data-ui5-tokenizer-dialog-ok-button");
@@ -638,11 +624,6 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
             });
         }
     }
-    _resetTokensVisibility() {
-        this._tokens.forEach(token => {
-            token._isVisible = false;
-        });
-    }
     get hasTokens() {
         return this._tokens.length > 0;
     }
@@ -861,10 +842,6 @@ __decorate([
         type: HTMLElement,
         "default": true,
         individualSlots: true,
-        invalidateOnChildChange: {
-            properties: ["_isVisible"],
-            slots: false,
-        },
     })
 ], Tokenizer.prototype, "tokens", void 0);
 __decorate([

@@ -1037,6 +1037,9 @@ class UI5Element extends HTMLElement {
         }
         return Promise.resolve();
     }
+    static get i18nBundles() {
+        return this.i18nBundleStorage;
+    }
     /**
      * Registers a UI5 Web Component in the browser window object
      * @public
@@ -1052,8 +1055,7 @@ class UI5Element extends HTMLElement {
             const [i18nBundles] = result;
             Object.entries(this.getMetadata().getI18n()).forEach((pair, index) => {
                 const propertyName = pair[0];
-                const targetClass = pair[1].target;
-                targetClass[propertyName] = i18nBundles[index];
+                this.i18nBundleStorage[propertyName] = i18nBundles[index];
             });
             this.asyncFinished = true;
         };
@@ -1112,6 +1114,7 @@ UI5Element.metadata = {};
  * @protected
  */
 UI5Element.styles = "";
+UI5Element.i18nBundleStorage = {};
 /**
  * Always use duck-typing to cover all runtimes on the page.
  */

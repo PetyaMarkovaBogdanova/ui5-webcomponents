@@ -16,6 +16,12 @@ const i18n = (bundleName) => {
         if (!target.metadata.i18n) {
             target.metadata.i18n = {};
         }
+        Object.defineProperty(target, propertyName, {
+            get() {
+                return target.i18nBundles[propertyName];
+            },
+            set() { },
+        });
         target.metadata.i18n[propertyName] = {
             bundleName,
             target,

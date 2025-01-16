@@ -12,7 +12,6 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import { getI18nBundle } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import ZXing from "@ui5/webcomponents-fiori/dist/ssr-zxing.js";
 // Texts
@@ -83,9 +82,6 @@ let BarcodeScannerDialog = BarcodeScannerDialog_1 = class BarcodeScannerDialog e
         this._codeReader = new BrowserMultiFormatReader();
         this._handleVideoPlayingBound = this._handleVideoPlaying.bind(this);
         this._handleCaptureRegionBound = this._handleDrawCaptureRegion.bind(this);
-    }
-    static async onDefine() {
-        BarcodeScannerDialog_1.i18nBundle = await getI18nBundle("@ui5/webcomponents-fiori");
     }
     async onAfterRendering() {
         if (!this._hasGetUserMedia()) {

@@ -157,14 +157,6 @@ declare class ShellBar extends UI5Element {
      */
     showSearchField: boolean;
     /**
-     * Defines whether or not the search field is open by default
-     * @default false
-     * @public
-     * @since 2.6.1
-     * **Note:** The `showOpenSearchField` property is in an experimental state and is a subject to change.
-     */
-    showOpenSearchField: boolean;
-    /**
      * Defines additional accessibility attributes on different areas of the component.
      *
      * The accessibilityAttributes object has the following fields,
@@ -298,6 +290,9 @@ declare class ShellBar extends UI5Element {
     _overflowNotifications: string | null;
     _lastOffsetWidth: number;
     _observableContent: Array<HTMLElement>;
+    _searchBarAutoOpen: boolean;
+    _searchBarAutoClosed: boolean;
+    _searchIconPressed: boolean;
     _headerPress: () => void;
     static get FIORI_3_BREAKPOINTS(): number[];
     static get FIORI_3_BREAKPOINTS_MAP(): Record<string, string>;

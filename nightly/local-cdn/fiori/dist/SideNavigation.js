@@ -8,6 +8,7 @@ var SideNavigation_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
+import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
@@ -468,7 +469,7 @@ SideNavigation = SideNavigation_1 = __decorate([
         fastNavigation: true,
         renderer: jsxRender,
         template: SideNavigationTemplate,
-        styles: [SideNavigationCss, SideNavigationPopoverCss],
+        styles: [SideNavigationCss, SideNavigationPopoverCss, getEffectiveScrollbarStyle()],
     })
     /**
      * Fired when the selection has changed via user interaction

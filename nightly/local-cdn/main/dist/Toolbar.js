@@ -226,6 +226,9 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
      * Layout management
      */
     processOverflowLayout() {
+        if (this.offsetWidth === 0) {
+            return;
+        }
         const containerWidth = this.offsetWidth - this.padding;
         const contentWidth = this.itemsWidth;
         let overflowSpace = contentWidth - containerWidth + this.overflowButtonSize;

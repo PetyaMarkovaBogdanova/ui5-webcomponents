@@ -40,6 +40,13 @@ let SideNavigationSubItem = class SideNavigationSubItem extends SideNavigationSe
     _onclick(e) {
         super._onclick(e);
     }
+    get classesArray() {
+        const classes = super.classesArray;
+        if (this.icon) {
+            classes.push("ui5-sn-item-has-icon");
+        }
+        return classes;
+    }
 };
 SideNavigationSubItem = __decorate([
     customElement({

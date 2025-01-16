@@ -10,19 +10,17 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { isSpace, isUp, isDown, isEnter, isEscape, isHome, isEnd, isShow, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import announce from "@ui5/webcomponents-base/dist/util/InvisibleMessage.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import "@ui5/webcomponents-icons/dist/error.js";
 import "@ui5/webcomponents-icons/dist/alert.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
 import "@ui5/webcomponents-icons/dist/information.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import "@ui5/webcomponents-icons/dist/decline.js";
 import InvisibleMessageMode from "@ui5/webcomponents-base/dist/types/InvisibleMessageMode.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import List from "./List.js";
@@ -33,7 +31,7 @@ import Popover from "./Popover.js";
 import Icon from "./Icon.js";
 import Button from "./Button.js";
 // Templates
-import SelectTemplate from "./generated/templates/SelectTemplate.lit.js";
+import SelectTemplate from "./SelectTemplate.js";
 // Styles
 import selectCss from "./generated/themes/Select.css.js";
 import ResponsivePopoverCommonCss from "./generated/themes/ResponsivePopoverCommon.css.js";
@@ -524,7 +522,7 @@ let Select = Select_1 = class Select extends UI5Element {
     get _effectiveTabIndex() {
         return this.disabled
             || (this.responsivePopover // Handles focus on Tab/Shift + Tab when the popover is opened
-                && this.responsivePopover.open) ? "-1" : "0";
+                && this.responsivePopover.open) ? -1 : 0;
     }
     /**
     * This method is relevant for sap_horizon theme only
@@ -675,7 +673,7 @@ Select = Select_1 = __decorate([
         tag: "ui5-select",
         languageAware: true,
         formAssociated: true,
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: SelectTemplate,
         styles: [
             selectCss,

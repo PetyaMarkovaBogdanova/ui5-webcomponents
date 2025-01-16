@@ -1,5 +1,5 @@
-commit be654e56a4b331b66061ed7b1293d629beae148c
+commit a1078147b852b71fd4dc35561bdf0c8ece79be2e
 Author: PetyaMarkovaBogdanova <petya.markova@sap.com>
-Date:   Wed Jan 15 16:21:01 2025 +0200
+Date:   Thu Jan 16 12:02:18 2025 +0200
 
-    Merge branch 'chore-shellbar-evolution' of github.com:SAP/ui5-webcomponents into chore-shellbar-evolution
+    Merge branch 'main' into chore-shellbar-evolution

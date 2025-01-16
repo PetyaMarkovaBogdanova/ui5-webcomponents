@@ -155,6 +155,9 @@ declare class ViewSettingsDialog extends UI5Element {
     get _sortOrderLabel(): string;
     get _filterByLabel(): string;
     get _sortByLabel(): string;
+    get _sortButtonTooltip(): string;
+    get _filterButtonTooltip(): string;
+    get _resetButtonAction(): string;
     get _isPhone(): boolean;
     get _sortAscending(): boolean;
     get _title(): string;

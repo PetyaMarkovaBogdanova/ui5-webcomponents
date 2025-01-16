@@ -88,7 +88,6 @@ declare class BarcodeScannerDialog extends UI5Element {
     _handleVideoPlayingBound: () => void;
     _handleCaptureRegionBound: () => void;
     constructor();
-    static onDefine(): Promise<void>;
     onAfterRendering(): Promise<void>;
     onEnterDOM(): void;
     onExitDOM(): void;

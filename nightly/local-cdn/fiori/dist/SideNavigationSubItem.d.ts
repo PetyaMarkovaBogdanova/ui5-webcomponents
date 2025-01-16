@@ -21,5 +21,6 @@ declare class SideNavigationSubItem extends SideNavigationSelectableItemBase {
     _onkeyup(e: KeyboardEvent): void;
     _onfocusin(e: FocusEvent): void;
     _onclick(e: MouseEvent): void;
+    get classesArray(): string[];
 }
 export default SideNavigationSubItem;

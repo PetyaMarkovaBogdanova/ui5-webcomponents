@@ -13,11 +13,13 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import announce from "@ui5/webcomponents-base/dist/util/InvisibleMessage.js";
+import InvisibleMessageMode from "@ui5/webcomponents-base/dist/types/InvisibleMessageMode.js";
 import ViewSettingsDialogMode from "./types/ViewSettingsDialogMode.js";
 import "@ui5/webcomponents-icons/dist/sort.js";
 import "@ui5/webcomponents-icons/dist/filter.js";
 import "@ui5/webcomponents-icons/dist/nav-back.js";
-import { VSD_DIALOG_TITLE_SORT, VSD_SUBMIT_BUTTON, VSD_CANCEL_BUTTON, VSD_RESET_BUTTON, VSD_SORT_ORDER, VSD_SORT_BY, VSD_ORDER_ASCENDING, VSD_ORDER_DESCENDING, VSD_FILTER_BY, } from "./generated/i18n/i18n-defaults.js";
+import { VSD_DIALOG_TITLE_SORT, VSD_SUBMIT_BUTTON, VSD_CANCEL_BUTTON, VSD_RESET_BUTTON, VSD_SORT_ORDER, VSD_SORT_BY, VSD_ORDER_ASCENDING, VSD_ORDER_DESCENDING, VSD_FILTER_BY, VSD_SORT_TOOLTIP, VSD_FILTER_TOOLTIP, VSD_RESET_BUTTON_ACTION, } from "./generated/i18n/i18n-defaults.js";
 // Template
 import ViewSettingsDialogTemplate from "./ViewSettingsDialogTemplate.js";
 // Styles
@@ -168,6 +170,15 @@ let ViewSettingsDialog = ViewSettingsDialog_1 = class ViewSettingsDialog extends
     }
     get _sortByLabel() {
         return ViewSettingsDialog_1.i18nBundle.getText(VSD_SORT_BY);
+    }
+    get _sortButtonTooltip() {
+        return ViewSettingsDialog_1.i18nBundle.getText(VSD_SORT_TOOLTIP);
+    }
+    get _filterButtonTooltip() {
+        return ViewSettingsDialog_1.i18nBundle.getText(VSD_FILTER_TOOLTIP);
+    }
+    get _resetButtonAction() {
+        return ViewSettingsDialog_1.i18nBundle.getText(VSD_RESET_BUTTON_ACTION);
     }
     get _isPhone() {
         return isPhone();
@@ -413,6 +424,7 @@ let ViewSettingsDialog = ViewSettingsDialog_1 = class ViewSettingsDialog extends
         this._restoreSettings(this._initialSettings);
         this._recentlyFocused = this._sortOrder;
         this._focusRecentlyUsedControl();
+        announce(this._resetButtonAction, InvisibleMessageMode.Polite);
     }
     /**
      * Sets current settings to ones passed as `settings` argument.
