@@ -3,9 +3,18 @@ import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import type { ColorRGB } from "@ui5/webcomponents-base/dist/util/ColorConversion.js";
+import "@ui5/webcomponents-icons/dist/expand.js";
+import ColorValue from "./colorpicker-utils/ColorValue.js";
 type ColorCoordinates = {
     x: number;
     y: number;
+};
+type ColorChannelInput = {
+    id: string;
+    value: number;
+    accessibleName: string;
+    label: string;
+    showPercentSymbol?: boolean;
 };
 /**
  * @class
@@ -61,22 +70,15 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
      */
     simplified: boolean;
     /**
-     * Defines the HEX code of the currently selected color
-     *
-     * **Note**: If Alpha(transperancy) is set it is not included in this property. Use `color` property.
-     * @private
-     */
-    hex: string;
-    /**
      * Defines the current main color which is selected via the hue slider and is shown in the main color square.
      * @private
      */
     _mainValue: ColorRGB;
     /**
-     * Defines the currenty selected color from the main color section.
+     * Defines the currenty selected color.
      * @private
      */
-    _value: ColorRGB;
+    _colorValue: ColorValue;
     /**
      * @private
      */
@@ -101,6 +103,10 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
      * @private
      */
     _wrongHEX: boolean;
+    /**
+     * @private
+     */
+    _displayHSL: boolean;
     selectedHue: number;
     mouseDown: boolean;
     mouseIn: boolean;
@@ -113,12 +119,13 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
     _handleMouseUp(): void;
     _handleMouseOut(e: MouseEvent): void;
     _handleMouseMove(e: MouseEvent): void;
-    _handleAlphaInputFromSlider(e: CustomEvent): void;
+    _handleAlphaInput(e: CustomEvent): void;
     _handleHueInput(e: CustomEvent): void;
     _handleHEXChange(e: CustomEvent | KeyboardEvent): void;
-    _handleRGBInputsChange(e: Event): void;
+    _togglePickerMode(): void;
+    _handleColorInputChange(e: Event): void;
     _setMainColor(hueValue: number): void;
-    _handleAlphaChange(e: CustomEvent): void;
+    _handleAlphaChange(): void;
     _changeSelectedColor(x: number, y: number): void;
     _onkeydown(e: KeyboardEvent): void;
     _calculateColorFromCoordinates(x: number, y: number): {
@@ -126,31 +133,26 @@ declare class ColorPicker extends UI5Element implements IFormInputElement {
         s: number;
         l: number;
     } | undefined;
-    _setColor(color?: ColorRGB): void;
-    isValidRGBColor(color: ColorRGB): boolean;
-    _setHex(): void;
-    _setValues(): void;
+    _setValue(color: string): void;
+    _updateColorGrid(): void;
+    _isColorValueEqual(value: ColorRGB): boolean;
     get hueSliderLabel(): string;
     get alphaSliderLabel(): string;
     get hexInputLabel(): string;
     get redInputLabel(): string;
     get greenInputLabel(): string;
     get blueInputLabel(): string;
+    get hueInputLabel(): string;
+    get saturationInputLabel(): string;
+    get lightInputLabel(): string;
     get alphaInputLabel(): string;
+    get toggleModeTooltip(): string;
     get inputsDisabled(): true | undefined;
     get hexInputErrorState(): `${ValueState}`;
+    get rgbInputs(): Array<ColorChannelInput>;
+    get hslInputs(): Array<ColorChannelInput>;
+    get HEX(): string;
+    get colorChannelInputs(): ColorChannelInput[];
     get _isDefaultPickerMode(): boolean;
-    get styles(): {
-        mainColor: {
-            "background-color": string;
-        };
-        circle: {
-            left: string;
-            top: string;
-        };
-        colorSpan: {
-            "background-color": string;
-        };
-    };
 }
 export default ColorPicker;

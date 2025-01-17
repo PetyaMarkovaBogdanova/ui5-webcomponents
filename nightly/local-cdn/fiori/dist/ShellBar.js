@@ -30,6 +30,7 @@ import "@ui5/webcomponents-icons/dist/grid.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import throttle from "@ui5/webcomponents-base/dist/util/throttle.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
+import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 // Templates
 import ShellBarTemplate from "./generated/templates/ShellBarTemplate.lit.js";
 // Styles
@@ -210,6 +211,9 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     _searchBarInitialState() {
         const spacerWidth = this.shadowRoot.querySelector(".ui5-shellbar-spacer") ? this.shadowRoot.querySelector(".ui5-shellbar-spacer").getBoundingClientRect().width : 0;
         const searchFieldWidth = this.domCalculatedValues("--_ui5_shellbar_search_field_width");
+        if (this._searchIconPressed || document.activeElement === this.searchField[0]) {
+            return;
+        }
         if (this._showFullWidthSearch) {
             this.showSearchField = false;
             this._searchBarAutoClosed = true;
@@ -226,7 +230,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     _onKeyDown(e) {
         const items = this._getVisibleAndInteractiveItems();
-        const activeElement = this._getActiveElement();
+        const activeElement = getActiveElement();
         const currentIndex = items.findIndex(el => el === activeElement);
         if (isLeft(e) || isRight(e)) {
             e.preventDefault(); // Prevent the default behavior to avoid any further automatic focus movemen
@@ -260,13 +264,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             return dom?.tabIndex === 0;
         }
         return element.tabIndex === 0;
-    }
-    _getActiveElement() {
-        const activeElement = document.activeElement;
-        if (activeElement === this) {
-            return activeElement.shadowRoot.activeElement;
-        }
-        return activeElement;
     }
     _getNavigableContent() {
         return [
