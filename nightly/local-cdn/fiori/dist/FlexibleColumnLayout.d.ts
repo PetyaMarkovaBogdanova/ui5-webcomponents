@@ -241,8 +241,9 @@ declare class FlexibleColumnLayout extends UI5Element {
     calculateNewColumnWidth(columnToResize: typeof COLUMN.START | typeof COLUMN.END, widthDelta: number): number;
     moveSeparator(separator: HTMLElement, offsetX: number, fclLayoutBeforeMove: FCLLayout): FCLLayout;
     adjustColumnLayout(columnToResize: typeof COLUMN.START | typeof COLUMN.END, newSize: number, createNewArray?: boolean): FlexibleColumnLayoutColumnLayout | undefined;
-    _onkeydown(e: KeyboardEvent): Promise<void>;
-    _onkeyup(): void;
+    _onArrowKeydown(e: KeyboardEvent): void;
+    _onSeparatorKeydown(e: KeyboardEvent): Promise<void>;
+    _onSeparatorKeyUp(): void;
     private attachMoveListeners;
     private detachMoveListeners;
     private toggleSideAnimations;
@@ -250,6 +251,7 @@ declare class FlexibleColumnLayout extends UI5Element {
     convertColumnWidthToPixels(width: string | number): number;
     convertToRelativeColumnWidth(pxWidth: string | number): string;
     getNextLayoutOnSeparatorMovement(separator: HTMLElement, isStartToEndDirection: boolean, fclLayoutBeforeMove: FCLLayout, columnLayoutAfterMove: FlexibleColumnLayoutColumnLayout): FCLLayout;
+    switchLayoutOnArrowPress(): void;
     get _availableWidthForColumns(): number;
     /**
      * Checks if a column is hidden based on its width.
@@ -294,14 +296,20 @@ declare class FlexibleColumnLayout extends UI5Element {
     get showStartSeparator(): boolean;
     get showEndSeparator(): boolean;
     get showStartSeparatorGrip(): boolean | undefined;
+    get showStartSeparatorArrow(): boolean | undefined;
     get showEndSeparatorGrip(): boolean | undefined;
     get startSeparatorGripVisibility(): boolean | undefined;
     get endSeparatorGripVisibility(): boolean | undefined;
+    get startSeparatorArrowVisibility(): boolean | undefined;
+    get startArrowDirection(): "forward" | "backward" | undefined;
+    get startArrowDOM(): HTMLElement;
     get effectiveSeparatorsInfo(): {
         visible: boolean;
         gripVisible?: boolean;
+        arrowVisible?: boolean;
+        arrowDirection?: "forward" | "backward";
     }[];
-    get effectiveLayout(): "OneColumn" | "TwoColumnsStartExpanded" | "TwoColumnsMidExpanded" | "ThreeColumnsMidExpanded" | "ThreeColumnsEndExpanded" | "ThreeColumnsStartExpandedEndHidden" | "ThreeColumnsMidExpandedEndHidden" | "MidColumnFullScreen" | "EndColumnFullScreen" | FCLLayout;
+    get effectiveLayout(): "OneColumn" | "TwoColumnsStartExpanded" | "TwoColumnsMidExpanded" | "ThreeColumnsMidExpanded" | "ThreeColumnsEndExpanded" | "ThreeColumnsStartExpandedEndHidden" | "ThreeColumnsMidExpandedEndHidden" | "ThreeColumnsStartHiddenMidExpanded" | "ThreeColumnsStartHiddenEndExpanded" | "MidColumnFullScreen" | "EndColumnFullScreen" | FCLLayout;
     get startSeparatorDOM(): HTMLElement;
     get endSeparatorDOM(): HTMLElement;
     get startSeparatorTabIndex(): 0 | undefined;

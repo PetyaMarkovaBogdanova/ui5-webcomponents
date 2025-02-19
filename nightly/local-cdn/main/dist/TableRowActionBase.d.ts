@@ -1,5 +1,4 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 /**
  * @class
  * The `TableRowActionBase` class serves as a foundation for table row actions.
@@ -19,7 +18,6 @@ declare abstract class TableRowActionBase extends UI5Element {
      * @public
      */
     invisible: boolean;
-    static i18nBundle: I18nBundle;
     private static _menu;
     private static _menuItems;
     static showMenu(actions: TableRowActionBase[], opener: HTMLElement): Promise<void>;

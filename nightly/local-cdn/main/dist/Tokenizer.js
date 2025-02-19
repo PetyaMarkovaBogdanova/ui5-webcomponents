@@ -787,7 +787,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         return this.shadowRoot.querySelector("[ui5-responsive-popover]");
     }
     getTokenByRefId(refId) {
-        return this.tokens.find(token => token._id === refId);
+        return this._tokens.find(token => token._id === refId);
     }
 };
 __decorate([

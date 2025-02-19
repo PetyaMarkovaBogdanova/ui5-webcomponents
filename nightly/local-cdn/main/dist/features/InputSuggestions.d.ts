@@ -1,5 +1,4 @@
 import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import { ComponentFeature } from "@ui5/webcomponents-base/dist/FeaturesRegistry.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type List from "../List.js";
 import type { ListItemClickEventDetail, ListSelectionChangeEventDetail } from "../List.js";
@@ -33,7 +32,7 @@ type SuggestionsAccInfo = {
  * @class
  * @private
  */
-declare class Suggestions extends ComponentFeature {
+declare class Suggestions {
     component: SuggestionComponent;
     slotName: string;
     handleFocus: boolean;
@@ -48,8 +47,8 @@ declare class Suggestions extends ComponentFeature {
     static SCROLL_STEP: number;
     get template(): typeof InputSuggestionsTemplate;
     constructor(component: SuggestionComponent, slotName: string, highlight: boolean, handleFocus: boolean);
-    onUp(e: KeyboardEvent): boolean;
-    onDown(e: KeyboardEvent): boolean;
+    onUp(e: KeyboardEvent, indexOfItem: number): boolean;
+    onDown(e: KeyboardEvent, indexOfItem: number): boolean;
     onSpace(e: KeyboardEvent): boolean;
     onEnter(e: KeyboardEvent): boolean;
     onPageUp(e: KeyboardEvent): boolean;
@@ -67,13 +66,11 @@ declare class Suggestions extends ComponentFeature {
     onItemSelected(selectedItem: IInputSuggestionItemSelectable | null, keyboardUsed: boolean): void;
     onItemSelect(item: IInputSuggestionItem): void;
     onItemPress(e: CustomEvent<ListItemClickEventDetail | ListSelectionChangeEventDetail>): void;
-    _onOpen(): void;
     _onClose(): void;
-    _applyFocus(): void;
     _isItemOnTarget(): boolean;
     get _isGroupItem(): boolean;
     isOpened(): boolean;
-    _handleItemNavigation(forward: boolean): void;
+    _handleItemNavigation(forward: boolean, index: number): void;
     _selectNextItem(): void;
     _selectPreviousItem(): void;
     _moveItemSelection(previousIdx: number, nextIdx: number): void;

@@ -56,6 +56,7 @@ declare const customElement: (tagNameOrComponentSettings?: string | {
     shadowRootOptions?: Partial<ShadowRootInit>;
     /**
      * A list of all features, supported by the custom element.
+     * @deprecated no longer necessary for jsxRenderer-enabled components
      */
     features?: Array<string>;
 }) => ClassDecorator;

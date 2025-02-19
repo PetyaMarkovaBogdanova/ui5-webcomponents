@@ -16,13 +16,13 @@ export default function SelectPopoverTemplate() {
                                                 "row": true,
                                                 "ui5-select-value-state-dialog-header": true,
                                                 ...this.classes.popoverValueState
-                                            }, children: valueStateMessage.call(this) })] }), !this._isPhone && this.hasValueStateText &&
-                            _jsxs("div", { class: this.classes.popoverValueState, style: this.styles.responsivePopoverHeader, children: [_jsx(Icon, { class: "ui5-input-value-state-message-icon", name: this._valueStateMessageInputIcon }), valueStateMessage.call(this)] }), _jsx(List, { separators: "None", onMouseDown: this._itemMousedown, onItemClick: this._handleItemPress, children: _jsx("slot", {}) })] }), this.shouldOpenValueStateMessagePopover &&
+                                            }, children: this._isPickerOpen && valueStateMessage.call(this) })] }), !this._isPhone && this.hasValueStateText &&
+                            _jsxs("div", { class: this.classes.popoverValueState, style: this.styles.responsivePopoverHeader, children: [_jsx(Icon, { class: "ui5-input-value-state-message-icon", name: this._valueStateMessageInputIcon }), this._isPickerOpen && valueStateMessage.call(this)] }), _jsx(List, { separators: "None", onMouseDown: this._itemMousedown, onItemClick: this._handleItemPress, children: _jsx("slot", {}) })] }), this.shouldOpenValueStateMessagePopover &&
                 _jsx(Popover, { part: "popover", class: "ui5-valuestatemessage-popover", preventInitialFocus: true, preventFocusRestore: true, hideArrow: true, placement: "Bottom", horizontalAlign: "Start", children: _jsxs("div", { class: this.classes.popoverValueState, style: this.styles.popoverHeader, children: [_jsx(Icon, { class: "ui5-input-value-state-message-icon", name: this._valueStateMessageInputIcon }), valueStateMessage.call(this)] }) })] }));
 }
 function valueStateMessage() {
     return (_jsx(_Fragment, { children: this.shouldDisplayDefaultValueStateMessage
             ? this.valueStateText
-            : _jsx("slot", { name: "valueStateMessage" }) }));
+            : _jsx("slot", { onClick: this._applyFocus, name: "valueStateMessage" }) }));
 }
 //# sourceMappingURL=SelectPopoverTemplate.js.map

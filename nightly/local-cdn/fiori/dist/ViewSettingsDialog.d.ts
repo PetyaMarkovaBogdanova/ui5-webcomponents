@@ -3,7 +3,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { ChangeInfo } from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type Dialog from "@ui5/webcomponents/dist/Dialog.js";
 import type List from "@ui5/webcomponents/dist/List.js";
-import type { ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
+import type { ListItemClickEventDetail, ListSelectionChangeEventDetail } from "@ui5/webcomponents/dist/List.js";
 import ViewSettingsDialogMode from "./types/ViewSettingsDialogMode.js";
 import "@ui5/webcomponents-icons/dist/sort.js";
 import "@ui5/webcomponents-icons/dist/filter.js";
@@ -194,13 +194,12 @@ declare class ViewSettingsDialog extends UI5Element {
     afterDialogOpen(): void;
     afterDialogClose(): void;
     _handleModeChange(e: CustomEvent): void;
-    _handleFilterValueItemClick(e: CustomEvent<ListItemClickEventDetail>): void;
+    _handleFilterValueItemClick(e: CustomEvent<ListSelectionChangeEventDetail>): void;
     /**
      * Sets the selected property of the clicked item.
-     * @param e
      * @private
      */
-    _setSelectedProp(e: CustomEvent<ListItemClickEventDetail>): void;
+    _setSelectedProp(itemText: string): void;
     _navigateToFilters(): void;
     _changeCurrentFilter(e: CustomEvent<ListItemClickEventDetail>): void;
     /**
@@ -241,11 +240,11 @@ declare class ViewSettingsDialog extends UI5Element {
     /**
      * Stores `Sort Order` list as recently used control and its selected item in current state.
      */
-    _onSortOrderChange(e: CustomEvent<ListItemClickEventDetail>): void;
+    _onSortOrderChange(e: CustomEvent<ListSelectionChangeEventDetail>): void;
     /**
      * Stores `Sort By` list as recently used control and its selected item in current state.
      */
-    _onSortByChange(e: CustomEvent<ListItemClickEventDetail>): void;
+    _onSortByChange(e: CustomEvent<ListSelectionChangeEventDetail>): void;
     /**
      * Sets a JavaScript object, as settings to the `ui5-view-settings-dialog`.
      * This method can be used after the dialog is initially open, as the dialog needs

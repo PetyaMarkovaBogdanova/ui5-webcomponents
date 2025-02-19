@@ -179,8 +179,6 @@ let Popup = Popup_1 = class Popup extends UI5Element {
         // initial focus, if focused element is statically created
         await this.applyInitialFocus();
         await renderFinished();
-        // initial focus, if focused element is dynamically created
-        await this.applyInitialFocus();
         if (this.isConnected) {
             this.fireDecoratorEvent("open");
         }

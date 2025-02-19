@@ -13,7 +13,7 @@ import type MediaGalleryMenuVerticalAlign from "./types/MediaGalleryMenuVertical
  * Interface for components that can be slotted inside `ui5-media-gallery` as items.
  * @public
  */
-interface IMediaGalleryItem extends HTMLElement, ITabbable {
+interface IMediaGalleryItem extends UI5Element, ITabbable {
     selected: boolean;
     disabled: boolean;
     displayedContent: HTMLElement | null;

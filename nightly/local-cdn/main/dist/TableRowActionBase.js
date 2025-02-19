@@ -9,7 +9,6 @@ import { customElement, property } from "@ui5/webcomponents-base/dist/decorators
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
 import TableRowActionBaseTemplate from "./generated/templates/TableRowActionBaseTemplate.lit.js";
 import TableRowActionBaseStyles from "./generated/themes/TableRowActionBase.css.js";
-import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import Icon from "./Icon.js";
 import Button from "./Button.js";
 let MenuConstructor;
@@ -89,9 +88,6 @@ TableRowActionBase._menuItems = new WeakMap();
 __decorate([
     property({ type: Boolean })
 ], TableRowActionBase.prototype, "invisible", void 0);
-__decorate([
-    i18n("@ui5/webcomponents")
-], TableRowActionBase, "i18nBundle", void 0);
 TableRowActionBase = __decorate([
     customElement({
         renderer: litRender,

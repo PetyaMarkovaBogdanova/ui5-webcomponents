@@ -8,8 +8,9 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import { isLeft, isRight } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isLeft, isRight, isSpace, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
+// Templates
 import SideNavigationItemTemplate from "./SideNavigationItemTemplate.js";
 // Styles
 import SideNavigationItemCss from "./generated/themes/SideNavigationItem.css.js";
@@ -69,13 +70,16 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
         return [this, ...this.items];
     }
     get _ariaHasPopup() {
+        if (this.inPopover && this.accessibilityAttributes?.hasPopup) {
+            return this.accessibilityAttributes.hasPopup;
+        }
         if (!this.disabled && this.sideNavCollapsed && this.items.length) {
             return "tree";
         }
         return undefined;
     }
     get _ariaChecked() {
-        if (this.isOverflow) {
+        if (this.isOverflow || this.unselectable) {
             return undefined;
         }
         return this.selected;
@@ -110,7 +114,7 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
     }
     _onToggleClick(e) {
         e.stopPropagation();
-        this.expanded = !this.expanded;
+        this._toggle();
     }
     _onkeydown(e) {
         if (isLeft(e)) {
@@ -121,6 +125,13 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
             this.expanded = true;
             return;
         }
+        if (this.unselectable && isSpace(e)) {
+            this._toggle();
+            return;
+        }
+        if (this.unselectable && isEnter(e)) {
+            this._toggle();
+        }
         super._onkeydown(e);
     }
     _onkeyup(e) {
@@ -130,6 +141,9 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
         super._onfocusin(e);
     }
     _onclick(e) {
+        if (!this.inPopover && this.unselectable) {
+            this._toggle();
+        }
         super._onclick(e);
     }
     _onfocusout() {
@@ -152,6 +166,11 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
     }
     get isSideNavigationItem() {
         return true;
+    }
+    _toggle() {
+        if (this.items.length) {
+            this.expanded = !this.expanded;
+        }
     }
 };
 __decorate([

@@ -16,11 +16,13 @@ import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.j
 import { supportsTouch } from "@ui5/webcomponents-base/dist/Device.js";
 import AnimationMode from "@ui5/webcomponents-base/dist/types/AnimationMode.js";
 import { getAnimationMode } from "@ui5/webcomponents-base/dist/config/AnimationMode.js";
+import Icon from "@ui5/webcomponents/dist/Icon.js";
+import Button from "@ui5/webcomponents/dist/Button.js";
 import "@ui5/webcomponents-icons/dist/vertical-grip.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
-import { isLeft, isRight, isLeftShift, isRightShift, isHome, isEnd, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isLeft, isRight, isLeftShift, isRightShift, isHome, isEnd, isEnter, isSpace, } from "@ui5/webcomponents-base/dist/Keys.js";
 import FCLLayout from "./types/FCLLayout.js";
-import { getLayoutsByMedia, } from "./fcl-utils/FCLLayout.js";
+import { getLayoutsByMedia, getNextLayoutByArrowPress, } from "./fcl-utils/FCLLayout.js";
 // Texts
 import { FCL_START_COLUMN_TXT, FCL_MIDDLE_COLUMN_TXT, FCL_END_COLUMN_TXT, FCL_START_SEPARATOR_TOOLTIP, FCL_END_SEPARATOR_TOOLTIP, } from "./generated/i18n/i18n-defaults.js";
 // Template
@@ -291,6 +293,9 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         });
     }
     onSeparatorPress(e) {
+        if (e.target === this.startArrowDOM) {
+            return;
+        }
         const pressedSeparator = e.target.closest(".ui5-fcl-separator");
         if (pressedSeparator.classList.contains("ui5-fcl-separator-start") && !this.showStartSeparatorGrip) {
             return;
@@ -421,7 +426,20 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         });
         return columnLayoutToAdjust;
     }
-    async _onkeydown(e) {
+    _onArrowKeydown(e) {
+        if (isEnter(e) || isSpace(e)) {
+            e.preventDefault();
+            const focusedElement = e.target;
+            if (focusedElement === this.startArrowDOM) {
+                this.switchLayoutOnArrowPress();
+            }
+        }
+    }
+    async _onSeparatorKeydown(e) {
+        const separator = e.target;
+        if (!separator.classList.contains("ui5-fcl-separator")) {
+            return;
+        }
         const stepSize = 2, bigStepSize = this._width, isRTL = this.effectiveDir === "rtl";
         let step = 0;
         if (isLeft(e)) {
@@ -447,7 +465,6 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         if (!step) {
             return;
         }
-        const separator = e.target;
         if (!this.separatorMovementSession) {
             this.separatorMovementSession = this.initSeparatorMovementSession(separator, 0, false);
         }
@@ -457,7 +474,7 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
         await renderFinished();
         separator.focus();
     }
-    _onkeyup() {
+    _onSeparatorKeyUp() {
         if (this.separatorMovementSession) {
             this.onSeparatorMoveEnd();
         }
@@ -561,6 +578,27 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
             return FCLLayout.ThreeColumnsMidExpanded;
         }
         if (moved({
+            separator: "start",
+            from: FCLLayout.ThreeColumnsStartHiddenMidExpanded,
+            forward: true,
+        }) && !isTablet && Math.ceil(startColumnPxWidth) >= COLUMN_MIN_WIDTH) {
+            return FCLLayout.ThreeColumnsMidExpanded;
+        }
+        if (moved({
+            separator: "end",
+            from: FCLLayout.ThreeColumnsStartHiddenMidExpanded,
+            forward: false,
+        }) && newColumnWidths.mid < newColumnWidths.end) {
+            return FCLLayout.ThreeColumnsStartHiddenEndExpanded;
+        }
+        if (moved({
+            separator: "end",
+            from: FCLLayout.ThreeColumnsStartHiddenEndExpanded,
+            forward: true,
+        }) && newColumnWidths.mid >= newColumnWidths.end) {
+            return FCLLayout.ThreeColumnsStartHiddenMidExpanded;
+        }
+        if (moved({
             separator: "end",
             from: FCLLayout.ThreeColumnsMidExpandedEndHidden,
             forward: false,
@@ -613,6 +651,13 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
             return FCLLayout.ThreeColumnsMidExpanded;
         }
         return fclLayoutBeforeMove; // no layout change
+    }
+    switchLayoutOnArrowPress() {
+        const lastUsedLayout = this.layout;
+        this.layout = getNextLayoutByArrowPress()[lastUsedLayout];
+        if (this.layout !== lastUsedLayout) {
+            this.fireLayoutChange(true, false);
+        }
     }
     get _availableWidthForColumns() {
         let width = this._width;
@@ -700,6 +745,9 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
     get showStartSeparatorGrip() {
         return this.disableResizing ? false : this.startSeparatorGripVisibility;
     }
+    get showStartSeparatorArrow() {
+        return this.disableResizing ? false : this.startSeparatorArrowVisibility;
+    }
     get showEndSeparatorGrip() {
         return this.disableResizing ? false : this.endSeparatorGripVisibility;
     }
@@ -708,6 +756,15 @@ let FlexibleColumnLayout = FlexibleColumnLayout_1 = class FlexibleColumnLayout e
     }
     get endSeparatorGripVisibility() {
         return this.effectiveSeparatorsInfo[1].gripVisible;
+    }
+    get startSeparatorArrowVisibility() {
+        return this.effectiveSeparatorsInfo[0].arrowVisible;
+    }
+    get startArrowDirection() {
+        return this.effectiveSeparatorsInfo[0].arrowDirection;
+    }
+    get startArrowDOM() {
+        return this.shadowRoot.querySelector(".ui5-fcl-arrow--start");
     }
     get effectiveSeparatorsInfo() {
         return this._effectiveLayoutsByMedia[this.media][this.effectiveLayout].separators;
@@ -861,6 +918,7 @@ FlexibleColumnLayout = FlexibleColumnLayout_1 = __decorate([
         renderer: jsxRenderer,
         styles: FlexibleColumnLayoutCss,
         template: FlexibleColumnLayoutTemplate,
+        dependencies: [Icon, Button],
     })
     /**
      * Fired when the layout changes via user interaction by dragging the separators

@@ -6,6 +6,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
+import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
+let ToolbarItem = 
 /**
  * @class
  *
@@ -87,22 +89,30 @@ class ToolbarItem extends UI5Element {
     static get toolbarPopoverTemplate() {
         throw new Error("Popover template must be defined");
     }
-    /**
-     * Returns the events that the item is subscribed to.
-     * @protected
-     */
-    get subscribedEvents() {
-        return new Map();
-    }
     get stableDomRef() {
         return this.getAttribute("stable-dom-ref") || `${this._id}-stable-dom-ref`;
     }
-}
+};
 __decorate([
     property()
 ], ToolbarItem.prototype, "overflowPriority", void 0);
 __decorate([
     property({ type: Boolean })
 ], ToolbarItem.prototype, "preventOverflowClosing", void 0);
+ToolbarItem = __decorate([
+    event("close-overflow", {
+        bubbles: true,
+    })
+    /**
+     * @class
+     *
+     * Represents an abstract class for items, used in the `ui5-toolbar`.
+     * @constructor
+     * @extends UI5Element
+     * @abstract
+     * @public
+     * @since 1.17.0
+     */
+], ToolbarItem);
 export default ToolbarItem;
 //# sourceMappingURL=ToolbarItem.js.map

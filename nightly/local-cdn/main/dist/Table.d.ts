@@ -1,17 +1,17 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
-import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import type { MoveEventDetail } from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
-import TableRow from "./TableRow.js";
 import TableHeaderRow from "./TableHeaderRow.js";
+import TableRow from "./TableRow.js";
+import TableNavigation from "./TableNavigation.js";
+import TableOverflowMode from "./types/TableOverflowMode.js";
+import TableDragAndDrop from "./TableDragAndDrop.js";
+import DropIndicator from "./DropIndicator.js";
+import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
+import type { MoveEventDetail } from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
 import type TableHeaderCell from "./TableHeaderCell.js";
 import type TableSelection from "./TableSelection.js";
-import TableOverflowMode from "./types/TableOverflowMode.js";
-import TableNavigation from "./TableNavigation.js";
-import DropIndicator from "./DropIndicator.js";
-import TableDragAndDrop from "./TableDragAndDrop.js";
 import type TableRowActionBase from "./TableRowActionBase.js";
 import type TableVirtualizer from "./TableVirtualizer.js";
+import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 /**
  * Interface for components that can be slotted inside the `features` slot of the `ui5-table`.
  *
@@ -49,6 +49,7 @@ interface ITableGrowing extends ITableFeature {
 }
 /**
  * Fired when an interactive row is clicked.
+ *
  * @param {TableRow} row The clicked row instance
  * @public
  */
@@ -58,6 +59,7 @@ type TableRowClickEventDetail = {
 type TableMoveEventDetail = MoveEventDetail;
 /**
  * Fired when a row action is clicked.
+ *
  * @param {TableRowActionBase} action The row action instance
  * @param {TableRow} row The row instance
  * @public
@@ -178,6 +180,7 @@ declare class Table extends UI5Element {
     nodata: Array<HTMLElement>;
     /**
      * Defines the features of the component.
+     *
      * @public
      */
     features: Array<ITableFeature>;
@@ -225,6 +228,7 @@ declare class Table extends UI5Element {
     loading: boolean;
     /**
      * Defines the delay in milliseconds, after which the loading indicator will show up for this component.
+     *
      * @default 1000
      * @public
      */
@@ -256,6 +260,7 @@ declare class Table extends UI5Element {
         width: float;
     }>;
     _containerWidth: number;
+    _rowsLength: number;
     constructor();
     onEnterDOM(): void;
     onExitDOM(): void;

@@ -1,2 +1,2 @@
-"use strict";function i(e,r){let t=!1;return(...u)=>{t||(e(...u),t=!0,setTimeout(()=>{t=!1},r))}}export default i;
+"use strict";function n(e,o){let t=null,l=null;return function(...u){if(l){t=u;return}e(...u),l=setTimeout(()=>{t&&(e(...t),t=null),l=null},o)}}export default n;
 //# sourceMappingURL=throttle.js.map

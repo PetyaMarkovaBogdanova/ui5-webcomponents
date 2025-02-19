@@ -169,7 +169,8 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
         if (this.accessibleName) {
             return this.accessibleName;
         }
-        return Avatar_1.i18nBundle.getText(AVATAR_TOOLTIP) || undefined;
+        const defaultLabel = Avatar_1.i18nBundle.getText(AVATAR_TOOLTIP);
+        return this.initials ? `${defaultLabel} ${this.initials}`.trim() : defaultLabel;
     }
     get hasImage() {
         this._hasImage = !!this.image.length;

@@ -9,7 +9,7 @@ import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import MediaRange from "@ui5/webcomponents-base/dist/MediaRange.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
@@ -24,7 +24,7 @@ import MediaGalleryLayout from "./types/MediaGalleryLayout.js";
 // Styles
 import MediaGalleryCss from "./generated/themes/MediaGallery.css.js";
 // Template
-import MediaGalleryTemplate from "./generated/templates/MediaGalleryTemplate.lit.js";
+import MediaGalleryTemplate from "./MediaGalleryTemplate.js";
 // The allowed number of thumbnail columns on each size
 // (relevant when `showAllThumbnails` is enabled)
 const COLUMNS_COUNT = {
@@ -396,7 +396,7 @@ __decorate([
 MediaGallery = MediaGallery_1 = __decorate([
     customElement({
         tag: "ui5-media-gallery",
-        renderer: litRender,
+        renderer: jsxRenderer,
         styles: [MediaGalleryCss],
         template: MediaGalleryTemplate,
         dependencies: [

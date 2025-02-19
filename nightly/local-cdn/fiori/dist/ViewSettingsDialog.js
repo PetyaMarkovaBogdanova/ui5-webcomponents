@@ -313,29 +313,29 @@ let ViewSettingsDialog = ViewSettingsDialog_1 = class ViewSettingsDialog extends
         this._currentMode = ViewSettingsDialogMode[mode];
     }
     _handleFilterValueItemClick(e) {
+        const itemText = e.detail.targetItem.innerText;
         // Update the component state
         this._currentSettings.filters = this._currentSettings.filters.map(filter => {
             if (filter.selected) {
                 filter.filterOptions.forEach(option => {
-                    if (option.text === e.detail.item.innerText) {
+                    if (option.text === itemText) {
                         option.selected = !option.selected;
                     }
                 });
             }
             return filter;
         });
-        this._setSelectedProp(e);
+        this._setSelectedProp(itemText);
         this._currentSettings = JSON.parse(JSON.stringify(this._currentSettings));
     }
     /**
      * Sets the selected property of the clicked item.
-     * @param e
      * @private
      */
-    _setSelectedProp(e) {
+    _setSelectedProp(itemText) {
         this.filterItems.forEach(filterItem => {
             filterItem.values.forEach(option => {
-                if (option.text === e.detail.item.innerText) {
+                if (option.text === itemText) {
                     option.selected = !option.selected;
                 }
             });
@@ -441,7 +441,7 @@ let ViewSettingsDialog = ViewSettingsDialog_1 = class ViewSettingsDialog extends
     _onSortOrderChange(e) {
         this._recentlyFocused = this._sortOrder;
         this._currentSettings.sortOrder = this.initSortOrderItems.map(item => {
-            item.selected = item.text === e.detail.item.innerText;
+            item.selected = item.text === e.detail.targetItem.innerText;
             return item;
         });
         // Invalidate
@@ -451,7 +451,7 @@ let ViewSettingsDialog = ViewSettingsDialog_1 = class ViewSettingsDialog extends
      * Stores `Sort By` list as recently used control and its selected item in current state.
      */
     _onSortByChange(e) {
-        const selectedItemIndex = Number(e.detail.item.getAttribute("data-ui5-external-action-item-index"));
+        const selectedItemIndex = Number(e.detail.targetItem.getAttribute("data-ui5-external-action-item-index"));
         this._recentlyFocused = this._sortBy;
         this._currentSettings.sortBy = this.initSortByItems.map((item, index) => {
             item.selected = index === selectedItemIndex;

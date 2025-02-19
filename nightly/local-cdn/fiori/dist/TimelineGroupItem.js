@@ -10,7 +10,6 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
-import TimelineLayout from "./types/TimelineLayout.js";
 import TimelineGroupItemTemplate from "./TimelineGroupItemTemplate.js";
 // Styles
 import TimelineGroupItemCss from "./generated/themes/TimelineGroupItem.css.js";
@@ -112,12 +111,6 @@ let TimelineGroupItem = class TimelineGroupItem extends UI5Element {
     }
     get _groupName() {
         return this.groupName;
-    }
-    get _groupItemIcon() {
-        if (this.layout === TimelineLayout.Vertical) {
-            return this.collapsed ? "slim-arrow-left" : "slim-arrow-down";
-        }
-        return this.collapsed ? "slim-arrow-up" : "slim-arrow-right";
     }
 };
 __decorate([

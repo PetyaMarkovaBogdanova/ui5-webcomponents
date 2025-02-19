@@ -14,6 +14,9 @@ import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import "@ui5/webcomponents-icons/dist/nav-back.js";
+import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
+import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
+import ItemNavigationBehavior from "@ui5/webcomponents-base/dist/types/ItemNavigationBehavior.js";
 import ListItem from "./ListItem.js";
 import MenuItemTemplate from "./MenuItemTemplate.js";
 import { MENU_BACK_BUTTON_ARIA_LABEL, MENU_CLOSE_BUTTON_ARIA_LABEL, MENU_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
@@ -44,7 +47,7 @@ import menuItemCss from "./generated/themes/MenuItem.css.js";
  */
 let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
     constructor() {
-        super(...arguments);
+        super();
         /**
          * Defines whether `ui5-menu-item` is in disabled state.
          *
@@ -86,6 +89,27 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
          * Indicates whether any of the element siblings have icon.
          */
         this._siblingsWithIcon = false;
+        this._itemNavigation = new ItemNavigation(this, {
+            navigationMode: NavigationMode.Horizontal,
+            behavior: ItemNavigationBehavior.Static,
+            getItemsCallback: () => this._navigableItems,
+        });
+    }
+    get _navigableItems() {
+        return [...this.endContent].filter(item => {
+            return item.hasAttribute("ui5-button")
+                || item.hasAttribute("ui5-link")
+                || (item.hasAttribute("ui5-icon") && item.getAttribute("mode") === "Interactive");
+        });
+    }
+    _navigateToEndContent(isLast) {
+        const item = isLast
+            ? this._navigableItems[this._navigableItems.length - 1]
+            : this._navigableItems[0];
+        if (item) {
+            this._itemNavigation.setCurrentItem(item);
+            this._itemNavigation._focusCurrentItem();
+        }
     }
     get placement() {
         return this.isRtl ? "Start" : "End";

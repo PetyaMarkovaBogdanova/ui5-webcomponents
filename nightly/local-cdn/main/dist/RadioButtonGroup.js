@@ -87,14 +87,14 @@ class RadioButtonGroup {
         const hasCheckedRadio = group.some(radioBtn => radioBtn.checked);
         group.filter(radioBtn => !radioBtn.disabled).forEach((radioBtn, idx) => {
             let activeElement = getActiveElement();
-            if (activeElement.classList.contains("ui5-radio-root")) {
+            if (activeElement?.classList.contains("ui5-radio-root")) {
                 activeElement = activeElement.getRootNode();
                 if (activeElement instanceof ShadowRoot) {
                     activeElement = activeElement.host;
                 }
             }
             if (hasCheckedRadio) {
-                if (activeElement.hasAttribute("ui5-radio-button") && activeElement.readonly) {
+                if (activeElement?.hasAttribute("ui5-radio-button") && activeElement.readonly) {
                     radioBtn._tabIndex = activeElement === radioBtn && radioBtn.readonly ? 0 : -1;
                 }
                 else {
@@ -124,6 +124,7 @@ class RadioButtonGroup {
     static selectItem(item, groupName) {
         this.updateSelectionInGroup(item, groupName);
         this.updateTabOrder(groupName);
+        this.updateFormValidity(groupName);
     }
     static updateSelectionInGroup(radioBtnToSelect, groupName) {
         const checkedRadio = this.getCheckedRadioFromGroup(groupName);

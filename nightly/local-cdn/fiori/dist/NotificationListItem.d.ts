@@ -33,7 +33,7 @@ type NotificationListItemPressEventDetail = {
  * **Note:** Adding custom actions by using the `ui5-notification-action` component is deprecated as of version 2.0!
  *
  * ### Usage
- * The component can be used in a standard `ui5-list`.
+ * The component should be used inside a `ui5-notification-list`.
  *
  * ### Keyboard Handling
  *

@@ -6,6 +6,7 @@ import type { ITabbable } from "@ui5/webcomponents-base/dist/delegate/ItemNaviga
 import LinkDesign from "./types/LinkDesign.js";
 import type WrappingType from "./types/WrappingType.js";
 import type LinkAccessibleRole from "./types/LinkAccessibleRole.js";
+import type InteractiveAreaSize from "./types/InteractiveAreaSize.js";
 type LinkClickEventDetail = {
     altKey: boolean;
     ctrlKey: boolean;
@@ -104,6 +105,20 @@ declare class Link extends UI5Element implements ITabbable {
      * @public
      */
     design: `${LinkDesign}`;
+    /**
+     * Defines the target area size of the link:
+     * - **InteractiveAreaSize.Normal**: The default target area size.
+     * - **InteractiveAreaSize.Large**: The target area size is enlarged to 24px in height.
+     *
+     * **Note:**The property is designed to make links easier to activate and helps meet the WCAG 2.2 Target Size requirement. It is applicable only for the SAP Horizon themes.
+     * **Note:**To improve <code>ui5-link</code>'s reliability and usability, it is recommended to use the <code>InteractiveAreaSize.Large</code> value in scenarios where the <code>ui5-link</code> component is placed inside another interactive component, such as a list item or a table cell.
+     * Setting the <code>interactiveAreaSize</code> property to <code>InteractiveAreaSize.Large</code> increases the <code>ui5-link</code>'s invisible touch area. As a result, the user's intended one-time selection command is more likely to activate the desired <code>ui5-link</code>, with minimal chance of unintentionally activating the underlying component.
+     *
+     * @public
+     * @since 2.8.0
+     * @default "Normal"
+     */
+    interactiveAreaSize: `${InteractiveAreaSize}`;
     /**
      * Defines how the text of a component will be displayed when there is not enough space.
      *

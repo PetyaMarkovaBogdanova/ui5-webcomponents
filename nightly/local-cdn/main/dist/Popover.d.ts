@@ -190,6 +190,10 @@ declare class Popover extends Popup {
     _isUI5AbstractElement(el: HTMLElement): el is UI5Element;
     get arrowDOM(): Element;
     /**
+     * @protected
+     */
+    focusOpener(): void;
+    /**
      * @private
      */
     calcPlacement(targetRect: DOMRect, popoverSize: PopoverSize): CalculatedPlacement;

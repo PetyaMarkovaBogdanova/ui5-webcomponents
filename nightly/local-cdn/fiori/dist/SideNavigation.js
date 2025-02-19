@@ -317,16 +317,18 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
                 return;
             }
             let itemDomRef;
-            if (isInstanceOfSideNavigationItemBase(item)) {
+            if (isInstanceOfSideNavigationItemBase(item) && item.getDomRef()) {
                 itemDomRef = item.getDomRef();
             }
             else {
                 itemDomRef = item;
             }
-            const { marginTop, marginBottom } = window.getComputedStyle(itemDomRef);
-            itemsHeight += itemDomRef.offsetHeight + parseFloat(marginTop) + parseFloat(marginBottom);
-            if (itemsHeight > listHeight) {
-                item.classList.add("ui5-sn-item-hidden");
+            if (itemDomRef) {
+                const { marginTop, marginBottom } = window.getComputedStyle(itemDomRef);
+                itemsHeight += itemDomRef.offsetHeight + parseFloat(marginTop) + parseFloat(marginBottom);
+                if (itemsHeight > listHeight) {
+                    item.classList.add("ui5-sn-item-hidden");
+                }
             }
         });
         this._flexibleItemNavigation._init();
@@ -394,7 +396,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
         return result;
     }
     _selectItem(item) {
-        if (item.disabled) {
+        if (!item.isSelectable) {
             return;
         }
         if (!this.fireDecoratorEvent("selection-change", { item })) {

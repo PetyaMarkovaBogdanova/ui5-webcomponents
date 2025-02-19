@@ -4,9 +4,6 @@ import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delega
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
-import "@ui5/webcomponents-icons/dist/decline.js";
-import "@ui5/webcomponents-icons/dist/multiselect-all.js";
-import "@ui5/webcomponents-icons/dist/not-editable.js";
 import "@ui5/webcomponents-icons/dist/error.js";
 import "@ui5/webcomponents-icons/dist/alert.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
@@ -29,6 +26,7 @@ import type PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
  */
 interface IMultiComboBoxItem extends UI5Element {
     text?: string;
+    additionalText?: string;
     headerText?: string;
     selected: boolean;
     isGroupItem?: boolean;

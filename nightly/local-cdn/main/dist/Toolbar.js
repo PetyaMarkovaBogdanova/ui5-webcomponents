@@ -86,7 +86,7 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
         this.itemsWidthMeasured = false;
         this.ITEMS_WIDTH_MAP = new Map();
         this._onResize = this.onResize.bind(this);
-        this._onInteract = (e) => this.onInteract(e);
+        this._onCloseOverflow = this.closeOverflow.bind(this);
     }
     /**
      * Read-only members
@@ -98,13 +98,6 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
         const toolbarComputedStyle = getComputedStyle(this.getDomRef());
         return calculateCSSREMValue(toolbarComputedStyle, getScopedVarName("--_ui5-toolbar-padding-left"))
             + calculateCSSREMValue(toolbarComputedStyle, getScopedVarName("--_ui5-toolbar-padding-right"));
-    }
-    get subscribedEvents() {
-        return this.items
-            .map((item) => Array.from(item.subscribedEvents.keys()))
-            .flat()
-            // remove duplicates
-            .filter((value, index, self) => self.indexOf(value) === index);
     }
     get alwaysOverflowItems() {
         return this.items.filter((item) => item.overflowPriority === ToolbarItemOverflowBehavior.AlwaysOverflow);
@@ -337,46 +330,14 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
         this.closeOverflow();
         this.processOverflowLayout();
     }
-    onInteract(e) {
-        e.stopImmediatePropagation();
-        const target = e.target;
-        const item = target.closest(".ui5-tb-item") || target.closest(".ui5-tb-popover-item");
-        if (target === this.overflowButtonDOM) {
-            this.toggleOverflow();
-            return;
-        }
-        if (!item) {
-            return;
-        }
-        const refItemId = target.getAttribute("data-ui5-external-action-item-id");
-        if (refItemId) {
-            const abstractItem = this.getItemByID(refItemId);
-            const eventType = e.type;
-            const eventTypeNonPrefixed = e.type.replace("ui5-", "");
-            const prevented = !abstractItem?.fireEvent(eventTypeNonPrefixed, { ...e.detail, targetRef: target });
-            const eventOptions = abstractItem?.subscribedEvents.get(eventType) || abstractItem?.subscribedEvents.get(eventTypeNonPrefixed);
-            if (prevented || abstractItem?.preventOverflowClosing || eventOptions?.preventClosing) {
-                return;
-            }
-            this.closeOverflow();
-        }
-    }
     /**
      * Private members
      */
     attachListeners() {
-        const popover = this.getOverflowPopover();
-        this.subscribedEvents.forEach((e) => {
-            this.itemsDOM?.addEventListener(e, this._onInteract);
-            popover?.addEventListener(e, this._onInteract);
-        });
+        this.addEventListener("close-overflow", this._onCloseOverflow);
     }
     detachListeners() {
-        const popover = this.getOverflowPopover();
-        this.subscribedEvents.forEach((e) => {
-            this.itemsDOM?.removeEventListener(e, this._onInteract);
-            popover?.removeEventListener(e, this._onInteract);
-        });
+        this.removeEventListener("close-overflow", this._onCloseOverflow);
     }
     onToolbarItemChange() {
         // some items were updated reset the cache and trigger a re-render

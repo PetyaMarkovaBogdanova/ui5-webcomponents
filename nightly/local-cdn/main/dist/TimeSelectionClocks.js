@@ -32,6 +32,10 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
          * Flag for focused state of AM/PM segmented button
          */
         this._amPmFocused = false;
+        /**
+         * Flag for skipping the animation when switching between clocks.
+         */
+        this._skipAnimation = false;
     }
     onBeforeRendering() {
         this._createComponents();
@@ -72,9 +76,10 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
      */
     _buttonFocusIn(evt) {
         const target = evt.target;
-        const name = this._getNameFromId(target.id);
-        if (name) {
-            this._switchTo(name);
+        const newName = this._getNameFromId(target.id);
+        const newIndex = this._getIndexFromId(target.id);
+        if (this._activeIndex !== newIndex && newName) {
+            this._switchTo(newName);
         }
     }
     /**
@@ -114,7 +119,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
             this._spacePressed = true;
             this._keyboardBuffer = "";
             this._resetCooldown(true);
-            this._switchNextClock(true);
+            this._switchNextClock(true, true);
         }
         else if ((isUp(evt) || isDown(evt)) && !isUpAlt(evt) && !isDownAlt(evt)) {
             // Arrows up/down increase/decrease currently active clock
@@ -126,7 +131,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
             // PageUp/PageDown increase/decrease hours clock
             clock = this._clockComponent("hours");
             if (clock && !clock.disabled) {
-                this._switchTo("hours");
+                this._switchTo("hours", true);
                 clock._modifyValue(isPageUp(evt));
             }
             evt.preventDefault();
@@ -135,7 +140,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
             // Shift+PageUp/Shift+PageDown increase/decrease minutes clock
             clock = this._clockComponent("minutes");
             if (clock && !clock.disabled) {
-                this._switchTo("minutes");
+                this._switchTo("minutes", true);
                 clock._modifyValue(isPageUpShift(evt));
             }
             evt.preventDefault();
@@ -144,7 +149,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
             // Ctrl+Shift+PageUp/Ctrl+Shift+PageDown increase/decrease seconds clock
             clock = this._clockComponent("seconds");
             if (clock && !clock.disabled) {
-                this._switchTo("seconds");
+                this._switchTo("seconds", true);
                 clock._modifyValue(isPageUpShiftCtrl(evt));
             }
             evt.preventDefault();
@@ -165,7 +170,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
             this._keyboardBuffer = "";
             this._exactMatch = undefined;
             this._resetCooldown(true);
-            this._switchNextClock(true);
+            this._switchNextClock(true, true);
         }
         else if (isNumber(evt) && this._entities[this._activeIndex]) {
             // Direct number entry
@@ -191,7 +196,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
             // value accumulated in the buffer (old entry + new entry) is greater than the clock maximum value,
             // so assign old entry to the current clock and then switch to the next clock, and add new entry as an old value
             activeClock && activeClock._setSelectedValue(parseInt(this._keyboardBuffer));
-            this._switchNextClock();
+            this._switchNextClock(false, true);
             this._keyboardBuffer = char;
             activeClock = this._clockComponent(this._activeIndex);
             activeClock && activeClock._setSelectedValue(parseInt(char));
@@ -206,7 +211,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
                 // there is no place for more entry - just set buffer as a value, and switch to the next clock
                 this._resetCooldown(this._keyboardBuffer.length !== 2);
                 this._keyboardBuffer = "";
-                this._switchNextClock();
+                this._switchNextClock(false, true);
             }
         }
     }
@@ -247,16 +252,17 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
                 "label": this.hoursLabel,
                 "entity": "hours",
                 "itemMin": 1,
-                "itemMax": 12,
+                "itemMax": this._hoursConfiguration.isTwelveHoursFormat ? 12 : 24,
                 "value": time.hours,
                 "stringValue": this._hours,
                 "textValue": `${time.hours} ${this.hoursLabel}`,
-                "displayStep": 1,
+                "displayStep": this._hoursConfiguration.isTwelveHoursFormat ? 1 : 2,
                 "lastItemReplacement": this._hoursConfiguration.isTwelveHoursFormat ? -1 : 0,
-                "showInnerCircle": !this._hoursConfiguration.isTwelveHoursFormat,
+                "hideFractions": !this._hoursConfiguration.isTwelveHoursFormat,
                 "prependZero": this._zeroPaddedHours,
                 "hasSeparator": this._entities.length > 0,
                 "active": false,
+                "skipAnimation": false,
                 "attributes": {
                     "min": this._hoursConfiguration.minHour,
                     "max": this._hoursConfiguration.maxHour,
@@ -274,13 +280,14 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
                 "itemMax": 60,
                 "value": time.minutes,
                 "stringValue": this._minutes,
-                "textValue": `${time.minutes} ${this.minutesLabel}`, // possible concatenation
+                "textValue": `${time.minutes} ${this.minutesLabel}`,
                 "displayStep": 5,
                 "lastItemReplacement": 0,
-                "showInnerCircle": false,
+                "hideFractions": false,
                 "prependZero": false,
                 "hasSeparator": this._entities.length > 0,
                 "active": false,
+                "skipAnimation": false,
                 "attributes": {
                     "min": 0,
                     "max": 59,
@@ -298,13 +305,14 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
                 "itemMax": 60,
                 "value": time.seconds,
                 "stringValue": this._seconds,
-                "textValue": `${time.seconds} ${this.secondsLabel}`, // possible concatenation
+                "textValue": `${time.seconds} ${this.secondsLabel}`,
                 "displayStep": 5,
                 "lastItemReplacement": 0,
-                "showInnerCircle": false,
+                "hideFractions": false,
                 "prependZero": false,
                 "hasSeparator": this._entities.length > 0,
                 "active": false,
+                "skipAnimation": false,
                 "attributes": {
                     "min": 0,
                     "max": 59,
@@ -313,36 +321,61 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
             });
         }
         this._entities[this._activeIndex].active = true;
+        this._entities[this._activeIndex].skipAnimation = this._skipAnimation;
         this._createPeriodComponent();
     }
     /**
      * Switches to the specific clock by name.
      * @param clockName the name of the clock
+     * @param skipAnimation whether to skip transition animation while displaying the next clock
      */
-    _switchTo(clockName) {
+    _switchTo(clockName, skipAnimation = false) {
         const key = this._componentKey(clockName);
         if (this._componentMap[key] !== undefined) {
-            this._switchClock(this._componentMap[key]);
+            this._switchClock(this._componentMap[key], skipAnimation);
         }
     }
     /**
      * Switches to the specific clock by its index in _clocks property.
      * @param clockIndex the index of the clock
+     * @param skipAnimation whether to skip transition animation while displaying the next clock
      */
-    _switchClock(clockIndex) {
-        const newButton = this._buttonComponent(clockIndex);
-        if (this._entities.length && clockIndex < this._entities.length && newButton) {
-            this._entities[this._activeIndex].active = false;
-            this._activeIndex = clockIndex;
-            this._entities[this._activeIndex].active = true;
-            newButton.focus();
+    _switchClock(clockIndex, skipAnimation = false) {
+        if (this._activeIndex === clockIndex || !this._entities.length || clockIndex >= this._entities.length) {
+            return;
         }
+        const currentClockComponent = this._clockComponent(this._activeIndex);
+        const newClockComponent = this._clockComponent(clockIndex);
+        if (this._skipAnimation && clockIndex !== 0 && this._activeIndex === 0 && currentClockComponent) {
+            currentClockComponent._skipAnimation = false;
+            this._skipAnimation = skipAnimation;
+        }
+        if (newClockComponent && skipAnimation) {
+            newClockComponent._skipAnimation = true;
+            this._activateClock(clockIndex);
+        }
+        else {
+            currentClockComponent?._firstNumberElement?.addEventListener("animationend", () => this._activateClock(clockIndex), { once: true });
+            currentClockComponent?._clockWrapper?.classList.add("ui5-tp-clock-transition");
+        }
+    }
+    /**
+     * Makes specific clock active.
+     * @param clockIndex the index of the clock to be activated
+     */
+    _activateClock(clockIndex) {
+        const newButton = this._buttonComponent(clockIndex);
+        this._entities[this._activeIndex].active = false;
+        this._activeIndex = clockIndex;
+        this._entities[this._activeIndex].active = true;
+        newButton && newButton.focus();
     }
     /**
      * Switches to the next available clock.
      * @param wrapAround whether to switch to the first clock if there are no next clock
+     * @param skipAnimation whether to skip transition animation while displaying the next clock
      */
-    _switchNextClock(wrapAround = false) {
+    _switchNextClock(wrapAround = false, skipAnimation = false) {
         let activeIndex = this._activeIndex;
         const startActiveIndex = activeIndex;
         const activeClock = this._clockComponent(activeIndex);
@@ -356,7 +389,7 @@ let TimeSelectionClocks = class TimeSelectionClocks extends TimePickerInternals 
         } while (activeClock && activeClock.disabled && activeIndex !== startActiveIndex && (wrapAround || activeIndex < this._entities.length - 1));
         const newClock = this._clockComponent(activeIndex);
         if (activeIndex !== startActiveIndex && newClock && !newClock.disabled) {
-            this._switchClock(activeIndex);
+            this._switchClock(activeIndex, skipAnimation);
         }
     }
     /**
@@ -404,6 +437,9 @@ __decorate([
 __decorate([
     property({ type: Boolean, noAttribute: true })
 ], TimeSelectionClocks.prototype, "_amPmFocused", void 0);
+__decorate([
+    property({ type: Boolean })
+], TimeSelectionClocks.prototype, "_skipAnimation", void 0);
 TimeSelectionClocks = __decorate([
     event("close-picker", {
         bubbles: true,

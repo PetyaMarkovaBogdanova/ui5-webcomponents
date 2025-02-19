@@ -38,6 +38,7 @@ declare class TableHeaderRow extends TableRowBase {
      * @public
      */
     sticky: boolean;
+    onEnterDOM(): void;
     onBeforeRendering(): void;
     isHeaderRow(): boolean;
     get _hasRowActions(): boolean;

@@ -15,7 +15,7 @@ import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import UserMenuTemplate from "./UserMenuTemplate.js";
 import UserMenuCss from "./generated/themes/UserMenu.css.js";
 // Texts
-import { USER_MENU_OTHER_ACCOUNT_BUTTON_TXT, USER_MENU_MANAGE_ACCOUNT_BUTTON_TXT, USER_MENU_SIGN_OUT_BUTTON_TXT, USER_MENU_POPOVER_ACCESSIBLE_NAME, USER_MENU_EDIT_AVATAR_TXT, USER_MENU_ADD_ACCOUNT_TXT, USER_MENU_CLOSE_BUTTON_TXT, USER_MENU_CLOSE_DIALOG_BUTTON, } from "./generated/i18n/i18n-defaults.js";
+import { USER_MENU_OTHER_ACCOUNT_BUTTON_TXT, USER_MENU_MANAGE_ACCOUNT_BUTTON_TXT, USER_MENU_SIGN_OUT_BUTTON_TXT, USER_MENU_POPOVER_ACCESSIBLE_NAME, USER_MENU_EDIT_AVATAR_TXT, USER_MENU_ADD_ACCOUNT_TXT, USER_MENU_CLOSE_DIALOG_BUTTON, } from "./generated/i18n/i18n-defaults.js";
 /**
  * @class
  * ### Overview
@@ -65,6 +65,14 @@ let UserMenu = UserMenu_1 = class UserMenu extends UI5Element {
          * @public
          */
         this.showAddAccount = false;
+        /**
+         * Defines if the User menu shows edit button.
+         *
+         * @default false
+         * @public
+         * @since 2.7.0
+         */
+        this.showEditButton = false;
         /**
          * @default false
          * @private
@@ -171,9 +179,6 @@ let UserMenu = UserMenu_1 = class UserMenu extends UI5Element {
         this.open = false;
         this.fireDecoratorEvent("close");
     }
-    _handleDeclineClick() {
-        this._closeUserMenu();
-    }
     _openItemSubMenu(item) {
         if (!item._popover || item._popover.open) {
             return;
@@ -181,16 +186,6 @@ let UserMenu = UserMenu_1 = class UserMenu extends UI5Element {
         item._popover.opener = item;
         item._popover.open = true;
         item.selected = true;
-    }
-    _closeItemSubMenu(item) {
-        if (item && item._popover) {
-            const openedSibling = item._menuItems.find(menuItem => menuItem._popover && menuItem._popover.open);
-            if (openedSibling) {
-                this._closeItemSubMenu(openedSibling);
-            }
-            item._popover.open = false;
-            item.selected = false;
-        }
     }
     _closeUserMenu() {
         this.open = false;
@@ -200,9 +195,6 @@ let UserMenu = UserMenu_1 = class UserMenu extends UI5Element {
     }
     get _otherAccounts() {
         return this.accounts.filter(account => account !== this._selectedAccount);
-    }
-    get _declineButtonTooltip() {
-        return UserMenu_1.i18nBundle.getText(USER_MENU_CLOSE_BUTTON_TXT);
     }
     get _manageAccountButtonText() {
         return UserMenu_1.i18nBundle.getText(USER_MENU_MANAGE_ACCOUNT_BUTTON_TXT);
@@ -252,6 +244,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], UserMenu.prototype, "showAddAccount", void 0);
+__decorate([
+    property({ type: Boolean })
+], UserMenu.prototype, "showEditButton", void 0);
 __decorate([
     slot({
         type: HTMLElement,

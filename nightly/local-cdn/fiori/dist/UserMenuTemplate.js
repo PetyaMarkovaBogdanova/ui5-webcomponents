@@ -36,7 +36,8 @@ export default function UserMenuTemplate() {
 function headerContent() {
     return (_jsx(_Fragment, { children: this._selectedAccount &&
             _jsxs("div", { class: "ui5-pm-selected-account", children: [_jsxs(Avatar, { size: "L", onClick: this._handleAvatarClick, initials: this._selectedAccount._initials, fallbackIcon: personPlaceholder, class: "ui5-pm--selected-account-avatar", children: [this._selectedAccount.avatarSrc &&
-                                _jsx("img", { src: this._selectedAccount.avatarSrc }), _jsx(Tag, { slot: "badge", wrappingType: "None", design: "Set1", colorScheme: "5", title: this._editAvatarTooltip, children: _jsx(Icon, { slot: "icon", name: edit }) })] }), this._selectedAccount.titleText &&
+                                _jsx("img", { src: this._selectedAccount.avatarSrc }), this.showEditButton &&
+                                _jsx(Tag, { slot: "badge", wrappingType: "None", design: "Set1", colorScheme: "5", title: this._editAvatarTooltip, children: _jsx(Icon, { slot: "icon", name: edit }) })] }), this._selectedAccount.titleText &&
                         _jsx(Title, { id: "selected-account-title", class: "ui5-pm-selected-account-title", children: this._selectedAccount.titleText }), this._selectedAccount.subtitleText &&
                         _jsx(Text, { class: "ui5-pm-selected-account-subtitleText", children: this._selectedAccount.subtitleText }), this._selectedAccount.description &&
                         _jsx(Text, { class: "ui5-pm-selected-account-description", children: this._selectedAccount.description }), this.showManageAccount &&

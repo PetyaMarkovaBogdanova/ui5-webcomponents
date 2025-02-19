@@ -252,15 +252,6 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
     get modeDelete() {
         return this._selectionMode === ListSelectionMode.Delete;
     }
-    /**
-     * Used in UploadCollectionItem
-     */
-    get renderDeleteButton() {
-        return this.modeDelete;
-    }
-    /**
-     * End
-     */
     get typeDetail() {
         return this.type === ListItemType.Detail;
     }

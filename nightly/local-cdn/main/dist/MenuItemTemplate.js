@@ -17,7 +17,7 @@ export default function MenuItemTemplate(hooks) {
     return _jsxs(_Fragment, { children: [ListItemTemplate.call(this, currentHooks), listItemPostContent.call(this)] });
 }
 function listItemContent() {
-    return (_jsxs(_Fragment, { children: [this.text && _jsx("div", { class: "ui5-menu-item-text", children: this.text }), rightContent.call(this), this.hasSubmenu && (_jsx("div", { class: "ui5-menu-item-submenu-icon", children: _jsx(Icon, { part: "subicon", name: slimArrowRight, class: "ui5-menu-item-icon-end" }) }))] }));
+    return (_jsxs(_Fragment, { children: [this.text && _jsx("div", { class: "ui5-menu-item-text", children: this.text }), rightContent.call(this)] }));
 }
 function rightContent() {
     switch (true) {

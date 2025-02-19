@@ -1,7 +1,6 @@
 import type { ButtonAccessibilityAttributes } from "./Button.js";
 import type ButtonDesign from "./types/ButtonDesign.js";
 import ToolbarItem from "./ToolbarItem.js";
-import type { IEventOptions } from "./ToolbarItem.js";
 import ToolbarButtonTemplate from "./ToolbarButtonTemplate.js";
 import ToolbarPopoverButtonTemplate from "./ToolbarPopoverButtonTemplate.js";
 type ToolbarButtonAccessibilityAttributes = ButtonAccessibilityAttributes;
@@ -21,9 +20,6 @@ type ToolbarButtonAccessibilityAttributes = ButtonAccessibilityAttributes;
  * @since 1.17.0
  */
 declare class ToolbarButton extends ToolbarItem {
-    eventDetails: ToolbarItem["eventDetails"] & {
-        "click": void;
-    };
     /**
      * Defines if the action is disabled.
      *
@@ -120,7 +116,7 @@ declare class ToolbarButton extends ToolbarItem {
     get containsText(): boolean;
     static get toolbarTemplate(): typeof ToolbarButtonTemplate;
     static get toolbarPopoverTemplate(): typeof ToolbarPopoverButtonTemplate;
-    get subscribedEvents(): Map<string, IEventOptions>;
+    onClick(e: Event): void;
 }
 export default ToolbarButton;
 export type { ToolbarButtonAccessibilityAttributes, };

@@ -52,6 +52,10 @@ type MenuBeforeCloseEventDetail = {
  * in the currently clicked menu item.
  * - `Arrow Left` or `Escape` - Closes the currently opened sub-menu.
  *
+ * when there is `endContent` :
+ * - `Arrow Left` or `ArrowRight` - Navigate between the menu item actions and the menu item itself
+ * - `Arrow Up` / `Arrow Down` - Navigates up and down the currently visible menu items
+ *
  * Note: if the text ditrection is set to Right-to-left (RTL), `Arrow Right` and `Arrow Left` functionality is swapped.
  *
  * ### ES6 Module Import
@@ -131,6 +135,7 @@ declare class Menu extends UI5Element {
     _startOpenTimeout(item: MenuItem): void;
     _itemClick(e: CustomEvent<ListItemClickEventDetail>): void;
     _itemKeyDown(e: KeyboardEvent): void;
+    _navigateOutOfEndContent(menuItem: MenuItem, isDownwards?: boolean): void;
     _beforePopoverOpen(e: CustomEvent): void;
     _afterPopoverOpen(): void;
     _beforePopoverClose(e: CustomEvent): void;

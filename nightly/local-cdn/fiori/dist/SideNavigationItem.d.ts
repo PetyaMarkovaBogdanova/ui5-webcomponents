@@ -45,13 +45,13 @@ declare class SideNavigationItem extends SideNavigationSelectableItemBase {
     get selectableItems(): Array<SideNavigationSelectableItemBase>;
     get focusableItems(): Array<SideNavigationItemBase>;
     get allItems(): Array<SideNavigationItemBase>;
-    get _ariaHasPopup(): "tree" | undefined;
+    get _ariaHasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
     get _ariaChecked(): boolean | undefined;
     get _groupId(): string | undefined;
     get _expanded(): boolean | undefined;
     get classesArray(): string[];
     get _selected(): boolean;
-    _onToggleClick(e: PointerEvent): void;
+    _onToggleClick(e: CustomEvent): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
     _onfocusin(e: FocusEvent): void;
@@ -60,6 +60,7 @@ declare class SideNavigationItem extends SideNavigationSelectableItemBase {
     _onmouseenter(): void;
     _onmouseleave(): void;
     get isSideNavigationItem(): boolean;
+    _toggle(): void;
 }
 declare const isInstanceOfSideNavigationItem: (object: any) => object is SideNavigationItem;
 export default SideNavigationItem;

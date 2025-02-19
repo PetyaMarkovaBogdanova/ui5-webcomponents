@@ -41,7 +41,7 @@ declare class SideNavigationItemBase extends UI5Element implements ITabbable {
      * @since 2.0.0
      */
     tooltip?: string;
-    forcedTabIndex?: string;
+    forcedTabIndex: string;
     sideNavCollapsed: boolean;
     inPopover: boolean;
     _sideNavigation: SideNavigation;

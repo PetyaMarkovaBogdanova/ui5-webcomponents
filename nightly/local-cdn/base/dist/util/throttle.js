@@ -1,13 +1,18 @@
 function throttle(func, delay) {
-    let wait = false;
-    return (...args) => {
-        if (wait) {
+    let lastArgs = null; // used to ensure an explicit last call after the delay
+    let throttleTimeout = null;
+    return function throttled(...args) {
+        if (throttleTimeout) {
+            lastArgs = args;
             return;
         }
         func(...args);
-        wait = true;
-        setTimeout(() => {
-            wait = false;
+        throttleTimeout = setTimeout(() => {
+            if (lastArgs) {
+                func(...lastArgs);
+                lastArgs = null;
+            }
+            throttleTimeout = null;
         }, delay);
     };
 }

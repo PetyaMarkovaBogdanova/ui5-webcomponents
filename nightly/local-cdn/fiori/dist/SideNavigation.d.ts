@@ -1,6 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
-import type NavigationMenu from "@ui5/webcomponents/dist/NavigationMenu.js";
+import type NavigationMenu from "./NavigationMenu.js";
 import type { MenuItemClickEventDetail } from "@ui5/webcomponents/dist/Menu.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";

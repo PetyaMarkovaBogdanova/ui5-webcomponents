@@ -630,7 +630,7 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
         await this._togglePopover(opener, true);
     }
     _sendOverflowPresentationInfos(items) {
-        const extraIndent = items
+        const semanticIcons = items
             .filter((item) => !item.isSeparator)
             .some(tab => tab.design !== SemanticColor.Default && tab.design !== SemanticColor.Neutral);
         walk(items, (item, level) => {
@@ -639,8 +639,8 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
                     return this._findTabInOverflow(item);
                 },
                 style: {
-                    [getScopedVarName("--_ui5-tab-indentation-level")]: item.isSeparator ? level + 1 : level,
-                    [getScopedVarName("--_ui5-tab-extra-indent")]: extraIndent ? 1 : null,
+                    [getScopedVarName("--_ui5-tab-indentation-level")]: level,
+                    [getScopedVarName("--_ui5-tab-level-has-icon")]: semanticIcons ? "1" : "0",
                 },
             });
         });

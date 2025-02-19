@@ -22,6 +22,10 @@ declare class TimeSelectionClocks extends TimePickerInternals {
      * Flag for focused state of AM/PM segmented button
      */
     _amPmFocused: boolean;
+    /**
+     * Flag for skipping the animation when switching between clocks.
+     */
+    _skipAnimation: boolean;
     onBeforeRendering(): void;
     /**
      * Returns ToggleSpinButton component by index or name.
@@ -83,18 +87,26 @@ declare class TimeSelectionClocks extends TimePickerInternals {
     /**
      * Switches to the specific clock by name.
      * @param clockName the name of the clock
+     * @param skipAnimation whether to skip transition animation while displaying the next clock
      */
-    _switchTo(clockName: string): void;
+    _switchTo(clockName: string, skipAnimation?: boolean): void;
     /**
      * Switches to the specific clock by its index in _clocks property.
      * @param clockIndex the index of the clock
+     * @param skipAnimation whether to skip transition animation while displaying the next clock
      */
-    _switchClock(clockIndex: number): void;
+    _switchClock(clockIndex: number, skipAnimation?: boolean): void;
+    /**
+     * Makes specific clock active.
+     * @param clockIndex the index of the clock to be activated
+     */
+    _activateClock(clockIndex: number): void;
     /**
      * Switches to the next available clock.
      * @param wrapAround whether to switch to the first clock if there are no next clock
+     * @param skipAnimation whether to skip transition animation while displaying the next clock
      */
-    _switchNextClock(wrapAround?: boolean): void;
+    _switchNextClock(wrapAround?: boolean, skipAnimation?: boolean): void;
     /**
      * Clock 'change' event handler.
      * @param evt Event object

@@ -340,6 +340,12 @@ let Popover = Popover_1 = class Popover extends Popup {
         return this.shadowRoot.querySelector(".ui5-popover-arrow");
     }
     /**
+     * @protected
+     */
+    focusOpener() {
+        this.getOpenerHTMLElement(this.opener)?.focus();
+    }
+    /**
      * @private
      */
     calcPlacement(targetRect, popoverSize) {

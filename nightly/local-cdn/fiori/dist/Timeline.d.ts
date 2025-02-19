@@ -2,10 +2,10 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { ITabbable } from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type ToggleButton from "@ui5/webcomponents/dist/ToggleButton.js";
-import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import "./TimelineItem.js";
-import "./TimelineGroupItem.js";
+import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import TimelineLayout from "./types/TimelineLayout.js";
+import TimelineGrowingMode from "./types/TimelineGrowingMode.js";
 /**
  * Interface for components that may be slotted inside `ui5-timeline` as items
  * @public
@@ -40,6 +40,9 @@ interface ITimelineItem extends UI5Element, ITabbable {
  * @since 0.8.0
  */
 declare class Timeline extends UI5Element {
+    eventDetails: {
+        "load-more": void;
+    };
     /**
      * Defines the items orientation.
      * @default "Vertical"
@@ -55,21 +58,85 @@ declare class Timeline extends UI5Element {
      */
     accessibleName?: string;
     /**
+     * Defines if the component should display a loading indicator over the Timeline.
+     *
+     * @default false
+     * @since 2.7.0
+     * @public
+     */
+    loading: boolean;
+    /**
+     * Defines the delay in milliseconds, after which the loading indicator will show up for this component.
+     * @default 1000
+     * @public
+     */
+    loadingDelay: number;
+    /**
+     * Defines whether the Timeline will have growing capability either by pressing a "More" button,
+     * or via user scroll. In both cases a `load-more` event is fired.
+     *
+     * Available options:
+     *
+     * `Button` - Displays a button at the end of the Timeline, which when pressed triggers the `load-more` event.
+     *
+     * `Scroll` -Triggers the `load-more` event when the user scrolls to the end of the Timeline.
+     *
+     * `None` (default) - The growing functionality is off.
+     *
+     * @default "None"
+     * @since 2.7.0
+     * @public
+     */
+    growing: `${TimelineGrowingMode}`;
+    /**
+     * Defines the active state of the `More` button.
+     * @private
+     */
+    _loadMoreActive: boolean;
+    /**
      * Determines the content of the `ui5-timeline`.
      * @public
      */
     items: Array<ITimelineItem>;
+    timelineEndMarker: HTMLElement;
+    growingButton: HTMLElement;
     static i18nBundle: I18nBundle;
     _itemNavigation: ItemNavigation;
+    growingIntersectionObserver?: IntersectionObserver | null;
+    timeLineEndObserved: boolean;
+    initialIntersection: boolean;
     constructor();
     get ariaLabel(): string;
+    get showBusyIndicatorOverlay(): boolean;
+    get growsOnScroll(): boolean;
+    get growingButtonIcon(): "process" | "drill-down";
+    get growsWithButton(): boolean;
+    onAfterRendering(): void;
+    onExitDOM(): void;
+    observeTimelineEnd(): Promise<void>;
+    unobserveTimelineEnd(): void;
+    getIntersectionObserver(): IntersectionObserver;
+    onIntersection(entries: Array<IntersectionObserverEntry>): void;
+    loadMore(): void;
+    _onLoadMoreKeydown(e: KeyboardEvent): void;
+    _onLoadMoreKeyup(e: KeyboardEvent): void;
+    _onLoadMoreClick(): void;
     _onfocusin(e: FocusEvent): void;
     onBeforeRendering(): void;
     _setLastItem(): void;
     _setIsNextItemGroup(): void;
     _onkeydown(e: KeyboardEvent): void;
     _handleNextOrPreviousItem(e: KeyboardEvent, isNext?: boolean): void;
-    get _navigatableItems(): (ToggleButton | ITimelineItem)[];
+    _handleDown(): void;
+    focusGrowingButton(): void;
+    _handleUp(e: KeyboardEvent): void;
+    /**
+     * Focuses a list item and sets its tabindex to "0" via the ItemNavigation
+     * @protected
+     * @param item
+     */
+    focusItem(item: ITimelineItem | ToggleButton): void;
+    get _navigableItems(): (ToggleButton | ITimelineItem)[];
 }
 export default Timeline;
 export type { ITimelineItem, };

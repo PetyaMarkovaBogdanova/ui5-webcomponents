@@ -1,5 +1,8 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import type { I18nText } from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { ITimelineItem } from "./Timeline.js";
+import type ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import type TimelineLayout from "./types/TimelineLayout.js";
 /**
  * @class
@@ -50,6 +53,13 @@ declare class TimelineItem extends UI5Element implements ITimelineItem {
      */
     subtitleText?: string;
     /**
+     * Defines the state of the icon displayed in the `ui5-timeline-item`.
+     * @default "None"
+     * @public
+     * @since 2.7.0
+     */
+    state: `${ValueState}`;
+    /**
      * Defines the content of the `ui5-timeline-item`.
      * @public
      */
@@ -92,12 +102,15 @@ declare class TimelineItem extends UI5Element implements ITimelineItem {
      * @private
      */
     positionInGroup?: number;
+    static i18nBundle: I18nBundle;
     constructor();
     onNamePress(): void;
     /**
      * Focus the internal link.
      */
     focusLink(): void;
+    static typeTextMappings(): Record<string, I18nText>;
+    get timelineItemStateText(): string | undefined;
     get isGroupItem(): boolean;
 }
 export default TimelineItem;

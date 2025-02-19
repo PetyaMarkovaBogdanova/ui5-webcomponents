@@ -1,2 +1,2 @@
-"use strict";import d from"./EventProvider.js";class u{constructor(...t){}}const s=new Map,o=new Map,i=new Map,p="componentFeatureLoad",a=new d,c=e=>`${p}_${e}`,g=(e,t)=>{s.set(e,t)},f=e=>s.get(e),m=async(e,t)=>{await Promise.all(t.dependencies?.map(n=>n.define())||[]),await t.define?.(),o.set(e,t),E(e)},F=e=>o.get(e),b=(e,t,n)=>{const r=i.get(t);r?.includes(e)||(r?r.push(e):i.set(t,[e]),a.attachEvent(c(e),n))},E=e=>{a.fireEvent(c(e),void 0)};export{g as registerFeature,f as getFeature,m as registerComponentFeature,F as getComponentFeature,b as subscribeForFeatureLoad,u as ComponentFeature};
+"use strict";const e=new Map,s=(t,r)=>{e.set(t,r)},n=t=>e.get(t);export{s as registerFeature,n as getFeature};
 //# sourceMappingURL=FeaturesRegistry.js.map

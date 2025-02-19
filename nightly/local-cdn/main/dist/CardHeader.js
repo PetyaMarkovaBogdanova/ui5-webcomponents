@@ -73,7 +73,7 @@ let CardHeader = CardHeader_1 = class CardHeader extends UI5Element {
         return this.interactive ? CardHeader_1.i18nBundle.getText(ARIA_ROLEDESCRIPTION_INTERACTIVE_CARD_HEADER) : CardHeader_1.i18nBundle.getText(ARIA_ROLEDESCRIPTION_CARD_HEADER);
     }
     get ariaRoleFocusableElement() {
-        return this.interactive ? "button" : undefined;
+        return this.interactive ? "button" : "group";
     }
     get ariaCardAvatarLabel() {
         return CardHeader_1.i18nBundle.getText(AVATAR_TOOLTIP);

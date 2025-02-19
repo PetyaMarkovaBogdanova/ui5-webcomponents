@@ -22,6 +22,7 @@ import { getEnableDefaultTooltips } from "@ui5/webcomponents-base/dist/config/To
 import toLowercaseEnumValue from "@ui5/webcomponents-base/dist/util/toLowercaseEnumValue.js";
 import ButtonDesign from "./types/ButtonDesign.js";
 import ButtonType from "./types/ButtonType.js";
+import ButtonBadgeDesign from "./types/ButtonBadgeDesign.js";
 import ButtonTemplate from "./ButtonTemplate.js";
 import { BUTTON_ARIA_TYPE_ACCEPT, BUTTON_ARIA_TYPE_REJECT, BUTTON_ARIA_TYPE_EMPHASIZED } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -54,6 +55,8 @@ let activeButton = null;
  *
  * `import "@ui5/webcomponents/dist/Button.js";`
  * @csspart button - Used to style the native button element
+ * @csspart icon - Used to style the icon in the native button element
+ * @csspart endIcon - Used to style the end icon in the native button element
  * @constructor
  * @extends UI5Element
  * @implements { IButton }
@@ -185,10 +188,20 @@ let Button = Button_1 = class Button extends UI5Element {
         }
     }
     async onBeforeRendering() {
+        this._setBadgeOverlayStyle();
         this.hasIcon = !!this.icon;
         this.hasEndIcon = !!this.endIcon;
         this.iconOnly = this.isIconOnly;
         this.buttonTitle = this.tooltip || await this.getDefaultTooltip();
+    }
+    _setBadgeOverlayStyle() {
+        const needsOverflowVisible = this.badge.length && (this.badge[0].design === ButtonBadgeDesign.AttentionDot || this.badge[0].design === ButtonBadgeDesign.OverlayText);
+        if (needsOverflowVisible) {
+            this._internals.states.add("has-overlay-badge");
+        }
+        else {
+            this._internals.states.delete("has-overlay-badge");
+        }
     }
     _onclick() {
         if (this.nonInteractive) {
@@ -313,6 +326,9 @@ let Button = Button_1 = class Button extends UI5Element {
     get _isReset() {
         return this.type === ButtonType.Reset;
     }
+    get shouldRenderBadge() {
+        return !!this.badge.length && (!!this.badge[0].text.length || this.badge[0].design === ButtonBadgeDesign.AttentionDot);
+    }
 };
 __decorate([
     property()
@@ -383,6 +399,9 @@ __decorate([
 __decorate([
     slot({ type: Node, "default": true })
 ], Button.prototype, "text", void 0);
+__decorate([
+    slot({ type: HTMLElement, invalidateOnChildChange: true })
+], Button.prototype, "badge", void 0);
 __decorate([
     i18n("@ui5/webcomponents")
 ], Button, "i18nBundle", void 0);

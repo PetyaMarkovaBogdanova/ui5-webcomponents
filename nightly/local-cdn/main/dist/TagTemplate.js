@@ -2,9 +2,9 @@ import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "@ui5/webcompo
 import Icon from "./Icon.js";
 export default function TagTemplate() {
     return (_jsx(_Fragment, { children: this.interactive ?
-            _jsx("button", { class: "ui5-tag-root", title: this._title, "aria-roledescription": this._roleDescription, "aria-description": this._valueState, onClick: this._onclick, children: content.call(this) })
+            _jsx("button", { class: "ui5-tag-root", title: this._title, "aria-roledescription": this._roleDescription, "aria-description": this._valueState, onClick: this._onclick, part: "root", children: content.call(this) })
             :
-                _jsx("div", { class: "ui5-tag-root", title: this._title, children: content.call(this) }) }));
+                _jsx("div", { class: "ui5-tag-root", title: this._title, part: "root", children: content.call(this) }) }));
 }
 function content() {
     return (_jsxs(_Fragment, { children: [_jsx("slot", { name: "icon" }), this._semanticIconName &&

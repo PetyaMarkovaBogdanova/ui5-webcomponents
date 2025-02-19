@@ -136,7 +136,6 @@ declare abstract class ListItem extends ListItemBase {
     deactivate: () => void;
     accessibleName?: string;
     indeterminate?: boolean;
-    disableDeleteButton?: boolean;
     static i18nBundle: I18nBundle;
     constructor();
     onBeforeRendering(): void;
@@ -168,13 +167,6 @@ declare abstract class ListItem extends ListItemBase {
     get modeSingleSelect(): boolean;
     get modeMultiple(): boolean;
     get modeDelete(): boolean;
-    /**
-     * Used in UploadCollectionItem
-     */
-    get renderDeleteButton(): boolean;
-    /**
-     * End
-     */
     get typeDetail(): boolean;
     get typeNavigation(): boolean;
     get typeActive(): boolean;

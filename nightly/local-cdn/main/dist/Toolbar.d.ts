@@ -88,7 +88,7 @@ declare class Toolbar extends UI5Element {
      */
     items: Array<ToolbarItem>;
     _onResize: ResizeObserverCallback;
-    _onInteract: EventListener;
+    _onCloseOverflow: EventListener;
     itemsToOverflow: Array<ToolbarItem>;
     itemsWidth: number;
     minContentWidth: number;
@@ -102,7 +102,6 @@ declare class Toolbar extends UI5Element {
      */
     get overflowButtonSize(): number;
     get padding(): number;
-    get subscribedEvents(): string[];
     get alwaysOverflowItems(): ToolbarItem[];
     get movableItems(): ToolbarItem[];
     get overflowItems(): {
@@ -177,7 +176,6 @@ declare class Toolbar extends UI5Element {
     onBeforeClose(e: UI5CustomEvent<Popover, "before-close">): void;
     onOverflowPopoverOpened(): void;
     onResize(): void;
-    onInteract(e: CustomEvent): void;
     /**
      * Private members
      */

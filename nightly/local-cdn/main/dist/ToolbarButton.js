@@ -78,10 +78,12 @@ let ToolbarButton = class ToolbarButton extends ToolbarItem {
     static get toolbarPopoverTemplate() {
         return ToolbarPopoverButtonTemplate;
     }
-    get subscribedEvents() {
-        const map = new Map();
-        map.set("click", { preventClosing: false });
-        return map;
+    onClick(e) {
+        e.stopImmediatePropagation();
+        const prevented = !this.fireDecoratorEvent("click", { targetRef: e.target });
+        if (!prevented && !this.preventOverflowClosing) {
+            this.fireDecoratorEvent("close-overflow");
+        }
     }
 };
 __decorate([

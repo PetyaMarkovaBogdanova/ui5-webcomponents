@@ -1,5 +1,4 @@
 import { isUp, isUpShift, isDown, isDownShift, isLeft, isRight, isPageUp, isPageDown, isHome, isEnd, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
-import isElementClickable from "@ui5/webcomponents-base/dist/util/isElementClickable.js";
 import isElementHidden from "@ui5/webcomponents-base/dist/util/isElementHidden.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getTabbableElements } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
@@ -220,7 +219,7 @@ class TableNavigation extends TableExtension {
         for (const target of e.composedPath()) {
             if (target.nodeType === Node.ELEMENT_NODE) {
                 const element = target;
-                if (element.getAttribute("tabindex") === "-1" || isElementClickable(element)) {
+                if (element.matches(":focus-within")) {
                     focusableElement = element;
                     break;
                 }

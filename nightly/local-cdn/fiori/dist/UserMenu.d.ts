@@ -79,6 +79,14 @@ declare class UserMenu extends UI5Element {
      */
     showAddAccount: boolean;
     /**
+     * Defines if the User menu shows edit button.
+     *
+     * @default false
+     * @public
+     * @since 2.7.0
+     */
+    showEditButton: boolean;
+    /**
      * Defines the menu items.
      * @public
      */
@@ -135,13 +143,10 @@ declare class UserMenu extends UI5Element {
     _handleMenuItemClose(): void;
     _handlePopoverAfterOpen(): void;
     _handlePopoverAfterClose(): void;
-    _handleDeclineClick(): void;
     _openItemSubMenu(item: UserMenuItem): void;
-    _closeItemSubMenu(item: UserMenuItem): void;
     _closeUserMenu(): void;
     get _manageAccountVisibleInHeader(): boolean;
     get _otherAccounts(): UserMenuAccount[];
-    get _declineButtonTooltip(): string;
     get _manageAccountButtonText(): string;
     get _otherAccountsButtonText(): string;
     get _signOutButtonText(): string;

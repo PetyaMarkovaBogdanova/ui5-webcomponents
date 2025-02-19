@@ -6,7 +6,7 @@ export default function ToolbarTemplate() {
     return (_jsxs(_Fragment, { children: [_jsxs("div", { class: {
                     "ui5-tb-items": true,
                     "ui5-tb-items-full-width": this.hasFlexibleSpacers,
-                }, role: this.accInfo.root.role, "aria-label": this.accInfo.root.accessibleName, children: [this.standardItems.map(item => (item.toolbarTemplate.call(item.context))), _jsx(Button, { "aria-hidden": this.hideOverflowButton, icon: overflowIcon, design: "Transparent", class: {
+                }, role: this.accInfo.root.role, "aria-label": this.accInfo.root.accessibleName, children: [this.standardItems.map(item => (item.toolbarTemplate.call(item.context))), _jsx(Button, { "aria-hidden": this.hideOverflowButton, icon: overflowIcon, design: "Transparent", onClick: this.toggleOverflow, class: {
                             "ui5-tb-item": true,
                             "ui5-tb-overflow-btn": true,
                             "ui5-tb-overflow-btn-hidden": this.hideOverflowButton,

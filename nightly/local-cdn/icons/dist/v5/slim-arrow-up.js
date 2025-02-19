@@ -1,7 +1,7 @@
 import { registerIcon } from "@ui5/webcomponents-base/dist/asset-registries/Icons.js";
 
 const name = "slim-arrow-up";
-const pathData = "M96 326q0 11 7.5 18.5T122 352q10 0 18-8l116-121 116 121q8 8 18 8 11 0 18.5-7.5T416 326q0-10-7-17L275 168q-8-8-19-8t-19 8L103 309q-7 7-7 17z";
+const pathData = "M96 326q0-10 7-17l134-141q8-8 19-8t19 8l134 141q7 7 7 17 0 11-7.5 18.5T390 352q-10 0-18-8L256 223 140 344q-8 8-18 8-11 0-18.5-7.5T96 326z";
 const ltr = false;
 const accData = null;
 const collection = "SAP-icons-v5";

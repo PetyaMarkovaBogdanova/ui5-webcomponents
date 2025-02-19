@@ -200,6 +200,7 @@ declare class Select extends UI5Element implements IFormInputElement {
     onBeforeRendering(): void;
     onAfterRendering(): void;
     _ensureSingleSelection(): void;
+    _applyFocus(): void;
     _onfocusin(): void;
     _onfocusout(): void;
     get _isPickerOpen(): boolean;

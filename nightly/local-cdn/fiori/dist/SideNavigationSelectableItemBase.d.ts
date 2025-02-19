@@ -1,7 +1,9 @@
 import SideNavigationItemBase from "./SideNavigationItemBase.js";
+import type SideNavigationItemDesign from "./types/SideNavigationItemDesign.js";
+import type { AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
+type SideNavigationItemAccessibilityAttributes = Pick<AccessibilityAttributes, "hasPopup">;
 /**
- * Fired when the component is activated either with a
- * click/tap or by using the [Enter] or [Space] keys.
+ * Fired when the component is activated either with a click/tap or by using the [Enter] or [Space] keys.
  *
  * @public
  */
@@ -56,11 +58,52 @@ declare class SideNavigationSelectableItemBase extends SideNavigationItemBase {
      */
     target?: string;
     /**
+     * Item design.
+     *
+     * **Note:** Items with "Action" design must not have sub-items.
+     *
+     * @public
+     * @default "Default"
+     * @since 2.7.0
+     */
+    design: `${SideNavigationItemDesign}`;
+    /**
+     * Indicates whether the navigation item is selectable. By default all items are selectable unless specifically marked as unselectable.
+     *
+     * When a parent item is marked as unselectable, selecting it will only expand or collapse its sub-items.
+     * To improve user experience do not mix unselectable parent items with selectable parent items in a single side navigation.
+     *
+     *
+     * **Guidelines**:
+     * - External links should be unselectable.
+     * - Items that trigger actions (with design "Action") should be unselectable.
+     *
+     * @public
+     * @default false
+     * @since 2.7.0
+     */
+    unselectable: boolean;
+    /**
+     * Defines the additional accessibility attributes that will be applied to the component.
+     * The following fields are supported:
+     *
+     * - **hasPopup**: Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by the button.
+     * Accepts the following string values: `dialog`, `grid`, `listbox`, `menu` or `tree`.
+     *
+     * **Note:** Do not use it on parent items, as it will be overridden if the item is in the overflow menu.
+     *
+     * @public
+     * @default {}
+     * @since 2.7.0
+     */
+    accessibilityAttributes: SideNavigationItemAccessibilityAttributes;
+    /**
      * @private
      * @default false
      */
     isOverflow: boolean;
     get ariaRole(): "menuitem" | "menuitemradio" | "treeitem";
+    get isSelectable(): boolean;
     get _href(): string | undefined;
     get _target(): string | undefined;
     get isExternalLink(): boolean | "" | undefined;
@@ -78,3 +121,4 @@ declare class SideNavigationSelectableItemBase extends SideNavigationItemBase {
 declare const isInstanceOfSideNavigationSelectableItemBase: (object: any) => object is SideNavigationSelectableItemBase;
 export default SideNavigationSelectableItemBase;
 export { isInstanceOfSideNavigationSelectableItemBase, };
+export type { SideNavigationItemAccessibilityAttributes, };

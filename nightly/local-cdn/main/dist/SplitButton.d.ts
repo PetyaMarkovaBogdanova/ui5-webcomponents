@@ -42,6 +42,9 @@ import type Button from "./Button.js";
  * ### ES6 Module Import
  *
  * `import "@ui5/webcomponents/dist/SplitButton.js";`
+ * @csspart button - Used to style the native button element
+ * @csspart icon - Used to style the icon in the native button element
+ * @csspart endIcon - Used to style the end icon in the native button element
  * @constructor
  * @extends UI5Element
  * @public

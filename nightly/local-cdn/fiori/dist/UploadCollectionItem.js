@@ -63,6 +63,12 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
          */
         this.fileNameClickable = false;
         /**
+         * Disables the delete button.
+         * @default false
+         * @public
+         */
+        this.disableDeleteButton = false;
+        /**
          * Hides the delete button.
          * @default false
          * @public
@@ -119,14 +125,18 @@ let UploadCollectionItem = UploadCollectionItem_1 = class UploadCollectionItem e
     }
     async _initInputField() {
         await renderFinished();
-        const inp = this.shadowRoot.querySelector("#ui5-uci-edit-input");
-        inp.value = this._fileNameWithoutExtension;
+        if (this.editInpElement) {
+            this.editInpElement.value = this._fileNameWithoutExtension;
+        }
         await renderFinished();
-        const inpFocusDomRef = inp.getFocusDomRef();
+        const inpFocusDomRef = this.editInpElement?.getFocusDomRef();
         if (inpFocusDomRef) {
             inpFocusDomRef.focus();
             inpFocusDomRef.setSelectionRange(0, this._fileNameWithoutExtension.length);
         }
+    }
+    get editInpElement() {
+        return this.shadowRoot.querySelector("#ui5-uci-edit-input");
     }
     _onkeyup(e) {
         super._onkeyup(e);

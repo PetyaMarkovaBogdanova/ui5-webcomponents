@@ -31,22 +31,8 @@ import ToolbarItem from "./ToolbarItem.js";
  * @since 1.17.0
  */
 let ToolbarSelect = class ToolbarSelect extends ToolbarItem {
-    static get toolbarTemplate() {
-        return ToolbarSelectTemplate;
-    }
-    static get toolbarPopoverTemplate() {
-        return ToolbarPopoverSelectTemplate;
-    }
-    get subscribedEvents() {
-        const map = new Map();
-        map.set("click", { preventClosing: true });
-        map.set("ui5-change", { preventClosing: false });
-        map.set("ui5-open", { preventClosing: true });
-        map.set("ui5-close", { preventClosing: true });
-        return map;
-    }
     constructor() {
-        super();
+        super(...arguments);
         /**
          * Defines the value state of the component.
          * @default "None"
@@ -61,38 +47,52 @@ let ToolbarSelect = class ToolbarSelect extends ToolbarItem {
          * @public
          */
         this.disabled = false;
-        this._onEvent = this._onEventHandler.bind(this);
     }
-    onEnterDOM() {
-        this.attachEventListeners();
+    static get toolbarTemplate() {
+        return ToolbarSelectTemplate;
     }
-    onExitDOM() {
-        this.detachEventListeners();
+    static get toolbarPopoverTemplate() {
+        return ToolbarPopoverSelectTemplate;
     }
-    attachEventListeners() {
-        [...this.subscribedEvents.keys()].forEach(e => {
-            this.addEventListener(e, this._onEvent);
-        });
-    }
-    detachEventListeners() {
-        [...this.subscribedEvents.keys()].forEach(e => {
-            this.removeEventListener(e, this._onEvent);
-        });
-    }
-    _onEventHandler(e) {
-        if (e.type === "ui5-change") {
-            // update options
-            const selectedOption = e.detail.selectedOption;
-            const selectedOptionIndex = Number(selectedOption?.getAttribute("data-ui5-external-action-item-index"));
-            this.options.forEach((option, index) => {
-                if (index === selectedOptionIndex) {
-                    option.setAttribute("selected", "");
-                }
-                else {
-                    option.removeAttribute("selected");
-                }
-            });
+    onClick(e) {
+        e.stopImmediatePropagation();
+        const prevented = !this.fireDecoratorEvent("click", { targetRef: e.target });
+        if (prevented && !this.preventOverflowClosing) {
+            this.fireDecoratorEvent("close-overflow");
         }
+    }
+    onOpen(e) {
+        e.stopImmediatePropagation();
+        const prevented = !this.fireDecoratorEvent("open", { targetRef: e.target });
+        if (prevented) {
+            this.fireDecoratorEvent("close-overflow");
+        }
+    }
+    onClose(e) {
+        e.stopImmediatePropagation();
+        const prevented = !this.fireDecoratorEvent("close", { targetRef: e.target });
+        if (prevented) {
+            this.fireDecoratorEvent("close-overflow");
+        }
+    }
+    onChange(e) {
+        e.stopImmediatePropagation();
+        const prevented = !this.fireDecoratorEvent("change", { ...e.detail, targetRef: e.target });
+        if (!prevented) {
+            this.fireDecoratorEvent("close-overflow");
+        }
+        this._syncOptions(e.detail.selectedOption);
+    }
+    _syncOptions(selectedOption) {
+        const selectedOptionIndex = Number(selectedOption?.getAttribute("data-ui5-external-action-item-index"));
+        this.options.forEach((option, index) => {
+            if (index === selectedOptionIndex) {
+                option.setAttribute("selected", "");
+            }
+            else {
+                option.removeAttribute("selected");
+            }
+        });
     }
     get styles() {
         return {

@@ -2,7 +2,7 @@ import { registerIcon } from "@ui5/webcomponents-base/dist/asset-registries/Icon
 import { ICON_SORT_ASCENDING } from "../generated/i18n/i18n-defaults.js";
 
 const name = "sort-ascending";
-const pathData = "M353 128H161l17-32h158zm47 96H113l16-32h255zM82 288h351l15 32H65zm-48 96h446l15 32H17z";
+const pathData = "M82 288h351l15 32H65zm-48 96h446l15 32H17zm366-160H113l16-32h255zm-47-96H161l17-32h158z";
 const ltr = false;
 const accData = ICON_SORT_ASCENDING;
 const collection = "SAP-icons-v4";

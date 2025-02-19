@@ -17,7 +17,6 @@ import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsSco
 import encodeXML from "@ui5/webcomponents-base/dist/sap/base/security/encodeXML.js";
 import { isPhone, isAndroid, } from "@ui5/webcomponents-base/dist/Device.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
-import { getComponentFeature } from "@ui5/webcomponents-base/dist/FeaturesRegistry.js";
 import { isUp, isDown, isSpace, isEnter, isBackSpace, isDelete, isEscape, isTabNext, isPageUp, isPageDown, isHome, isEnd, } from "@ui5/webcomponents-base/dist/Keys.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { submitForm } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
@@ -62,11 +61,6 @@ var INPUT_ACTIONS;
  * When the user makes changes to the text, the change event is fired,
  * which enables you to react on any text change.
  *
- * **Note:** If you are using the `ui5-input` as a single npm module,
- * don't forget to import the `InputSuggestions` module from
- * "@ui5/webcomponents/dist/features/InputSuggestions.js"
- * to enable the suggestions functionality.
- *
  * ### Keyboard Handling
  * The `ui5-input` provides the following keyboard shortcuts:
  *
@@ -82,8 +76,6 @@ var INPUT_ACTIONS;
  * ### ES6 Module Import
  *
  * `import "@ui5/webcomponents/dist/Input.js";`
- *
- * `import "@ui5/webcomponents/dist/features/InputSuggestions.js";` (optional - for input suggestions support)
  *
  * @constructor
  * @extends UI5Element
@@ -191,8 +183,6 @@ let Input = Input_1 = class Input extends UI5Element {
         /**
          * Defines whether the component should show suggestions, if such are present.
          *
-         * **Note:** You need to import the `InputSuggestions` module
-         * from `"@ui5/webcomponents/dist/features/InputSuggestions.js"` to enable this functionality.
          * @default false
          * @public
          */
@@ -257,6 +247,7 @@ let Input = Input_1 = class Input extends UI5Element {
         // Indicates whether the value of the input is comming from a suggestion item
         this._isLatestValueFromSuggestions = false;
         this._isChangeTriggeredBySuggestion = false;
+        this._indexOfSelectedItem = -1;
         this._handleResizeBound = this._handleResize.bind(this);
         this._keepInnerValue = false;
         this._focusedAfterClear = false;
@@ -322,6 +313,7 @@ let Input = Input_1 = class Input extends UI5Element {
             const item = this._getFirstMatchingItem(value);
             if (item) {
                 this._handleTypeAhead(item);
+                this._selectMatchingItem(item);
             }
         }
     }
@@ -392,14 +384,20 @@ let Input = Input_1 = class Input extends UI5Element {
         }
         this._keyDown = false;
     }
+    get currentItemIndex() {
+        const allItems = this.Suggestions?._getItems();
+        const currentItem = allItems.find(item => { return item.selected || item.focused; });
+        const indexOfCurrentItem = currentItem ? allItems.indexOf(currentItem) : -1;
+        return indexOfCurrentItem;
+    }
     _handleUp(e) {
         if (this.Suggestions?.isOpened()) {
-            this.Suggestions.onUp(e);
+            this.Suggestions.onUp(e, this.currentItemIndex);
         }
     }
     _handleDown(e) {
         if (this.Suggestions?.isOpened()) {
-            this.Suggestions.onDown(e);
+            this.Suggestions.onDown(e, this.currentItemIndex);
         }
     }
     _handleSpace(e) {
@@ -673,6 +671,9 @@ let Input = Input_1 = class Input extends UI5Element {
     _handleSelectionChange(e) {
         this.Suggestions?.onItemPress(e);
     }
+    _selectMatchingItem(item) {
+        item.selected = true;
+    }
     _handleTypeAhead(item) {
         const value = item.text ? item.text : "";
         this._innerValue = value;
@@ -704,10 +705,13 @@ let Input = Input_1 = class Input extends UI5Element {
             this.blur();
             this.focused = false;
         }
-        if (this._changeToBeFired) {
+        if (this._changeToBeFired && !this._isChangeTriggeredBySuggestion) {
             this.fireDecoratorEvent(INPUT_EVENTS.CHANGE);
-            this._changeToBeFired = false;
         }
+        else {
+            this._isChangeTriggeredBySuggestion = false;
+        }
+        this._changeToBeFired = false;
         this.open = false;
         this.isTyping = false;
         if (this.hasSuggestionItemSelected) {
@@ -716,7 +720,6 @@ let Input = Input_1 = class Input extends UI5Element {
         this._handlePickerAfterClose();
     }
     _handlePickerAfterOpen() {
-        this.Suggestions?._onOpen();
         this.fireDecoratorEvent("open");
     }
     _handlePickerAfterClose() {
@@ -739,10 +742,19 @@ let Input = Input_1 = class Input extends UI5Element {
         if (this.Suggestions) {
             return;
         }
-        const Suggestions = getComponentFeature("InputSuggestions");
-        if (Suggestions) {
+        const setup = (Suggestions) => {
             Suggestions.i18nBundle = Input_1.i18nBundle;
             this.Suggestions = new Suggestions(this, "suggestionItems", true, false);
+        };
+        // If the feature is preloaded (the user manually imported InputSuggestions.js), it is already available on the constructor
+        if (Input_1.SuggestionsClass) {
+            setup(Input_1.SuggestionsClass);
+            // If feature is not preloaded, load it dynamically
+        }
+        else {
+            import("./features/InputSuggestions.js").then(SuggestionsModule => {
+                setup(SuggestionsModule.default);
+            });
         }
     }
     acceptSuggestion(item, keyboardUsed) {
@@ -1210,6 +1222,9 @@ __decorate([
     property({ noAttribute: true })
 ], Input.prototype, "_accessibleLabelsRefTexts", void 0);
 __decorate([
+    property({ type: Object })
+], Input.prototype, "Suggestions", void 0);
+__decorate([
     slot({ type: HTMLElement, "default": true })
 ], Input.prototype, "suggestionItems", void 0);
 __decorate([
@@ -1237,7 +1252,6 @@ Input = Input_1 = __decorate([
             ValueStateMessageCss,
             SuggestionsCss,
         ],
-        features: ["InputSuggestions"],
     })
     /**
      * Fired when the input operation has finished by pressing Enter or on focusout.
@@ -1317,14 +1331,6 @@ Input = Input_1 = __decorate([
         bubbles: true,
     })
 ], Input);
-// declare module "@ui5/webcomponents-base/jsx-runtime" {
-// 	// eslint-disable-next-line @typescript-eslint/no-namespace
-// 	namespace JSX {
-// 		interface IntrinsicElements {
-// 			"ui5-input": Input["_jsxProps"];
-// 		}
-// 	}
-// }
 Input.define();
 export default Input;
 //# sourceMappingURL=Input.js.map

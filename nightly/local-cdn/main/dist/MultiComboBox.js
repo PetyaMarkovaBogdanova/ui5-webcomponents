@@ -10,7 +10,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
+import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { isShow, isDown, isUp, isSpace, isSpaceCtrl, isSpaceShift, isRight, isHome, isEnd, isTabNext, isTabPrevious, isUpShift, isDownShift, isLeftCtrl, isRightCtrl, isUpCtrl, isDownCtrl, isHomeCtrl, isEndCtrl, isCtrlA, isInsertShift, isBackSpace, isDelete, isEscape, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
@@ -18,9 +18,6 @@ import "@ui5/webcomponents-icons/dist/slim-arrow-down.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import { isPhone, isAndroid, isFirefox, } from "@ui5/webcomponents-base/dist/Device.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import "@ui5/webcomponents-icons/dist/decline.js";
-import "@ui5/webcomponents-icons/dist/multiselect-all.js";
-import "@ui5/webcomponents-icons/dist/not-editable.js";
 import "@ui5/webcomponents-icons/dist/error.js";
 import "@ui5/webcomponents-icons/dist/alert.js";
 import "@ui5/webcomponents-icons/dist/sys-enter-2.js";
@@ -43,7 +40,7 @@ import * as Filters from "./Filters.js";
 import Button from "./Button.js";
 import { VALUE_STATE_SUCCESS, VALUE_STATE_ERROR, VALUE_STATE_WARNING, VALUE_STATE_INFORMATION, VALUE_STATE_TYPE_SUCCESS, VALUE_STATE_TYPE_INFORMATION, VALUE_STATE_TYPE_ERROR, VALUE_STATE_TYPE_WARNING, INPUT_SUGGESTIONS_TITLE, SELECT_OPTIONS, SHOW_SELECTED_BUTTON, MULTICOMBOBOX_DIALOG_OK_BUTTON, COMBOBOX_AVAILABLE_OPTIONS, VALUE_STATE_ERROR_ALREADY_SELECTED, MCB_SELECTED_ITEMS, INPUT_CLEAR_ICON_ACC_NAME, FORM_MIXED_TEXTFIELD_REQUIRED, } from "./generated/i18n/i18n-defaults.js";
 // Templates
-import MultiComboBoxTemplate from "./generated/templates/MultiComboBoxTemplate.lit.js";
+import MultiComboBoxTemplate from "./MultiComboBoxTemplate.js";
 // Styles
 import multiCbxStyles from "./generated/themes/MultiComboBox.css.js";
 import ResponsivePopoverCommonCss from "./generated/themes/ResponsivePopoverCommon.css.js";
@@ -1395,20 +1392,26 @@ let MultiComboBox = MultiComboBox_1 = class MultiComboBox extends UI5Element {
         return `${this._id}-popover`;
     }
     get classes() {
+        const popover = {
+            "ui5-multi-combobox-all-items-responsive-popover": true,
+            "ui5-suggestions-popover": true,
+            "ui5-popover-with-value-state-header-phone": this._isPhone && this.hasValueStateMessage,
+            "ui5-popover-with-value-state-header": !this._isPhone && this.hasValueStateMessage,
+        };
+        const popoverValueState = {
+            "ui5-valuestatemessage-root": true,
+            "ui5-valuestatemessage-header": true,
+            "ui5-valuestatemessage--success": (this.valueState === ValueState.Positive) || (isPhone() && this._dialogInputValueState === ValueState.Positive),
+            "ui5-valuestatemessage--error": (this.valueState === ValueState.Negative) || (isPhone() && this._dialogInputValueState === ValueState.Negative),
+            "ui5-valuestatemessage--warning": (this.valueState === ValueState.Critical) || (isPhone() && this._dialogInputValueState === ValueState.Critical),
+            "ui5-valuestatemessage--information": (this.valueState === ValueState.Information) || (isPhone() && this._dialogInputValueState === ValueState.Information),
+        };
         return {
-            popover: {
-                "ui5-multi-combobox-all-items-responsive-popover": true,
-                "ui5-suggestions-popover": true,
-                "ui5-popover-with-value-state-header-phone": this._isPhone && this.hasValueStateMessage,
-                "ui5-popover-with-value-state-header": !this._isPhone && this.hasValueStateMessage,
-            },
-            popoverValueState: {
-                "ui5-valuestatemessage-root": true,
-                "ui5-valuestatemessage-header": true,
-                "ui5-valuestatemessage--success": (this.valueState === ValueState.Positive) || (this._dialogInputValueState === ValueState.Positive),
-                "ui5-valuestatemessage--error": (this.valueState === ValueState.Negative) || (this._dialogInputValueState === ValueState.Negative),
-                "ui5-valuestatemessage--warning": (this.valueState === ValueState.Critical) || (this._dialogInputValueState === ValueState.Critical),
-                "ui5-valuestatemessage--information": (this.valueState === ValueState.Information) || (this._dialogInputValueState === ValueState.Information),
+            popover,
+            popoverValueState,
+            responsivePopoverHeaderValueState: {
+                "ui5-responsive-popover-header": true,
+                ...popoverValueState,
             },
         };
     }
@@ -1547,7 +1550,7 @@ MultiComboBox = MultiComboBox_1 = __decorate([
         tag: "ui5-multi-combobox",
         languageAware: true,
         formAssociated: true,
-        renderer: litRender,
+        renderer: jsxRender,
         template: MultiComboBoxTemplate,
         styles: [
             multiCbxStyles,

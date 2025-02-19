@@ -27,7 +27,7 @@ import PromptInputCss from "./generated/themes/PromptInput.css.js";
  *
  * ### ES6 Module Import
  *
- * `import "@ui5/webcomponents-ai/dist/PromptInput.js
+ * `import "@ui5/webcomponents-ai/dist/PromptInput.js"`
  * @class
  * @constructor
  * @public
@@ -94,8 +94,6 @@ let PromptInput = PromptInput_1 = class PromptInput extends UI5Element {
         /**
          * Defines whether the component should show suggestions, if such are present.
          *
-         * **Note:** You need to import the `InputSuggestions` module
-         * from `"@ui5/webcomponents/dist/features/InputSuggestions.js"` to enable this functionality.
          * @default false
          * @public
          */

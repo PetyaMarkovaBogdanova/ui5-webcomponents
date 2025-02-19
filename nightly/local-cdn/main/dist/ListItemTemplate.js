@@ -29,9 +29,9 @@ function selectionElement() {
             return (_jsx(RadioButton, { part: "radio", disabled: this.isInactive, accessibleName: this._accInfo.ariaLabelRadioButton, tabindex: -1, id: `${this._id}-singleSelectionElement`, class: "ui5-li-singlesel-radiobtn", checked: this.selected, onChange: this.onSingleSelectionComponentPress }));
         case this.modeMultiple:
             return (_jsx(CheckBox, { part: "checkbox", disabled: this.isInactive, indeterminate: this.indeterminate, tabindex: -1, id: `${this._id}-multiSelectionElement`, class: "ui5-li-multisel-cb", checked: this.selected, accessibleName: this._accInfo.ariaLabel, onChange: this.onMultiSelectionComponentPress }));
-        case this.renderDeleteButton:
+        case this.modeDelete:
             return (_jsx("div", { class: "ui5-li-deletebtn", children: this.hasDeleteButtonSlot ?
-                    (_jsx("slot", { name: "deleteButton" })) : (_jsx(Button, { part: "delete-button", tabindex: -1, "data-sap-no-tab-ref": true, id: `${this._id}-deleteSelectionElement`, design: "Transparent", icon: declineIcon, disabled: this.disableDeleteButton, onClick: this.onDelete, tooltip: this.deleteText })) }));
+                    (_jsx("slot", { name: "deleteButton" })) : (_jsx(Button, { part: "delete-button", tabindex: -1, "data-sap-no-tab-ref": true, id: `${this._id}-deleteSelectionElement`, design: "Transparent", icon: declineIcon, onClick: this.onDelete, tooltip: this.deleteText })) }));
     }
 }
 //# sourceMappingURL=ListItemTemplate.js.map

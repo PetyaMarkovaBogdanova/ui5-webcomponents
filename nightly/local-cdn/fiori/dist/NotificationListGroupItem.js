@@ -35,7 +35,7 @@ import NotificationListGroupItemCss from "./generated/themes/NotificationListGro
  * - Items of the group
  *
  * ### Usage
- * The component can be used in a standard `ui5-list`.
+ * The component should be used inside a `ui5-notification-list`.
  *
  * ### Keyboard Handling
  * The `ui5-li-notification-group` provides advanced keyboard handling.

@@ -182,7 +182,7 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
     get _ariaHasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
     get _interactive(): boolean;
     get validInitials(): string | null | undefined;
-    get accessibleNameText(): string | undefined;
+    get accessibleNameText(): string;
     get hasImage(): boolean;
     get initialsContainer(): HTMLObjectElement | null;
     get fallBackIconDomRef(): Icon | null;

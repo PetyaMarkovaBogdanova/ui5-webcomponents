@@ -68,11 +68,6 @@ declare class UI5ElementMetadata {
      */
     getPureTag(): string;
     /**
-     * Returns the tag of the UI5 Element without the scope
-     * @private
-     */
-    getFeatures(): Array<string>;
-    /**
      * Returns the tag of the UI5 Element
      * @public
      */

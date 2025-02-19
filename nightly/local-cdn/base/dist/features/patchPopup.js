@@ -8,11 +8,20 @@ const closeNativePopover = (domRef) => {
         domRef.removeAttribute("popover");
     }
 };
+const isNativePopoverOpen = (root = document) => {
+    if (root.querySelector(":popover-open")) {
+        return true;
+    }
+    return Array.from(root.querySelectorAll("*")).some(element => {
+        const shadowRoot = element.shadowRoot;
+        return shadowRoot && isNativePopoverOpen(shadowRoot);
+    });
+};
 const patchOpen = (Popup) => {
     const origOpen = Popup.prototype.open;
     Popup.prototype.open = function open(...args) {
         origOpen.apply(this, args); // call open first to initiate opening
-        const topLayerAlreadyInUse = !!document.body.querySelector(":popover-open"); // check if there is already something in the top layer
+        const topLayerAlreadyInUse = isNativePopoverOpen();
         const openingInitiated = ["OPENING", "OPEN"].includes(this.getOpenState());
         if (openingInitiated && topLayerAlreadyInUse) {
             const element = this.getContent();

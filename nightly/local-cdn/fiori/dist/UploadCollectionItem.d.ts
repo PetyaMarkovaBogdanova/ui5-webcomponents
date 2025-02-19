@@ -1,5 +1,6 @@
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
+import type Input from "@ui5/webcomponents/dist/Input.js";
 import ListItem from "@ui5/webcomponents/dist/ListItem.js";
 import UploadState from "./types/UploadState.js";
 import "@ui5/webcomponents-icons/dist/refresh.js";
@@ -113,6 +114,7 @@ declare class UploadCollectionItem extends ListItem {
      */
     onDetailClick(): Promise<void>;
     _initInputField(): Promise<void>;
+    get editInpElement(): Input | null;
     _onkeyup(e: KeyboardEvent): void;
     _onDetailKeyup(e: KeyboardEvent): void;
     _onInputFocusin(e: FocusEvent): void;

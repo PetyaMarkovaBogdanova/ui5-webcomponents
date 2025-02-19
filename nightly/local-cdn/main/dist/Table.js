@@ -6,28 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var Table_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
+import { customElement, slot, property, eventStrict, i18n, } from "@ui5/webcomponents-base/dist/decorators.js";
 import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
-import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
-import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
-import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import TableTemplate from "./generated/templates/TableTemplate.lit.js";
 import TableStyles from "./generated/themes/Table.css.js";
-import TableRow from "./TableRow.js";
 import TableHeaderRow from "./TableHeaderRow.js";
-import TableExtension from "./TableExtension.js";
-import TableOverflowMode from "./types/TableOverflowMode.js";
-import TableNavigation from "./TableNavigation.js";
-import DropIndicator from "./DropIndicator.js";
-import { TABLE_NO_DATA, } from "./generated/i18n/i18n-defaults.js";
-import BusyIndicator from "./BusyIndicator.js";
+import TableRow from "./TableRow.js";
 import TableCell from "./TableCell.js";
-import { findVerticalScrollContainer, scrollElementIntoView, isFeature } from "./TableUtils.js";
+import TableExtension from "./TableExtension.js";
+import TableNavigation from "./TableNavigation.js";
+import TableOverflowMode from "./types/TableOverflowMode.js";
 import TableDragAndDrop from "./TableDragAndDrop.js";
+import DropIndicator from "./DropIndicator.js";
+import BusyIndicator from "./BusyIndicator.js";
+import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
+import { findVerticalScrollContainer, scrollElementIntoView, isFeature } from "./TableUtils.js";
+import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
+import { TABLE_NO_DATA, } from "./generated/i18n/i18n-defaults.js";
 /**
  * @class
  *
@@ -135,6 +131,7 @@ let Table = Table_1 = class Table extends UI5Element {
         this.loading = false;
         /**
          * Defines the delay in milliseconds, after which the loading indicator will show up for this component.
+         *
          * @default 1000
          * @public
          */
@@ -158,6 +155,7 @@ let Table = Table_1 = class Table extends UI5Element {
         this._events = ["keydown", "keyup", "click", "focusin", "focusout", "dragenter", "dragleave", "dragover", "drop"];
         this._poppedIn = [];
         this._containerWidth = 0;
+        this._rowsLength = 0;
         this._onResizeBound = this._onResize.bind(this);
         this._onEventBound = this._onEvent.bind(this);
     }
@@ -182,6 +180,10 @@ let Table = Table_1 = class Table extends UI5Element {
         this._renderNavigated = this.rows.some(row => row.navigated);
         if (this.headerRow[0]) {
             this.headerRow[0]._rowActionCount = this.rowActionCount;
+            if (this._getSelection()?.isMultiSelect() && this._rowsLength !== this.rows.length) {
+                this._rowsLength = this.rows.length;
+                this.headerRow[0]._invalidate++;
+            }
         }
         this.rows.forEach(row => {
             row._renderNavigated = this._renderNavigated;
@@ -329,7 +331,7 @@ let Table = Table_1 = class Table extends UI5Element {
         const widths = [];
         const visibleHeaderCells = this.headerRow[0]._visibleCells;
         if (this._getSelection()?.hasRowSelector()) {
-            widths.push(`var(${getScopedVarName("--_ui5_checkbox_width_height")})`);
+            widths.push("min-content");
         }
         widths.push(...visibleHeaderCells.map(cell => {
             const minWidth = cell.minWidth === "auto" ? "3rem" : cell.minWidth;
@@ -478,7 +480,7 @@ Table = Table_1 = __decorate([
      * @public
      */
     ,
-    event("row-click", {
+    eventStrict("row-click", {
         bubbles: false,
     })
     /**
@@ -495,7 +497,7 @@ Table = Table_1 = __decorate([
      * @public
      */
     ,
-    event("move-over", {
+    eventStrict("move-over", {
         cancelable: true,
         bubbles: true,
     })
@@ -515,18 +517,19 @@ Table = Table_1 = __decorate([
      * @public
      */
     ,
-    event("move", {
+    eventStrict("move", {
         bubbles: true,
     })
     /**
      * Fired when a row action is clicked.
      *
      * @param {TableRowActionBase} action The row action instance
+     * @param {TableRow} row The row instance
      * @since 2.6.0
      * @public
      */
     ,
-    event("row-action-click", {
+    eventStrict("row-action-click", {
         bubbles: false,
     })
 ], Table);

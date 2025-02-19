@@ -101,8 +101,8 @@ let YearPicker = YearPicker_1 = class YearPicker extends CalendarPart {
             if (this.hasSecondaryCalendarType) {
                 tempDateInSecType = transformDateToSecondaryType(this._primaryCalendarType, this.secondaryCalendarType, timestamp, true);
                 textInSecType = tempDateInSecType.firstDate.getYear() === tempDateInSecType.lastDate.getYear()
-                    ? `${oYearFormatInSecType.format(tempDateInSecType.firstDate.toLocalJSDate(), true)}`
-                    : `${oYearFormatInSecType.format(tempDateInSecType.firstDate.toLocalJSDate(), true)} - ${oYearFormatInSecType.format(tempDateInSecType.lastDate.toLocalJSDate(), true)}`;
+                    ? `${oYearFormatInSecType.format(tempDateInSecType.firstDate.toLocalJSDate())}`
+                    : `${oYearFormatInSecType.format(tempDateInSecType.firstDate.toLocalJSDate())} - ${oYearFormatInSecType.format(tempDateInSecType.lastDate.toLocalJSDate())}`;
             }
             const year = {
                 timestamp: timestamp.toString(),

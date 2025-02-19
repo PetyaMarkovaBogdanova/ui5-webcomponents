@@ -1,5 +1,4 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import DynamicPageHeader from "./DynamicPageHeader.js";
 import DynamicPageTitle from "./DynamicPageTitle.js";
@@ -92,12 +91,6 @@ declare class DynamicPage extends UI5Element {
      */
     showFooter: boolean;
     /**
-     * Defines the current media query size.
-     *
-     * @private
-     */
-    mediaRange?: string;
-    /**
      * Defines the content of the Dynamic Page.
      *
      * @public
@@ -126,12 +119,9 @@ declare class DynamicPage extends UI5Element {
     showHeaderInStickArea: boolean;
     isToggled: boolean;
     _headerSnapped: boolean;
-    _updateMediaRange: ResizeObserverCallback;
     scrollContainer?: HTMLElement;
     headerActions?: DynamicPageHeaderActions;
     constructor();
-    onEnterDOM(): void;
-    onExitDOM(): void;
     onBeforeRendering(): void;
     get dynamicPageTitle(): DynamicPageTitle | null;
     get dynamicPageHeader(): DynamicPageHeader | null;
@@ -163,6 +153,5 @@ declare class DynamicPage extends UI5Element {
     _toggleHeader(): Promise<void>;
     onExpandHoverIn(): Promise<void>;
     onExpandHoverOut(): Promise<void>;
-    updateMediaRange(): void;
 }
 export default DynamicPage;

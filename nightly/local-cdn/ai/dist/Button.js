@@ -72,7 +72,7 @@ let Button = class Button extends UI5Element {
          * @public
          * @since 2.6.0
          */
-        this.activeArrowButton = false;
+        this.arrowButtonPressed = false;
         /**
          * Determines if the button is in icon-only mode.
          * This property is animation related only.
@@ -82,7 +82,7 @@ let Button = class Button extends UI5Element {
         this.iconOnly = false;
     }
     get _hideArrowButton() {
-        return !this._effectiveStateObject?.splitMode;
+        return !this._effectiveStateObject?.showArrowButton;
     }
     get _effectiveState() {
         return this.state || (this.states.length && this.states[0].name) || "";
@@ -100,7 +100,7 @@ let Button = class Button extends UI5Element {
         return this._currentStateObject?.icon;
     }
     get _stateEndIcon() {
-        const endIcon = this._effectiveStateObject?.splitMode ? "" : this._effectiveStateObject?.endIcon;
+        const endIcon = this._effectiveStateObject?.showArrowButton ? "" : this._effectiveStateObject?.endIcon;
         return endIcon;
     }
     get _hasText() {
@@ -109,7 +109,7 @@ let Button = class Button extends UI5Element {
     onBeforeRendering() {
         const splitButton = this._splitButton;
         if (splitButton) {
-            splitButton.activeArrowButton = this.activeArrowButton;
+            splitButton.activeArrowButton = this.arrowButtonPressed;
         }
         if (!this._currentStateObject?.name) {
             this._currentStateObject = this._effectiveStateObject;
@@ -139,10 +139,10 @@ let Button = class Button extends UI5Element {
         }
         const buttonWidth = button.offsetWidth;
         const currentState = this._currentStateObject || {};
-        if ((!currentState.splitMode && newStateObject.splitMode) || (!currentState.endIcon && !!newStateObject.endIcon)) {
+        if ((!currentState.showArrowButton && newStateObject.showArrowButton) || (!currentState.endIcon && !!newStateObject.endIcon)) {
             this.classList.add("ui5-ai-button-button-to-menu");
         }
-        if ((currentState.splitMode && !newStateObject.splitMode) || (!!currentState.endIcon && !newStateObject.endIcon)) {
+        if ((currentState.showArrowButton && !newStateObject.showArrowButton) || (!!currentState.endIcon && !newStateObject.endIcon)) {
             this.classList.add("ui5-ai-button-menu-to-button");
         }
         this.style.width = `${buttonWidth}px`;
@@ -201,12 +201,12 @@ let Button = class Button extends UI5Element {
         this.fireDecoratorEvent("click");
     }
     /**
-     * Handles the arrow-click event when `ui5-ai-button` is in split mode.
+     * Handles the arrow-button-click event when `ui5-ai-button` is in split mode.
      * @private
      */
     _onArrowClick(e) {
         e.stopImmediatePropagation();
-        this.fireDecoratorEvent("arrow-click");
+        this.fireDecoratorEvent("arrow-button-click");
     }
 };
 __decorate([
@@ -220,7 +220,7 @@ __decorate([
 ], Button.prototype, "state", void 0);
 __decorate([
     property({ type: Boolean, noAttribute: true })
-], Button.prototype, "activeArrowButton", void 0);
+], Button.prototype, "arrowButtonPressed", void 0);
 __decorate([
     property({ type: Object })
 ], Button.prototype, "_currentStateObject", void 0);
@@ -261,7 +261,7 @@ Button = __decorate([
      * @public
      */
     ,
-    event("arrow-click", {
+    event("arrow-button-click", {
         bubbles: true,
     })
 ], Button);

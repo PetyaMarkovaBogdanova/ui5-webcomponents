@@ -74,11 +74,6 @@ type InputSuggestionScrollEventDetail = {
  * When the user makes changes to the text, the change event is fired,
  * which enables you to react on any text change.
  *
- * **Note:** If you are using the `ui5-input` as a single npm module,
- * don't forget to import the `InputSuggestions` module from
- * "@ui5/webcomponents/dist/features/InputSuggestions.js"
- * to enable the suggestions functionality.
- *
  * ### Keyboard Handling
  * The `ui5-input` provides the following keyboard shortcuts:
  *
@@ -94,8 +89,6 @@ type InputSuggestionScrollEventDetail = {
  * ### ES6 Module Import
  *
  * `import "@ui5/webcomponents/dist/Input.js";`
- *
- * `import "@ui5/webcomponents/dist/features/InputSuggestions.js";` (optional - for input suggestions support)
  *
  * @constructor
  * @extends UI5Element
@@ -211,8 +204,6 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     /**
      * Defines whether the component should show suggestions, if such are present.
      *
-     * **Note:** You need to import the `InputSuggestions` module
-     * from `"@ui5/webcomponents/dist/features/InputSuggestions.js"` to enable this functionality.
      * @default false
      * @public
      */
@@ -289,6 +280,10 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      */
     _accessibleLabelsRefTexts?: string;
     /**
+     * @private
+     */
+    Suggestions?: InputSuggestions;
+    /**
      * Defines the suggestion items.
      *
      * **Note:** The suggestions would be displayed only if the `showSuggestions`
@@ -296,11 +291,6 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      *
      * **Note:** The `<ui5-suggestion-item>`, `<ui5-suggestion-item-group>` and `ui5-suggestion-item-custom` are recommended to be used as suggestion items.
      *
-     * **Note:** Importing the Input Suggestions Support feature:
-     *
-     * `import "@ui5/webcomponents/dist/features/InputSuggestions.js";`
-     *
-     * automatically imports the `<ui5-suggestion-item>` and `<ui5-suggestion-item-group>` for your convenience.
      * @public
      */
     suggestionItems: Array<IInputSuggestionItem>;
@@ -337,7 +327,7 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     _shouldAutocomplete?: boolean;
     _keyDown?: boolean;
     _isKeyNavigation?: boolean;
-    Suggestions?: InputSuggestions;
+    _indexOfSelectedItem: number;
     _selectedText?: string;
     _clearIconClicked?: boolean;
     _focusedAfterClear: boolean;
@@ -360,6 +350,7 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     onAfterRendering(): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
+    get currentItemIndex(): number;
     _handleUp(e: KeyboardEvent): void;
     _handleDown(e: KeyboardEvent): void;
     _handleSpace(e: KeyboardEvent): void;
@@ -390,6 +381,7 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     _startsWithMatchingItems(str: string): Array<IInputSuggestionItemSelectable>;
     _getFirstMatchingItem(current: string): IInputSuggestionItemSelectable | undefined;
     _handleSelectionChange(e: CustomEvent<ListSelectionChangeEventDetail>): void;
+    _selectMatchingItem(item: IInputSuggestionItemSelectable): void;
     _handleTypeAhead(item: IInputSuggestionItemSelectable): void;
     _handleResize(): void;
     _updateAssociatedLabelsTexts(): void;
@@ -532,6 +524,7 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      * @param value the numeric value of Input of type "Number"
      */
     removeFractionalPart(value: string): string;
+    static SuggestionsClass?: typeof InputSuggestions;
 }
 export default Input;
 export type { InputAccInfo, IInputSuggestionItem, IInputSuggestionItemSelectable, InputSuggestionScrollEventDetail, InputSelectionChangeEventDetail, InputEventDetail, };

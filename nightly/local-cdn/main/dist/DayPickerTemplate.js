@@ -10,7 +10,7 @@ export default function DayPickerTemplate() {
                     return week.length > 0 ?
                         _jsx("div", { class: "ui5-dp-weeks-row", role: "row", children: week.map(day => {
                                 return "timestamp" in day ?
-                                    _jsxs("div", { "data-ui5-special-day": day.type ? day.type : undefined, tabindex: day._tabIndex, "data-sap-focus-ref": day.focusRef ? "true" : undefined, "data-sap-timestamp": day.timestamp, role: "gridcell", "aria-selected": day.ariaSelected, "aria-label": day.ariaLabel, "aria-disabled": day.ariaDisabled, class: day.classes, part: day.parts, children: [_jsx("span", { class: "ui5-dp-daytext", "data-sap-timestamp": day.timestamp, children: day.day }), day._isSecondaryCalendarType &&
+                                    _jsxs("div", { "data-ui5-special-day": day.type ? day.type : undefined, tabindex: day._tabIndex, "data-sap-focus-ref": day.focusRef ? "true" : undefined, "data-sap-timestamp": day.timestamp, role: "gridcell", title: day.tooltip, "aria-selected": day.ariaSelected, "aria-label": day.ariaLabel, "aria-disabled": day.ariaDisabled, class: day.classes, part: day.parts, children: [_jsx("span", { class: "ui5-dp-daytext", "data-sap-timestamp": day.timestamp, children: day.day }), day._isSecondaryCalendarType &&
                                                 _jsx("span", { class: "ui5-dp-daytext ui5-dp-daysectext", children: day.secondDay }), day.type &&
                                                 _jsx("div", { class: `ui5-dp-specialday ${day.type}` })] })
                                     :

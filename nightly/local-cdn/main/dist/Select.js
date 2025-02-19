@@ -148,7 +148,10 @@ let Select = Select_1 = class Select extends UI5Element {
     get formFormattedValue() {
         const selectedOption = this.selectedOption;
         if (selectedOption) {
-            return selectedOption.hasAttribute("value") ? selectedOption.value : selectedOption.textContent;
+            if ("value" in selectedOption && selectedOption.value) {
+                return selectedOption.value;
+            }
+            return selectedOption.hasAttribute("value") ? selectedOption.getAttribute("value") : selectedOption.textContent;
         }
         return "";
     }
@@ -175,6 +178,9 @@ let Select = Select_1 = class Select extends UI5Element {
                 break;
             }
         }
+    }
+    _applyFocus() {
+        this.focus();
     }
     _onfocusin() {
         this.focused = true;
@@ -716,9 +722,7 @@ Select = Select_1 = __decorate([
      * @public
      */
     ,
-    event("open", {
-        bubbles: true,
-    })
+    event("open")
     /**
      * Fired after the component's dropdown menu closes.
      * @public

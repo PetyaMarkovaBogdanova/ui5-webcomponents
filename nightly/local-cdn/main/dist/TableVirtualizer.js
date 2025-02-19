@@ -101,8 +101,10 @@ let TableVirtualizer = class TableVirtualizer extends UI5Element {
         }
     }
     onExitDOM() {
-        this._scrollContainer.removeEventListener("scroll", this._onScrollBound);
-        this._table = undefined;
+        if (this._table) {
+            this._scrollContainer.removeEventListener("scroll", this._onScrollBound);
+            this._table = undefined;
+        }
     }
     /**
      * Resets the virtualizer to its initial state and triggers the `range-change` event.

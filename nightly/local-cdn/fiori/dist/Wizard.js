@@ -37,12 +37,6 @@ const STEP_SWITCH_THRESHOLDS = {
     DEFAULT: 0.7,
     MAX: 1,
 };
-const RESPONSIVE_BREAKPOINTS = {
-    "0": "S",
-    "599": "M",
-    "1023": "L",
-    "1439": "XL",
-};
 /**
  * @class
  *
@@ -322,7 +316,6 @@ let Wizard = Wizard_1 = class Wizard extends UI5Element {
         }
         this._prevWidth = this.width;
         this._prevContentHeight = this.contentHeight;
-        this._calcCurrentBreakpoint();
     }
     attachStepsResizeObserver() {
         this.stepsDOM.forEach(stepDOM => {
@@ -334,11 +327,6 @@ let Wizard = Wizard_1 = class Wizard extends UI5Element {
         this.stepsDOM.forEach(stepDOM => {
             ResizeHandler.deregister(stepDOM, this._onStepResize);
         });
-    }
-    _calcCurrentBreakpoint() {
-        const breakpointDimensions = Object.keys(RESPONSIVE_BREAKPOINTS).reverse();
-        const breakpoint = breakpointDimensions.find((size) => Number(size) < this.width);
-        this._breakpoint = breakpoint ? RESPONSIVE_BREAKPOINTS[breakpoint] : RESPONSIVE_BREAKPOINTS["0"];
     }
     /**
      * Updates the expanded attribute for each ui5-wizard-tab based on the ui5-wizard width
@@ -793,9 +781,6 @@ __decorate([
 __decorate([
     property({ type: Array })
 ], Wizard.prototype, "_groupedTabs", void 0);
-__decorate([
-    property()
-], Wizard.prototype, "_breakpoint", void 0);
 __decorate([
     slot({
         "default": true,

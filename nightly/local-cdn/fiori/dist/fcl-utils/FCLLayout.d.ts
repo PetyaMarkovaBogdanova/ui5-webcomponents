@@ -7,10 +7,18 @@ type LayoutConfiguration = {
             separators: Array<{
                 visible: boolean;
                 gripVisible?: boolean;
+                arrowVisible?: boolean;
+                arrowDirection?: "forward" | "backward";
             }>;
         };
     };
 };
 declare const getLayoutsByMedia: () => LayoutConfiguration;
-export { getLayoutsByMedia, };
+declare const getNextLayoutByArrowPress: () => {
+    ThreeColumnsMidExpanded: string;
+    ThreeColumnsEndExpanded: string;
+    ThreeColumnsStartHiddenMidExpanded: string;
+    ThreeColumnsStartHiddenEndExpanded: string;
+};
+export { getLayoutsByMedia, getNextLayoutByArrowPress, };
 export type { LayoutConfiguration, FCLLayout, };

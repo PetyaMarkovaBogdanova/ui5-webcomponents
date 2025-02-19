@@ -20,8 +20,7 @@ import TableCellBase from "./TableCellBase.js";
 declare class TableCell extends TableCellBase {
     onBeforeRendering(): void;
     get _headerCell(): import("./TableHeaderCell.js").default;
-    get _popinText(): string | undefined;
-    get _popinHeader(): Node;
+    get _popinHeaderNodes(): (string | Node)[];
     get _i18nPopinColon(): string;
 }
 export default TableCell;

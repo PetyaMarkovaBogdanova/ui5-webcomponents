@@ -160,7 +160,6 @@ declare class Wizard extends UI5Element {
      * @private
      */
     _groupedTabs: Array<WizardTab>;
-    _breakpoint?: string;
     /**
      * Defines the steps.
      *
@@ -241,7 +240,6 @@ declare class Wizard extends UI5Element {
     onStepResize(): void;
     attachStepsResizeObserver(): void;
     detachStepsResizeObserver(): void;
-    _calcCurrentBreakpoint(): void;
     /**
      * Updates the expanded attribute for each ui5-wizard-tab based on the ui5-wizard width
      * @private

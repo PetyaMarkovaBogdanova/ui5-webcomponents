@@ -75,7 +75,7 @@ declare class CardHeader extends UI5Element {
     onEnterDOM(): void;
     get _root(): HTMLElement;
     get ariaRoleDescription(): string;
-    get ariaRoleFocusableElement(): "button" | undefined;
+    get ariaRoleFocusableElement(): "button" | "group";
     get ariaCardAvatarLabel(): string;
     get ariaLabelledBy(): string | undefined;
     get hasAvatar(): boolean;

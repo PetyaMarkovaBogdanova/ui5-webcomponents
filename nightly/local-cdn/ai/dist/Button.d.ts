@@ -37,7 +37,7 @@ import "./ButtonState.js";
 declare class Button extends UI5Element {
     eventDetails: {
         "click": void;
-        "arrow-click": void;
+        "arrow-button-click": void;
     };
     /**
      * Defines the component design.
@@ -68,7 +68,7 @@ declare class Button extends UI5Element {
      * @public
      * @since 2.6.0
      */
-    activeArrowButton: boolean;
+    arrowButtonPressed: boolean;
     /**
      * Keeps the current state object of the component.
      * @private
@@ -120,7 +120,7 @@ declare class Button extends UI5Element {
      */
     _onClick(e: CustomEvent): void;
     /**
-     * Handles the arrow-click event when `ui5-ai-button` is in split mode.
+     * Handles the arrow-button-click event when `ui5-ai-button` is in split mode.
      * @private
      */
     _onArrowClick(e: CustomEvent): void;

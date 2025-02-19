@@ -14,8 +14,6 @@ import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
-import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
-import MediaRange from "@ui5/webcomponents-base/dist/MediaRange.js";
 import announce from "@ui5/webcomponents-base/dist/util/InvisibleMessage.js";
 import InvisibleMessageMode from "@ui5/webcomponents-base/dist/types/InvisibleMessageMode.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
@@ -119,13 +117,6 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         this.showHeaderInStickArea = false;
         this.isToggled = false;
         this._headerSnapped = false;
-        this._updateMediaRange = this.updateMediaRange.bind(this);
-    }
-    onEnterDOM() {
-        ResizeHandler.register(this, this._updateMediaRange);
-    }
-    onExitDOM() {
-        ResizeHandler.deregister(this, this._updateMediaRange);
     }
     onBeforeRendering() {
         if (this.dynamicPageTitle) {
@@ -297,9 +288,6 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
         this.dynamicPageTitle?.removeAttribute("hovered");
         await renderFinished();
     }
-    updateMediaRange() {
-        this.mediaRange = MediaRange.getCurrentRange(MediaRange.RANGESETS.RANGE_4STEPS, this.getDomRef().offsetWidth);
-    }
 };
 __decorate([
     property({ type: Boolean })
@@ -310,9 +298,6 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], DynamicPage.prototype, "showFooter", void 0);
-__decorate([
-    property()
-], DynamicPage.prototype, "mediaRange", void 0);
 __decorate([
     slot({ "default": true, type: HTMLElement })
 ], DynamicPage.prototype, "content", void 0);
