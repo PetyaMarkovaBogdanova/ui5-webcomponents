@@ -26,6 +26,6 @@ function ViewSettingsDialogTemplateFooter() {
     return (_jsxs("div", { slot: "footer", class: "ui5-vsd-footer", children: [_jsx(Button, { design: "Emphasized", onClick: this._confirmSettings, children: this._okButtonLabel }), _jsx(Button, { design: "Transparent", onClick: this._cancelSettings, children: this._cancelButtonLabel })] }));
 }
 export default function ViewSettingsDialogTemplate() {
-    return (_jsxs(Dialog, { preventInitialFocus: true, "aria-label": this._dialogTitle, onBeforeClose: this._restoreConfirmedOnEscape, stretch: this._isPhone, open: this.open, onBeforeOpen: this.beforeDialogOpen, onOpen: this.afterDialogOpen, onClose: this.afterDialogClose, children: [ViewSettingsDialogTemplateHeader.call(this), ViewSettingsDialogTemplateContent.call(this), ViewSettingsDialogTemplateFooter.call(this)] }));
+    return (_jsxs(Dialog, { preventInitialFocus: true, accessibleName: this._dialogTitle, onBeforeClose: this._restoreConfirmedOnEscape, stretch: this._isPhone, open: this.open, onBeforeOpen: this.beforeDialogOpen, onOpen: this.afterDialogOpen, onClose: this.afterDialogClose, children: [ViewSettingsDialogTemplateHeader.call(this), ViewSettingsDialogTemplateContent.call(this), ViewSettingsDialogTemplateFooter.call(this)] }));
 }
 //# sourceMappingURL=ViewSettingsDialogTemplate.js.map

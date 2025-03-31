@@ -158,6 +158,11 @@ declare class Breadcrumbs extends UI5Element {
      */
     get _overflowItemsData(): BreadcrumbsItem[];
     /**
+     * Returns all items that should be displayed in the popover on mobile devices
+     * @private
+     */
+    get _mobilePopoverItems(): BreadcrumbsItem[];
+    /**
      * Getter for the list of abstract breadcrumb items to be rendered as links outside the overflow
      */
     get _linksData(): BreadcrumbsItem[];

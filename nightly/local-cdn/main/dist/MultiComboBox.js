@@ -304,14 +304,6 @@ let MultiComboBox = MultiComboBox_1 = class MultiComboBox extends UI5Element {
         const selectedItems = this._filteredItems.filter(item => item.selected);
         this.selectedItems = this._getItems().filter((item, idx, allItems) => MultiComboBox_1._groupItemFilter(item, ++idx, allItems, selectedItems) || selectedItems.indexOf(item) !== -1);
     }
-    /**
-     * Indicates whether the dropdown is open. True if the dropdown is open, false otherwise.
-     * @default false
-     * @public
-     */
-    get isOpen() {
-        return this.open;
-    }
     get _showAllItemsButtonPressed() {
         return this.filterSelected;
     }

@@ -473,7 +473,7 @@ let Input = Input_1 = class Input extends UI5Element {
         this.isTyping = false;
         if (this.value !== this.previousValue && this.value !== this.lastConfirmedValue && !this.open) {
             this.value = this.lastConfirmedValue ? this.lastConfirmedValue : this.previousValue;
-            this.fireDecoratorEvent(INPUT_EVENTS.INPUT);
+            this.fireDecoratorEvent(INPUT_EVENTS.INPUT, { inputType: "" });
             return;
         }
         if (!isOpen) {
@@ -1233,6 +1233,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], Input.prototype, "focused", void 0);
+__decorate([
+    property()
+], Input.prototype, "hint", void 0);
 __decorate([
     property({ type: Boolean })
 ], Input.prototype, "valueStateOpen", void 0);

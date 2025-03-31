@@ -1,5 +1,5 @@
-commit 5782881ae14ce3ef4fba3de798d9016188784440
+commit f8a2bd47b2e611b28661630ea1b99d8c5e44b4a6
 Author: PetyaMarkovaBogdanova <petya.markova@sap.com>
-Date:   Tue Mar 25 11:25:24 2025 +0200
+Date:   Mon Mar 31 14:50:32 2025 +0300
 
     Merge branch 'main' into shellbar-motion-design

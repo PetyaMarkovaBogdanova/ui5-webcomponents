@@ -5,6 +5,11 @@
 declare enum AvatarColorScheme {
     /**
      * @public
+     * @since 2.9.0
+     */
+    Auto = "Auto",
+    /**
+     * @public
      */
     Accent1 = "Accent1",
     /**

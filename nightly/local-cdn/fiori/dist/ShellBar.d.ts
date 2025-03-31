@@ -286,6 +286,8 @@ declare class ShellBar extends UI5Element {
     _isAnimating: boolean;
     _autoRestoreSearchField: boolean;
     _handleAnimationEndRef: () => void;
+    _maxAnimationDuration: number;
+    _performNoAnimation: boolean;
     _headerPress: () => void;
     static get FIORI_3_BREAKPOINTS(): number[];
     static get FIORI_3_BREAKPOINTS_MAP(): Record<string, string>;
@@ -307,8 +309,8 @@ declare class ShellBar extends UI5Element {
     _logoKeyup(e: KeyboardEvent): void;
     _logoKeydown(e: KeyboardEvent): void;
     _calculateCSSREMValue(styleSet: CSSStyleDeclaration, propertyName: string): number;
-    _parsePxValue(styleSet: CSSStyleDeclaration, propertyName: string): number;
     domCalculatedValues(cssVar: string): number;
+    domCalculatedAnumationDuration(cssVar: string): number;
     onBeforeRendering(): void;
     onAfterRendering(): void;
     onInitialRendering(): Promise<void>;

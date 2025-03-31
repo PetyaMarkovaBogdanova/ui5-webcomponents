@@ -114,7 +114,9 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
     size: `${AvatarSize}`;
     /**
      * Defines the background color of the desired image.
-     * @default "Accent6"
+     * If `colorScheme` is set to `Auto`, the avatar will be displayed with the `Accent6` color.
+     *
+     * @default "Auto"
      * @public
      */
     colorScheme: `${AvatarColorScheme}`;
@@ -177,10 +179,10 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
     get effectiveSize(): AvatarSize;
     /**
      * Returns the effective background color.
-     * @default "Accent6"
+     * @default "Auto"
      * @private
      */
-    get еffectiveBackgroundColor(): AvatarColorScheme;
+    get effectiveBackgroundColor(): AvatarColorScheme;
     get _role(): "button" | "img";
     get _ariaHasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
     get _interactive(): boolean;

@@ -4,7 +4,7 @@ import type List from "@ui5/webcomponents/dist/List.js";
 import SearchField from "./SearchField.js";
 import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type SearchItem from "./SearchItem.js";
-import ListGrowingMode from "@ui5/webcomponents/dist/types/ListGrowingMode.js";
+import type Button from "@ui5/webcomponents/dist/Button.js";
 interface ISearchSuggestionItem extends UI5Element {
     selected: boolean;
     headingText: string;
@@ -70,6 +70,7 @@ declare class Search extends SearchField {
     subheaderText: string;
     /**
      * Defines whether the popup footer action button is shown.
+     * Note: The footer action button is displayed only when the `popupMode` is set to `List`.
      * @default false
      * @public
      */
@@ -150,6 +151,7 @@ declare class Search extends SearchField {
     _handleSearchEvent(): void;
     _handleEscape(): void;
     _handleInput(e: InputEvent): void;
+    _onFooterButtonKeyDown(e: KeyboardEvent): void;
     _onItemKeydown(e: KeyboardEvent): void;
     _onItemClick(e: CustomEvent): void;
     _onkeydown(e: KeyboardEvent): void;
@@ -158,15 +160,16 @@ declare class Search extends SearchField {
     _onFocusOutSearch(): void;
     _handleClose(): void;
     _handleOpen(): void;
-    _handleMore(): void;
+    _onFooterButtonClick(): void;
     _getFirstMatchingItem(current: string): ISearchSuggestionItem | undefined;
     _getPicker(): Popover;
     _getItemsList(): List;
+    _getFooterButton(): Button;
     get _flattenItems(): Array<ISearchSuggestionItem>;
     get nativeInput(): HTMLInputElement | null;
     get _showIllustration(): boolean;
     get _showLoading(): boolean;
     get _showHeader(): boolean;
-    get _effectiveGrowing(): ListGrowingMode.Button | ListGrowingMode.None;
+    get _showFooter(): boolean;
 }
 export default Search;

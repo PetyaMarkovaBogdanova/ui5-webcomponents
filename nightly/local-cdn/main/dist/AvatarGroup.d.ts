@@ -13,7 +13,7 @@ import type { IButton } from "./Button.js";
  * @public
  */
 interface IAvatarGroupItem extends HTMLElement, ITabbable {
-    еffectiveBackgroundColor: AvatarColorScheme;
+    effectiveBackgroundColor: AvatarColorScheme;
     size: `${AvatarSize}`;
     effectiveSize: AvatarSize;
     interactive: boolean;

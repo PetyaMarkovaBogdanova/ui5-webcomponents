@@ -14,6 +14,7 @@ import type { IIcon } from "./Icon.js";
 import type PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
 import type { ListItemClickEventDetail, ListSelectionChangeEventDetail } from "./List.js";
 import type ResponsivePopover from "./ResponsivePopover.js";
+import type InputKeyHint from "./types/InputKeyHint.js";
 /**
  * Interface for components that represent a suggestion item, usable in `ui5-input`
  * @public
@@ -272,6 +273,13 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      * @private
      */
     focused: boolean;
+    /**
+     * Used to define enterkeyhint of the inner input.
+     * https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/enterkeyhint
+     *
+     * @private
+     */
+    hint?: `${InputKeyHint}`;
     valueStateOpen: boolean;
     /**
      * Indicates whether the visual focus is on the value state header

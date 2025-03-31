@@ -239,7 +239,7 @@ declare class Button extends UI5Element implements IButton {
     _onkeyup(e: KeyboardEvent): void;
     _onfocusout(): void;
     _setActiveState(active: boolean): void;
-    get _hasPopup(): import("@ui5/webcomponents-base").AriaHasPopup | undefined;
+    get _hasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
     get hasButtonType(): boolean;
     get isIconOnly(): boolean;
     static typeTextMappings(): Record<string, I18nText>;

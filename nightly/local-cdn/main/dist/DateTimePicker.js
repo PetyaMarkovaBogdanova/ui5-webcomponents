@@ -16,6 +16,7 @@ import "@ui5/webcomponents-icons/dist/date-time.js";
 import UI5Date from "@ui5/webcomponents-localization/dist/dates/UI5Date.js";
 import DateFormat from "@ui5/webcomponents-localization/dist/DateFormat.js";
 import DatePicker from "./DatePicker.js";
+import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 // i18n texts
 import { TIMEPICKER_SUBMIT_BUTTON, TIMEPICKER_CANCEL_BUTTON, DATETIME_DESCRIPTION, DATETIME_PICKER_DATE_BUTTON, DATETIME_PICKER_TIME_BUTTON, DATETIMEPICKER_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
 // Template
@@ -145,24 +146,6 @@ let DateTimePicker = DateTimePicker_1 = class DateTimePicker extends DatePicker 
             };
         }
     }
-    /**
-     * Read-only getters
-     */
-    get classes() {
-        return {
-            // Remove after deliting the hbs template, the classes are added in the jsx template
-            picker: {
-                "ui5-dt-picker-content--phone": this.phone,
-            },
-            dateTimeView: {
-                "ui5-dt-cal--hidden": this.phone && this.showTimeView,
-                "ui5-dt-time--hidden": this.phone && this.showDateView,
-            },
-            footer: {
-                "ui5-dt-picker-footer-time-hidden": (this.phone && this.showTimeView) || (this.phone && this.showDateView),
-            },
-        };
-    }
     get _formatPattern() {
         const hasHours = !!(this.formatPattern || "").match(/H/i);
         const fallback = !this.formatPattern || !hasHours;
@@ -197,13 +180,13 @@ let DateTimePicker = DateTimePicker_1 = class DateTimePicker extends DatePicker 
         return true;
     }
     get showDateView() {
-        return this.phone ? !this._showTimeView : true;
+        return this._phoneView ? !this._showTimeView : true;
     }
     get showTimeView() {
-        return this.phone ? this._showTimeView : true;
+        return this._phoneView ? this._showTimeView : true;
     }
-    get phone() {
-        return super.phone || this._phoneMode;
+    get _phoneView() {
+        return isPhone() || this._phoneMode;
     }
     /**
      * @override
@@ -302,9 +285,6 @@ let DateTimePicker = DateTimePicker_1 = class DateTimePicker extends DatePicker 
         modifiedLocalDate.setSeconds(this.dateValue.getSeconds());
         const newValue = this.formatValue(modifiedLocalDate);
         this._updateValueAndFireEvents(newValue, true, ["change", "value-changed"]);
-    }
-    getPicker() {
-        return this.shadowRoot.querySelector("[ui5-responsive-popover]");
     }
     getSelectedDateTime() {
         const selectedDate = this.getFormat().parse(this._calendarSelectedDates[0]);

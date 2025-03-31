@@ -6,6 +6,11 @@ var AvatarColorScheme;
 (function (AvatarColorScheme) {
     /**
      * @public
+     * @since 2.9.0
+     */
+    AvatarColorScheme["Auto"] = "Auto";
+    /**
+     * @public
      */
     AvatarColorScheme["Accent1"] = "Accent1";
     /**

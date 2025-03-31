@@ -168,10 +168,9 @@ let DateRangePicker = DateRangePicker_1 = class DateRangePicker extends DatePick
      * @override
      */
     async _onInputSubmit() {
-        const input = this._getInput();
-        const caretPos = input.getCaretPosition();
+        const caretPos = this._dateTimeInput.getCaretPosition();
         await renderFinished();
-        input.setCaretPosition(caretPos); // Return the caret on the previous position after rendering
+        this._dateTimeInput.setCaretPosition(caretPos); // Return the caret on the previous position after rendering
     }
     /**
      * @override
@@ -229,8 +228,7 @@ let DateRangePicker = DateRangePicker_1 = class DateRangePicker extends DatePick
         if (!this._endDateTimestamp) { // If empty or only one date -> treat as datepicker entirely
             return super._modifyDateValue(amount, unit, preserveDate);
         }
-        const input = this._getInput();
-        let caretPos = input.getCaretPosition(); // caret position is always number for input of type text;
+        let caretPos = this._dateTimeInput.getCaretPosition(); // caret position is always number for input of type text;
         let newValue;
         if (caretPos <= this.value.indexOf(this._effectiveDelimiter)) { // The user is focusing the first date -> change it and keep the second date
             const startDateModified = modifyDateBy(CalendarDate.fromTimestamp(this._startDateTimestamp * 1000), amount, unit, preserveDate, this._minDate, this._maxDate);
@@ -250,7 +248,7 @@ let DateRangePicker = DateRangePicker_1 = class DateRangePicker extends DatePick
         }
         this._updateValueAndFireEvents(newValue, true, ["change", "value-changed"]);
         await renderFinished();
-        input.setCaretPosition(caretPos); // Return the caret to the previous (or the adjusted, if dates flipped) position after rendering
+        this._dateTimeInput.setCaretPosition(caretPos); // Return the caret to the previous (or the adjusted, if dates flipped) position after rendering
     }
     get _effectiveDelimiter() {
         return this.delimiter || DEFAULT_DELIMITER;

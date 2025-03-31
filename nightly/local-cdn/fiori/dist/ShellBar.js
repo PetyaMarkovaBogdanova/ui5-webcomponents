@@ -31,6 +31,7 @@ import grid from "@ui5/webcomponents-icons/dist/grid.js";
 import throttle from "@ui5/webcomponents-base/dist/util/throttle.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
+import { getTheme } from "@ui5/webcomponents-base/dist/config/Theme.js";
 // Templates
 import ShellBarTemplate from "./ShellBarTemplate.js";
 // Styles
@@ -166,6 +167,8 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._isAnimating = false;
         this._autoRestoreSearchField = false;
         this._handleAnimationEndRef = this._handleAnimationEnd.bind(this);
+        this._maxAnimationDuration = 0;
+        this._performNoAnimation = false;
         this._hiddenIcons = [];
         this._isInitialRendering = true;
         this._overflowNotifications = null;
@@ -319,12 +322,13 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     _calculateCSSREMValue(styleSet, propertyName) {
         return Number(styleSet.getPropertyValue(propertyName).replace("rem", "")) * parseInt(getComputedStyle(document.body).getPropertyValue("font-size"));
     }
-    _parsePxValue(styleSet, propertyName) {
-        return Number(styleSet.getPropertyValue(propertyName).replace("px", ""));
-    }
     domCalculatedValues(cssVar) {
         const shellbarComputerStyle = getComputedStyle(this.getDomRef());
         return this._calculateCSSREMValue(shellbarComputerStyle, getScopedVarName(cssVar)); // px
+    }
+    domCalculatedAnumationDuration(cssVar) {
+        const shellbarComputerStyle = getComputedStyle(this.getDomRef());
+        return Number(shellbarComputerStyle.getPropertyValue(getScopedVarName(cssVar)).replace("s", "")) * 1000; // ms
     }
     onBeforeRendering() {
         this.withLogo = this.hasLogo;
@@ -351,6 +355,8 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             if (this.autoSearchField) {
                 this._updateSearchFieldState();
             }
+            this._maxAnimationDuration = this.domCalculatedAnumationDuration("--_ui5_shellbar_max_animation_duration");
+            this._performNoAnimation = getTheme().includes("hcb") || getTheme().includes("hcw");
         }
         this._isInitialRendering = false;
     }
@@ -443,18 +449,23 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._overflowActions();
         this._isAnimating = false;
         this.searchField[0].removeEventListener("animationend", this._handleAnimationEndRef);
-        this.shadowRoot.querySelector("header").classList.remove("ui5-shellbar-animating");
+        setTimeout(() => this.shadowRoot.querySelector("header").classList.remove("ui5-shellbar-animating"), this._maxAnimationDuration + 100); // adding 100ms buffer to cover animation time
     }
     _attachAnimationEndHandlers() {
-        const searchWrapper = this.shadowRoot.querySelector(".ui5-shellbar-search-field");
-        this._isAnimating = true;
-        this.shadowRoot.querySelector("header").classList.add("ui5-shellbar-animating");
-        searchWrapper?.addEventListener("animationend", this._handleAnimationEndRef);
-        setTimeout(() => {
-            if (this._isAnimating) {
-                this._handleAnimationEnd();
-            }
-        }, RESIZE_THROTTLE_RATE);
+        if (!this._performNoAnimation) {
+            const searchWrapper = this.shadowRoot.querySelector(".ui5-shellbar-search-field");
+            this._isAnimating = true;
+            this.shadowRoot.querySelector("header").classList.add("ui5-shellbar-animating");
+            searchWrapper?.addEventListener("animationend", this._handleAnimationEndRef);
+            setTimeout(() => {
+                if (this._isAnimating) {
+                    this._handleAnimationEnd();
+                }
+            }, RESIZE_THROTTLE_RATE);
+        }
+        else {
+            this._overflowActions();
+        }
     }
     _handleSearchIconPress() {
         const searchButtonRef = this.shadowRoot.querySelector(".ui5-shellbar-search-button");

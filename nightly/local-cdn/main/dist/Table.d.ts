@@ -272,7 +272,7 @@ declare class Table extends UI5Element {
     _tableDragAndDrop?: TableDragAndDrop;
     _poppedIn: Array<{
         col: TableHeaderCell;
-        width: float;
+        width: number;
     }>;
     _containerWidth: number;
     constructor();

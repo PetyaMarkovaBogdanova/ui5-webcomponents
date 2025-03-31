@@ -8,11 +8,12 @@ import type ResponsivePopover from "./ResponsivePopover.js";
 import type Calendar from "./Calendar.js";
 import type { CalendarSelectionChangeEventDetail } from "./Calendar.js";
 import type CalendarSelectionMode from "./types/CalendarSelectionMode.js";
-import type Input from "./Input.js";
+import type DateTimeInput from "./DateTimeInput.js";
 import type { InputAccInfo } from "./Input.js";
 import InputType from "./types/InputType.js";
 import IconMode from "./types/IconMode.js";
 import "@ui5/webcomponents-localization/dist/features/calendar/Gregorian.js";
+type ValueStateAnnouncement = Record<Exclude<ValueState, ValueState.None>, string>;
 type DatePickerChangeEventDetail = {
     value: string;
     valid: boolean;
@@ -212,6 +213,8 @@ declare class DatePicker extends DateComponentBase implements IFormInputElement 
      */
     valueStateMessage: Array<HTMLElement>;
     responsivePopover?: ResponsivePopover;
+    _dateTimeInput: DateTimeInput;
+    _calendar: Calendar;
     static i18nBundle: I18nBundle;
     get formValidityMessage(): string;
     get formValidity(): ValidityStateFlags;
@@ -224,7 +227,6 @@ declare class DatePicker extends DateComponentBase implements IFormInputElement 
     onResponsivePopoverAfterOpen(): void;
     onResponsivePopoverBeforeOpen(): void;
     onBeforeRendering(): void;
-    get _calendar(): Calendar;
     /**
      * Override in derivatives to change calendar selection mode
      * @protected
@@ -253,7 +255,6 @@ declare class DatePicker extends DateComponentBase implements IFormInputElement 
     _modifyDateValue(amount: number, unit: string, preserveDate?: boolean): void;
     _updateValueAndFireEvents(value: string, normalizeValue: boolean, events: Array<"change" | "value-changed" | "input">, updateValue?: boolean): void;
     _updateValueState(): void;
-    _getInput(): Input;
     /**
      * The ui5-input "submit" event handler - fire change event when the user presses enter
      * @protected
@@ -299,10 +300,14 @@ declare class DatePicker extends DateComponentBase implements IFormInputElement 
      */
     get _placeholder(): string;
     get _headerTitleText(): string;
-    get phone(): boolean;
     get showHeader(): boolean;
     get showFooter(): boolean;
     get accInfo(): InputAccInfo;
+    get valueStateDefaultText(): string | undefined;
+    get valueStateTextMappings(): ValueStateAnnouncement;
+    get shouldDisplayDefaultValueStateMessage(): boolean;
+    get hasValueStateText(): boolean;
+    get hasValueState(): boolean;
     get openIconTitle(): string;
     get openIconName(): string;
     get dateAriaDescription(): string;
@@ -321,7 +326,6 @@ declare class DatePicker extends DateComponentBase implements IFormInputElement 
      * @private
      */
     get _iconMode(): IconMode.Decorative | IconMode.Interactive;
-    _respPopover(): ResponsivePopover;
     _canOpenPicker(): boolean;
     get _calendarPickersMode(): CalendarPickersMode;
     /**

@@ -289,12 +289,6 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     togglePopoverByDropdownIcon(): void;
     _showFilteredItems(): void;
     filterSelectedItems(e: MouseEvent): void;
-    /**
-     * Indicates whether the dropdown is open. True if the dropdown is open, false otherwise.
-     * @default false
-     * @public
-     */
-    get isOpen(): boolean;
     get _showAllItemsButtonPressed(): boolean;
     get _inputDom(): HTMLInputElement;
     _inputLiveChange(e: InputEvent): void;

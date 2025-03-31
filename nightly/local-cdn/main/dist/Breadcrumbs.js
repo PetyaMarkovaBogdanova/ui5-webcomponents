@@ -382,6 +382,15 @@ let Breadcrumbs = Breadcrumbs_1 = class Breadcrumbs extends UI5Element {
             .reverse();
     }
     /**
+     * Returns all items that should be displayed in the popover on mobile devices
+     * @private
+     */
+    get _mobilePopoverItems() {
+        return this._getItems()
+            .filter(item => this._isItemVisible(item))
+            .reverse();
+    }
+    /**
      * Getter for the list of abstract breadcrumb items to be rendered as links outside the overflow
      */
     get _linksData() {
