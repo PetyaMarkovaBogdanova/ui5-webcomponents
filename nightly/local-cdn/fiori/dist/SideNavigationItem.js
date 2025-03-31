@@ -8,7 +8,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
-import { isLeft, isRight, isSpace, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isLeft, isRight, isSpace, isEnter, isMinus, isPlus, } from "@ui5/webcomponents-base/dist/Keys.js";
 import SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
 // Templates
 import SideNavigationItemTemplate from "./SideNavigationItemTemplate.js";
@@ -55,11 +55,17 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
         return [this];
     }
     get selectableItems() {
+        if (this.inPopover && this.unselectable && this.items.length) {
+            return [...this.items];
+        }
         return [this, ...this.items];
     }
     get focusableItems() {
         if (this.sideNavCollapsed) {
             return [this];
+        }
+        if (this.inPopover && this.unselectable && this.items.length) {
+            return [...this.items];
         }
         if (this.expanded) {
             return [this, ...this.items];
@@ -68,6 +74,12 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
     }
     get allItems() {
         return [this, ...this.items];
+    }
+    get effectiveTabIndex() {
+        if (this.inPopover && this.unselectable) {
+            return undefined;
+        }
+        return super.effectiveTabIndex;
     }
     get _ariaHasPopup() {
         if (this.inPopover && this.accessibilityAttributes?.hasPopup) {
@@ -98,7 +110,7 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
     }
     get classesArray() {
         const classes = super.classesArray;
-        if (!this.disabled && this.parentNode.collapsed && this.items.length) {
+        if (!this.disabled && this.sideNavigation?.collapsed && this.items.length) {
             classes.push("ui5-sn-item-with-expander");
         }
         if (this._fixed) {
@@ -112,16 +124,24 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
         }
         return this.selected;
     }
+    applyInitialFocusInPopover() {
+        if (this.unselectable && this.items.length) {
+            this.items[0]?.focus();
+        }
+        else {
+            this.focus();
+        }
+    }
     _onToggleClick(e) {
         e.stopPropagation();
         this._toggle();
     }
     _onkeydown(e) {
-        if (isLeft(e)) {
+        if (isLeft(e) || isMinus(e)) {
             this.expanded = false;
             return;
         }
-        if (isRight(e)) {
+        if (isRight(e) || isPlus(e)) {
             this.expanded = true;
             return;
         }
@@ -138,7 +158,12 @@ let SideNavigationItem = class SideNavigationItem extends SideNavigationSelectab
         super._onkeyup(e);
     }
     _onfocusin(e) {
-        super._onfocusin(e);
+        if (this.inPopover && this.unselectable && this.items.length) {
+            this.sideNavigation?.focusItem(this.items[0]);
+        }
+        else {
+            super._onfocusin(e);
+        }
     }
     _onclick(e) {
         if (!this.inPopover && this.unselectable) {

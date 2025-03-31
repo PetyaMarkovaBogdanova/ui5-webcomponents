@@ -275,6 +275,7 @@ declare class Carousel extends UI5Element {
     get ariaLabelTxt(): string | undefined;
     get nextPageText(): string;
     get previousPageText(): string;
+    get _roleDescription(): string;
     /**
      * The indices of the currently visible items of the component.
      * @public

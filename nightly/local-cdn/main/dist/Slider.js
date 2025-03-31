@@ -218,6 +218,14 @@ let Slider = Slider_1 = class Slider extends SliderBase {
         this.handleUpBase();
         this._valueOnInteractionStart = undefined;
     }
+    _onkeyup(e) {
+        const isActionKey = SliderBase._isActionKey(e);
+        this._onKeyupBase();
+        if (isActionKey && this._valueOnInteractionStart !== this.value) {
+            this.fireDecoratorEvent("change");
+        }
+        this._valueOnInteractionStart = this.value;
+    }
     _onInputFocusOut(e) {
         const tooltipInput = this.shadowRoot.querySelector("[ui5-input]");
         this._tooltipVisibility = SliderBase.TOOLTIP_VISIBILITY.HIDDEN;

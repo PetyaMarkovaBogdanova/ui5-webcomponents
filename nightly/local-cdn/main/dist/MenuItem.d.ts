@@ -205,6 +205,7 @@ declare class MenuItem extends ListItem implements IMenuItem {
     _afterPopoverOpen(): void;
     _beforePopoverClose(e: CustomEvent): void;
     _afterPopoverClose(): void;
+    get isMenuItem(): boolean;
 }
 export default MenuItem;
 export type { MenuBeforeCloseEventDetail, MenuBeforeOpenEventDetail, MenuItemAccessibilityAttributes, };

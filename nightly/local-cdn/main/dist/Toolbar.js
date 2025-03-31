@@ -17,7 +17,7 @@ import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/Acc
 import "@ui5/webcomponents-icons/dist/overflow.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
-import { TOOLBAR_OVERFLOW_BUTTON_ARIA_LABEL, } from "./generated/i18n/i18n-defaults.js";
+import { TOOLBAR_OVERFLOW_BUTTON_ARIA_LABEL, TOOLBAR_POPOVER_AVAILABLE_VALUES, } from "./generated/i18n/i18n-defaults.js";
 import ToolbarTemplate from "./ToolbarTemplate.js";
 import ToolbarCss from "./generated/themes/Toolbar.css.js";
 import ToolbarPopoverCss from "./generated/themes/ToolbarPopover.css.js";
@@ -79,10 +79,10 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
          * @since 2.0.0
          */
         this.design = "Solid";
+        this.popoverOpen = false;
         this.itemsToOverflow = [];
         this.itemsWidth = 0;
         this.minContentWidth = 0;
-        this.popoverOpen = false;
         this.itemsWidthMeasured = false;
         this.ITEMS_WIDTH_MAP = new Map();
         this._onResize = this.onResize.bind(this);
@@ -141,9 +141,12 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
                 accessibleName: Toolbar_1.i18nBundle.getText(TOOLBAR_OVERFLOW_BUTTON_ARIA_LABEL),
                 tooltip: Toolbar_1.i18nBundle.getText(TOOLBAR_OVERFLOW_BUTTON_ARIA_LABEL),
                 accessibilityAttributes: {
-                    expanded: this.overflowButtonDOM?.accessibilityAttributes.expanded,
+                    expanded: this.popoverOpen,
                     hasPopup: "menu",
                 },
+            },
+            popover: {
+                accessibleName: Toolbar_1.i18nBundle.getText(TOOLBAR_POPOVER_AVAILABLE_VALUES),
             },
         };
     }
@@ -310,18 +313,12 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
      */
     onOverflowPopoverClosed() {
         this.popoverOpen = false;
-        if (this.overflowButtonDOM) {
-            this.overflowButtonDOM.accessibilityAttributes.expanded = false;
-        }
     }
     onBeforeClose(e) {
         e.preventDefault();
     }
     onOverflowPopoverOpened() {
         this.popoverOpen = true;
-        if (this.overflowButtonDOM) {
-            this.overflowButtonDOM.accessibilityAttributes.expanded = true;
-        }
     }
     onResize() {
         if (!this.itemsWidth) {
@@ -415,6 +412,9 @@ __decorate([
 __decorate([
     property()
 ], Toolbar.prototype, "design", void 0);
+__decorate([
+    property({ type: Boolean })
+], Toolbar.prototype, "popoverOpen", void 0);
 __decorate([
     slot({ "default": true, type: HTMLElement, invalidateOnChildChange: true })
 ], Toolbar.prototype, "items", void 0);

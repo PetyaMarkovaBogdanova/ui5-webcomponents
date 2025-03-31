@@ -209,9 +209,10 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     tokenizerOpen: boolean;
     /**
      * Indicates whether the items picker is open.
-     * @private
+     * @public
+     * @since 2.9.0
      */
-    _open: boolean;
+    open: boolean;
     _valueBeforeOpen: string;
     _filteredItems: Array<IMultiComboBoxItem>;
     _previouslySelectedItems: Array<IMultiComboBoxItem>;
@@ -293,7 +294,7 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
      * @default false
      * @public
      */
-    get open(): boolean;
+    get isOpen(): boolean;
     get _showAllItemsButtonPressed(): boolean;
     get _inputDom(): HTMLInputElement;
     _inputLiveChange(e: InputEvent): void;

@@ -1,11 +1,20 @@
 import TableRowActionBase from "./TableRowActionBase.js";
 /**
  * @class
- * The `TableRowAction` class defines a row action for table rows.
+ *
+ * ### Overview
+ *
+ * The `ui5-table-row-action` component defines an action for table rows.
+ *
+ * ### ES6 Module Import
+ *
+ * `import "@ui5/webcomponents/dist/TableRowAction.js";`
+ *
  * @constructor
  * @extends TableRowActionBase
  * @since 2.7.0
  * @public
+ * @experimental
  */
 declare class TableRowAction extends TableRowActionBase {
     /**
@@ -29,13 +38,6 @@ declare class TableRowAction extends TableRowActionBase {
      * @public
      */
     text: string;
-    /**
-     * Defines the disabled state of the row action.
-     *
-     * @default false
-     * @public
-     */
-    disabled: boolean;
     getRenderInfo(): {
         text: string;
         icon: string;

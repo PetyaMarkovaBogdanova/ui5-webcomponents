@@ -1,5 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { ListSelectionChangeEventDetail } from "@ui5/webcomponents/dist/List.js";
+import type { ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import Popover from "@ui5/webcomponents/dist/Popover.js";
 import type Input from "@ui5/webcomponents/dist/Input.js";
@@ -9,6 +9,7 @@ import type { ClassMap, AccessibilityAttributes, AriaRole } from "@ui5/webcompon
 import type ListItemBase from "@ui5/webcomponents/dist/ListItemBase.js";
 import type PopoverHorizontalAlign from "@ui5/webcomponents/dist/types/PopoverHorizontalAlign.js";
 import type ShellBarItem from "./ShellBarItem.js";
+import type { ShellBarItemAccessibilityAttributes } from "./ShellBarItem.js";
 type ShellBarLogoAccessibilityAttributes = {
     role?: Extract<AriaRole, "button" | "link">;
     name?: string;
@@ -62,6 +63,7 @@ interface IShelBarItemInfo extends IShellBarHidableItem {
     order?: number;
     profile?: boolean;
     tooltip?: string;
+    accessibilityAttributes?: ShellBarItemAccessibilityAttributes;
 }
 interface IShellBarContentItem extends IShellBarHidableItem {
     hideOrder: number;
@@ -283,6 +285,7 @@ declare class ShellBar extends UI5Element {
     _observableContent: Array<HTMLElement>;
     _isAnimating: boolean;
     _autoRestoreSearchField: boolean;
+    _handleAnimationEndRef: () => void;
     _headerPress: () => void;
     static get FIORI_3_BREAKPOINTS(): number[];
     static get FIORI_3_BREAKPOINTS_MAP(): Record<string, string>;
@@ -295,7 +298,7 @@ declare class ShellBar extends UI5Element {
     _getNavigableContent(): HTMLElement[];
     _getRightChildItems(): HTMLElement[];
     _getVisibleAndInteractiveItems(): HTMLElement[];
-    _menuItemPress(e: CustomEvent<ListSelectionChangeEventDetail>): void;
+    _menuItemPress(e: CustomEvent<ListItemClickEventDetail>): void;
     _logoPress(): void;
     _menuPopoverBeforeOpen(): void;
     _menuPopoverAfterClose(): void;
@@ -326,6 +329,8 @@ declare class ShellBar extends UI5Element {
     _toggleActionPopover(): void;
     onEnterDOM(): void;
     onExitDOM(): void;
+    _handleAnimationEnd(): void;
+    _attachAnimationEndHandlers(): void;
     _handleSearchIconPress(): void;
     _handleActionListClick(): Promise<void>;
     _handleCustomActionPress(e: MouseEvent): void;
@@ -378,15 +383,19 @@ declare class ShellBar extends UI5Element {
     _updateContentInfo(newContentInfo: Array<IShellBarContentItem>): void;
     _fireContentItemVisibilityChangeEvent(): void;
     _updateOverflowNotifications(): void;
-    _observeContentItems(): false | undefined;
+    _observeContentItems(): void;
     _getOverflowPopover(): Popover;
     _getMenuPopover(): Popover;
     isIconHidden(name: string): boolean;
+    get hasMatchingContent(): boolean;
     get contentItemsSorted(): UI5Element[];
     get contentItemsWrappersSorted(): HTMLElement[];
     get autoSearchField(): boolean;
-    get showStartSeparatorInWrapper(): boolean;
-    get showEndSeparatorInWrapper(): boolean;
+    get startContentInfoSorted(): IShellBarContentItem[];
+    get endContentInfoSorted(): IShellBarContentItem[];
+    get showStartSeparator(): boolean;
+    get showEndSeparator(): boolean;
+    shouldIncludeSeparator(itemInfo: IShellBarContentItem | undefined, contentInfo: IShellBarContentItem[]): boolean;
     get classes(): ClassMap;
     get styles(): {
         searchField: {

@@ -104,6 +104,7 @@ declare class Slider extends SliderBase implements IFormInputElement {
      * @private
      */
     _handleUp(e: TouchEvent | MouseEvent): void;
+    _onkeyup(e: KeyboardEvent): void;
     _onInputFocusOut(e: FocusEvent): void;
     _updateInputValue(): void;
     /** Determines if the press is over the handle

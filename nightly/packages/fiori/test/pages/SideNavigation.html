@@ -9,7 +9,7 @@
 			"rtl": false
 		}
 	</script>
-  <script type="module" crossorigin src="/ui5-webcomponents/nightly/assets/bundle.esm-qdxSuCmB.js"></script>
+  <script type="module" crossorigin src="/ui5-webcomponents/nightly/assets/bundle.esm-VTKwC-YT.js"></script>
   <link rel="stylesheet" crossorigin href="/ui5-webcomponents/nightly/assets/SideNavigation-DIVfNUAT.css">
 </head>
 
@@ -23,7 +23,7 @@
 	</ui5-shellbar>
 
 	<div class="content">
-		<ui5-side-navigation id="sn1">
+		<ui5-side-navigation id="sn1" accessible-name="Main">
 
 			<!-- Header -->
 			<div slot="header" class="header">
@@ -63,6 +63,7 @@
 			<ui5-side-navigation-item design="Action" text="Quick Create" icon="write-new" unselectable>
 				<ui5-side-navigation-sub-item design="Action" text="Quick Create" unselectable></ui5-side-navigation-sub-item>
 			</ui5-side-navigation-item>
+			<ui5-side-navigation-item design="Action" text="Quick Create" icon="write-new" disabled unselectable></ui5-side-navigation-item>
 			<ui5-side-navigation-item design="Action" href="https://sap.com" target="_blank" text="Quick Create" icon="write-new" unselectable></ui5-side-navigation-item>
 
 			<!-- Fixed Items -->
@@ -94,6 +95,10 @@
 				<ui5-label show-colon>ensure overflow</ui5-label>
 				<ui5-checkbox id="ensure-overflow"></ui5-checkbox>
 			</div>
+			<div class="form-field">
+				<ui5-label show-colon>Compact Density</ui5-label>
+				<ui5-checkbox id="compact-density"></ui5-checkbox>
+			</div>
 		</div>
 	</div>
 
@@ -122,6 +127,10 @@
 
 		document.getElementById("ensure-overflow").addEventListener("ui5-change", function (event) {
 			document.getElementById("sn1").classList.toggle("ensure-overflow", event.target.checked);
+		});
+
+		document.getElementById("compact-density").addEventListener("ui5-change", function (event) {
+			document.body.classList.toggle("sapUiSizeCompact", event.target.checked);
 		});
 
 		sideNavigation.addEventListener("ui5-selection-change", function (event) {

@@ -1,16 +1,18 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import TableHeaderRow from "./TableHeaderRow.js";
-import TableRow from "./TableRow.js";
 import TableNavigation from "./TableNavigation.js";
 import TableOverflowMode from "./types/TableOverflowMode.js";
 import TableDragAndDrop from "./TableDragAndDrop.js";
-import DropIndicator from "./DropIndicator.js";
+import type DropIndicator from "./DropIndicator.js";
+import type TableHeaderRow from "./TableHeaderRow.js";
+import type TableRow from "./TableRow.js";
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type { MoveEventDetail } from "@ui5/webcomponents-base/dist/util/dragAndDrop/DragRegistry.js";
 import type TableHeaderCell from "./TableHeaderCell.js";
 import type TableSelection from "./TableSelection.js";
+import type TableSelectionBase from "./TableSelectionBase.js";
 import type TableRowActionBase from "./TableRowActionBase.js";
 import type TableVirtualizer from "./TableVirtualizer.js";
+import type TableGrowing from "./TableGrowing.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 /**
  * Interface for components that can be slotted inside the `features` slot of the `ui5-table`.
@@ -22,11 +24,17 @@ interface ITableFeature extends UI5Element {
     readonly identifier: string;
     /**
      * Called when the table is activated.
-     * @param table table instance
+     * @param table Table instance
      */
     onTableActivate?(table: Table): void;
     /**
-     * Called when the table finished rendering.
+     * Called every time before the table renders.
+     * @param table Table instance
+     */
+    onTableBeforeRendering?(table?: Table): void;
+    /**
+     * Called every time after the table renders.
+     * @param table Table instance
      */
     onTableAfterRendering?(table?: Table): void;
 }
@@ -211,7 +219,6 @@ declare class Table extends UI5Element {
      * Available options are:
      *
      * <code>Scroll</code> - Columns are shown as regular columns and horizontal scrolling is enabled.
-     *
      * <code>Popin</code> - Columns are shown as pop-ins instead of regular columns.
      *
      * @default "Scroll"
@@ -222,6 +229,7 @@ declare class Table extends UI5Element {
      * Defines if the loading indicator should be shown.
      *
      * **Note:** When the component is loading, it is not interactive.
+     *
      * @default false
      * @public
      */
@@ -234,10 +242,6 @@ declare class Table extends UI5Element {
      */
     loadingDelay: number;
     /**
-     * Defines the sticky top offset of the table, if other sticky elements outside of the table exist.
-     */
-    stickyTop: string;
-    /**
      * Defines the maximum number of row actions that is displayed, which determines the width of the row action column.
      *
      * **Note:** It is recommended to use a maximum of 3 row actions, as exceeding this limit may take up too much space on smaller screens.
@@ -247,8 +251,19 @@ declare class Table extends UI5Element {
      * @public
      */
     rowActionCount: number;
+    /**
+     * Defines the sticky top offset of the table, if other sticky elements outside of the table exist.
+     */
+    stickyTop: string;
     _invalidate: number;
     _renderNavigated: boolean;
+    dropIndicatorDOM: DropIndicator;
+    _nodataRow?: TableRow;
+    _endRow: TableRow;
+    _tableElement: HTMLElement;
+    _beforeElement: HTMLElement;
+    _afterElement: HTMLElement;
+    _loadingElement: HTMLElement;
     static i18nBundle: I18nBundle;
     _events: string[];
     _onEventBound: (e: Event) => void;
@@ -260,17 +275,20 @@ declare class Table extends UI5Element {
         width: float;
     }>;
     _containerWidth: number;
-    _rowsLength: number;
     constructor();
     onEnterDOM(): void;
     onExitDOM(): void;
     onBeforeRendering(): void;
     onAfterRendering(): void;
-    _getSelection(): TableSelection | undefined;
+    _findFeature<T>(featureName: string): T;
+    _getSelection(): TableSelectionBase | TableSelection | undefined;
     _getVirtualizer(): TableVirtualizer | undefined;
+    _getGrowing(): TableGrowing | undefined;
     _onEvent(e: Event): void;
     _onResize(): void;
     _onfocusin(e: FocusEvent): void;
+    _onGrow(): void;
+    _getPopinOrderedColumns(reverse: boolean): TableHeaderCell[];
     /**
      * Refreshes the popin state of the columns.
      * Syncs the popin state of the columns with the popin state of the header cells.
@@ -278,10 +296,7 @@ declare class Table extends UI5Element {
      * @private
      */
     _refreshPopinState(): void;
-    _onGrow(): void;
-    _getPopinOrderedColumns(reverse: boolean): TableHeaderCell[];
     _setHeaderPopinState(headerCell: TableHeaderCell, inPopin: boolean, popinWidth: number): void;
-    _isFeature(feature: any): boolean;
     _isGrowingFeature(feature: any): boolean;
     _onRowClick(row: TableRow): void;
     _onRowActionClick(action: TableRowActionBase): void;
@@ -296,24 +311,13 @@ declare class Table extends UI5Element {
         };
     };
     get _gridTemplateColumns(): string | undefined;
-    get _tableOverflowX(): "auto" | "clip";
-    get _tableOverflowY(): string;
-    get _nodataRow(): TableRow;
-    get _beforeElement(): HTMLElement;
-    get _afterElement(): HTMLElement;
-    get _tableElement(): HTMLElement;
-    get _loadingElement(): HTMLElement;
+    get _scrollContainer(): HTMLElement;
+    get _stickyElements(): (TableHeaderRow | TableHeaderCell)[];
     get _effectiveNoDataText(): string;
     get _ariaLabel(): string | undefined;
     get _ariaRowCount(): number | undefined;
     get _ariaMultiSelectable(): boolean | undefined;
-    get _shouldRenderGrowing(): boolean | 0;
-    get _growing(): ITableGrowing;
-    get _stickyElements(): (TableHeaderCell | TableHeaderRow)[];
-    get _scrollContainer(): HTMLElement;
     get isTable(): boolean;
-    get dropIndicatorDOM(): DropIndicator | null;
-    get _hasRowActions(): boolean;
 }
 export default Table;
 export type { ITableFeature, ITableGrowing, TableRowClickEventDetail, TableMoveEventDetail, TableRowActionClickEventDetail, };

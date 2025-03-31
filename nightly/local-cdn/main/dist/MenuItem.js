@@ -73,19 +73,6 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
          */
         this.loadingDelay = 1000;
         /**
-         * Defines the additional accessibility attributes that will be applied to the component.
-         * The following fields are supported:
-         *
-         * - **ariaKeyShortcuts**: Indicated the availability of a keyboard shortcuts defined for the menu item.
-         *
-         * - **role**: Defines the role of the menu item. If not set, menu item will have default role="menuitem".
-         *
-         * @public
-         * @since 2.1.0
-         * @default {}
-         */
-        this.accessibilityAttributes = {};
-        /**
          * Indicates whether any of the element siblings have icon.
          */
         this._siblingsWithIcon = false;
@@ -221,6 +208,9 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
     }
     _afterPopoverClose() {
         this.fireDecoratorEvent("close");
+    }
+    get isMenuItem() {
+        return true;
     }
 };
 __decorate([

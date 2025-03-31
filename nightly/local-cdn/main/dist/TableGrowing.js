@@ -6,15 +6,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var TableGrowing_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import litRender from "@ui5/webcomponents-base/dist/renderer/LitRenderer.js";
-import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
-import property from "@ui5/webcomponents-base/dist/decorators/property.js";
-import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import { isSpace, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { customElement, property, eventStrict, i18n, } from "@ui5/webcomponents-base/dist/decorators.js";
+import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import TableGrowingMode from "./types/TableGrowingMode.js";
-import TableGrowingTemplate from "./generated/templates/TableGrowingTemplate.lit.js";
+import TableGrowingTemplate from "./TableGrowingTemplate.js";
 import TableGrowingCss from "./generated/themes/TableGrowing.css.js";
+import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import { TABLE_MORE, TABLE_MORE_DESCRIPTION, } from "./generated/i18n/i18n-defaults.js";
 // The documentation should be similar to the Table.ts class documentation!
 // Please only use that style where it uses markdown and the documentation is more readable.
@@ -147,10 +144,7 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
         if (!this._table) {
             return;
         }
-        const lastElement = this._table.shadowRoot?.querySelector("#table-end-row");
-        if (lastElement) {
-            this._getIntersectionObserver().observe(lastElement);
-        }
+        this._getIntersectionObserver().observe(this._table._endRow);
     }
     /**
      * Returns the IntersectionObserver instance. If it does not exist, it will be created.
@@ -219,7 +213,7 @@ __decorate([
     property()
 ], TableGrowing.prototype, "growingSubText", void 0);
 __decorate([
-    property({ type: Boolean })
+    property({ type: Boolean, noAttribute: true })
 ], TableGrowing.prototype, "_activeState", void 0);
 __decorate([
     property({ type: Number, noAttribute: true })
@@ -230,7 +224,7 @@ __decorate([
 TableGrowing = TableGrowing_1 = __decorate([
     customElement({
         tag: "ui5-table-growing",
-        renderer: litRender,
+        renderer: jsxRenderer,
         template: TableGrowingTemplate,
         styles: TableGrowingCss,
     })
@@ -240,8 +234,8 @@ TableGrowing = TableGrowing_1 = __decorate([
      * @public
      */
     ,
-    event("load-more", {
-        bubbles: true,
+    eventStrict("load-more", {
+        bubbles: false,
     })
 ], TableGrowing);
 TableGrowing.define();

@@ -6,9 +6,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { customElement, slot, property } from "@ui5/webcomponents-base/dist/decorators.js";
 import TableRowBase from "./TableRowBase.js";
-import TableHeaderRowTemplate from "./generated/templates/TableHeaderRowTemplate.lit.js";
+import TableHeaderRowTemplate from "./TableHeaderRowTemplate.js";
 import TableHeaderRowStyles from "./generated/themes/TableHeaderRow.css.js";
-import TableHeaderCell from "./TableHeaderCell.js";
 import { TABLE_SELECTION, TABLE_ROW_POPIN, TABLE_ROW_ACTIONS, TABLE_COLUMN_HEADER_ROW, } from "./generated/i18n/i18n-defaults.js";
 /**
  * @class
@@ -63,14 +62,8 @@ class TableHeaderRow extends TableRowBase {
     isHeaderRow() {
         return true;
     }
-    get _hasRowActions() {
-        return this._table ? this._table._hasRowActions : false;
-    }
     get _isSelectable() {
         return this._isMultiSelect;
-    }
-    get _isSelected() {
-        return this._tableSelection?.areAllRowsSelected();
     }
     get _i18nSelection() {
         return TableRowBase.i18nBundle.getText(TABLE_SELECTION);
@@ -87,7 +80,7 @@ __decorate([
         type: HTMLElement,
         "default": true,
         invalidateOnChildChange: {
-            properties: ["width", "_popin", "horizontalAlign"],
+            properties: ["width", "_popin", "horizontalAlign", "popinHidden"],
             slots: false,
         },
         individualSlots: true,
@@ -102,7 +95,6 @@ TableHeaderRow = __decorate([
         languageAware: true,
         styles: [TableRowBase.styles, TableHeaderRowStyles],
         template: TableHeaderRowTemplate,
-        dependencies: [...TableRowBase.dependencies, TableHeaderCell],
     })
     /**
      * Example custom event.

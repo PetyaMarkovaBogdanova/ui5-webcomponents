@@ -197,8 +197,8 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
         this.valueStateOpen = false;
         /**
          * Indicates whether the items picker is open.
-         * @private
-         * @since 2.0.0
+         * @public
+         * @since 2.9.0
          */
         this.open = false;
         this._initialRendering = true;
@@ -252,6 +252,9 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
     _focusin(e) {
         this.focused = true;
         this._autocomplete = false;
+        if (!e.relatedTarget || (e.relatedTarget !== this.shadowRoot.querySelector(".ui5-input-clear-icon"))) {
+            this._lastValue = this.value;
+        }
         !isPhone() && e.target.setSelectionRange(0, this.value.length);
     }
     _focusout(e) {
@@ -280,6 +283,7 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
     _afterOpenPopover() {
         this._iconPressed = true;
         this.inner.focus();
+        this.fireDecoratorEvent("open");
     }
     _afterClosePopover() {
         this._iconPressed = false;
@@ -295,6 +299,7 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
             this._selectionPerformed = false;
         }
         this.open = false;
+        this.fireDecoratorEvent("close");
     }
     _toggleRespPopover() {
         if (this.open) {
@@ -703,7 +708,8 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
         }
         const matchingItems = this._startsWithMatchingItems(current);
         if (matchingItems.length) {
-            return matchingItems[0];
+            const exactMatch = matchingItems.find(item => item.text === current);
+            return exactMatch ?? matchingItems[0];
         }
     }
     _applyAtomicValueAndSelection(item, filterValue) {
@@ -1024,7 +1030,7 @@ __decorate([
     property({ type: Boolean, noAttribute: true })
 ], ComboBox.prototype, "valueStateOpen", void 0);
 __decorate([
-    property({ type: Boolean, noAttribute: true })
+    property({ type: Boolean })
 ], ComboBox.prototype, "open", void 0);
 __decorate([
     slot({
@@ -1066,6 +1072,22 @@ ComboBox = ComboBox_1 = __decorate([
     event("change", {
         bubbles: true,
     })
+    /**
+     * Fired when the dropdown is opened.
+     * @since 2.9.0
+     * @public
+     */
+    ,
+    event("open", {
+        bubbles: true,
+    })
+    /**
+     * Fired when the dropdown is closed.
+     * @since 2.9.0
+     * @public
+     */
+    ,
+    event("close")
     /**
      * Fired when typing in input or clear icon is pressed.
      *

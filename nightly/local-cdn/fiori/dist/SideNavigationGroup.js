@@ -9,7 +9,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import { isLeft, isRight, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isLeft, isRight, isMinus, isPlus, } from "@ui5/webcomponents-base/dist/Keys.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import SideNavigationItemBase from "./SideNavigationItemBase.js";
 import SideNavigationGroupTemplate from "./SideNavigationGroupTemplate.js";
@@ -96,11 +96,11 @@ let SideNavigationGroup = SideNavigationGroup_1 = class SideNavigationGroup exte
         return SideNavigationGroup_1.i18nBundle.getText(SIDE_NAVIGATION_GROUP_HEADER_DESC);
     }
     _onkeydown(e) {
-        if (isLeft(e)) {
+        if (isLeft(e) || isMinus(e)) {
             this.expanded = false;
             return;
         }
-        if (isRight(e)) {
+        if (isRight(e) || isPlus(e)) {
             this.expanded = true;
         }
     }

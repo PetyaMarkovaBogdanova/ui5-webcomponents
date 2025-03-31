@@ -82,8 +82,21 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
          * @default false
          */
         this.collapsed = false;
+        /**
+         * Defines whether the control should have container styling or not.
+         * **Note** In order to achieve the best user experience, it is recommended to use "Plain" value if SideNavigation is placed inside a responsive popover.
+         *
+         * @public
+         * @default "Decorated"
+         */
+        this.design = "Decorated";
         this.inPopover = false;
         this._menuPopoverItems = [];
+        /**
+         * Defines if the component is rendered on a mobile device.
+         * @private
+         */
+        this.isPhone = isPhone();
         this._isOverflow = false;
         /**
          * @private
@@ -122,7 +135,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
             selectedItem.focus();
         }
         else {
-            tree.items[0]?.focus();
+            tree.items[0]?.applyInitialFocusInPopover();
         }
     }
     _onBeforePopoverOpen() {
@@ -156,6 +169,9 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
     }
     handlePopupItemClick(e) {
         const associatedItem = e.target.associatedItem;
+        if (isInstanceOfSideNavigationItem(associatedItem) && associatedItem.unselectable) {
+            return;
+        }
         e.stopPropagation();
         associatedItem.fireEvent("click");
         if (associatedItem.selected) {
@@ -442,6 +458,12 @@ __decorate([
     property({ type: Boolean })
 ], SideNavigation.prototype, "collapsed", void 0);
 __decorate([
+    property()
+], SideNavigation.prototype, "design", void 0);
+__decorate([
+    property()
+], SideNavigation.prototype, "accessibleName", void 0);
+__decorate([
     slot({ type: HTMLElement, invalidateOnChildChange: true, "default": true })
 ], SideNavigation.prototype, "items", void 0);
 __decorate([
@@ -459,6 +481,9 @@ __decorate([
 __decorate([
     property({ type: Object })
 ], SideNavigation.prototype, "_menuPopoverItems", void 0);
+__decorate([
+    property({ type: Boolean })
+], SideNavigation.prototype, "isPhone", void 0);
 __decorate([
     property({ type: Boolean })
 ], SideNavigation.prototype, "isTouchDevice", void 0);

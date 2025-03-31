@@ -5,13 +5,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { customElement, property, slot } from "@ui5/webcomponents-base/dist/decorators.js";
+import { toggleAttribute } from "./TableUtils.js";
 import TableCellBase from "./TableCellBase.js";
-import TableHeaderCellTemplate from "./generated/templates/TableHeaderCellTemplate.lit.js";
+import TableHeaderCellTemplate from "./TableHeaderCellTemplate.js";
 import TableHeaderCellStyles from "./generated/themes/TableHeaderCell.css.js";
-import Icon from "./Icon.js";
 import SortOrder from "@ui5/webcomponents-base/dist/types/SortOrder.js";
-import "@ui5/webcomponents-icons/dist/sort-ascending.js";
-import "@ui5/webcomponents-icons/dist/sort-descending.js";
 /**
  * @class
  *
@@ -80,6 +78,17 @@ let TableHeaderCell = class TableHeaderCell extends TableCellBase {
          * @public
          */
         this.sortIndicator = "None";
+        /**
+         * Defines if the column is hidden in the popin.
+         *
+         * **Note:** Please be aware that hiding the column in the popin might lead to accessibility issues as
+         * users might not be able to access the content of the column on small screens.
+         *
+         * @default false
+         * @since 2.8.0
+         * @public
+         */
+        this.popinHidden = false;
         this._popin = false;
         this.ariaRole = "columnheader";
         this._popinWidth = 0;
@@ -96,17 +105,7 @@ let TableHeaderCell = class TableHeaderCell extends TableCellBase {
             // overwrite setting of TableCellBase so that the TableHeaderCell always uses the slot variable
             this.style.justifyContent = `var(--horizontal-align-${this._individualSlot})`;
         }
-        if (this.sortIndicator !== SortOrder.None) {
-            this.setAttribute("aria-sort", this.sortIndicator.toLowerCase());
-        }
-        else if (this.hasAttribute("aria-sort")) {
-            this.removeAttribute("aria-sort");
-        }
-    }
-    get _sortIcon() {
-        if (this.sortIndicator !== SortOrder.None) {
-            return `sort-${this.sortIndicator.toLowerCase()}`;
-        }
+        toggleAttribute(this, "aria-sort", this.sortIndicator !== SortOrder.None, this.sortIndicator.toLowerCase());
     }
 };
 __decorate([
@@ -128,6 +127,9 @@ __decorate([
     property()
 ], TableHeaderCell.prototype, "sortIndicator", void 0);
 __decorate([
+    property({ type: Boolean })
+], TableHeaderCell.prototype, "popinHidden", void 0);
+__decorate([
     slot()
 ], TableHeaderCell.prototype, "action", void 0);
 __decorate([
@@ -138,7 +140,6 @@ TableHeaderCell = __decorate([
         tag: "ui5-table-header-cell",
         styles: [TableCellBase.styles, TableHeaderCellStyles],
         template: TableHeaderCellTemplate,
-        dependencies: [Icon],
     })
 ], TableHeaderCell);
 TableHeaderCell.define();

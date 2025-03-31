@@ -142,7 +142,7 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         if (isDesktop()) {
             // respect mouseover only on desktop
             const item = e.target;
-            if (item.hasAttribute("ui5-menu-item")) {
+            if (this._isInstanceOfMenuItem(item)) {
                 item.focus();
                 // Opens submenu with 300ms delay
                 this._startOpenTimeout(item);
@@ -189,8 +189,8 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         const parentElement = item.parentElement;
         const shouldItemNavigation = isUp(e) || isDown(e);
         const shouldOpenMenu = this.isRtl ? isLeft(e) : isRight(e);
-        const shouldCloseMenu = !shouldItemNavigation && !shouldOpenMenu && parentElement.hasAttribute("ui5-menu-item");
-        if (item.hasAttribute("ui5-menu-item")) {
+        const shouldCloseMenu = !shouldItemNavigation && !shouldOpenMenu && this._isInstanceOfMenuItem(parentElement);
+        if (this._isInstanceOfMenuItem(item)) {
             if (isEnter(e) || isTabNextPrevious) {
                 e.preventDefault();
             }
@@ -241,6 +241,9 @@ let Menu = Menu_1 = class Menu extends UI5Element {
     _afterPopoverClose() {
         this.open = false;
         this.fireDecoratorEvent("close");
+    }
+    _isInstanceOfMenuItem(object) {
+        return "isMenuItem" in object;
     }
 };
 __decorate([

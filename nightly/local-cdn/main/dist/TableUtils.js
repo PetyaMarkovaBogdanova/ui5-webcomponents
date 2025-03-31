@@ -2,7 +2,7 @@ const isInstanceOfTable = (obj) => {
     return !!obj && "isTable" in obj && !!obj.isTable;
 };
 const isSelectionCheckbox = (e) => {
-    return e.composedPath().some((el) => el.hasAttribute?.("ui5-table-selection-component"));
+    return e.composedPath().some((el) => el.hasAttribute?.("data-ui5-table-selection-component"));
 };
 const isHeaderSelector = (e) => {
     return isSelectionCheckbox(e) && e.composedPath().some((el) => el instanceof HTMLElement && el.hasAttribute("ui5-table-header-row"));
@@ -70,5 +70,18 @@ const throttle = (callback) => {
         });
     };
 };
-export { isInstanceOfTable, isSelectionCheckbox, isHeaderSelector, findRowInPath, findVerticalScrollContainer, scrollElementIntoView, isFeature, throttle, };
+const toggleAttribute = (element, attribute, condition, value) => {
+    if (condition) {
+        if (value === undefined) {
+            element.toggleAttribute(attribute, true);
+        }
+        else {
+            element.setAttribute(attribute, value);
+        }
+    }
+    else if (element.hasAttribute(attribute)) {
+        element.removeAttribute(attribute);
+    }
+};
+export { isInstanceOfTable, isSelectionCheckbox, isHeaderSelector, findRowInPath, findVerticalScrollContainer, scrollElementIntoView, isFeature, throttle, toggleAttribute, };
 //# sourceMappingURL=TableUtils.js.map

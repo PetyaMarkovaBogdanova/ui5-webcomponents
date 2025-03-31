@@ -140,6 +140,7 @@ declare class Menu extends UI5Element {
     _afterPopoverOpen(): void;
     _beforePopoverClose(e: CustomEvent): void;
     _afterPopoverClose(): void;
+    _isInstanceOfMenuItem(object: any): object is MenuItem;
 }
 export default Menu;
 export type { MenuItemClickEventDetail, MenuBeforeCloseEventDetail, MenuBeforeOpenEventDetail, IMenuItem, };

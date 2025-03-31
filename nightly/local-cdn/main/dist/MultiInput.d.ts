@@ -110,7 +110,8 @@ declare class MultiInput extends Input implements IFormInputElement {
         role: import("@ui5/webcomponents-base/dist/thirdparty/preact/jsx.js").JSXInternal.AriaRole | undefined;
         ariaControls: string | undefined;
         ariaExpanded: boolean | undefined;
-        ariaDescription: string | undefined;
+        ariaDescription: string;
+        accessibleDescription: string | undefined;
         ariaLabel: string | undefined;
     };
     get valueHelpLabel(): string;

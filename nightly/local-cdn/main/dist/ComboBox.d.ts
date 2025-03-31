@@ -80,6 +80,8 @@ declare class ComboBox extends UI5Element implements IFormInputElement {
     eventDetails: {
         "change": void;
         "input": void;
+        "open": void;
+        "close": void;
         "selection-change": ComboBoxSelectionChangeEventDetail;
     };
     /**
@@ -207,8 +209,8 @@ declare class ComboBox extends UI5Element implements IFormInputElement {
     valueStateOpen: boolean;
     /**
      * Indicates whether the items picker is open.
-     * @private
-     * @since 2.0.0
+     * @public
+     * @since 2.9.0
      */
     open: boolean;
     /**

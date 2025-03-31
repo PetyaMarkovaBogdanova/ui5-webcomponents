@@ -1,8 +1,8 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import TableGrowingMode from "./types/TableGrowingMode.js";
 import type Table from "./Table.js";
 import type { ITableGrowing } from "./Table.js";
-import TableGrowingMode from "./types/TableGrowingMode.js";
+import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 /**
  * @class
  *

@@ -16,9 +16,11 @@ import "@ui5/webcomponents-icons/dist/ai.js";
  * @extends TableHeaderCellActionBase
  * @since 2.8.0
  * @public
+ * @experimental
  */
 declare class TableHeaderCellActionAI extends TableHeaderCellActionBase {
     static i18nBundle: I18nBundle;
+    onAfterRendering(): void;
     getRenderInfo(): {
         icon: string;
         tooltip: string;

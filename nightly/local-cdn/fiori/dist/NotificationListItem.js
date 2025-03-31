@@ -5,7 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var NotificationListItem_1;
-import { isSpace, isDelete, isF10Shift, isEnterShift, isUp, isDown, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isSpace, isDelete, isF10Shift, isEnterShift, } from "@ui5/webcomponents-base/dist/Keys.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import query from "@ui5/webcomponents-base/dist/decorators/query.js";
@@ -306,37 +306,6 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
         if (isF10Shift(e)) {
             e.preventDefault();
         }
-        this.focusSameItemOnNextRow(e);
-    }
-    focusSameItemOnNextRow(e) {
-        const target = e.target;
-        if (!target || target.hasAttribute("ui5-menu-item")) {
-            return;
-        }
-        const isFocusWithin = this.matches(":focus-within");
-        if (!isFocusWithin || (!isUp(e) && !isDown(e))) {
-            return;
-        }
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        const list = this.closest("[ui5-notification-list]");
-        if (!list) {
-            return;
-        }
-        const navItems = list.getEnabledItems();
-        // @ts-expect-error TOFIX strictEvents
-        const index = navItems.indexOf(this) + (isUp(e) ? -1 : 1);
-        const nextItem = navItems[index];
-        if (!nextItem) {
-            return;
-        }
-        const sameItemOnNextRow = nextItem.getHeaderDomRef().querySelector(`.${target.className}`);
-        if (sameItemOnNextRow && sameItemOnNextRow.offsetParent) {
-            sameItemOnNextRow.focus();
-        }
-        else {
-            nextItem.focus();
-        }
     }
     _onkeyup(e) {
         super._onkeyup(e);
@@ -386,7 +355,6 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
         // NotificationListItem will never be assigned to a variable of type ListItemBase
         // typescipt complains here, if that is the case, the parameter to the _press event handler could be a ListItemBase item,
         // but this is never the case, all components are used by their class and never assigned to a variable with a type of ListItemBase
-        // @ts-expect-error
         this.fireDecoratorEvent("_press", { item: this });
     }
     onResize() {

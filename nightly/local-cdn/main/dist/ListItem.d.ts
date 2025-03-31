@@ -176,6 +176,7 @@ declare abstract class ListItem extends ListItemBase {
     get deleteText(): string;
     get hasDeleteButtonSlot(): boolean;
     get _accessibleNameRef(): string;
+    get ariaLabelledByText(): string;
     get _accInfo(): AccInfo;
     get _hasHighlightColor(): boolean;
     get hasConfigurableMode(): boolean;

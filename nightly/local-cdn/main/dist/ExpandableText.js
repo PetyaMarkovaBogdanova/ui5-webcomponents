@@ -124,13 +124,6 @@ let ExpandableText = ExpandableText_1 = class ExpandableText extends UI5Element 
     _handleToggleClick() {
         this._expanded = !this._expanded;
     }
-    _handleToggleMousedown(e) {
-        if (this.shadowRoot.querySelector("[ui5-responsive-popover]")?.open) {
-            // Workaround for PopoverRegistry handler that closes the popover on mousedown,
-            //  resulting in "click" event with wrong _expanded state
-            e.stopPropagation();
-        }
-    }
     _handleCloseButtonClick(e) {
         this._expanded = false;
         e.stopPropagation();

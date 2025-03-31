@@ -631,6 +631,9 @@ __decorate([
 ], Select.prototype, "disabled", void 0);
 __decorate([
     property()
+], Select.prototype, "icon", void 0);
+__decorate([
+    property()
 ], Select.prototype, "name", void 0);
 __decorate([
     property()
@@ -647,6 +650,9 @@ __decorate([
 __decorate([
     property()
 ], Select.prototype, "accessibleNameRef", void 0);
+__decorate([
+    property()
+], Select.prototype, "tooltip", void 0);
 __decorate([
     property({ type: Boolean, noAttribute: true })
 ], Select.prototype, "_iconPressed", void 0);

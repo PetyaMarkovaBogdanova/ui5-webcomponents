@@ -175,7 +175,7 @@ let ColorPicker = ColorPicker_1 = class ColorPicker extends UI5Element {
         this._changeSelectedColor(e.offsetX, e.offsetY);
     }
     _handleAlphaInput(e) {
-        const aphaInputValue = e.target.value;
+        const aphaInputValue = String(e.currentTarget.value);
         this._alpha = parseFloat(aphaInputValue);
         if (Number.isNaN(this._alpha)) {
             this._alpha = 1;

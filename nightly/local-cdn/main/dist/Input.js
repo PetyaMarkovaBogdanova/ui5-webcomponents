@@ -20,7 +20,7 @@ import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import { isUp, isDown, isSpace, isEnter, isBackSpace, isDelete, isEscape, isTabNext, isPageUp, isPageDown, isHome, isEnd, } from "@ui5/webcomponents-base/dist/Keys.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { submitForm } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
-import { getAssociatedLabelForTexts, getAllAccessibleNameRefTexts, registerUI5Element, deregisterUI5Element, } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
+import { getAssociatedLabelForTexts, getAllAccessibleNameRefTexts, registerUI5Element, deregisterUI5Element, getEffectiveAriaDescriptionText, getAllAccessibleDescriptionRefTexts, } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import { getCaretPosition, setCaretPosition } from "@ui5/webcomponents-base/dist/util/Caret.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import InputType from "./types/InputType.js";
@@ -353,6 +353,11 @@ let Input = Input_1 = class Input extends UI5Element {
             return this._handleTab();
         }
         if (isEnter(e)) {
+            const isValueUnchanged = this.previousValue === this.getInputDOMRefSync().value;
+            this._enterKeyDown = true;
+            if (isValueUnchanged && this._internals.form) {
+                submitForm(this);
+            }
             return this._handleEnter(e);
         }
         if (isPageUp(e)) {
@@ -373,7 +378,6 @@ let Input = Input_1 = class Input extends UI5Element {
         if (this.showSuggestions) {
             this._clearPopoverFocusAndSelection();
         }
-        this._keyDown = true;
         this._isKeyNavigation = false;
     }
     _onkeyup(e) {
@@ -382,7 +386,7 @@ let Input = Input_1 = class Input extends UI5Element {
         if (isDelete(e)) {
             this.value = e.target.value;
         }
-        this._keyDown = false;
+        this._enterKeyDown = false;
     }
     get currentItemIndex() {
         const allItems = this.Suggestions?._getItems();
@@ -431,9 +435,6 @@ let Input = Input_1 = class Input extends UI5Element {
         }
         if (!suggestionItemPressed) {
             this.lastConfirmedValue = this.value;
-            if (this._internals.form) {
-                submitForm(this);
-            }
             return;
         }
         this.focused = true;
@@ -470,6 +471,11 @@ let Input = Input_1 = class Input extends UI5Element {
         const innerInput = this.getInputDOMRefSync();
         const isAutoCompleted = innerInput.selectionEnd - innerInput.selectionStart > 0;
         this.isTyping = false;
+        if (this.value !== this.previousValue && this.value !== this.lastConfirmedValue && !this.open) {
+            this.value = this.lastConfirmedValue ? this.lastConfirmedValue : this.previousValue;
+            this.fireDecoratorEvent(INPUT_EVENTS.INPUT);
+            return;
+        }
         if (!isOpen) {
             this.value = this.lastConfirmedValue ? this.lastConfirmedValue : this.previousValue;
             return;
@@ -557,6 +563,9 @@ let Input = Input_1 = class Input extends UI5Element {
             }
             else {
                 fireChange();
+                if (this._enterKeyDown && this._internals.form) {
+                    submitForm(this);
+                }
             }
         }
     }
@@ -687,6 +696,7 @@ let Input = Input_1 = class Input extends UI5Element {
     _updateAssociatedLabelsTexts() {
         this._associatedLabelsTexts = getAssociatedLabelForTexts(this);
         this._accessibleLabelsRefTexts = getAllAccessibleNameRefTexts(this);
+        this._associatedDescriptionRefTexts = getAllAccessibleDescriptionRefTexts(this);
     }
     _closePicker() {
         this.open = false;
@@ -706,6 +716,7 @@ let Input = Input_1 = class Input extends UI5Element {
             this.focused = false;
         }
         if (this._changeToBeFired && !this._isChangeTriggeredBySuggestion) {
+            this.previousValue = this.value;
             this.fireDecoratorEvent(INPUT_EVENTS.CHANGE);
         }
         else {
@@ -943,20 +954,42 @@ let Input = Input_1 = class Input extends UI5Element {
     get valueStateTextId() {
         return this.hasValueState ? `valueStateDesc` : "";
     }
+    get _accInfoAriaDescription() {
+        return (this._inputAccInfo && this._inputAccInfo.ariaDescription) || "";
+    }
+    get _accInfoAriaDescriptionId() {
+        const hasAriaDescription = this._accInfoAriaDescription !== "";
+        return hasAriaDescription ? "descr" : "";
+    }
+    get ariaDescriptionText() {
+        return this._associatedDescriptionRefTexts || getEffectiveAriaDescriptionText(this);
+    }
+    get ariaDescriptionTextId() {
+        return this.ariaDescriptionText ? "accessibleDescription" : "";
+    }
+    get ariaDescribedByIds() {
+        return [
+            this.suggestionsTextId,
+            this.valueStateTextId,
+            this._inputAccInfo.ariaDescribedBy,
+            this._accInfoAriaDescriptionId,
+            this.ariaDescriptionTextId,
+        ].filter(Boolean).join(" ");
+    }
     get accInfo() {
         const ariaHasPopupDefault = this.showSuggestions ? "dialog" : undefined;
         const ariaAutoCompleteDefault = this.showSuggestions ? "list" : undefined;
-        const ariaDescribedBy = this._inputAccInfo.ariaDescribedBy ? `${this.suggestionsTextId} ${this.valueStateTextId} ${this._inputAccInfo.ariaDescribedBy}`.trim() : `${this.suggestionsTextId} ${this.valueStateTextId}`.trim();
         return {
             "ariaRoledescription": this._inputAccInfo && (this._inputAccInfo.ariaRoledescription || undefined),
-            "ariaDescribedBy": ariaDescribedBy || undefined,
+            "ariaDescribedBy": this.ariaDescribedByIds || undefined,
             "ariaInvalid": this.valueState === ValueState.Negative ? true : undefined,
             "ariaHasPopup": this._inputAccInfo.ariaHasPopup ? this._inputAccInfo.ariaHasPopup : ariaHasPopupDefault,
             "ariaAutoComplete": this._inputAccInfo.ariaAutoComplete ? this._inputAccInfo.ariaAutoComplete : ariaAutoCompleteDefault,
             "role": this._inputAccInfo && this._inputAccInfo.role,
             "ariaControls": this._inputAccInfo && this._inputAccInfo.ariaControls,
             "ariaExpanded": this._inputAccInfo && this._inputAccInfo.ariaExpanded,
-            "ariaDescription": this._inputAccInfo && this._inputAccInfo.ariaDescription,
+            "ariaDescription": this._accInfoAriaDescription,
+            "accessibleDescription": this.ariaDescriptionText,
             "ariaLabel": (this._inputAccInfo && this._inputAccInfo.ariaLabel) || this._accessibleLabelsRefTexts || this.accessibleName || this._associatedLabelsTexts || undefined,
         };
     }
@@ -1183,6 +1216,12 @@ __decorate([
     property()
 ], Input.prototype, "accessibleNameRef", void 0);
 __decorate([
+    property()
+], Input.prototype, "accessibleDescription", void 0);
+__decorate([
+    property()
+], Input.prototype, "accessibleDescriptionRef", void 0);
+__decorate([
     property({ type: Boolean })
 ], Input.prototype, "showClearIcon", void 0);
 __decorate([
@@ -1221,6 +1260,9 @@ __decorate([
 __decorate([
     property({ noAttribute: true })
 ], Input.prototype, "_accessibleLabelsRefTexts", void 0);
+__decorate([
+    property({ noAttribute: true })
+], Input.prototype, "_associatedDescriptionRefTexts", void 0);
 __decorate([
     property({ type: Object })
 ], Input.prototype, "Suggestions", void 0);
@@ -1327,9 +1369,7 @@ Input = Input_1 = __decorate([
      * @since 2.0.0
      */
     ,
-    event("close", {
-        bubbles: true,
-    })
+    event("close")
 ], Input);
 Input.define();
 export default Input;

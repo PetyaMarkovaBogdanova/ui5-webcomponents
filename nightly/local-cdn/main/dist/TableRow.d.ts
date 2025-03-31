@@ -1,5 +1,5 @@
 import TableRowBase from "./TableRowBase.js";
-import TableCell from "./TableCell.js";
+import type TableCell from "./TableCell.js";
 import type TableRowActionBase from "./TableRowActionBase.js";
 import "@ui5/webcomponents-icons/dist/overflow.js";
 /**
@@ -40,18 +40,20 @@ declare class TableRow extends TableRowBase {
     /**
      * Unique identifier of the row.
      *
-     * @default ""
+     * **Note:** For selection features to work properly, this property is mandatory, and its value must not contain spaces.
+     *
+     * @default undefined
      * @public
      */
-    rowKey: string;
+    rowKey?: string;
     /**
-     * Defines the position of the row respect to the total number of rows within the table when the `ui5-table-virtualizer` feature is used.
+     * Defines the position of the row related to the total number of rows within the table when the `ui5-table-virtualizer` feature is used.
      *
-     * @default -1
+     * @default undefined
      * @since 2.5.0
      * @public
      */
-    position: number;
+    position?: number;
     /**
      * Defines the interactive state of the row.
      *
@@ -74,16 +76,14 @@ declare class TableRow extends TableRowBase {
      * @public
      */
     movable: boolean;
-    _renderNavigated: boolean;
     onBeforeRendering(): void;
     focus(focusOptions?: FocusOptions | undefined): Promise<void>;
     _onkeydown(e: KeyboardEvent, eventOrigin: HTMLElement): void;
     _onclick(): void;
     _onkeyup(): void;
     _onfocusout(): void;
-    _onOverflowButtonClick(e: PointerEvent): void;
+    _onOverflowButtonClick(e: MouseEvent): void;
     get _isInteractive(): boolean;
-    get _hasRowActions(): boolean;
     get _hasOverflowActions(): boolean;
     get _flexibleActions(): TableRowActionBase[];
     get _fixedActions(): TableRowActionBase[];

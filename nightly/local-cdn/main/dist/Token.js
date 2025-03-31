@@ -97,6 +97,12 @@ let Token = Token_1 = class Token extends UI5Element {
         this.toBeDeleted = true;
         this.fireDecoratorEvent("delete");
     }
+    _onmousedown(e) {
+        const target = e.currentTarget;
+        if (target === this.shadowRoot?.querySelector("[ui5-icon]")) {
+            this.toBeDeleted = true;
+        }
+    }
     _keydown(e) {
         const isBackSpacePressed = isBackSpace(e);
         const isDeletePressed = isDelete(e);

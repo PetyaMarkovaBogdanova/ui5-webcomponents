@@ -108,12 +108,6 @@ let Popover = Popover_1 = class Popover extends Popup {
          */
         this.allowTargetOverlap = false;
         /**
-         * Defines whether the content is scrollable.
-         * @default false
-         * @private
-         */
-        this.disableScrolling = false;
-        /**
          * Sets the X translation of the arrow
          * @private
          */
@@ -168,14 +162,17 @@ let Popover = Popover_1 = class Popover extends Popup {
     }
     isOpenerClicked(e) {
         const target = e.target;
-        if (target === this._opener) {
+        const opener = this.getOpenerHTMLElement(this.opener);
+        if (!opener) {
+            return false;
+        }
+        if (target === opener) {
             return true;
         }
-        const ui5ElementTarget = target;
-        if (ui5ElementTarget.getFocusDomRef && ui5ElementTarget.getFocusDomRef() === this._opener) {
+        if (this._isUI5AbstractElement(target) && target.getFocusDomRef() === opener) {
             return true;
         }
-        return e.composedPath().indexOf(this._opener) > -1;
+        return e.composedPath().indexOf(opener) > -1;
     }
     /**
      * Override for the _addOpenedPopup hook, which would otherwise just call addOpenedPopup(this)
@@ -224,7 +221,7 @@ let Popover = Popover_1 = class Popover extends Popup {
         let overflowsBottom = false;
         let overflowsTop = false;
         if (closedPopupParent instanceof Popover_1) {
-            const contentRect = closedPopupParent.contentDOM.getBoundingClientRect();
+            const contentRect = closedPopupParent.getBoundingClientRect();
             overflowsBottom = openerRect.top > (contentRect.top + contentRect.height);
             overflowsTop = (openerRect.top + openerRect.height) < contentRect.top;
         }
@@ -636,9 +633,6 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], Popover.prototype, "allowTargetOverlap", void 0);
-__decorate([
-    property({ type: Boolean })
-], Popover.prototype, "disableScrolling", void 0);
 __decorate([
     property({ type: Number, noAttribute: true })
 ], Popover.prototype, "arrowTranslateX", void 0);

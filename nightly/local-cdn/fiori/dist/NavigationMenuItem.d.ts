@@ -73,6 +73,6 @@ declare class NavigationMenuItem extends MenuItem {
         tooltip?: string;
     };
     get classes(): ClassMap;
-    get accSideNavigationPopoverHiddenText(): string;
+    get acessibleNameText(): string;
 }
 export default NavigationMenuItem;

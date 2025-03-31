@@ -232,6 +232,20 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      */
     accessibleNameRef?: string;
     /**
+     * Defines the accessible description of the component.
+     * @default undefined
+     * @public
+     * @since 2.9.0
+     */
+    accessibleDescription?: string;
+    /**
+     * Receives id(or many ids) of the elements that describe the input.
+     * @default undefined
+     * @public
+     * @since 2.9.0
+     */
+    accessibleDescriptionRef?: string;
+    /**
      * Defines whether the clear icon of the input will be shown.
      * @default false
      * @public
@@ -280,6 +294,11 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      */
     _accessibleLabelsRefTexts?: string;
     /**
+     * Constantly updated value of texts collected from the associated labels
+     * @private
+     */
+    _associatedDescriptionRefTexts?: string;
+    /**
      * @private
      */
     Suggestions?: InputSuggestions;
@@ -325,7 +344,7 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     _handleResizeBound: ResizeObserverCallback;
     _keepInnerValue: boolean;
     _shouldAutocomplete?: boolean;
-    _keyDown?: boolean;
+    _enterKeyDown?: boolean;
     _isKeyNavigation?: boolean;
     _indexOfSelectedItem: number;
     _selectedText?: string;
@@ -447,6 +466,11 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     get isTypeNumber(): boolean;
     get suggestionsTextId(): "" | "suggestionsText";
     get valueStateTextId(): "" | "valueStateDesc";
+    get _accInfoAriaDescription(): string;
+    get _accInfoAriaDescriptionId(): "" | "descr";
+    get ariaDescriptionText(): string | undefined;
+    get ariaDescriptionTextId(): "" | "accessibleDescription";
+    get ariaDescribedByIds(): string;
     get accInfo(): {
         ariaRoledescription: string | undefined;
         ariaDescribedBy: string | undefined;
@@ -456,7 +480,8 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
         role: import("@ui5/webcomponents-base/dist/thirdparty/preact/jsx.js").JSXInternal.AriaRole | undefined;
         ariaControls: string | undefined;
         ariaExpanded: boolean | undefined;
-        ariaDescription: string | undefined;
+        ariaDescription: string;
+        accessibleDescription: string | undefined;
         ariaLabel: string | undefined;
     };
     get nativeInputAttributes(): {

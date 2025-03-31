@@ -80,6 +80,7 @@ declare class Toolbar extends UI5Element {
      * @since 2.0.0
      */
     design: `${ToolbarDesign}`;
+    popoverOpen: boolean;
     /**
      * Defines the items of the component.
      *
@@ -92,7 +93,6 @@ declare class Toolbar extends UI5Element {
     itemsToOverflow: Array<ToolbarItem>;
     itemsWidth: number;
     minContentWidth: number;
-    popoverOpen: boolean;
     itemsWidthMeasured: boolean;
     ITEMS_WIDTH_MAP: Map<string, number>;
     static get styles(): import("@ui5/webcomponents-base").ComponentStylesData[];
@@ -131,9 +131,12 @@ declare class Toolbar extends UI5Element {
             accessibleName: string;
             tooltip: string;
             accessibilityAttributes: {
-                expanded: boolean | "false" | "true" | undefined;
+                expanded: boolean;
                 hasPopup: "menu";
             };
+        };
+        popover: {
+            accessibleName: string;
         };
     };
     /**

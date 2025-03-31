@@ -62,6 +62,12 @@ let ToolbarButton = class ToolbarButton extends ToolbarItem {
          * @public
          */
         this.accessibilityAttributes = {};
+        /**
+         * Defines if the toolbar button is hidden.
+         * @private
+         * @default false
+         */
+        this.hidden = false;
     }
     get styles() {
         return {
@@ -116,6 +122,9 @@ __decorate([
 __decorate([
     property()
 ], ToolbarButton.prototype, "width", void 0);
+__decorate([
+    property({ type: Boolean })
+], ToolbarButton.prototype, "hidden", void 0);
 ToolbarButton = __decorate([
     customElement({
         tag: "ui5-toolbar-button",
