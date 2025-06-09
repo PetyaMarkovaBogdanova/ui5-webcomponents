@@ -15,7 +15,7 @@ export default function CheckBoxTemplate() {
                 :
                     _jsx("div", { id: `${this._id}-CbBg`, class: "ui5-checkbox-inner", children: this.isCompletelyChecked &&
                             _jsx(Icon, { "aria-hidden": "true", name: accept, class: "ui5-checkbox-icon", part: "icon" }) }), _jsx("input", { id: `${this._id}-CB`, type: "checkbox", checked: this.checked, readonly: this.readonly, disabled: this.disabled, tabindex: -1, "aria-hidden": "true", "data-sap-no-tab-ref": true }), this.text &&
-                _jsx(Label, { id: `${this._id}-label`, part: "label", class: "ui5-checkbox-label", wrappingType: this.wrappingType, children: this.text }), this.hasValueState &&
+                _jsx(Label, { id: `${this._id}-label`, part: "label", class: "ui5-checkbox-label", wrappingType: this.wrappingType, required: this.required, children: this.text }), this.hasValueState &&
                 _jsx("span", { id: `${this._id}-descr`, class: "ui5-hidden-text", children: this.valueStateText })] }));
 }
 function displayOnlyIcon() {

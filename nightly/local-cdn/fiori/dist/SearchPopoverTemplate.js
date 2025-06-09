@@ -1,22 +1,25 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "@ui5/webcomponents-base/jsx-runtime";
 import ResponsivePopover from "@ui5/webcomponents/dist/ResponsivePopover.js";
 import BusyIndicator from "@ui5/webcomponents/dist/BusyIndicator.js";
-import Text from "@ui5/webcomponents/dist/Text.js";
 import List from "@ui5/webcomponents/dist/List.js";
-import Title from "@ui5/webcomponents/dist/Title.js";
 import ListSeparator from "@ui5/webcomponents/dist/types/ListSeparator.js";
-import TitleLevel from "@ui5/webcomponents/dist/types/TitleLevel.js";
 import PopoverHorizontalAlign from "@ui5/webcomponents/dist/types/PopoverHorizontalAlign.js";
 import PopoverPlacement from "@ui5/webcomponents/dist/types/PopoverPlacement.js";
+import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
+import Input from "@ui5/webcomponents/dist/Input.js";
+import SuggestionItem from "@ui5/webcomponents/dist/SuggestionItem.js";
+import InputKeyHint from "@ui5/webcomponents/dist/types/InputKeyHint.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
 import ButtonDesign from "@ui5/webcomponents/dist/types/ButtonDesign.js";
-export default function SearchPopoverTemplate() {
-    return (_jsx(ResponsivePopover, { hideArrow: true, preventFocusRestore: true, preventInitialFocus: true, placement: PopoverPlacement.Bottom, horizontalAlign: PopoverHorizontalAlign.Start, open: this.open, opener: this, onOpen: this._handleOpen, onClose: this._handleClose, class: "ui5-search-popover", children: this._showIllustration ?
-            _jsx("slot", { name: "illustration" })
-            : (this._showLoading ?
-                _jsx(BusyIndicator, { class: "ui5-search-popover-loading-bi", active: true })
-                : (_jsxs(_Fragment, { children: [this._showHeader &&
-                            (_jsxs("header", { slot: "header", class: "ui5-search-popover-header", children: [_jsx(Title, { size: TitleLevel.H6, children: this.headerText }), _jsx(Text, { class: "ui5-search-popover-subheader", children: _jsx("i", { children: this.subheaderText }) })] })), _jsx("main", { children: _jsx(List, { class: "ui5-search-list", separators: ListSeparator.None, onKeyDown: this._onItemKeydown, onItemClick: this._onItemClick, children: _jsx("slot", {}) }) }), this._showFooter &&
-                            _jsx(Button, { slot: "footer", design: ButtonDesign.Transparent, class: "ui5-search-footer-button", onKeyDown: this._onFooterButtonKeyDown, onClick: this._onFooterButtonClick, children: this.popupActionText })] }))) }));
+import ListAccessibleRole from "@ui5/webcomponents/dist/types/ListAccessibleRole.js";
+export default function SearchPopoverTemplate(headerTemplate) {
+    return (_jsxs(ResponsivePopover, { hideArrow: true, preventFocusRestore: true, preventInitialFocus: !isPhone(), accessibleNameRef: "suggestions-speech-output message-area-text message-area-description", placement: PopoverPlacement.Bottom, horizontalAlign: PopoverHorizontalAlign.Start, open: this.open, opener: this, onOpen: this._handleOpen, onClose: this._handleClose, onBeforeClose: this._handleBeforeClose, onBeforeOpen: this._handleBeforeOpen, class: {
+            "ui5-search-popover": true,
+            "ui5-search-popover-phone": isPhone(),
+        }, children: [isPhone() ? (headerTemplate ? headerTemplate.call(this) : (_jsx(_Fragment, { children: _jsxs("header", { slot: "header", class: "ui5-search-popup-searching-header", children: [_jsx(Input, { class: "ui5-search-popover-search-field", onInput: this._handleMobileInput, showClearIcon: this.showClearIcon, noTypeahead: this.noTypeahead, hint: InputKeyHint.Search, onKeyDown: this._onMobileInputKeydown, children: this._flattenItems.map(item => {
+                                return (_jsx(SuggestionItem, { text: item.text }));
+                            }) }), _jsx(Button, { design: ButtonDesign.Transparent, onClick: this._handleCancel, children: this.cancelButtonText })] }) }))) : null, _jsxs("main", { class: "ui5-search-popover-content", children: [_jsx("slot", { name: "messageArea" }), _jsx("div", { class: "search-popover-busy-wrapper", children: _jsx(BusyIndicator, { active: true }) }), this.items.length ?
+                        _jsx(List, { class: "ui5-search-list", separators: ListSeparator.None, onKeyDown: this._onItemKeydown, accessibleRole: ListAccessibleRole.ListBox, onItemClick: this._onItemClick, children: _jsx("slot", {}) })
+                        : (_jsx("slot", { name: "illustration" })), _jsx("span", { class: "ui5-hidden-text", id: "suggestions-speech-output", children: this.suggestionsText }), this.messageArea[0]?.text ? (_jsx("span", { class: "ui5-hidden-text", id: "message-area-text", children: this.messageArea[0].text })) : null, this.messageArea[0]?.description ? (_jsx("span", { class: "ui5-hidden-text", id: "message-area-description", children: this.messageArea[0].description })) : null] }), this.action.length ? (_jsx("slot", { onKeyDown: this._handleActionKeydown, name: "action", slot: "footer" })) : null] }));
 }
 //# sourceMappingURL=SearchPopoverTemplate.js.map

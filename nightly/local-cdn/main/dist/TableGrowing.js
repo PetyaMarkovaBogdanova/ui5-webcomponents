@@ -13,6 +13,7 @@ import TableGrowingTemplate from "./TableGrowingTemplate.js";
 import TableGrowingCss from "./generated/themes/TableGrowing.css.js";
 import { isSpace, isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
 import { TABLE_MORE, TABLE_MORE_DESCRIPTION, } from "./generated/i18n/i18n-defaults.js";
+import { findVerticalScrollContainer } from "./TableUtils.js";
 // The documentation should be similar to the Table.ts class documentation!
 // Please only use that style where it uses markdown and the documentation is more readable.
 /**
@@ -35,12 +36,12 @@ import { TABLE_MORE, TABLE_MORE_DESCRIPTION, } from "./generated/i18n/i18n-defau
  *
  * ```html
  * <ui5-table>
- * 	<ui5-table-growing type="Button" growing-text="More" slot="features"></ui5-table-growing>
+ * 	<ui5-table-growing mode="Button" text="More" slot="features"></ui5-table-growing>
  * </ui5-table>
  * ```
  *
  * **Notes**:
- * * When the `ui5-table-growing` component is used with the `Scroll` type and the table is currently not scrollable,
+ * * When the `ui5-table-growing` component is used with the `Scroll` mode and the table is currently not scrollable,
  * the component will render a growing button instead to ensure growing capabilities until the table becomes scrollable.
  *
  * ### ES6 Module Import
@@ -51,7 +52,6 @@ import { TABLE_MORE, TABLE_MORE_DESCRIPTION, } from "./generated/i18n/i18n-defau
  * @extends UI5Element
  * @since 2.0.0
  * @public
- * @experimental This web component is available since 2.0 with an experimental flag and its API and behavior are subject to change.
  */
 let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
     constructor() {
@@ -68,7 +68,7 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
          * @default "Button"
          * @public
          */
-        this.type = "Button";
+        this.mode = "Button";
         /**
          * Defines the active state of the growing button.
          * Used for keyboard interaction.
@@ -111,15 +111,14 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
     onBeforeRendering() {
         this._observer?.disconnect();
         this._observer = undefined;
-        this._currentLastRow = undefined;
         this._renderContent = this.hasGrowingComponent();
         this._invalidateTable();
     }
     hasGrowingComponent() {
-        if (this.type === TableGrowingMode.Scroll) {
+        if (this.mode === TableGrowingMode.Scroll) {
             return !!this._table && this._table._scrollContainer.clientHeight >= this._table._tableElement.scrollHeight;
         }
-        return this.type === `${TableGrowingMode.Button}`;
+        return this.mode === `${TableGrowingMode.Button}`;
     }
     /**
      * An event handler that can be used by the Table to notify the TableGrowing that
@@ -129,12 +128,12 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
         // remembers the last row. only do this when the table has a growing component rendered.
         if (this._table && this.hasGrowingComponent()) {
             this._currentLastRow = this._table.rows[this._table.rows.length - 1];
+            this._shouldFocusRow = true;
         }
-        this._shouldFocusRow = true;
         this.fireDecoratorEvent("load-more");
     }
     _hasScrollToLoad() {
-        return this.type === TableGrowingMode.Scroll;
+        return this.mode === TableGrowingMode.Scroll;
     }
     /**
      * Observes the end of the table.
@@ -153,7 +152,10 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
      */
     _getIntersectionObserver() {
         if (!this._observer) {
-            this._observer = new IntersectionObserver(this._onIntersection.bind(this), { root: document });
+            this._observer = new IntersectionObserver(this._onIntersection.bind(this), {
+                root: findVerticalScrollContainer(this._table ?? document.body),
+                rootMargin: "5px",
+            });
         }
         return this._observer;
     }
@@ -193,25 +195,25 @@ let TableGrowing = TableGrowing_1 = class TableGrowing extends UI5Element {
     _onFocusout() {
         this._activeState = false;
     }
-    get _growingButtonText() {
-        return this.growingText || TableGrowing_1.i18nBundle.getText(TABLE_MORE);
+    get _buttonText() {
+        return this.text || TableGrowing_1.i18nBundle.getText(TABLE_MORE);
     }
-    get _growingButtonDescription() {
+    get _buttonDescription() {
         return TableGrowing_1.i18nBundle.getText(TABLE_MORE_DESCRIPTION);
     }
-    get _hasGrowingButton() {
+    get _hasButton() {
         return this.hasGrowingComponent();
     }
 };
 __decorate([
     property()
-], TableGrowing.prototype, "type", void 0);
+], TableGrowing.prototype, "mode", void 0);
 __decorate([
     property()
-], TableGrowing.prototype, "growingText", void 0);
+], TableGrowing.prototype, "text", void 0);
 __decorate([
     property()
-], TableGrowing.prototype, "growingSubText", void 0);
+], TableGrowing.prototype, "subtext", void 0);
 __decorate([
     property({ type: Boolean, noAttribute: true })
 ], TableGrowing.prototype, "_activeState", void 0);

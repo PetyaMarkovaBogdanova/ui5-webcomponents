@@ -1,6 +1,7 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import type { ITabbable } from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
+import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type { AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
 import type Button from "./Button.js";
@@ -184,7 +185,7 @@ declare class AvatarGroup extends UI5Element {
     _onClick(e: MouseEvent): void;
     onAvatarClick(e: MouseEvent): void;
     onAvatarUI5Click(e: MouseEvent): void;
-    onOverflowButtonClick(e: MouseEvent): void;
+    onOverflowButtonClick(e: UI5CustomEvent<Button, "click">): void;
     /**
      * Modifies avatars to the needs of avatar group properties. Respects already set size and background color.
      * Set the margins (offsets) based on RTL/LTR.

@@ -234,6 +234,12 @@ declare class List extends UI5Element {
      */
     _loadMoreActive: boolean;
     /**
+     * Defines the current media query size.
+     * @default "S"
+     * @private
+     */
+    mediaRange: string;
+    /**
      * Defines the items of the component.
      *
      * **Note:** Use `ui5-li`, `ui5-li-custom`, and `ui5-li-group` for the intended design.
@@ -251,9 +257,8 @@ declare class List extends UI5Element {
     static i18nBundle: I18nBundle;
     _previouslyFocusedItem: ListItemBase | null;
     _forwardingFocus: boolean;
-    resizeListenerAttached: boolean;
     listEndObserved: boolean;
-    _handleResize: ResizeObserverCallback;
+    _handleResizeCallback: ResizeObserverCallback;
     initialIntersection: boolean;
     _selectionRequested?: boolean;
     _groupCount: number;
@@ -281,7 +286,7 @@ declare class List extends UI5Element {
     onAfterRendering(): void;
     attachGroupHeaderEvents(): void;
     detachGroupHeaderEvents(): void;
-    attachForResize(): void;
+    getFocusDomRef(): HTMLElement | undefined;
     get shouldRenderH1(): string | false | undefined;
     get headerID(): string;
     get modeLabelID(): string;
@@ -333,6 +338,7 @@ declare class List extends UI5Element {
     _handleLodeMoreUp(e: KeyboardEvent): void;
     checkListInViewport(): void;
     loadMore(): void;
+    _handleResize(): void;
     _handleTabNext(e: KeyboardEvent): void;
     _handleHome(): void;
     _handleEnd(): void;

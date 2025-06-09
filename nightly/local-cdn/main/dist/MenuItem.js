@@ -11,7 +11,8 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
+import { isLeft, isRight, isEnter, isSpace, isTabNext, isTabPrevious, isDown, isUp, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isDesktop, isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import "@ui5/webcomponents-icons/dist/nav-back.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
@@ -89,10 +90,11 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
                 || (item.hasAttribute("ui5-icon") && item.getAttribute("mode") === "Interactive");
         });
     }
-    _navigateToEndContent(isLast) {
-        const item = isLast
-            ? this._navigableItems[this._navigableItems.length - 1]
-            : this._navigableItems[0];
+    _navigateToEndContent(shouldNavigateToPreviousItem) {
+        const navigatableItems = this._navigableItems;
+        const item = shouldNavigateToPreviousItem
+            ? navigatableItems[navigatableItems.length - 1]
+            : navigatableItems[0];
         if (item) {
             this._itemNavigation.setCurrentItem(item);
             this._itemNavigation._focusCurrentItem();
@@ -115,9 +117,6 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
     }
     get isSubMenuOpen() {
         return this._popover?.open;
-    }
-    get ariaLabelledByText() {
-        return `${this.text} ${this.accessibleName}`.trim();
     }
     get menuHeaderTextPhone() {
         return this.text;
@@ -169,6 +168,60 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
     get _menuItems() {
         return this.items.filter((item) => !item.isSeparator);
     }
+    _closeOtherSubMenus(item) {
+        const menuItems = this._menuItems;
+        if (!menuItems.includes(item)) {
+            return;
+        }
+        menuItems.forEach(menuItem => {
+            if (menuItem !== item) {
+                menuItem._close();
+            }
+        });
+    }
+    _itemMouseOver(e) {
+        if (!isDesktop()) {
+            return;
+        }
+        const item = e.target;
+        if (!isInstanceOfMenuItem(item)) {
+            return;
+        }
+        item.focus();
+        this._closeOtherSubMenus(item);
+    }
+    _itemKeyDown(e) {
+        const item = e.target;
+        const itemInMenuItems = this._menuItems.includes(item);
+        const isTabNextPrevious = isTabNext(e) || isTabPrevious(e);
+        const isItemNavigation = isUp(e) || isDown(e);
+        const isItemSelection = isSpace(e) || isEnter(e);
+        const shouldOpenMenu = this.isRtl ? isLeft(e) : isRight(e);
+        const shouldCloseMenu = !(isItemNavigation || isItemSelection || shouldOpenMenu) || isTabNextPrevious;
+        if (itemInMenuItems && shouldCloseMenu) {
+            this._close();
+            this.focus();
+            e.stopPropagation();
+        }
+    }
+    _endContentKeyDown(e) {
+        const shouldNavigateOutOfEndContent = isUp(e) || isDown(e);
+        if (shouldNavigateOutOfEndContent) {
+            this.fireDecoratorEvent("exit-end-content", { shouldNavigateToNextItem: isDown(e) });
+        }
+    }
+    _navigateOutOfEndContent(e) {
+        const item = e.target;
+        const shouldNavigateToNextItem = e.detail.shouldNavigateToNextItem;
+        const menuItems = this._menuItems;
+        const itemIndex = menuItems.indexOf(item);
+        if (itemIndex > -1) {
+            const nextItem = shouldNavigateToNextItem ? menuItems[itemIndex + 1] : menuItems[itemIndex - 1];
+            const itemToFocus = nextItem || menuItems[itemIndex];
+            itemToFocus?.focus();
+            e.stopPropagation();
+        }
+    }
     _closeAll() {
         if (this._popover) {
             this._popover.open = false;
@@ -179,6 +232,7 @@ let MenuItem = MenuItem_1 = class MenuItem extends ListItem {
     _close() {
         if (this._popover) {
             this._popover.open = false;
+            this._menuItems.forEach(item => item._close());
         }
         this.selected = false;
     }
@@ -286,6 +340,14 @@ MenuItem = MenuItem_1 = __decorate([
         bubbles: true,
     })
     /**
+     * Fired when navigating out of end-content.
+     * @private
+     */
+    ,
+    event("exit-end-content", {
+        bubbles: true,
+    })
+    /**
      * Fired before the menu is closed. This event can be cancelled, which will prevent the menu from closing.
      * @public
      * @param {boolean} escPressed Indicates that `ESC` key has triggered the event.
@@ -304,5 +366,9 @@ MenuItem = MenuItem_1 = __decorate([
     event("close")
 ], MenuItem);
 MenuItem.define();
+const isInstanceOfMenuItem = (object) => {
+    return "isMenuItem" in object;
+};
 export default MenuItem;
+export { isInstanceOfMenuItem, };
 //# sourceMappingURL=MenuItem.js.map

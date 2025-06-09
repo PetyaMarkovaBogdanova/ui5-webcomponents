@@ -1,13 +1,20 @@
-import SearchPopupMode from "@ui5/webcomponents/dist/types/SearchPopupMode.js";
+import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type Popover from "@ui5/webcomponents/dist/Popover.js";
 import type List from "@ui5/webcomponents/dist/List.js";
 import SearchField from "./SearchField.js";
 import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type SearchItem from "./SearchItem.js";
 import type Button from "@ui5/webcomponents/dist/Button.js";
+import type IllustratedMessage from "./IllustratedMessage.js";
+import type SearchItemGroup from "./SearchItemGroup.js";
+import type SearchMessageArea from "./SearchMessageArea.js";
+import type { InputEventDetail } from "@ui5/webcomponents/dist/Input.js";
+import type Input from "@ui5/webcomponents/dist/Input.js";
+import type { PopupBeforeCloseEventDetail } from "@ui5/webcomponents/dist/Popup.js";
+import type Select from "@ui5/webcomponents/dist/Select.js";
 interface ISearchSuggestionItem extends UI5Element {
     selected: boolean;
-    headingText: string;
+    text: string;
     items?: ISearchSuggestionItem[];
 }
 type SearchEventDetails = {
@@ -25,12 +32,11 @@ type SearchEventDetails = {
  * - Input field - for user input value
  * - Clear button - gives the possibility for deleting the entered value
  * - Search button - a primary button for performing search, when the user has entered a search term
- * - Expand/Collapse button - when there is no search term, the search button behaves as an expand/collapse button for the `ui5-search` component
  * - Suggestions - a list with available search suggestions
  *
  * ### ES6 Module Import
  *
- * `import "@ui5/webcomponents/fiori/dist/Search.js";`
+ * `import "@ui5/webcomponents-fiori/dist/Search.js";`
  *
  * @constructor
  * @extends SearchField
@@ -46,12 +52,11 @@ declare class Search extends SearchField {
         "close": void;
     };
     /**
-     * Defines the visualisation mode of the search component.
-     *
-     * @default "List"
+     * Indicates whether a loading indicator should be shown in the popup.
+     * @default false
      * @public
      */
-    popupMode: `${SearchPopupMode}`;
+    loading: boolean;
     /**
      * Defines whether the value will be autcompleted to match an item.
      * @default false
@@ -59,39 +64,29 @@ declare class Search extends SearchField {
      */
     noTypeahead: boolean;
     /**
-     * Defines the header text to be placed in the search suggestions popup.
-     * @public
-     */
-    headerText: string;
-    /**
-     * Defines the subheader text to be placed in the search suggestions popup.
-     * @public
-     */
-    subheaderText: string;
-    /**
-     * Defines whether the popup footer action button is shown.
-     * Note: The footer action button is displayed only when the `popupMode` is set to `List`.
-     * @default false
-     * @public
-     */
-    showPopupAction: boolean;
-    /**
-     * Defines the popup footer action button text.
-     * @public
-     */
-    popupActionText: string;
-    /**
      * Defines the Search suggestion items.
      *
      * @public
      */
-    items: Array<SearchItem>;
+    items: Array<SearchItem | SearchItemGroup>;
+    /**
+     * Defines the popup footer action button.
+     *
+     * @public
+     */
+    action: Array<Button>;
     /**
      * Defines the illustrated message to be shown in the popup.
      *
      * @public
      */
-    illustration: HTMLElement;
+    illustration: Array<IllustratedMessage>;
+    /**
+     * Defines the illustrated message to be shown in the popup.
+     *
+     * @public
+     */
+    messageArea: Array<SearchMessageArea>;
     /**
      * Indicates whether the items picker is open.
      * @public
@@ -104,7 +99,13 @@ declare class Search extends SearchField {
      * @default ""
      * @private
      */
-    _innerValue: string;
+    _innerValue?: string;
+    /**
+     * Determines whether the item selection should be performed on mobile devices.
+     * Similar to _performTextSelection on desktop
+     * @private
+     */
+    _performItemSelectionOnMobile?: boolean;
     /**
      * Based on the key pressed, determines if the autocomplete should be performed.
      * @private
@@ -116,16 +117,15 @@ declare class Search extends SearchField {
      */
     _performTextSelection?: boolean;
     /**
-     * Determines whether the picker should open on user input. In some cases we need to close the picker,
-     * (press on an item, or pressing Esc), but still focus the input. In this case we need to open the picker on input.
-     * @private
-     */
-    _openPickerOnInput?: boolean;
-    /**
      * Holds the typed value from the user.
      * @private
      */
     _typedInValue: string;
+    /**
+     * Holds the typed value before opening the picker.
+     * @private
+     */
+    _valueBeforeOpen: string;
     /**
      * True if the first matching item is matched by starts with per term, rather than by starts with.
      * @private
@@ -136,40 +136,50 @@ declare class Search extends SearchField {
      * @private
      */
     _proposedItem?: ISearchSuggestionItem;
+    static i18nBundle: I18nBundle;
     constructor();
     onBeforeRendering(): void;
     onAfterRendering(): void;
+    _handleMobileInput(e: CustomEvent<InputEventDetail>): void;
+    _shouldPerformSelectionOnMobile(inputType: string): boolean;
     _handleTypeAhead(item: ISearchSuggestionItem): void;
     _startsWithMatchingItems(str: string): Array<ISearchSuggestionItem>;
     _startsWithPerTermMatchingItems(str: string): Array<ISearchSuggestionItem>;
     _isGroupItem(item: ISearchSuggestionItem): boolean;
     _deselectItems(): void;
-    _handleDown(e: KeyboardEvent): Promise<void>;
-    _handleArrowDown(): Promise<void>;
+    _handleDown(e: KeyboardEvent): void;
+    _handleArrowDown(): void;
     _handleRight(e: KeyboardEvent): void;
+    _handleInnerClick(): void;
+    _handleSearchIconPress(): void;
     _handleEnter(): void;
+    _onMobileInputKeydown(e: KeyboardEvent): void;
     _handleSearchEvent(): void;
     _handleEscape(): void;
     _handleInput(e: InputEvent): void;
+    _popoupHasAnyContent(): boolean;
     _onFooterButtonKeyDown(e: KeyboardEvent): void;
     _onItemKeydown(e: KeyboardEvent): void;
     _onItemClick(e: CustomEvent): void;
     _onkeydown(e: KeyboardEvent): void;
-    _onfocusin(): void;
     _onfocusout(): void;
-    _onFocusOutSearch(): void;
+    _onFocusOutSearch(e: FocusEvent): void;
+    _handleBeforeClose(e: CustomEvent<PopupBeforeCloseEventDetail>): void;
+    _handleCancel(): void;
     _handleClose(): void;
+    _handleBeforeOpen(): void;
     _handleOpen(): void;
+    _handleActionKeydown(e: KeyboardEvent): void;
     _onFooterButtonClick(): void;
     _getFirstMatchingItem(current: string): ISearchSuggestionItem | undefined;
     _getPicker(): Popover;
     _getItemsList(): List;
     _getFooterButton(): Button;
     get _flattenItems(): Array<ISearchSuggestionItem>;
-    get nativeInput(): HTMLInputElement | null;
-    get _showIllustration(): boolean;
-    get _showLoading(): boolean;
-    get _showHeader(): boolean;
-    get _showFooter(): boolean;
+    get nativeInput(): HTMLInputElement | null | undefined;
+    get mobileInput(): Input | null;
+    get cancelButtonText(): string;
+    get suggestionsText(): string;
+    get scopeSelect(): Select | null;
 }
 export default Search;

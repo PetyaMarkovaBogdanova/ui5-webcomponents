@@ -43,7 +43,7 @@ declare class TableSelectionMulti extends TableSelectionBase {
     onTableBeforeRendering(): void;
     isMultiSelectable(): boolean;
     isSelected(row: TableRowBase): boolean;
-    setSelected(row: TableRowBase, selected: boolean, _fireEvent?: boolean): void;
+    setSelected(row: TableRowBase, selected: boolean, fireEvent?: boolean): void;
     /**
      * Returns an array of the selected rows.
      *
@@ -52,8 +52,6 @@ declare class TableSelectionMulti extends TableSelectionBase {
     getSelectedRows(): TableRow[];
     /**
      * Determines whether all rows are selected.
-     *
-     * @public
      */
     areAllRowsSelected(): boolean;
     /**
@@ -69,7 +67,6 @@ declare class TableSelectionMulti extends TableSelectionBase {
      * @public
      */
     setSelectedAsSet(selectedSet: Set<string>): void;
-    _invalidateTableAndRows(): void;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent, eventOrigin: HTMLElement): void;
     _onclick(e: MouseEvent): void;
@@ -78,7 +75,7 @@ declare class TableSelectionMulti extends TableSelectionBase {
      * @param row starting row
      * @private
      */
-    _startRangeSelection(row: TableRow, isMouse?: boolean): void;
+    _startRangeSelection(row: TableRow, selected: boolean, isMouse?: boolean): void;
     /**
      * Handles the range selection
      * @param targetRow Row that is currently focused

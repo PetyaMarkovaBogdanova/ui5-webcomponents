@@ -1,5 +1,6 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { AccessibilityAttributes } from "@ui5/webcomponents-base";
+import type { AccessibilityAttributes, UI5CustomEvent } from "@ui5/webcomponents-base";
+import type Button from "@ui5/webcomponents/dist/Button.js";
 type ShellBarItemClickEventDetail = {
     targetRef: HTMLElement;
 };
@@ -67,7 +68,7 @@ declare class ShellBarItem extends UI5Element {
      */
     accessibilityAttributes: ShellBarItemAccessibilityAttributes;
     get stableDomRef(): string;
-    fireClickEvent(e: MouseEvent): boolean;
+    fireClickEvent(e: UI5CustomEvent<Button, "click">): boolean;
 }
 export default ShellBarItem;
 export type { ShellBarItemClickEventDetail };

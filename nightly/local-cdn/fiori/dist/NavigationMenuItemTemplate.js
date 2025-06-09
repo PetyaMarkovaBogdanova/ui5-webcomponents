@@ -27,7 +27,7 @@ function iconEnd() {
     if (this.hasSubmenu) {
         return _jsx(Icon, { part: "icon", name: slimArrowRightIcon, class: "ui5-menu-item-icon-end" });
     }
-    if (this.href) {
+    if (this.isExternalLink) {
         return _jsx(Icon, { class: "ui5-sn-item-external-link-icon", name: arrowRightIcon });
     }
 }

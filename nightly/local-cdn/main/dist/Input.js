@@ -27,7 +27,7 @@ import InputType from "./types/InputType.js";
 // Templates
 import InputTemplate from "./InputTemplate.js";
 import { StartsWith } from "./Filters.js";
-import { VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, VALUE_STATE_ERROR, VALUE_STATE_WARNING, VALUE_STATE_TYPE_SUCCESS, VALUE_STATE_TYPE_INFORMATION, VALUE_STATE_TYPE_ERROR, VALUE_STATE_TYPE_WARNING, INPUT_SUGGESTIONS, INPUT_SUGGESTIONS_TITLE, INPUT_SUGGESTIONS_ONE_HIT, INPUT_SUGGESTIONS_MORE_HITS, INPUT_SUGGESTIONS_NO_HIT, INPUT_CLEAR_ICON_ACC_NAME, INPUT_AVALIABLE_VALUES, FORM_TEXTFIELD_REQUIRED, } from "./generated/i18n/i18n-defaults.js";
+import { VALUE_STATE_SUCCESS, VALUE_STATE_INFORMATION, VALUE_STATE_ERROR, VALUE_STATE_WARNING, VALUE_STATE_TYPE_SUCCESS, VALUE_STATE_TYPE_INFORMATION, VALUE_STATE_TYPE_ERROR, VALUE_STATE_TYPE_WARNING, INPUT_SUGGESTIONS, INPUT_SUGGESTIONS_TITLE, INPUT_SUGGESTIONS_ONE_HIT, INPUT_SUGGESTIONS_MORE_HITS, INPUT_SUGGESTIONS_NO_HIT, INPUT_CLEAR_ICON_ACC_NAME, INPUT_AVALIABLE_VALUES, INPUT_SUGGESTIONS_OK_BUTTON, FORM_TEXTFIELD_REQUIRED, } from "./generated/i18n/i18n-defaults.js";
 // Styles
 import inputStyles from "./generated/themes/Input.css.js";
 import ResponsivePopoverCommonCss from "./generated/themes/ResponsivePopoverCommon.css.js";
@@ -527,6 +527,9 @@ let Input = Input_1 = class Input extends UI5Element {
         }
         this.lastConfirmedValue = "";
         this.isTyping = false;
+        if ((this.value !== this.previousValue) && this.showClearIcon) {
+            this._clearIconClicked = false;
+        }
     }
     _clearPopoverFocusAndSelection() {
         if (!this.showSuggestions || !this.Suggestions) {
@@ -925,6 +928,7 @@ let Input = Input_1 = class Input extends UI5Element {
     fireResetSelectionChange() {
         if (this._isLatestValueFromSuggestions) {
             this.fireSelectionChange(null, false);
+            this.valueBeforeItemSelection = this.value;
         }
     }
     get _readonly() {
@@ -932,6 +936,9 @@ let Input = Input_1 = class Input extends UI5Element {
     }
     get _headerTitleText() {
         return Input_1.i18nBundle.getText(INPUT_SUGGESTIONS_TITLE);
+    }
+    get _suggestionsOkButtonText() {
+        return Input_1.i18nBundle.getText(INPUT_SUGGESTIONS_OK_BUTTON);
     }
     get clearIconAccessibleName() {
         return Input_1.i18nBundle.getText(INPUT_CLEAR_ICON_ACC_NAME);

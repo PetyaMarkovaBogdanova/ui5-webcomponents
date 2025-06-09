@@ -110,6 +110,9 @@ let CheckBox = CheckBox_1 = class CheckBox extends UI5Element {
         this.displayOnly = false;
         /**
          * Defines whether the component is required.
+         *
+         * **Note:** We advise against using the text property of the checkbox when there is a
+         * label associated with it to avoid having two required asterisks.
          * @default false
          * @public
          * @since 1.3.0

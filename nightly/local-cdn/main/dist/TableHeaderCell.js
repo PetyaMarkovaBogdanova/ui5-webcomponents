@@ -28,37 +28,10 @@ import SortOrder from "@ui5/webcomponents-base/dist/types/SortOrder.js";
  * @extends TableCellBase
  * @since 2.0.0
  * @public
- * @experimental This web component is available since 2.0 with an experimental flag and its API and behavior are subject to change.
  */
 let TableHeaderCell = class TableHeaderCell extends TableCellBase {
     constructor() {
         super(...arguments);
-        /**
-         * Defines the width of column.
-         *
-         * @default "auto"
-         * @public
-         */
-        this.width = "auto";
-        /**
-         * Defines the minimum width of the column.
-         *
-         * If the table is in `Popin` mode and the minimum width does not fit anymore,
-         * the column will move into the popin.
-         *
-         * **Note:** If `minWidth` has the `auto` value, the table ensures that the column is wider than at least `3rem`.
-         *
-         * @default "auto"
-         * @public
-         */
-        this.minWidth = "auto";
-        /**
-         * Defines the maximum width of the column.
-         *
-         * @default "auto"
-         * @public
-         */
-        this.maxWidth = "auto";
         /**
          * Defines the importance of the column.
          *
@@ -93,12 +66,6 @@ let TableHeaderCell = class TableHeaderCell extends TableCellBase {
         this.ariaRole = "columnheader";
         this._popinWidth = 0;
     }
-    onEnterDOM() {
-        super.onEnterDOM();
-        this.style.minWidth = this.minWidth;
-        this.style.maxWidth = this.maxWidth;
-        this.style.width = this.width;
-    }
     onBeforeRendering() {
         super.onBeforeRendering();
         if (this._individualSlot) {
@@ -114,9 +81,6 @@ __decorate([
 __decorate([
     property()
 ], TableHeaderCell.prototype, "minWidth", void 0);
-__decorate([
-    property()
-], TableHeaderCell.prototype, "maxWidth", void 0);
 __decorate([
     property({ type: Number })
 ], TableHeaderCell.prototype, "importance", void 0);

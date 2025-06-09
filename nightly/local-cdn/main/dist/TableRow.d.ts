@@ -1,6 +1,8 @@
+import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import TableRowBase from "./TableRowBase.js";
 import type TableCell from "./TableCell.js";
 import type TableRowActionBase from "./TableRowActionBase.js";
+import type Button from "./Button.js";
 import "@ui5/webcomponents-icons/dist/overflow.js";
 /**
  * @class
@@ -17,7 +19,6 @@ import "@ui5/webcomponents-icons/dist/overflow.js";
  * @extends TableRowBase
  * @since 2.0.0
  * @public
- * @experimental This web component is available since 2.0 with an experimental flag and its API and behavior are subject to change.
  */
 declare class TableRow extends TableRowBase {
     /**
@@ -82,8 +83,8 @@ declare class TableRow extends TableRowBase {
     _onclick(): void;
     _onkeyup(): void;
     _onfocusout(): void;
-    _onOverflowButtonClick(e: MouseEvent): void;
-    get _isInteractive(): boolean;
+    _onOverflowButtonClick(e: UI5CustomEvent<Button, "click">): void;
+    get _isInteractive(): boolean | undefined;
     get _hasOverflowActions(): boolean;
     get _flexibleActions(): TableRowActionBase[];
     get _fixedActions(): TableRowActionBase[];

@@ -8,7 +8,7 @@ import ListItemBase from "@ui5/webcomponents/dist/ListItemBase.js";
  *
  * ### ES6 Module Import
  *
- * `import "@ui5/webcomponents/fiori/dist/SearchItem.js";`
+ * `import "@ui5/webcomponents-fiori/dist/SearchItem.js";`
  *
  * @constructor
  * @extends ListItemBase
@@ -22,14 +22,24 @@ declare class SearchItem extends ListItemBase {
     };
     /**
      * Defines the heading text of the search item.
+     * @default undefined
      * @public
      */
-    headingText: string;
+    text?: string;
+    /**
+     * Defines the description that appears right under the item text, if available.
+     * @default undefined
+     * @public
+     * @since 2.12.0
+     */
+    description?: string;
     /**
      * Defines the icon name of the search item.
+     * **Note:** If provided, the image slot will be ignored.
+     * @default undefined
      * @public
      */
-    icon: string;
+    icon?: string;
     /**
      * Defines whether the search item is selected.
      * @default false
@@ -38,11 +48,19 @@ declare class SearchItem extends ListItemBase {
     selected: boolean;
     /**
      * Defines the scope of the search item
-     * @default false
+     * @default undefined
      * @public
      */
     scopeName?: string;
     highlightText: string;
+    /**
+     * **Note:** While the slot allows the option of setting a custom avatar, to comply with the
+     * design guidelines, use the `ui5-avatar` with size - XS.
+     *
+     * @public
+     * @since 2.12.0
+     */
+    image: Array<HTMLElement>;
     _markupText: string;
     _onfocusin(e: FocusEvent): void;
     _onfocusout(): void;

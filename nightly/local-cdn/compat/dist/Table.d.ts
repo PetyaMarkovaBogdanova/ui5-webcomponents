@@ -311,6 +311,7 @@ declare class Table extends UI5Element {
     _getAfterForwardElement(): HTMLElement;
     _getBeforeForwardElement(): HTMLElement;
     onRowFocused(e: CustomEvent): void;
+    onRowKeyDown(e: KeyboardEvent): void;
     _onColumnHeaderFocused(): void;
     _onColumnHeaderClick(e: MouseEvent | KeyboardEvent): void;
     _onColumnHeaderKeydown(e: KeyboardEvent): void;

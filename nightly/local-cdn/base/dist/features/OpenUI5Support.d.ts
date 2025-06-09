@@ -3,6 +3,7 @@ import type { LegacyDateCalendarCustomizing } from "../features/LegacyDateFormat
 declare class OpenUI5Support {
     static isAtLeastVersion116(): boolean;
     static isOpenUI5Detected(): boolean;
+    static initPromise?: Promise<void>;
     static init(): Promise<void>;
     static getConfigurationSettingsObject(): {
         animationMode?: undefined;

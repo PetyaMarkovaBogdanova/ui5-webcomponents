@@ -10,14 +10,15 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import { isLeft, isRight, isEnter, isTabNext, isTabPrevious, isDown, isUp, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isLeft, isRight, isEnter, isSpace, isTabNext, isTabPrevious, isDown, isUp, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isPhone, isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
-import "./MenuItem.js";
+// The import below should be kept, as MenuItem is part of the Menu component.
+import { isInstanceOfMenuItem } from "./MenuItem.js";
 import "./MenuSeparator.js";
 import menuTemplate from "./MenuTemplate.js";
 import { MENU_CLOSE_BUTTON_ARIA_LABEL, MENU_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
@@ -68,12 +69,18 @@ let Menu = Menu_1 = class Menu extends UI5Element {
     constructor() {
         super(...arguments);
         /**
-         * Indicates if the menu is open
+         * Indicates if the menu is open.
          * @public
          * @default false
          * @since 1.10.0
          */
         this.open = false;
+        /**
+         * Determines the horizontal alignment of the menu relative to its opener control.
+         * @default "Start"
+         * @public
+         */
+        this.horizontalAlign = "Start";
         /**
          * Defines if a loading indicator would be displayed inside the corresponding ui5-menu popover.
          * @default false
@@ -82,7 +89,7 @@ let Menu = Menu_1 = class Menu extends UI5Element {
          */
         this.loading = false;
         /**
-         * Defines the delay in milliseconds, after which the loading indicator will be displayed inside the corresponding ui5-menu popover..
+         * Defines the delay in milliseconds, after which the loading indicator will be displayed inside the corresponding ui5-menu popover.
          * @default 1000
          * @public
          * @since 1.13.0
@@ -128,26 +135,17 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         item._popover.open = true;
         item.selected = true;
     }
-    _closeItemSubMenu(item) {
-        if (item && item._popover) {
-            const openedSibling = item._menuItems.find(menuItem => menuItem._popover && menuItem._popover.open);
-            if (openedSibling) {
-                this._closeItemSubMenu(openedSibling);
-            }
-            item._popover.open = false;
-            item.selected = false;
-        }
-    }
     _itemMouseOver(e) {
-        if (isDesktop()) {
-            // respect mouseover only on desktop
-            const item = e.target;
-            if (this._isInstanceOfMenuItem(item)) {
-                item.focus();
-                // Opens submenu with 300ms delay
-                this._startOpenTimeout(item);
-            }
+        if (!isDesktop()) {
+            return;
         }
+        const item = e.target;
+        if (!isInstanceOfMenuItem(item)) {
+            return;
+        }
+        item.focus();
+        // Opens submenu with 300ms delay
+        this._startOpenTimeout(item);
     }
     async focus(focusOptions) {
         await renderFinished();
@@ -157,14 +155,21 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         }
         return super.focus(focusOptions);
     }
+    _closeOtherSubMenus(item) {
+        const menuItems = this._menuItems;
+        if (!menuItems.includes(item)) {
+            return;
+        }
+        menuItems.forEach(menuItem => {
+            if (menuItem !== item) {
+                menuItem._close();
+            }
+        });
+    }
     _startOpenTimeout(item) {
         clearTimeout(this._timeout);
         this._timeout = setTimeout(() => {
-            const opener = item.parentElement;
-            const openedSibling = opener && opener._menuItems.find(menuItem => menuItem._popover && menuItem._popover.open);
-            if (openedSibling) {
-                this._closeItemSubMenu(openedSibling);
-            }
+            this._closeOtherSubMenus(item);
             this._openItemSubMenu(item);
         }, MENU_OPEN_DELAY);
     }
@@ -186,39 +191,39 @@ let Menu = Menu_1 = class Menu extends UI5Element {
     _itemKeyDown(e) {
         const isTabNextPrevious = isTabNext(e) || isTabPrevious(e);
         const item = e.target;
-        const parentElement = item.parentElement;
-        const shouldItemNavigation = isUp(e) || isDown(e);
+        if (!isInstanceOfMenuItem(item)) {
+            return;
+        }
+        const menuItemInMenu = this._menuItems.includes(item);
+        const isItemNavigation = isUp(e) || isDown(e);
+        const isItemSelection = isEnter(e) || isSpace(e);
+        const isEndContentNavigation = isRight(e) || isLeft(e);
         const shouldOpenMenu = this.isRtl ? isLeft(e) : isRight(e);
-        const shouldCloseMenu = !shouldItemNavigation && !shouldOpenMenu && this._isInstanceOfMenuItem(parentElement);
-        if (this._isInstanceOfMenuItem(item)) {
-            if (isEnter(e) || isTabNextPrevious) {
-                e.preventDefault();
-            }
-            if (isRight(e) || isLeft(e)) {
-                item._navigateToEndContent(isLeft(e));
-            }
-            if (shouldOpenMenu) {
-                this._openItemSubMenu(item);
-            }
-            else if ((shouldCloseMenu || isTabNextPrevious) && parentElement._popover) {
-                parentElement._popover.open = false;
-                parentElement.selected = false;
-                parentElement._popover.focusOpener();
-            }
+        const shouldCloseMenu = menuItemInMenu && !(isItemNavigation || isItemSelection || isEndContentNavigation);
+        if (isEnter(e) || isTabNextPrevious) {
+            e.preventDefault();
         }
-        else if (isUp(e)) {
-            this._navigateOutOfEndContent(parentElement);
+        if (isEndContentNavigation) {
+            item._navigateToEndContent(isLeft(e));
         }
-        else if (isDown(e)) {
-            this._navigateOutOfEndContent(parentElement, true);
+        if (shouldOpenMenu) {
+            this._openItemSubMenu(item);
+        }
+        else if ((shouldCloseMenu || isTabNextPrevious)) {
+            this._close();
         }
     }
-    _navigateOutOfEndContent(menuItem, isDownwards) {
-        const opener = menuItem?.parentElement;
-        const currentIndex = opener._menuItems.indexOf(menuItem);
-        const nextItem = isDownwards ? opener._menuItems[currentIndex + 1] : opener._menuItems[currentIndex - 1];
-        const itemToFocus = nextItem || opener._menuItems[currentIndex];
-        itemToFocus.focus();
+    _navigateOutOfEndContent(e) {
+        const item = e.target;
+        const shouldNavigateToNextItem = e.detail.shouldNavigateToNextItem;
+        const menuItems = this._menuItems;
+        const itemIndex = menuItems.indexOf(item);
+        if (itemIndex > -1) {
+            const nextItem = shouldNavigateToNextItem ? menuItems[itemIndex + 1] : menuItems[itemIndex - 1];
+            const itemToFocus = nextItem || menuItems[itemIndex];
+            itemToFocus?.focus();
+            e.stopPropagation();
+        }
     }
     _beforePopoverOpen(e) {
         const prevented = !this.fireDecoratorEvent("before-open", {});
@@ -242,9 +247,6 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         this.open = false;
         this.fireDecoratorEvent("close");
     }
-    _isInstanceOfMenuItem(object) {
-        return "isMenuItem" in object;
-    }
 };
 __decorate([
     property()
@@ -252,6 +254,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], Menu.prototype, "open", void 0);
+__decorate([
+    property()
+], Menu.prototype, "horizontalAlign", void 0);
 __decorate([
     property({ type: Boolean })
 ], Menu.prototype, "loading", void 0);

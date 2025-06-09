@@ -264,12 +264,9 @@ let TextArea = TextArea_1 = class TextArea extends UI5Element {
         return this.shadowRoot.querySelector("[ui5-popover]");
     }
     _tokenizeText(value) {
-        const tokenizedText = value.replace(/&/gm, "&amp;").replace(/"/gm, "&quot;").replace(/'/gm, "&apos;").replace(/</gm, "<")
+        const tokenizedText = value.replace(/</gm, "<")
             .replace(/>/gm, ">")
             .split("\n");
-        if (tokenizedText.length < this.rows) {
-            return this._mapTokenizedTextToObject([...tokenizedText, ...Array(this.rows - tokenizedText.length).fill("")]);
-        }
         return this._mapTokenizedTextToObject(tokenizedText);
     }
     _mapTokenizedTextToObject(tokenizedText) {

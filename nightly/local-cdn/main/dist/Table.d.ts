@@ -150,12 +150,6 @@ type TableRowActionClickEventDetail = {
  * @extends UI5Element
  * @since 2.0.0
  * @public
- * @experimental This Table web component is available since 2.0 and has been newly implemented to provide better screen reader and keyboard handling support.
- * Currently, it's considered experimental as its API is subject to change.
- * This Table replaces the previous Table web component, that has been part of **@ui5/webcomponents** version 1.x.
- * For compatibility reasons, we moved the previous Table implementation to the **@ui5/webcomponents-compat** package
- * and will be maintained until the new Table is experimental.
- * Keep in mind that you can use either the compat/Table, or the main/Table - you can't use them both as they both define the `ui5-table` tag name.
  */
 declare class Table extends UI5Element {
     eventDetails: {
@@ -185,7 +179,7 @@ declare class Table extends UI5Element {
      *
      * @public
      */
-    nodata: Array<HTMLElement>;
+    noData: Array<HTMLElement>;
     /**
      * Defines the features of the component.
      *
@@ -258,7 +252,7 @@ declare class Table extends UI5Element {
     _invalidate: number;
     _renderNavigated: boolean;
     dropIndicatorDOM: DropIndicator;
-    _nodataRow?: TableRow;
+    _noDataRow?: TableRow;
     _endRow: TableRow;
     _tableElement: HTMLElement;
     _beforeElement: HTMLElement;

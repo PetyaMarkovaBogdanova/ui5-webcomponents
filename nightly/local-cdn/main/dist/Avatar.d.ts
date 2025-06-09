@@ -145,6 +145,9 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
      */
     accessibilityAttributes: AvatarAccessibilityAttributes;
     forcedTabIndex?: string;
+    /**
+     * @private
+     */
     _hasImage: boolean;
     /**
      * Receives the desired `<img>` tag
@@ -170,6 +173,7 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
     static i18nBundle: I18nBundle;
     _handleResizeBound: ResizeObserverCallback;
     constructor();
+    onBeforeRendering(): void;
     get tabindex(): number | undefined;
     /**
      * Returns the effective avatar size.

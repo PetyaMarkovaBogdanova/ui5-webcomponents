@@ -20,9 +20,10 @@ import ListItemStandard from "@ui5/webcomponents/dist/ListItemStandard.js";
 import List from "@ui5/webcomponents/dist/List.js";
 import Popover from "@ui5/webcomponents/dist/Popover.js";
 import Button from "@ui5/webcomponents/dist/Button.js";
+import ButtonBadge from "@ui5/webcomponents/dist/ButtonBadge.js";
 import Menu from "@ui5/webcomponents/dist/Menu.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
-import { isDesktop } from "@ui5/webcomponents-base/dist/Device.js";
+import { isDesktop, isPhone } from "@ui5/webcomponents-base/dist/Device.js";
 import search from "@ui5/webcomponents-icons/dist/search.js";
 import da from "@ui5/webcomponents-icons/dist/da.js";
 import bell from "@ui5/webcomponents-icons/dist/bell.js";
@@ -31,7 +32,6 @@ import grid from "@ui5/webcomponents-icons/dist/grid.js";
 import throttle from "@ui5/webcomponents-base/dist/util/throttle.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
-import { getTheme } from "@ui5/webcomponents-base/dist/config/Theme.js";
 // Templates
 import ShellBarTemplate from "./ShellBarTemplate.js";
 // Styles
@@ -95,6 +95,22 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     constructor() {
         super();
         /**
+         * Defines the visibility state of the search button.
+         *
+         * **Note:** The `hideSearchButton` property is in an experimental state and is a subject to change.
+         * @default false
+         * @public
+         */
+        this.hideSearchButton = false;
+        /**
+         * Disables the automatic search field expansion/collapse when the available space is not enough.
+         *
+         * **Note:** The `disableSearchCollapse` property is in an experimental state and is a subject to change.
+         * @default false
+         * @public
+         */
+        this.disableSearchCollapse = false;
+        /**
          * Defines, if the notification icon would be displayed.
          * @default false
          * @public
@@ -126,6 +142,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
          * - **product** - `product.expanded` and `product.hasPopup`.
          * - **search** - `search.hasPopup`.
          * - **overflow** - `overflow.expanded` and `overflow.hasPopup`.
+         * - **branding** - `branding.name`.
          *
          * The accessibility attributes support the following values:
          *
@@ -164,11 +181,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._cachedHiddenContent = [];
         this._lastOffsetWidth = 0;
         this._observableContent = [];
-        this._isAnimating = false;
         this._autoRestoreSearchField = false;
-        this._handleAnimationEndRef = this._handleAnimationEnd.bind(this);
-        this._maxAnimationDuration = 0;
-        this._performNoAnimation = false;
         this._hiddenIcons = [];
         this._isInitialRendering = true;
         this._overflowNotifications = null;
@@ -182,6 +195,21 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 const menuPopover = this._getMenuPopover();
                 menuPopover.opener = this.shadowRoot.querySelector(".ui5-shellbar-menu-button");
                 menuPopover.open = true;
+            }
+        };
+        this.onSearchOpen = () => {
+            if (isPhone()) {
+                this.setSearchState(true);
+            }
+        };
+        this.onSearchClose = () => {
+            if (isPhone()) {
+                this.setSearchState(false);
+            }
+        };
+        this.onSearch = () => {
+            if (!isPhone() && !this.search?.value) {
+                this.setSearchState(!this.showSearchField);
             }
         };
         this._handleResize = throttle(() => {
@@ -200,15 +228,15 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         const spacerWidth = this.shadowRoot.querySelector(".ui5-shellbar-spacer") ? this.shadowRoot.querySelector(".ui5-shellbar-spacer").getBoundingClientRect().width : 0;
         const searchFieldWidth = this.domCalculatedValues("--_ui5_shellbar_search_field_width");
         if (this.showFullWidthSearch) {
-            this.showSearchField = false;
+            this.setSearchState(true);
             return;
         }
         if ((spacerWidth <= searchFieldWidth && this.contentItemsHidden.length !== 0) && this.showSearchField) {
-            this.showSearchField = false;
+            this.setSearchState(false);
             this._autoRestoreSearchField = true;
         }
         else if (spacerWidth > searchFieldWidth && this._autoRestoreSearchField) {
-            this.showSearchField = true;
+            this.setSearchState(true);
             this._autoRestoreSearchField = false;
         }
     }
@@ -326,10 +354,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         const shellbarComputerStyle = getComputedStyle(this.getDomRef());
         return this._calculateCSSREMValue(shellbarComputerStyle, getScopedVarName(cssVar)); // px
     }
-    domCalculatedAnumationDuration(cssVar) {
-        const shellbarComputerStyle = getComputedStyle(this.getDomRef());
-        return Number(shellbarComputerStyle.getPropertyValue(getScopedVarName(cssVar)).replace("s", "")) * 1000; // ms
-    }
     onBeforeRendering() {
         this.withLogo = this.hasLogo;
         this._hiddenIcons = this._itemsInfo.filter(info => {
@@ -341,12 +365,35 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             return isHidden && isSet && !shouldStayOnScreen;
         });
         this._observeContentItems();
+        // search field shouldn't be expanded initially in full width mode
+        if (this.showFullWidthSearch && this._isInitialRendering) {
+            this.setSearchState(false);
+            this._autoRestoreSearchField = true;
+        }
+        if (isSelfCollapsibleSearch(this.search)) {
+            if (isPhone()) {
+                this.search.open = this.showSearchField;
+            }
+            else {
+                this.search.collapsed = !this.showSearchField;
+            }
+        }
+    }
+    /**
+     * Use this method to change the state of the search filed according to internal logic.
+     * An event is fired to notify the change.
+     */
+    async setSearchState(expanded) {
+        if (expanded === this.showSearchField) {
+            return;
+        }
+        this.showSearchField = expanded;
+        await renderFinished();
+        this.fireDecoratorEvent("search-field-toggle", { expanded });
     }
     onAfterRendering() {
         this._lastOffsetWidth = this.offsetWidth;
-        if (!this._isAnimating) {
-            this._overflowActions();
-        }
+        this._overflowActions();
         this.onInitialRendering();
     }
     async onInitialRendering() {
@@ -355,8 +402,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             if (this.autoSearchField) {
                 this._updateSearchFieldState();
             }
-            this._maxAnimationDuration = this.domCalculatedAnumationDuration("--_ui5_shellbar_max_animation_duration");
-            this._performNoAnimation = getTheme().includes("hcb") || getTheme().includes("hcw");
         }
         this._isInitialRendering = false;
     }
@@ -389,7 +434,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     _resetItemsVisibility(items) {
         items.forEach(item => {
-            item.classList.contains("ui5-shellbar-hidden-button") && item.classList.remove("ui5-shellbar-hidden-button");
+            item.classList.remove("ui5-shellbar-hidden-button");
         });
     }
     _handleActionsOverflow() {
@@ -426,7 +471,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this._updateItemsInfo(itemsInfo);
         this._updateContentInfo(contentInfo);
         this._updateOverflowNotifications();
-        this.showFullWidthSearch = this.overflowed;
+        this.showFullWidthSearch = this.overflowed && this.showSearchField;
     }
     _toggleActionPopover() {
         const overflowButton = this.shadowRoot.querySelector(".ui5-shellbar-overflow-button");
@@ -436,6 +481,11 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     onEnterDOM() {
         ResizeHandler.register(this, this._handleResize);
+        if (isSelfCollapsibleSearch(this.search)) {
+            this.search.addEventListener("ui5-open", this.onSearchOpen);
+            this.search.addEventListener("ui5-close", this.onSearchClose);
+            this.search.addEventListener("ui5-search", this.onSearch);
+        }
         if (isDesktop()) {
             this.setAttribute("desktop", "");
         }
@@ -444,27 +494,10 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         this.contentItemsObserver.disconnect();
         this._observableContent = [];
         ResizeHandler.deregister(this, this._handleResize);
-    }
-    _handleAnimationEnd() {
-        this._overflowActions();
-        this._isAnimating = false;
-        this.searchField[0].removeEventListener("animationend", this._handleAnimationEndRef);
-        setTimeout(() => this.shadowRoot.querySelector("header").classList.remove("ui5-shellbar-animating"), this._maxAnimationDuration + 100); // adding 100ms buffer to cover animation time
-    }
-    _attachAnimationEndHandlers() {
-        if (!this._performNoAnimation) {
-            const searchWrapper = this.shadowRoot.querySelector(".ui5-shellbar-search-field");
-            this._isAnimating = true;
-            this.shadowRoot.querySelector("header").classList.add("ui5-shellbar-animating");
-            searchWrapper?.addEventListener("animationend", this._handleAnimationEndRef);
-            setTimeout(() => {
-                if (this._isAnimating) {
-                    this._handleAnimationEnd();
-                }
-            }, RESIZE_THROTTLE_RATE);
-        }
-        else {
-            this._overflowActions();
+        if (isSelfCollapsibleSearch(this.search)) {
+            this.search.removeEventListener("ui5-open", this.onSearchOpen);
+            this.search.removeEventListener("ui5-close", this.onSearchClose);
+            this.search.removeEventListener("ui5-search", this.onSearch);
         }
     }
     _handleSearchIconPress() {
@@ -473,11 +506,10 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             targetRef: searchButtonRef,
             searchFieldVisible: this.showSearchField,
         });
-        this._attachAnimationEndHandlers();
         if (defaultPrevented) {
             return;
         }
-        this.showSearchField = !this.showSearchField;
+        this.setSearchState(!this.showSearchField);
         if (!this.showSearchField) {
             return;
         }
@@ -528,8 +560,8 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         });
     }
     _handleCancelButtonPress() {
-        this.showSearchField = false;
-        this._attachAnimationEndHandlers();
+        this.showFullWidthSearch = false;
+        this.setSearchState(false);
     }
     _handleProductSwitchPress(e) {
         const buttonRef = this.shadowRoot.querySelector(".ui5-shellbar-button-product-switch"), target = e.target;
@@ -581,6 +613,16 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
      */
     get productSwitchDomRef() {
         return this.shadowRoot.querySelector(`*[data-ui5-stable="product-switch"]`);
+    }
+    /**
+     * Returns the `search` icon DOM ref.
+     * @returns The search icon DOM ref
+     * @public
+     * @since 2.10.0
+     */
+    async getSearchButtonDomRef() {
+        await renderFinished();
+        return this.shadowRoot.querySelector(`*[data-ui5-stable="toggle-search"]`);
     }
     _getContentInfo() {
         return [
@@ -708,7 +750,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         const notificationsArr = [];
         let overflowNotifications = null;
         this._itemsInfo.forEach(item => {
-            if (item.count && this.isIconHidden(item.icon)) {
+            if (item.count && item.classes.includes("ui5-shellbar-hidden-button")) {
                 notificationsArr.push(item.count);
             }
         });
@@ -767,8 +809,12 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     }
     get autoSearchField() {
         const onFocus = document.activeElement === this.searchField[0];
-        const isEmpty = this.searchField[0]?.value.length === 0;
-        return (this.showSearchField || this._autoRestoreSearchField) && !onFocus && isEmpty;
+        const hasValue = this.searchField[0]?.value?.length > 0;
+        const disableSearchCollapse = this.disableSearchCollapse || onFocus || hasValue;
+        if (disableSearchCollapse) {
+            return false;
+        }
+        return this.showSearchField || this._autoRestoreSearchField;
     }
     get startContentInfoSorted() {
         return this._contentInfo
@@ -809,6 +855,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
             },
             search: {
                 "ui5-shellbar-hidden-button": this.isIconHidden("search"),
+                "ui5-shellbar-search-toggle": true,
             },
             overflow: {
                 "ui5-shellbar-hidden-button": this._hiddenIcons.length === 0,
@@ -817,13 +864,19 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 "ui5-shellbar-hidden-button": this.isIconHidden("assistant"),
                 "ui5-shellbar-assistant-button": true,
             },
+            searchField: {
+                "ui5-shellbar-search-field": this.showSearchField,
+                "ui5-shellbar-search-toggle": isSelfCollapsibleSearch(this.search),
+                "ui5-shellbar-hidden-button": !this.showSearchField,
+            },
         };
     }
     get styles() {
+        const styles = {
+            "display": this.showSearchField ? "flex" : "none",
+        };
         return {
-            searchField: {
-                "display": this.showSearchField || this._isAnimating ? "flex" : "none",
-            },
+            searchField: isSelfCollapsibleSearch(this.search) ? {} : styles,
         };
     }
     get customItemsInfo() {
@@ -880,16 +933,18 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
         return ShellBar_1.i18nBundle.getText(SHELLBAR_LOGO_AREA, primaryTitle, secondaryTitle);
     }
     get _contentItemsText() {
-        return ShellBar_1.i18nBundle.getText(SHELLBAR_ADDITIONAL_CONTEXT);
+        return this._enableContentAreaAccessibility ? ShellBar_1.i18nBundle.getText(SHELLBAR_ADDITIONAL_CONTEXT) : undefined;
     }
     get _searchFieldDescription() {
         return ShellBar_1.i18nBundle.getText(SHELLBAR_SEARCHFIELD_DESCRIPTION);
     }
     get _contentItemsRole() {
-        if (this.contentItems.length === 1) {
-            return;
+        if (this._enableContentAreaAccessibility) {
+            return "group";
         }
-        return "group";
+    }
+    get _enableContentAreaAccessibility() {
+        return this.contentItems.length > 1;
     }
     get contentItems() {
         return [...this.startContent, ...this.endContent];
@@ -929,9 +984,6 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     get _productSwitchBtnText() {
         return ShellBar_1.i18nBundle.getText(SHELLBAR_PRODUCT_SWITCH_BTN);
     }
-    get isSearchFieldVisible() {
-        return this.searchField[0]?.offsetWidth || 0;
-    }
     get _profileText() {
         return this.accessibilityAttributes.profile?.name || ShellBar_1.i18nBundle.getText(SHELLBAR_PROFILE);
     }
@@ -944,13 +996,16 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     get _overflowText() {
         return ShellBar_1.i18nBundle.getText(SHELLBAR_OVERFLOW);
     }
+    get _brandingText() {
+        return this.accessibilityAttributes.branding?.name || this.primaryTitle;
+    }
     get hasContentItems() {
         return this.contentItems.length > 0;
     }
     get hidableDomElements() {
         const items = Array.from(this.shadowRoot.querySelectorAll(".ui5-shellbar-button:not(.ui5-shellbar-search-button):not(.ui5-shellbar-overflow-button):not(.ui5-shellbar-cancel-button):not(.ui5-shellbar-no-overflow-button)"));
         const assistant = this.shadowRoot.querySelector(".ui5-shellbar-assistant-button");
-        const searchButton = this.shadowRoot.querySelector(".ui5-shellbar-search-button");
+        const searchToggle = this.shadowRoot.querySelector(".ui5-shellbar-search-toggle");
         const contentItems = this.contentItemsWrappersSorted;
         const firstContentItem = contentItems.pop();
         const prioritizeContent = this.showSearchField && this.hasSearchField;
@@ -975,7 +1030,7 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                 ...items.toReversed(),
                 assistant,
                 ...contentItems,
-                searchButton,
+                searchToggle,
                 firstContentItem,
             ];
         }
@@ -1035,6 +1090,12 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
                     expanded: overflowExpanded === undefined ? this._overflowPopoverExpanded : overflowExpanded,
                 },
             },
+            branding: {
+                "title": this._brandingText,
+                "accessibilityAttributes": {
+                    name: this.accessibilityAttributes.branding?.name,
+                },
+            },
         };
     }
     get accLogoRole() {
@@ -1043,7 +1104,19 @@ let ShellBar = ShellBar_1 = class ShellBar extends UI5Element {
     get isSBreakPoint() {
         return this.breakpointSize === "S";
     }
+    get hasSelfCollapsibleSearch() {
+        return isSelfCollapsibleSearch(this.search);
+    }
+    get search() {
+        return this.searchField.length ? this.searchField[0] : null;
+    }
 };
+__decorate([
+    property({ type: Boolean })
+], ShellBar.prototype, "hideSearchButton", void 0);
+__decorate([
+    property({ type: Boolean })
+], ShellBar.prototype, "disableSearchCollapse", void 0);
 __decorate([
     property()
 ], ShellBar.prototype, "primaryTitle", void 0);
@@ -1102,7 +1175,10 @@ __decorate([
     slot()
 ], ShellBar.prototype, "menuItems", void 0);
 __decorate([
-    slot()
+    slot({
+        type: HTMLElement,
+        invalidateOnChildChange: true,
+    })
 ], ShellBar.prototype, "searchField", void 0);
 __decorate([
     slot()
@@ -1131,6 +1207,7 @@ ShellBar = ShellBar_1 = __decorate([
             Popover,
             ListItemStandard,
             Menu,
+            ButtonBadge,
         ],
     })
     /**
@@ -1202,6 +1279,16 @@ ShellBar = ShellBar_1 = __decorate([
         bubbles: true,
     })
     /**
+     * Fired, when the search field is expanded or collapsed.
+     * @since 2.10.0
+     * @param {Boolean} expanded whether the search field is expanded
+     * @public
+     */
+    ,
+    event("search-field-toggle", {
+        bubbles: true,
+    })
+    /**
      * Fired, when an item from the content slot is hidden or shown.
      * **Note:** The `content-item-visibility-change` event is in an experimental state and is a subject to change.
      *
@@ -1214,6 +1301,12 @@ ShellBar = ShellBar_1 = __decorate([
         bubbles: true,
     })
 ], ShellBar);
+const isSelfCollapsibleSearch = (searchField) => {
+    if (searchField) {
+        return "collapsed" in searchField && "open" in searchField;
+    }
+    return false;
+};
 ShellBar.define();
 export default ShellBar;
 //# sourceMappingURL=ShellBar.js.map

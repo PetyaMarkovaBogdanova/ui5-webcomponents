@@ -93,6 +93,12 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
          */
         this.accessibleRole = "ListItem";
         this._selectionMode = "None";
+        /**
+         * Defines the current media query size.
+         * @default "S"
+         * @private
+         */
+        this.mediaRange = "S";
         this.deactivateByKey = (e) => {
             if (isEnter(e)) {
                 this.deactivate();
@@ -180,7 +186,7 @@ let ListItem = ListItem_1 = class ListItem extends ListItemBase {
         if (e.target === this._listItem) {
             this.setAttribute("data-moving", "");
             e.dataTransfer.dropEffect = "move";
-            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.effectAllowed = "all";
         }
     }
     _ondragend(e) {
@@ -357,6 +363,9 @@ __decorate([
 __decorate([
     property()
 ], ListItem.prototype, "_selectionMode", void 0);
+__decorate([
+    property()
+], ListItem.prototype, "mediaRange", void 0);
 __decorate([
     slot()
 ], ListItem.prototype, "deleteButton", void 0);

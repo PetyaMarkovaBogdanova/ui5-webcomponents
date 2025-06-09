@@ -123,8 +123,14 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
          * @default {}
          */
         this.accessibilityAttributes = {};
+        /**
+         * @private
+         */
         this._hasImage = false;
         this._handleResizeBound = this.handleResize.bind(this);
+    }
+    onBeforeRendering() {
+        this._hasImage = this.hasImage;
     }
     get tabindex() {
         if (this.forcedTabIndex) {
@@ -175,8 +181,7 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
         return this.initials ? `${defaultLabel} ${this.initials}`.trim() : defaultLabel;
     }
     get hasImage() {
-        this._hasImage = !!this.image.length;
-        return this._hasImage;
+        return !!this.image.length;
     }
     get initialsContainer() {
         return this.getDomRef().querySelector(".ui5-avatar-initials");
@@ -314,8 +319,8 @@ Avatar = Avatar_1 = __decorate([
      *
      * **Note:** The event will not be fired if the `disabled`
      * property is set to `true`.
-     * @private
-     * @since 1.0.0-rc.11
+     * @public
+     * @since 2.11.0
      */
     ,
     event("click", {

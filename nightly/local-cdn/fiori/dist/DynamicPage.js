@@ -125,12 +125,27 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
             this.dynamicPageTitle.hasSnappedTitleOnMobile = !!this.hasSnappedTitleOnMobile;
             this.dynamicPageTitle.removeAttribute("hovered");
         }
+        const titleHeight = this.dynamicPageTitle?.getBoundingClientRect().height || 0;
+        const headerHeight = this.dynamicPageHeader?.getBoundingClientRect().height || 0;
+        const footerHeight = this.showFooter ? this.footerWrapper?.getBoundingClientRect().height : 0;
+        if (this.scrollContainer) {
+            this.scrollContainer.style.setProperty("scroll-padding-block-end", `${footerHeight}px`);
+            if (this._headerSnapped) {
+                this.scrollContainer.style.setProperty("scroll-padding-block-start", `${titleHeight}px`);
+            }
+            else {
+                this.scrollContainer.style.setProperty("scroll-padding-block-start", `${headerHeight + titleHeight}px`);
+            }
+        }
     }
     get dynamicPageTitle() {
         return this.querySelector("[ui5-dynamic-page-title]");
     }
     get dynamicPageHeader() {
         return this.querySelector("[ui5-dynamic-page-header]");
+    }
+    get footerWrapper() {
+        return this.shadowRoot?.querySelector(".ui5-dynamic-page-footer");
     }
     get actionsInTitle() {
         return this._headerSnapped || this.showHeaderInStickArea || this.headerPinned;
@@ -148,11 +163,6 @@ let DynamicPage = DynamicPage_1 = class DynamicPage extends UI5Element {
     }
     get _headerExpanded() {
         return !this._headerSnapped;
-    }
-    get _accAttributesForHeaderActions() {
-        return {
-            controls: `${this._id}-header`,
-        };
     }
     get headerTabIndex() {
         return (this._headerSnapped || this.showHeaderInStickArea) ? -1 : 0;

@@ -1,6 +1,7 @@
 import type { ClassMap } from "@ui5/webcomponents-base/dist/types.js";
 import MenuItem from "@ui5/webcomponents/dist/MenuItem.js";
 import type SideNavigationItemDesign from "./types/SideNavigationItemDesign.js";
+import type SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
 /**
  * @class
  *
@@ -52,6 +53,7 @@ declare class NavigationMenuItem extends MenuItem {
      */
     target?: string;
     design: `${SideNavigationItemDesign}`;
+    associatedItem?: SideNavigationSelectableItemBase;
     get isExternalLink(): boolean | "" | undefined;
     get _href(): string | undefined;
     get _accInfo(): {
@@ -73,6 +75,11 @@ declare class NavigationMenuItem extends MenuItem {
         tooltip?: string;
     };
     get classes(): ClassMap;
+    _onclick(e: MouseEvent): void;
+    _activate(e: MouseEvent | KeyboardEvent): void;
+    _handleFocus(associatedItem: SideNavigationSelectableItemBase): void;
+    _onkeydown(e: KeyboardEvent): Promise<void>;
+    _onkeyup(e: KeyboardEvent): void;
     get acessibleNameText(): string;
 }
 export default NavigationMenuItem;

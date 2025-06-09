@@ -3,6 +3,7 @@ import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delega
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import ScrollEnablement from "@ui5/webcomponents-base/dist/delegate/ScrollEnablement.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
+import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import type ResponsivePopover from "./ResponsivePopover.js";
 import type List from "./List.js";
 import type { ListItemDeleteEventDetail } from "./List.js";
@@ -10,6 +11,7 @@ import ListSelectionMode from "./types/ListSelectionMode.js";
 import type Token from "./Token.js";
 import type { IToken } from "./MultiInput.js";
 import type { TokenDeleteEventDetail } from "./Token.js";
+import type Button from "./Button.js";
 type TokenizerTokenDeleteEventDetail = {
     tokens: Token[];
 };
@@ -167,6 +169,10 @@ declare class Tokenizer extends UI5Element {
     hidePopoverArrow: boolean;
     _nMoreCount: number;
     _tokensCount: number;
+    /**
+     * Defines the tokens to be displayed.
+     * @public
+     */
     tokens: Array<Token>;
     static i18nBundle: I18nBundle;
     _resizeHandler: ResizeObserverCallback;
@@ -205,7 +211,7 @@ declare class Tokenizer extends UI5Element {
     handleBeforeClose(): void;
     handleBeforeOpen(): void;
     handleAfterClose(): void;
-    handleDialogButtonPress(e: MouseEvent): void;
+    handleDialogButtonPress(e: UI5CustomEvent<Button, "click">): void;
     _onkeydown(e: KeyboardEvent): void;
     _onPopoverListKeydown(e: KeyboardEvent): void;
     _handleItemNavigation(e: KeyboardEvent, tokens: Array<Token>): void | -1;
@@ -250,6 +256,8 @@ declare class Tokenizer extends UI5Element {
     get contentDom(): HTMLElement;
     get moreLink(): HTMLElement | null;
     get tokenizerLabel(): string;
+    get _okButtonText(): string;
+    get _cancelButtonText(): string;
     get tokenizerAriaDescription(): string | undefined;
     get _ariaDisabled(): true | undefined;
     get _ariaReadonly(): true | undefined;

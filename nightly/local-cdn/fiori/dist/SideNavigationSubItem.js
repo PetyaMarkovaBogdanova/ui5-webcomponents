@@ -8,6 +8,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase.js";
 import SideNavigationSubItemTemplate from "./SideNavigationSubItemTemplate.js";
+import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 // Styles
 import SideNavigationSubItemCss from "./generated/themes/SideNavigationSubItem.css.js";
 /**
@@ -28,6 +29,16 @@ import SideNavigationSubItemCss from "./generated/themes/SideNavigationSubItem.c
  * @since 1.0.0-rc.8
  */
 let SideNavigationSubItem = class SideNavigationSubItem extends SideNavigationSelectableItemBase {
+    constructor() {
+        super(...arguments);
+        /**
+         * Defines if the item's parent is disabled.
+         * @private
+         * @default false
+         * @since 2.10.0
+         */
+        this._parentDisabled = false;
+    }
     _onkeydown(e) {
         super._onkeydown(e);
     }
@@ -40,14 +51,23 @@ let SideNavigationSubItem = class SideNavigationSubItem extends SideNavigationSe
     _onclick(e) {
         super._onclick(e);
     }
+    get effectiveDisabled() {
+        return this.disabled || this._parentDisabled;
+    }
     get classesArray() {
         const classes = super.classesArray;
         if (this.icon) {
             classes.push("ui5-sn-item-has-icon");
         }
+        if (this.effectiveDisabled) {
+            classes.push("ui5-sn-item-disabled");
+        }
         return classes;
     }
 };
+__decorate([
+    property({ type: Boolean, noAttribute: true })
+], SideNavigationSubItem.prototype, "_parentDisabled", void 0);
 SideNavigationSubItem = __decorate([
     customElement({
         tag: "ui5-side-navigation-sub-item",

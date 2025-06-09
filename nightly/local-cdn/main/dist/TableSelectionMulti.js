@@ -59,7 +59,7 @@ let TableSelectionMulti = class TableSelectionMulti extends TableSelectionBase {
         const rowKey = this.getRowKey(row);
         return this.getSelectedAsSet().has(rowKey);
     }
-    setSelected(row, selected, _fireEvent = false) {
+    setSelected(row, selected, fireEvent = false) {
         if (this._rangeSelection?.isMouse && this._rangeSelection.shiftPressed) {
             return;
         }
@@ -70,7 +70,7 @@ let TableSelectionMulti = class TableSelectionMulti extends TableSelectionBase {
             selectedSet[selected ? "add" : "delete"](rowKey);
         });
         this.setSelectedAsSet(selectedSet);
-        _fireEvent && this.fireDecoratorEvent("change");
+        fireEvent && this.fireDecoratorEvent("change");
     }
     /**
      * Returns an array of the selected rows.
@@ -82,8 +82,6 @@ let TableSelectionMulti = class TableSelectionMulti extends TableSelectionBase {
     }
     /**
      * Determines whether all rows are selected.
-     *
-     * @public
      */
     areAllRowsSelected() {
         if (!this._table || !this._table.rows.length) {
@@ -114,11 +112,6 @@ let TableSelectionMulti = class TableSelectionMulti extends TableSelectionBase {
     setSelectedAsSet(selectedSet) {
         this.selected = [...selectedSet].join(" ");
     }
-    _invalidateTableAndRows() {
-        super._invalidateTableAndRows();
-        const headerRow = this._table?.headerRow[0];
-        headerRow && headerRow._invalidate++;
-    }
     _onkeydown(e) {
         if (!this._table || !e.shiftKey) {
             return;
@@ -130,7 +123,8 @@ let TableSelectionMulti = class TableSelectionMulti extends TableSelectionBase {
         }
         if (!this._rangeSelection) {
             // If no range selection is active, start one
-            this._startRangeSelection(focusedElement);
+            const row = focusedElement;
+            this._startRangeSelection(row, this.isSelected(row));
         }
         else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
             const change = isUpShift(e) ? -1 : 1;
@@ -173,6 +167,7 @@ let TableSelectionMulti = class TableSelectionMulti extends TableSelectionBase {
             // Therefore, we need to manually set the checked attribute again, as clicking it would deselect it and leads to
             // a visual inconsistency.
             row.shadowRoot?.querySelector("#selection-component")?.toggleAttribute("checked", true);
+            e.stopImmediatePropagation();
             if (startIndex === -1 || endIndex === -1 || row.rowKey === startRow.rowKey || row.rowKey === this._rangeSelection.rows[this._rangeSelection.rows.length - 1].rowKey) {
                 return;
             }
@@ -180,7 +175,7 @@ let TableSelectionMulti = class TableSelectionMulti extends TableSelectionBase {
             this._handleRangeSelection(row, change);
         }
         else if (row) {
-            this._startRangeSelection(row, true);
+            this._startRangeSelection(row, !this.isSelected(row), true);
         }
     }
     /**
@@ -188,12 +183,7 @@ let TableSelectionMulti = class TableSelectionMulti extends TableSelectionBase {
      * @param row starting row
      * @private
      */
-    _startRangeSelection(row, isMouse = false) {
-        const selected = this.isSelected(row);
-        if (isMouse && !selected) {
-            // Do not initiate range selection if the row is not selected
-            return;
-        }
+    _startRangeSelection(row, selected, isMouse = false) {
         this._rangeSelection = {
             selected,
             isUp: null,

@@ -32,6 +32,7 @@ import ListSelectionMode from "./types/ListSelectionMode.js";
 import ListGrowingMode from "./types/ListGrowingMode.js";
 import ListAccessibleRole from "./types/ListAccessibleRole.js";
 import ListSeparator from "./types/ListSeparator.js";
+import MediaRange from "@ui5/webcomponents-base/dist/MediaRange.js";
 // Template
 import ListTemplate from "./ListTemplate.js";
 // Styles
@@ -39,6 +40,7 @@ import listCss from "./generated/themes/List.css.js";
 // Texts
 import { LIST_ROLE_LIST_GROUP_DESCRIPTION, LIST_ROLE_LISTBOX_GROUP_DESCRIPTION, LOAD_MORE_TEXT, ARIA_LABEL_LIST_SELECTABLE, ARIA_LABEL_LIST_MULTISELECTABLE, ARIA_LABEL_LIST_DELETABLE, } from "./generated/i18n/i18n-defaults.js";
 import { isInstanceOfListItemGroup } from "./ListItemGroup.js";
+import { findVerticalScrollContainer } from "./TableUtils.js";
 const INFINITE_SCROLL_DEBOUNCE_RATE = 250; // ms
 const PAGE_UP_DOWN_SIZE = 10;
 /**
@@ -160,11 +162,15 @@ let List = List_1 = class List extends UI5Element {
          * @private
          */
         this._loadMoreActive = false;
+        /**
+         * Defines the current media query size.
+         * @default "S"
+         * @private
+         */
+        this.mediaRange = "S";
         this._previouslyFocusedItem = null;
         // Indicates that the List is forwarding the focus before or after the internal ul.
         this._forwardingFocus = false;
-        // Indicates that the List has already subscribed for resize.
-        this.resizeListenerAttached = false;
         // Indicates if the IntersectionObserver started observing the List
         this.listEndObserved = false;
         this._itemNavigation = new ItemNavigation(this, {
@@ -172,8 +178,7 @@ let List = List_1 = class List extends UI5Element {
             navigationMode: NavigationMode.Vertical,
             getItemsCallback: () => this.getEnabledItems(),
         });
-        this._handleResize = this.checkListInViewport.bind(this);
-        this._handleResize = this.checkListInViewport.bind(this);
+        this._handleResizeCallback = this._handleResize.bind(this);
         // Indicates the List bottom most part has been detected by the IntersectionObserver
         // for the first time.
         this.initialIntersection = true;
@@ -200,12 +205,12 @@ let List = List_1 = class List extends UI5Element {
     onEnterDOM() {
         registerUI5Element(this, this._updateAssociatedLabelsTexts.bind(this));
         DragRegistry.subscribe(this);
+        ResizeHandler.register(this.getDomRef(), this._handleResizeCallback);
     }
     onExitDOM() {
         deregisterUI5Element(this);
         this.unobserveListEnd();
-        this.resizeListenerAttached = false;
-        ResizeHandler.deregister(this.getDomRef(), this._handleResize);
+        ResizeHandler.deregister(this.getDomRef(), this._handleResizeCallback);
         DragRegistry.unsubscribe(this);
     }
     onBeforeRendering() {
@@ -222,7 +227,6 @@ let List = List_1 = class List extends UI5Element {
         }
         if (this.grows) {
             this.checkListInViewport();
-            this.attachForResize();
         }
     }
     attachGroupHeaderEvents() {
@@ -245,11 +249,8 @@ let List = List_1 = class List extends UI5Element {
             }
         });
     }
-    attachForResize() {
-        if (!this.resizeListenerAttached) {
-            this.resizeListenerAttached = true;
-            ResizeHandler.register(this.getDomRef(), this._handleResize);
-        }
+    getFocusDomRef() {
+        return this._itemNavigation._getCurrentItem();
     }
     get shouldRenderH1() {
         return !this.header.length && this.headerText;
@@ -375,6 +376,7 @@ let List = List_1 = class List extends UI5Element {
                 item._selectionMode = this.selectionMode;
             }
             item.hasBorder = showBottomBorder;
+            item.mediaRange = this.mediaRange;
         });
     }
     async observeListEnd() {
@@ -614,6 +616,11 @@ let List = List_1 = class List extends UI5Element {
             this.fireDecoratorEvent("load-more");
         }
     }
+    _handleResize() {
+        this.checkListInViewport();
+        const width = this.getBoundingClientRect().width;
+        this.mediaRange = MediaRange.getCurrentRange(MediaRange.RANGESETS.RANGE_4STEPS, width);
+    }
     /*
     * KEYBOARD SUPPORT
     */
@@ -696,6 +703,7 @@ let List = List_1 = class List extends UI5Element {
         this.dropIndicatorDOM.targetReference = null;
     }
     _ondragover(e) {
+        const target = e.target;
         if (!(e.target instanceof HTMLElement)) {
             return;
         }
@@ -707,6 +715,7 @@ let List = List_1 = class List extends UI5Element {
         const { targetReference, placement } = handleDragOver(e, this, closestPosition, closestPosition.element, { originalEvent: true });
         this.dropIndicatorDOM.targetReference = targetReference;
         this.dropIndicatorDOM.placement = placement;
+        target.style.cursor = "not-allowed";
     }
     _ondrop(e) {
         if (!this.dropIndicatorDOM?.targetReference || !this.dropIndicatorDOM?.placement) {
@@ -895,9 +904,10 @@ let List = List_1 = class List extends UI5Element {
     }
     getIntersectionObserver() {
         if (!this.growingIntersectionObserver) {
+            const scrollContainer = this.scrollContainer || findVerticalScrollContainer(this.getDomRef());
             this.growingIntersectionObserver = new IntersectionObserver(this.onInteresection.bind(this), {
-                root: null,
-                rootMargin: "0px",
+                root: scrollContainer,
+                rootMargin: "5px",
                 threshold: 1.0,
             });
         }
@@ -961,6 +971,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], List.prototype, "_loadMoreActive", void 0);
+__decorate([
+    property()
+], List.prototype, "mediaRange", void 0);
 __decorate([
     slot({
         type: HTMLElement,

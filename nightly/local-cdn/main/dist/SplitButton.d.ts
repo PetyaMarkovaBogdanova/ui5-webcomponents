@@ -1,5 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { AriaHasPopup } from "@ui5/webcomponents-base";
+import type { AriaHasPopup, UI5CustomEvent } from "@ui5/webcomponents-base";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type ButtonDesign from "./types/ButtonDesign.js";
 import type Button from "./Button.js";
@@ -100,17 +100,11 @@ declare class SplitButton extends UI5Element {
      */
     _tabIndex: number;
     /**
-     * Indicates if there is Space key pressed
+     * Indicates if there is Shift or Escape key pressed while Space key is down.
      * @default false
      * @private
      */
-    _spacePressed: boolean;
-    /**
-     * Indicates if there is SHIFT or ESCAPE key pressed
-     * @default false
-     * @private
-     */
-    _shiftOrEscapePressed: boolean;
+    _shiftOrEscapePressedDuringSpace: boolean;
     /**
      * Defines the active state of the text button
      * @default false
@@ -148,17 +142,15 @@ declare class SplitButton extends UI5Element {
      * @public
      */
     text: Array<Node>;
-    _isDefaultActionPressed: boolean;
-    _isKeyDownOperation: boolean;
     static i18nBundle: I18nBundle;
     onBeforeRendering(): void;
-    _handleMouseClick(e: MouseEvent): void;
+    _handleMouseClick(e: UI5CustomEvent<Button, "click">): void;
     _onFocusOut(): void;
-    _onFocusIn(): void;
     handleTouchStart(e: TouchEvent | MouseEvent): void;
     _onInnerButtonFocusIn(e: FocusEvent): void;
     _onKeyDown(e: KeyboardEvent): void;
     _onKeyUp(e: KeyboardEvent): void;
+    _resetActionButtonStates(): void;
     _fireClick(e?: Event): void;
     _fireArrowClick(e?: Event): void;
     _textButtonRelease(): void;
@@ -179,24 +171,17 @@ declare class SplitButton extends UI5Element {
      */
     _isDefaultAction(e: KeyboardEvent): boolean;
     /**
-     * Checks if the pressed key is an escape key or shift key.
-     * @param e - keyboard event
-     * @private
-     */
-    _isShiftOrEscape(e: KeyboardEvent): boolean;
-    /**
      * Handles the click event and the focus on the arrow button.
      * @param e - keyboard event
      * @private
      */
-    _handleArrowButtonAction(e: KeyboardEvent | MouseEvent): void;
+    _handleArrowButtonAction(e: UI5CustomEvent<Button, "click"> | KeyboardEvent): void;
     /**
      * Handles the default action and the active state of the respective button.
      * @param e - keyboard event
      * @private
      */
     _handleDefaultAction(e: KeyboardEvent): void;
-    _handleShiftOrEscapePressed(): void;
     get effectiveActiveArrowButton(): boolean;
     get textButtonAccText(): string | null;
     get isTextButton(): boolean;

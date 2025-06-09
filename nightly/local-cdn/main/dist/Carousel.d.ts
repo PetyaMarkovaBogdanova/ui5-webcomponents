@@ -1,4 +1,5 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
+import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import ScrollEnablement from "@ui5/webcomponents-base/dist/delegate/ScrollEnablement.js";
 import type { ScrollEnablementEventListenerParam } from "@ui5/webcomponents-base/dist/delegate/ScrollEnablement.js";
@@ -7,6 +8,7 @@ import CarouselArrowsPlacement from "./types/CarouselArrowsPlacement.js";
 import CarouselPageIndicatorType from "./types/CarouselPageIndicatorType.js";
 import type BackgroundDesign from "./types/BackgroundDesign.js";
 import type BorderDesign from "./types/BorderDesign.js";
+import type Button from "./Button.js";
 type CarouselNavigateEventDetail = {
     selectedIndex: number;
 };
@@ -217,7 +219,7 @@ declare class Carousel extends UI5Element {
     get _getLastFocusedActivePageIndex(): number;
     navigateLeft(): void;
     navigateRight(): void;
-    _navButtonClick(e: MouseEvent): void;
+    _navButtonClick(e: UI5CustomEvent<Button, "click">): void;
     /**
      * Changes the currently displayed page.
      * @param itemIndex The index of the target page

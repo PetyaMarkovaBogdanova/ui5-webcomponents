@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import ListItemGroup from "@ui5/webcomponents/dist/ListItemGroup.js";
 import SearchItemGroupCss from "./generated/themes/SearchItemGroup.css.js";
+import ListBoxItemGroupTemplate from "@ui5/webcomponents/dist/ListBoxItemGroupTemplate.js";
 /**
  * @class
  * The `ui5-search-item-group` is type of suggestion item,
@@ -32,6 +33,7 @@ SearchItemGroup = __decorate([
             ListItemGroup.styles,
             SearchItemGroupCss,
         ],
+        template: ListBoxItemGroupTemplate,
     })
 ], SearchItemGroup);
 SearchItemGroup.define();

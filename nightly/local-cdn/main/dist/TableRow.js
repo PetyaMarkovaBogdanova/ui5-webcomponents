@@ -6,8 +6,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 import { customElement, slot, property } from "@ui5/webcomponents-base/dist/decorators.js";
 import { isEnter } from "@ui5/webcomponents-base/dist/Keys.js";
-import { toggleAttribute } from "./TableUtils.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
+import { toggleAttribute } from "./TableUtils.js";
 import TableRowTemplate from "./TableRowTemplate.js";
 import TableRowBase from "./TableRowBase.js";
 import TableRowCss from "./generated/themes/TableRow.css.js";
@@ -27,7 +27,6 @@ import "@ui5/webcomponents-icons/dist/overflow.js";
  * @extends TableRowBase
  * @since 2.0.0
  * @public
- * @experimental This web component is available since 2.0 with an experimental flag and its API and behavior are subject to change.
  */
 let TableRow = class TableRow extends TableRowBase {
     constructor() {
@@ -74,12 +73,17 @@ let TableRow = class TableRow extends TableRowBase {
         }
         if (eventOrigin === this && this._isInteractive && isEnter(e)) {
             this.toggleAttribute("_active", true);
-            this._table?._onRowClick(this);
+            this._onclick();
         }
     }
     _onclick() {
-        if (this._isInteractive && this === getActiveElement()) {
-            this._table?._onRowClick(this);
+        if (this === getActiveElement()) {
+            if (this._isSelectable && !this._hasRowSelector) {
+                this._onSelectionChange();
+            }
+            else if (this.interactive) {
+                this._table?._onRowClick(this);
+            }
         }
     }
     _onkeyup() {
@@ -91,9 +95,10 @@ let TableRow = class TableRow extends TableRowBase {
     _onOverflowButtonClick(e) {
         const ctor = this.actions[0].constructor;
         ctor.showMenu(this._overflowActions, e.target);
+        e.stopPropagation();
     }
     get _isInteractive() {
-        return this.interactive;
+        return this.interactive || (this._isSelectable && !this._hasRowSelector);
     }
     get _hasOverflowActions() {
         let renderedActionsCount = 0;

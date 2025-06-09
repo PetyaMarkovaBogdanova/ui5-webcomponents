@@ -85,7 +85,7 @@ let Breadcrumbs = Breadcrumbs_1 = class Breadcrumbs extends UI5Element {
         // the width of the interactive element that opens the overflow
         this._dropdownArrowLinkWidth = 0;
         this._itemNavigation = new ItemNavigation(this, {
-            navigationMode: NavigationMode.Horizontal,
+            navigationMode: NavigationMode.Auto,
             getItemsCallback: () => this._getFocusableItems(),
         });
         this._onResizeHandler = this._updateOverflow.bind(this);
@@ -133,7 +133,7 @@ let Breadcrumbs = Breadcrumbs_1 = class Breadcrumbs extends UI5Element {
     _initItemNavigation() {
         if (!this._itemNavigation) {
             this._itemNavigation = new ItemNavigation(this, {
-                navigationMode: NavigationMode.Horizontal,
+                navigationMode: NavigationMode.Auto,
                 getItemsCallback: () => this._getFocusableItems(),
             });
         }

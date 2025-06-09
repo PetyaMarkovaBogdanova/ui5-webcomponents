@@ -698,10 +698,10 @@ let TabContainer = TabContainer_1 = class TabContainer extends UI5Element {
     }
     _getRootTab(tab) {
         while (tab?.hasAttribute("ui5-tab")) {
-            if (tab.parentElement.hasAttribute("ui5-tabcontainer")) {
+            if (tab.parentElement?.hasAttribute("ui5-tabcontainer")) {
                 break;
             }
-            tab = tab.parentElement;
+            tab = (tab.parentElement ?? undefined);
         }
         return tab;
     }

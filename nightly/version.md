@@ -1,5 +1,5 @@
-commit f8a2bd47b2e611b28661630ea1b99d8c5e44b4a6
+commit 54e9187812d8e3345abf3ec96280e650df6a0fa5
 Author: PetyaMarkovaBogdanova <petya.markova@sap.com>
-Date:   Mon Mar 31 14:50:32 2025 +0300
+Date:   Mon Jun 9 15:27:11 2025 +0300
 
-    Merge branch 'main' into shellbar-motion-design
+    test(ui5-list): add drag and drop cursor

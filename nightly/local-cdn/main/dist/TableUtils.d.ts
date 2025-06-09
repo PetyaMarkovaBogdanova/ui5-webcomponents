@@ -9,4 +9,11 @@ declare const scrollElementIntoView: (scrollContainer: HTMLElement, element: HTM
 declare const isFeature: <T>(element: any, identifier: string) => element is T;
 declare const throttle: (callback: () => void) => () => void;
 declare const toggleAttribute: (element: HTMLElement, attribute: string, condition: boolean | undefined, value?: string) => void;
-export { isInstanceOfTable, isSelectionCheckbox, isHeaderSelector, findRowInPath, findVerticalScrollContainer, scrollElementIntoView, isFeature, throttle, toggleAttribute, };
+/**
+ * Checks if a given width is valid for a column.
+ *
+ * @param width Width string to check
+ * @returns {boolean} true if the width is valid, false otherwise
+ */
+declare const isValidColumnWidth: (width: string | undefined) => width is string;
+export { isInstanceOfTable, isSelectionCheckbox, isHeaderSelector, findRowInPath, findVerticalScrollContainer, scrollElementIntoView, isFeature, throttle, toggleAttribute, isValidColumnWidth, };

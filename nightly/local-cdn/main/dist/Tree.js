@@ -194,6 +194,9 @@ let Tree = class Tree extends UI5Element {
         }
     }
     _onListSelectionChange(e) {
+        if (!e.detail || !e.detail.previouslySelectedItems || !e.detail.selectedItems) {
+            return;
+        }
         const previouslySelectedItems = e.detail.previouslySelectedItems;
         const selectedItems = e.detail.selectedItems;
         const targetItem = e.detail.targetItem;
@@ -369,10 +372,28 @@ Tree = __decorate([
     ,
     event("selection-change", {
         bubbles: true,
-    }),
+    })
+    /**
+     * Fired when a movable tree item is moved over a potential drop target during a drag-and-drop operation.
+     *
+     * If the new position is valid, prevent the default action of the event using `preventDefault()`.
+     * @param {object} source Contains information about the moved element under the `element` property.
+     * @param {object} destination Contains information about the destination of the moved element. Has `element` and `placement` properties.
+     * @public
+     */
+    ,
     event("move", {
         bubbles: true,
-    }),
+    })
+    /**
+     * Fired when a movable tree item is dropped onto a drop target.
+     *
+     * **Note:** The `move` event is fired only if there was a preceding `move-over` event with prevented default action.
+     * @param {object} source Contains information about the moved element under the `element` property.
+     * @param {object} destination Contains information about the destination of the moved element. Has `element` and `placement` properties.
+     * @public
+     */
+    ,
     event("move-over", {
         bubbles: true,
         cancelable: true,

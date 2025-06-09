@@ -307,6 +307,7 @@ declare class ComboBox extends UI5Element implements IFormInputElement {
     get _headerTitleText(): string;
     get _iconAccessibleNameText(): string;
     get _popupLabel(): string;
+    get _dialogOkButtonText(): string;
     get inner(): HTMLInputElement;
     _getPicker(): ResponsivePopover;
     _getPickerInput(): HTMLInputElement;

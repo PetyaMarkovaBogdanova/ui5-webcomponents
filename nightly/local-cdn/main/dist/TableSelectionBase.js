@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import { property, eventStrict } from "@ui5/webcomponents-base/dist/decorators.js";
 import { isInstanceOfTable } from "./TableUtils.js";
+import TableSelectionBehavior from "./types/TableSelectionBehavior.js";
 /**
  * Fired when the selection is changed by user interaction.
  *
@@ -24,6 +25,14 @@ let TableSelectionBase =
 class TableSelectionBase extends UI5Element {
     constructor() {
         super(...arguments);
+        /**
+         * Defines the selection behavior.
+         *
+         * @default "RowSelector"
+         * @public
+         * @since 2.11
+         */
+        this.behavior = "RowSelector";
         this.identifier = "TableSelection";
     }
     onTableActivate(table) {
@@ -54,13 +63,12 @@ class TableSelectionBase extends UI5Element {
      * Determines whether a row selector (for example, `radiobutton` or `checkbox`) is rendered.
      */
     isRowSelectorRequired() {
-        return true;
+        return this.behavior === TableSelectionBehavior.RowSelector;
     }
     /**
      * Returns the unique key associated with the table row.
      *
      * @param row The row instance
-     * @public
      */
     getRowKey(row) {
         return row.rowKey || "";
@@ -78,19 +86,21 @@ class TableSelectionBase extends UI5Element {
     }
     /**
      * Invalidates the table and its rows to re-evaluate the selection.
-     *
-     * @protected
      */
     _invalidateTableAndRows() {
         if (this._table) {
             this._table._invalidate++;
             this._table.rows.forEach(row => row._invalidate++);
+            this._table.headerRow.forEach(row => row._invalidate++);
         }
     }
 };
 __decorate([
     property()
 ], TableSelectionBase.prototype, "selected", void 0);
+__decorate([
+    property()
+], TableSelectionBase.prototype, "behavior", void 0);
 TableSelectionBase = __decorate([
     eventStrict("change", {
         bubbles: false,

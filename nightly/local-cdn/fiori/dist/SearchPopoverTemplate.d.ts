@@ -1,2 +1,3 @@
 import type Search from "./Search.js";
-export default function SearchPopoverTemplate(this: Search): import("@ui5/webcomponents-base/jsx-runtime").JSX.Element;
+import type { JsxTemplate } from "@ui5/webcomponents-base/dist/index.js";
+export default function SearchPopoverTemplate(this: Search, headerTemplate?: JsxTemplate): import("@ui5/webcomponents-base/jsx-runtime").JSX.Element;

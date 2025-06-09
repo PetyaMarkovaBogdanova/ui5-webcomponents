@@ -1,15 +1,20 @@
 import SideNavigationItemBase from "./SideNavigationItemBase.js";
 import type SideNavigationItemDesign from "./types/SideNavigationItemDesign.js";
 import type { AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
+import type { SideNavigationItemClickEventDetail } from "./SideNavigationItemBase.js";
 type SideNavigationItemAccessibilityAttributes = Pick<AccessibilityAttributes, "hasPopup">;
 /**
  * Fired when the component is activated either with a click/tap or by using the [Enter] or [Space] keys.
  *
  * @public
+ * @param {boolean} altKey Returns whether the "ALT" key was pressed when the event was triggered.
+ * @param {boolean} ctrlKey Returns whether the "CTRL" key was pressed when the event was triggered.
+ * @param {boolean} metaKey Returns whether the "META" key was pressed when the event was triggered.
+ * @param {boolean} shiftKey Returns whether the "SHIFT" key was pressed when the event was triggered.
  */
 declare class SideNavigationSelectableItemBase extends SideNavigationItemBase {
     eventDetails: SideNavigationItemBase["eventDetails"] & {
-        "click": void;
+        "click": SideNavigationItemClickEventDetail;
     };
     /**
      * Defines the icon of the item.
@@ -102,6 +107,12 @@ declare class SideNavigationSelectableItemBase extends SideNavigationItemBase {
      * @default false
      */
     isOverflow: boolean;
+    /**
+     * Reference to the original side navigation item that opened the popover.
+     *
+     * @private
+     */
+    associatedItem?: SideNavigationItemBase;
     get ariaRole(): "menuitem" | "menuitemradio" | "treeitem";
     get isSelectable(): boolean;
     get _href(): string | undefined;

@@ -24,7 +24,6 @@ import { TABLE_NAVIGATION } from "./generated/i18n/i18n-defaults.js";
  * @extends TableRowActionBase
  * @since 2.7.0
  * @public
- * @experimental
  */
 let TableRowActionNavigation = TableRowActionNavigation_1 = class TableRowActionNavigation extends TableRowActionBase {
     constructor() {

@@ -180,14 +180,18 @@ let DateRangePicker = DateRangePicker_1 = class DateRangePicker extends DatePick
         super.onResponsivePopoverAfterClose();
     }
     /**
-     * @override
+     * Checks if a value is valid against the current date format of the DatePicker.
+     * @public
+     * @param value A value to be tested against the current date format
      */
     isValid(value) {
         const parts = this._splitValueByDelimiter(value);
         return parts.length <= 2 && parts.every(dateString => super.isValid(dateString)); // must be at most 2 dates and each must be valid
     }
     /**
-     * @override
+     * Checks if a date is between the minimum and maximum date.
+     * @public
+     * @param value A value to be checked
      */
     isInValidRange(value) {
         return this._splitValueByDelimiter(value).every(dateString => super.isInValidRange(dateString));

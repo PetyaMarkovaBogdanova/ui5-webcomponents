@@ -15,7 +15,7 @@ import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
-import { isTabNext, isTabPrevious, isSpace, isEnter, isCtrlA, isUpAlt, isDownAlt, isUpShift, isDownShift, isHomeCtrl, isEndCtrl, isHomeShift, isEndShift, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isTabNext, isTabPrevious, isSpace, isEnter, isDown, isCtrlA, isUpAlt, isDownAlt, isUpShift, isDownShift, isHomeCtrl, isEndCtrl, isHomeShift, isEndShift, } from "@ui5/webcomponents-base/dist/Keys.js";
 import getNormalizedTarget from "@ui5/webcomponents-base/dist/util/getNormalizedTarget.js";
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import { getLastTabbableElement, getTabbableElements } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
@@ -524,6 +524,11 @@ let Table = Table_1 = class Table extends UI5Element {
     }
     onRowFocused(e) {
         this._itemNavigation.setCurrentItem(e.target);
+    }
+    onRowKeyDown(e) {
+        if (this.growing === "Scroll" && isDown(e) && this.currentItemIdx === this.rows.length - 1) {
+            debounce(this.loadMore.bind(this), GROWING_WITH_SCROLL_DEBOUNCE_RATE);
+        }
     }
     _onColumnHeaderFocused() {
         this._itemNavigation.setCurrentItem(this._columnHeader);
