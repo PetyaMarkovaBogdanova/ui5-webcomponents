@@ -704,7 +704,6 @@ let List = List_1 = class List extends UI5Element {
     }
     _ondragover(e) {
         e.preventDefault();
-        const target = e.target;
         if (!(e.target instanceof HTMLElement)) {
             return;
         }
@@ -716,7 +715,6 @@ let List = List_1 = class List extends UI5Element {
         const { targetReference, placement } = handleDragOver(e, this, closestPosition, closestPosition.element, { originalEvent: true });
         this.dropIndicatorDOM.targetReference = targetReference;
         this.dropIndicatorDOM.placement = placement;
-        target.style.cursor = "not-allowed";
     }
     _ondrop(e) {
         if (!this.dropIndicatorDOM?.targetReference || !this.dropIndicatorDOM?.placement) {

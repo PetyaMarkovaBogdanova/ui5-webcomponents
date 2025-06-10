@@ -1,5 +1,5 @@
-commit 85378c33847d57664fc89ecf2fa2c2906437bf79
+commit fdc9a45386d6b8fa9327c415836a877d5fced142
 Author: PetyaMarkovaBogdanova <petya.markova@sap.com>
-Date:   Tue Jun 10 13:58:20 2025 +0300
+Date:   Tue Jun 10 14:18:53 2025 +0300
 
     test(ui5-list): test drag and drop cursor

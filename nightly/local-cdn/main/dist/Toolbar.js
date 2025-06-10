@@ -254,7 +254,6 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
         const movableItems = this.movableItems.reverse();
         let index = 0;
         let currentItem = movableItems[index];
-        this.overflowButtonDOM?.blur();
         this.itemsToOverflow = [];
         // distribute items that always overflow
         this.distributeItemsThatAlwaysOverflow();
