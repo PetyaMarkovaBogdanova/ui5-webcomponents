@@ -703,6 +703,7 @@ let List = List_1 = class List extends UI5Element {
         this.dropIndicatorDOM.targetReference = null;
     }
     _ondragover(e) {
+        e.preventDefault();
         const target = e.target;
         if (!(e.target instanceof HTMLElement)) {
             return;
