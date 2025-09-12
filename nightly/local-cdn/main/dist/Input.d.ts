@@ -86,6 +86,7 @@ type InputSuggestionScrollEventDetail = {
  * - [End] - If focus is in the text input, moves caret after the last character. If focus is in the list, highlights the last item and updates the input accordingly.
  * - [Page Up] - If focus is in the list, moves highlight up by page size (10 items by default). If focus is in the input, does nothing.
  * - [Page Down] - If focus is in the list, moves highlight down by page size (10 items by default). If focus is in the input, does nothing.
+ * - [Ctrl]+[Alt]+[F8] or [Command]+[Option]+[F8] - Focuses the first link in the value state message, if available. Pressing [Tab] moves the focus to the next link in the value state message, or closes the value state message if there are no more links.
  *
  * ### ES6 Module Import
  *
@@ -281,11 +282,6 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      */
     hint?: `${InputKeyHint}`;
     valueStateOpen: boolean;
-    /**
-     * Indicates whether the visual focus is on the value state header
-     * @private
-     */
-    _isValueStateFocused: boolean;
     _inputAccInfo: InputAccInfo;
     _nativeInputAttributes: NativeInputAttributes;
     _inputWidth?: number;
@@ -310,6 +306,10 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
      * @private
      */
     Suggestions?: InputSuggestions;
+    /**
+     * @private
+     */
+    _linksListenersArray: Array<(args: any) => void>;
     /**
      * Defines the suggestion items.
      *
@@ -362,7 +362,15 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     _performTextSelection?: boolean;
     _isLatestValueFromSuggestions: boolean;
     _isChangeTriggeredBySuggestion: boolean;
+    _valueStateLinks: Array<HTMLElement>;
     static i18nBundle: I18nBundle;
+    /**
+     * Indicates whether link navigation is being handled.
+     * @default false
+     * @private
+     * @since 2.11.0
+     */
+    _handleLinkNavigation: boolean;
     get formValidityMessage(): string;
     get _effectiveShowSuggestions(): boolean;
     get formValidity(): ValidityStateFlags;
@@ -382,6 +390,9 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     _handleDown(e: KeyboardEvent): void;
     _handleSpace(e: KeyboardEvent): void;
     _handleTab(): void;
+    _handleCtrlAltF8(): void;
+    _addLinksEventListeners(): void;
+    _removeLinksEventListeners(): void;
     _handleEnter(e: KeyboardEvent): void;
     _handlePageUp(e: KeyboardEvent): void;
     _handlePageDown(e: KeyboardEvent): void;
@@ -500,15 +511,16 @@ declare class Input extends UI5Element implements SuggestionComponent, IFormInpu
     };
     get ariaValueStateHiddenText(): string | undefined;
     get itemSelectionAnnounce(): string;
+    get linksInAriaValueStateHiddenText(): HTMLElement[];
+    get valueStateLinksShortcutsTextAcc(): string;
+    get _valueStateLinksShortcutsTextAccId(): "" | "hiddenText-value-state-link-shortcut";
     get iconsCount(): number;
     get classes(): ClassMap;
     get styles(): {
-        popoverHeader: {
-            "max-width": string;
-        };
         suggestionPopoverHeader: {
             display: string;
             width: string;
+            "max-width": string;
         };
         suggestionsPopover: {
             "min-width": string;

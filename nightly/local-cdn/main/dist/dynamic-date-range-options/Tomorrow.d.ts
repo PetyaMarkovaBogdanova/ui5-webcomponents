@@ -3,12 +3,12 @@ import type { DynamicDateRangeValue, IDynamicDateRangeOption } from "../DynamicD
  * @class
  * @constructor
  * @public
- * @since 2.0.0
+ * @since 2.11.0
  */
 declare class Tomorrow implements IDynamicDateRangeOption {
     parse(): DynamicDateRangeValue;
     format(): string;
-    toDates(): Date[];
+    toDates(): Array<Date>;
     isValidString(value: string): boolean;
     get text(): string;
     get operator(): string;

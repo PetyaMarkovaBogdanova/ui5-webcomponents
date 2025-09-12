@@ -8,7 +8,6 @@ var SideNavigation_1;
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
-import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import jsxRender from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
@@ -16,7 +15,6 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import { isPhone, isTablet, isCombi, } from "@ui5/webcomponents-base/dist/Device.js";
-import { isSpace, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import { isInstanceOfSideNavigationSelectableItemBase } from "./SideNavigationSelectableItemBase.js";
 import { isInstanceOfSideNavigationItemBase } from "./SideNavigationItemBase.js";
@@ -47,9 +45,11 @@ const PAGE_UP_DOWN_SIZE = 10;
  * The items can consist of text only or an icon with text. The use or non-use of icons must be consistent for all items on one level.
  * You must not combine entries with and without icons on the same level. We strongly recommend that you do not use icons on the second level.
  *
- * The `ui5-side-navigation` component is intended for use within an `ui5-navigation-layout` component.
- * While it can function independently, it is recommended to use it with
- * the `ui5-navigation-layout` for optimal user experience.
+ * The `ui5-side-navigation` component is designed to be used within a `ui5-navigation-layout` component to ensure an optimal user experience.
+ *
+ * Using it standalone may not match the intended design and functionality.
+ * For example, the side navigation may not exhibit the correct behavior on phones and tablets.
+ * Padding of the `ui5-shellbar` will not match the padding of the side navigation.
  *
  * ### Keyboard Handling
  *
@@ -153,11 +153,23 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
     }
     _onBeforeMenuOpen() {
         const popover = this.getOverflowPopover();
+        popover._popover.preventFocusRestore = false;
         popover?.opener?.classList.add("ui5-sn-item-active");
     }
     _onBeforeMenuClose() {
         const popover = this.getOverflowPopover();
         popover?.opener?.classList.remove("ui5-sn-item-active");
+    }
+    _onMenuClose() {
+        const menu = this.getOverflowPopover();
+        if (!menu._popover.preventFocusRestore) {
+            return;
+        }
+        const selectedItem = this._findSelectedItem(this.items);
+        if (selectedItem) {
+            this.focusItem(selectedItem);
+            selectedItem.focus();
+        }
     }
     get accSideNavigationPopoverHiddenText() {
         return SideNavigation_1.i18nBundle.getText(SIDE_NAVIGATION_POPOVER_HIDDEN_TEXT);
@@ -205,8 +217,10 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
             return;
         }
         this._selectItem(associatedItem);
-        this.closePicker();
-        this._popoverContents.item?.getDomRef().classList.add("ui5-sn-item-no-hover-effect");
+        setTimeout(() => {
+            this.closePicker();
+            this._popoverContents.item?.getDomRef().classList.add("ui5-sn-item-no-hover-effect");
+        });
     }
     getOverflowPopover() {
         return this.shadowRoot.querySelector(".ui5-side-navigation-overflow-menu");
@@ -230,8 +244,9 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
         const responsivePopover = this.getPicker();
         responsivePopover.open = false;
     }
-    closeMenu() {
+    closeMenu(preventFocusRestore = false) {
         const menu = this.getOverflowPopover();
+        menu._popover.preventFocusRestore = preventFocusRestore;
         menu.open = false;
     }
     getPickerTree() {
@@ -329,8 +344,10 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
         const selectedItem = overflowItems.filter(isInstanceOfSideNavigationSelectableItemBase).find(item => item._selected);
         if (selectedItem) {
             const selectedItemDomRef = selectedItem.getDomRef();
-            const { marginTop, marginBottom } = window.getComputedStyle(selectedItemDomRef);
-            itemsHeight += selectedItemDomRef.offsetHeight + parseFloat(marginTop) + parseFloat(marginBottom);
+            if (selectedItemDomRef) {
+                const { marginTop, marginBottom } = window.getComputedStyle(selectedItemDomRef);
+                itemsHeight += selectedItemDomRef.offsetHeight + parseFloat(marginTop) + parseFloat(marginBottom);
+            }
         }
         overflowItems.forEach(item => {
             if (item === selectedItem) {
@@ -427,7 +444,7 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
     _handleOverflowClick() {
         this._isOverflow = true;
         this._menuPopoverItems = this._getOverflowItems();
-        this.openOverflowMenu(this._overflowItem.getFocusDomRef());
+        this.openOverflowMenu(this._overflowItem);
     }
     _getOverflowItems() {
         const overflowClass = "ui5-sn-item-hidden";
@@ -462,19 +479,6 @@ let SideNavigation = SideNavigation_1 = class SideNavigation extends UI5Element 
     }
     get isOverflow() {
         return this._isOverflow;
-    }
-    _onkeydownOverflow(e) {
-        if (isSpace(e)) {
-            e.preventDefault();
-        }
-        if (isEnter(e)) {
-            this._handleOverflowClick();
-        }
-    }
-    _onkeyupOverflow(e) {
-        if (isSpace(e)) {
-            this._handleOverflowClick();
-        }
     }
     captureRef(ref) {
         if (ref) {
@@ -521,7 +525,7 @@ SideNavigation = SideNavigation_1 = __decorate([
         fastNavigation: true,
         renderer: jsxRender,
         template: SideNavigationTemplate,
-        styles: [SideNavigationCss, SideNavigationPopoverCss, getEffectiveScrollbarStyle()],
+        styles: [SideNavigationCss, SideNavigationPopoverCss],
     })
     /**
      * Fired when the selection has changed via user interaction

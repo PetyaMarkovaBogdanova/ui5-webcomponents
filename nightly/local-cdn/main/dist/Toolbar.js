@@ -22,6 +22,7 @@ import ToolbarTemplate from "./ToolbarTemplate.js";
 import ToolbarCss from "./generated/themes/Toolbar.css.js";
 import ToolbarPopoverCss from "./generated/themes/ToolbarPopover.css.js";
 import ToolbarItemOverflowBehavior from "./types/ToolbarItemOverflowBehavior.js";
+import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 function calculateCSSREMValue(styleSet, propertyName) {
     return Number(styleSet.getPropertyValue(propertyName).replace("rem", "")) * parseInt(getComputedStyle(document.body).getPropertyValue("font-size"));
 }
@@ -112,14 +113,14 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
     get hideOverflowButton() {
         return this.itemsToOverflow.filter(item => !(item.ignoreSpace || item.isSeparator)).length === 0;
     }
-    get interactiveItemsCount() {
-        return this.items.filter((item) => item.isInteractive).length;
+    get interactiveItems() {
+        return this.items.filter((item) => item.isInteractive);
     }
     /**
      * Accessibility
      */
     get hasAriaSemantics() {
-        return this.interactiveItemsCount > 1;
+        return this.interactiveItems.length > 1;
     }
     get accessibleRole() {
         return this.hasAriaSemantics ? "toolbar" : undefined;
@@ -165,13 +166,20 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
         ResizeHandler.deregister(this, this._onResize);
     }
     onInvalidation(changeInfo) {
-        if (changeInfo.reason === "childchange" && changeInfo.child === this.itemsToOverflow[0]) {
-            this.onToolbarItemChange();
+        if (changeInfo.reason === "childchange") {
+            const currentItemsWidth = this.items.reduce((total, item) => total + this.getItemWidth(item), 0);
+            if (currentItemsWidth !== this.itemsWidth) {
+                this.onToolbarItemChange();
+            }
         }
     }
     onBeforeRendering() {
         this.detachListeners();
         this.attachListeners();
+        if (getActiveElement() === this.overflowButtonDOM?.getFocusDomRef() && this.hideOverflowButton) {
+            const lastItem = this.interactiveItems.at(-1);
+            lastItem?.focus();
+        }
     }
     async onAfterRendering() {
         await renderFinished();
@@ -313,9 +321,6 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
         this.popoverOpen = true;
     }
     onResize() {
-        if (!this.itemsWidth) {
-            return;
-        }
         this.closeOverflow();
         this.processOverflowLayout();
     }
@@ -342,7 +347,7 @@ let Toolbar = Toolbar_1 = class Toolbar extends UI5Element {
         // Measure rendered width for spacers with width, and for normal items
         const renderedItem = this.shadowRoot.querySelector(`#${item.slot}`);
         let itemWidth = 0;
-        if (renderedItem && renderedItem.offsetWidth) {
+        if (renderedItem && !renderedItem.classList.contains("ui5-tb-popover-item") && renderedItem.offsetWidth && item._isRendering === false) {
             const ItemCSSStyleSet = getComputedStyle(renderedItem);
             itemWidth = renderedItem.offsetWidth + parsePxValue(ItemCSSStyleSet, "margin-inline-end")
                 + parsePxValue(ItemCSSStyleSet, "margin-inline-start");

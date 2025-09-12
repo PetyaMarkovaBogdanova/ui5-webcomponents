@@ -7,7 +7,7 @@ import DynamicDateRange from "../DynamicDateRange.js";
  * @class
  * @constructor
  * @public
- * @since 2.0.0
+ * @since 2.11.0
  */
 class SingleDate {
     constructor() {
@@ -22,7 +22,7 @@ class SingleDate {
     }
     format(value) {
         const valuesArray = value?.values;
-        if (!valuesArray || valuesArray.length !== 1) {
+        if (!valuesArray) {
             return "";
         }
         const date = valuesArray[0];

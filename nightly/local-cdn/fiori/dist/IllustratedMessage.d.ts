@@ -166,6 +166,8 @@ declare class IllustratedMessage extends UI5Element {
     subtitle: Array<HTMLElement>;
     /**
     * Defines the component actions.
+    *
+    * **Note:** Not displayed when the `design` property is set to `Base`.
     * @public
     */
     actions: Array<IButton>;

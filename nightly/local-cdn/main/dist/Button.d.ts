@@ -14,7 +14,7 @@ import type ButtonBadge from "./ButtonBadge.js";
 interface IButton extends HTMLElement, ITabbable {
     nonInteractive: boolean;
 }
-type ButtonAccessibilityAttributes = Pick<AccessibilityAttributes, "expanded" | "hasPopup" | "controls">;
+type ButtonAccessibilityAttributes = Pick<AccessibilityAttributes, "expanded" | "hasPopup" | "controls" | "ariaKeyShortcuts" | "ariaLabel">;
 type ButtonClickEventDetail = {
     originalEvent: MouseEvent;
     altKey: boolean;
@@ -141,6 +141,11 @@ declare class Button extends UI5Element implements IButton {
      * - **hasPopup**: Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by the button.
      * Accepts the following string values: `dialog`, `grid`, `listbox`, `menu` or `tree`.
      *
+     * - **ariaLabel**: Defines the accessible ARIA name of the component.
+     * Accepts any string value.
+     *
+     *  - **ariaKeyShortcuts**: Defines keyboard shortcuts that activate or give focus to the button.
+     *
      * - **controls**: Identifies the element (or elements) whose contents or presence are controlled by the button element.
      * Accepts a lowercase string value.
      *
@@ -201,7 +206,24 @@ declare class Button extends UI5Element implements IButton {
      */
     nonInteractive: boolean;
     /**
-     * The current title of the button, either the tooltip property or the icons tooltip. The tooltip property with higher prio.
+     * Defines whether the button shows a loading indicator.
+     *
+     * **Note:** If set to `true`, a busy indicator component will be displayed on the related button.
+     * @default false
+     * @public
+     * @since 2.13.0
+     */
+    loading: boolean;
+    /**
+     * Specifies the delay in milliseconds before the loading indicator appears within the associated button.
+     * @default 1000
+     * @public
+     * @since 2.13.0
+     */
+    loadingDelay: number;
+    /**
+     * The button's current title is determined by either the `tooltip` property or the icon's tooltip, with the `tooltip`
+     * property taking precedence if both are set.
      * @private
      */
     buttonTitle?: string;
@@ -250,7 +272,6 @@ declare class Button extends UI5Element implements IButton {
     _onkeyup(e: KeyboardEvent): void;
     _onfocusout(): void;
     _setActiveState(active: boolean): void;
-    get _hasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
     get hasButtonType(): boolean;
     get isIconOnly(): boolean;
     static typeTextMappings(): Record<string, I18nText>;
@@ -260,6 +281,7 @@ declare class Button extends UI5Element implements IButton {
     get tabIndexValue(): number | undefined;
     get ariaLabelText(): string;
     get ariaDescriptionText(): string | undefined;
+    get _computedAccessibilityAttributes(): ButtonAccessibilityAttributes;
     get effectiveBadgeDescriptionText(): string;
     get _isSubmit(): boolean;
     get _isReset(): boolean;

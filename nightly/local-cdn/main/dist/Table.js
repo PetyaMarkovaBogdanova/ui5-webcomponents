@@ -142,14 +142,14 @@ let Table = Table_1 = class Table extends UI5Element {
         this.stickyTop = "0";
         this._invalidate = 0;
         this._renderNavigated = false;
-        this._events = ["keydown", "keyup", "click", "focusin", "focusout", "dragenter", "dragleave", "dragover", "drop"];
+        this._events = ["keydown", "keyup", "click", "focusin", "focusout", "dragstart", "dragenter", "dragleave", "dragover", "drop", "dragend"];
         this._poppedIn = [];
         this._containerWidth = 0;
         this._onResizeBound = this._onResize.bind(this);
         this._onEventBound = this._onEvent.bind(this);
     }
     onEnterDOM() {
-        this._events.forEach(eventType => this.addEventListener(eventType, this._onEventBound, { capture: true }));
+        this._events.forEach(eventType => this.addEventListener(eventType, this._onEventBound));
         this.features.forEach(feature => feature.onTableActivate?.(this));
         this._tableNavigation = new TableNavigation(this);
         this._tableDragAndDrop = new TableDragAndDrop(this);
@@ -316,7 +316,7 @@ let Table = Table_1 = class Table extends UI5Element {
         const widths = [];
         const visibleHeaderCells = this.headerRow[0]._visibleCells;
         // Selection Cell Width
-        if (this._getSelection()?.isRowSelectorRequired()) {
+        if (this._isRowSelectorRequired) {
             widths.push("min-content");
         }
         // Column Widths
@@ -338,6 +338,9 @@ let Table = Table_1 = class Table extends UI5Element {
         }
         return widths.join(" ");
     }
+    get _isRowSelectorRequired() {
+        return this.rows.length > 0 && this._getSelection()?.isRowSelectorRequired();
+    }
     get _scrollContainer() {
         return this._getVirtualizer() ? this._tableElement : findVerticalScrollContainer(this);
     }
@@ -352,8 +355,24 @@ let Table = Table_1 = class Table extends UI5Element {
     get _ariaLabel() {
         return getEffectiveAriaLabelText(this) || undefined;
     }
+    get _ariaDescription() {
+        return this._getSelection()?.getAriaDescriptionForTable();
+    }
     get _ariaRowCount() {
-        return this._getVirtualizer()?.rowCount || undefined;
+        return this._getVirtualizer()?.rowCount || this.rows.length + 1;
+    }
+    get _ariaColCount() {
+        if (!this.headerRow[0]) {
+            return 0;
+        }
+        let ariaColCount = this.headerRow[0]._visibleCells.length;
+        if (this._isRowSelectorRequired) {
+            ariaColCount++;
+        }
+        if (this.rowActionCount > 0) {
+            ariaColCount++;
+        }
+        return ariaColCount;
     }
     get _ariaMultiSelectable() {
         const selection = this._getSelection();

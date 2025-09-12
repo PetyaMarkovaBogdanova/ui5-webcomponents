@@ -39,10 +39,10 @@ const findFocusableElement = async (container, forward, startFromContainer) => {
     let assignedElements;
     let currentIndex = -1;
     if (container.shadowRoot) {
-        child = forward ? container.shadowRoot.firstChild : container.shadowRoot.lastChild;
+        child = forward ? container.shadowRoot.firstElementChild : container.shadowRoot.lastElementChild;
     }
     else if (container instanceof HTMLSlotElement && container.assignedNodes()) {
-        assignedElements = container.assignedNodes();
+        assignedElements = container.assignedElements();
         currentIndex = forward ? 0 : assignedElements.length - 1;
         child = assignedElements[currentIndex];
     }
@@ -84,7 +84,7 @@ const findFocusableElement = async (container, forward, startFromContainer) => {
                 }
             }
         }
-        child = forward ? originalChild.nextSibling : originalChild.previousSibling;
+        child = forward ? originalChild.nextElementSibling : originalChild.previousElementSibling;
         // If the child element is not part of the currently assigned element,
         // we have to check the next/previous element assigned to the slot or continue with the next/previous sibling of the slot,
         // otherwise, the nextSibling/previousSibling is the next element inside the light DOM

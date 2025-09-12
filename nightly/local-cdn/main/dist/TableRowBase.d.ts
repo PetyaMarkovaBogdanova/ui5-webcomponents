@@ -31,7 +31,7 @@ declare abstract class TableRowBase extends UI5Element {
     get _isSelected(): boolean | undefined;
     get _isSelectable(): boolean | undefined;
     get _isMultiSelect(): boolean;
-    get _hasRowSelector(): boolean;
+    get _hasSelector(): boolean | undefined;
     get _visibleCells(): TableCellBase[];
     get _popinCells(): TableCellBase[];
     get _stickyCells(): (HTMLElement | undefined)[];

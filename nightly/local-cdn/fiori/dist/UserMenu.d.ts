@@ -57,7 +57,7 @@ declare class UserMenu extends UI5Element {
      * @public
      * @default undefined
      */
-    opener?: HTMLElement | string;
+    opener?: HTMLElement | string | null;
     /**
      * Defines if the User Menu shows the Manage Account option.
      *

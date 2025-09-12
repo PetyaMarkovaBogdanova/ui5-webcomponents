@@ -150,6 +150,10 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
      */
     _hasImage: boolean;
     /**
+     * @private
+     */
+    _imageLoadError: boolean;
+    /**
      * Receives the desired `<img>` tag
      *
      * **Note:** If you experience flickering of the provided image, you can hide the component until it is defined with the following CSS:<br/>
@@ -172,6 +176,8 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
     badge: Array<HTMLElement>;
     static i18nBundle: I18nBundle;
     _handleResizeBound: ResizeObserverCallback;
+    _onImageLoadBound: (e: Event) => void;
+    _onImageErrorBound: (e: Event) => void;
     constructor();
     onBeforeRendering(): void;
     get tabindex(): number | undefined;
@@ -193,6 +199,7 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
     get validInitials(): string | null | undefined;
     get accessibleNameText(): string;
     get hasImage(): boolean;
+    get imageEl(): HTMLImageElement | null;
     get initialsContainer(): HTMLObjectElement | null;
     get fallBackIconDomRef(): Icon | null;
     onAfterRendering(): Promise<void>;
@@ -207,6 +214,11 @@ declare class Avatar extends UI5Element implements ITabbable, IAvatarGroupItem {
     _onkeyup(e: KeyboardEvent): void;
     _fireClick(): void;
     _getAriaHasPopup(): import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup | undefined;
+    _attachImageEventHandlers(): void;
+    _checkExistingImageState(): void;
+    _detachImageEventHandlers(): void;
+    _onImageLoad(e: Event): void;
+    _onImageError(e: Event): void;
 }
 export default Avatar;
 export type { AvatarAccessibilityAttributes, };

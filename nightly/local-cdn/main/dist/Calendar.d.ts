@@ -1,5 +1,6 @@
 import type UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import type { ChangeInfo } from "@ui5/webcomponents-base/dist/UI5Element.js";
+import CalendarDateComponent from "@ui5/webcomponents-localization/dist/dates/CalendarDate.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-left.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
@@ -150,12 +151,17 @@ type CalendarYearRangeT = {
  * @csspart month-cell - Used to style the month cells.
  * @csspart month-cell-selected - Used to style the month cells when selected.
  * @csspart month-cell-selected-between - Used to style the day cells in between of selected months in range.
+ * @csspart month-picker-root - Used to style the month picker root container.
  * @csspart year-cell - Used to style the year cells.
  * @csspart year-cell-selected - Used to style the year cells when selected.
  * @csspart year-cell-selected-between - Used to style the year cells in between of selected years in range.
+ * @csspart year-picker-root - Used to style the year picker root container.
  * @csspart year-range-cell - Used to style the year range cells.
  * @csspart year-range-cell-selected - Used to style the year range cells when selected.
  * @csspart year-range-cell-selected-between - Used to style the year range cells in between of selected year ranges.
+ * @csspart year-range-picker-root - Used to style the year range picker root container.
+ * @csspart calendar-header-middle-button - Used to style the calendar header middle buttons (month/year/year-range buttons).
+ * @csspart calendar-header-arrow-button - Used to style the calendar header navigation arrow buttons (previous/next buttons).
  * @since 1.0.0-rc.11
  */
 declare class Calendar extends CalendarPart {
@@ -315,9 +321,31 @@ declare class Calendar extends CalendarPart {
     };
     get accInfo(): {
         ariaLabelMonthButton: string;
+        ariaLabelYearButton: string;
+        ariaLabelYearRangeButton: string;
+        keyShortcutMonthButton: string;
+        keyShortcutYearButton: string;
+        keyShortcutYearRangeButton: string;
+        tooltipMonthButton: string;
+        tooltipYearButton: string;
+        tooltipYearRangeButton: string;
     };
-    get headerPreviousButtonText(): string;
-    get headerNextButtonText(): string;
+    /**
+     * Helper method to create CalendarDateComponent instances for year range
+     * @private
+     */
+    _createYearRangeDates(yearRange: CalendarYearRangeT, calendarType?: string): {
+        rangeStart: CalendarDateComponent;
+        rangeEnd: CalendarDateComponent;
+    };
+    /**
+     * Helper method to format year range text
+     * @private
+     */
+    _formatYearRangeText(yearRange: CalendarYearRangeT): {
+        rangeStartText: string;
+        rangeEndText: string;
+    };
     get secondMonthButtonText(): string;
     onMonthButtonKeyDown(e: KeyboardEvent): void;
     onMonthButtonKeyUp(e: KeyboardEvent): void;

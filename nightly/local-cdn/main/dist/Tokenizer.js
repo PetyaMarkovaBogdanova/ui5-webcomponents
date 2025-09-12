@@ -9,7 +9,6 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
@@ -346,12 +345,6 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         }
     }
     handleBeforeClose() {
-        const tokensArray = this._tokens;
-        if (isPhone()) {
-            tokensArray.forEach(token => {
-                token.selected = false;
-            });
-        }
         if (!this._tokenDeleting && !this._preventCollapse) {
             this._preventCollapse = false;
             this.expanded = false;
@@ -848,6 +841,10 @@ __decorate([
         type: HTMLElement,
         "default": true,
         individualSlots: true,
+        invalidateOnChildChange: {
+            properties: ["text"],
+            slots: false,
+        },
     })
 ], Tokenizer.prototype, "tokens", void 0);
 __decorate([
@@ -864,7 +861,6 @@ Tokenizer = Tokenizer_1 = __decorate([
             ResponsivePopoverCommonCss,
             SuggestionsCss,
             TokenizerPopoverCss,
-            getEffectiveScrollbarStyle(),
         ],
     })
     /**

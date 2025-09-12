@@ -35,7 +35,7 @@ import CalendarTemplate from "./CalendarTemplate.js";
 // Styles
 import calendarCSS from "./generated/themes/Calendar.css.js";
 import CalendarHeaderCss from "./generated/themes/CalendarHeader.css.js";
-import { CALENDAR_HEADER_NEXT_BUTTON, CALENDAR_HEADER_PREVIOUS_BUTTON } from "./generated/i18n/i18n-defaults.js";
+import { CALENDAR_HEADER_MONTH_BUTTON, CALENDAR_HEADER_MONTH_BUTTON_SHORTCUT, CALENDAR_HEADER_YEAR_BUTTON, CALENDAR_HEADER_YEAR_BUTTON_SHORTCUT, CALENDAR_HEADER_YEAR_RANGE_BUTTON, CALENDAR_HEADER_YEAR_RANGE_BUTTON_SHORTCUT, } from "./generated/i18n/i18n-defaults.js";
 /**
  * @class
  *
@@ -137,12 +137,17 @@ import { CALENDAR_HEADER_NEXT_BUTTON, CALENDAR_HEADER_PREVIOUS_BUTTON } from "./
  * @csspart month-cell - Used to style the month cells.
  * @csspart month-cell-selected - Used to style the month cells when selected.
  * @csspart month-cell-selected-between - Used to style the day cells in between of selected months in range.
+ * @csspart month-picker-root - Used to style the month picker root container.
  * @csspart year-cell - Used to style the year cells.
  * @csspart year-cell-selected - Used to style the year cells when selected.
  * @csspart year-cell-selected-between - Used to style the year cells in between of selected years in range.
+ * @csspart year-picker-root - Used to style the year picker root container.
  * @csspart year-range-cell - Used to style the year range cells.
  * @csspart year-range-cell-selected - Used to style the year range cells when selected.
  * @csspart year-range-cell-selected-between - Used to style the year range cells in between of selected year ranges.
+ * @csspart year-range-picker-root - Used to style the year range picker root container.
+ * @csspart calendar-header-middle-button - Used to style the calendar header middle buttons (month/year/year-range buttons).
+ * @csspart calendar-header-arrow-button - Used to style the calendar header navigation arrow buttons (previous/next buttons).
  * @since 1.0.0-rc.11
  */
 let Calendar = Calendar_1 = class Calendar extends CalendarPart {
@@ -331,11 +336,8 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
         this._headerMonthButtonText = localeData.getMonthsStandAlone("wide", this.primaryCalendarType)[this._calendarDate.getMonth()];
         this._headerYearButtonText = String(yearFormat.format(this._localDate, true));
         const currentYearRange = this._currentYearRange;
-        const rangeStart = new CalendarDateComponent(this._calendarDate, this._primaryCalendarType);
-        const rangeEnd = new CalendarDateComponent(this._calendarDate, this._primaryCalendarType);
-        rangeStart.setYear(currentYearRange.startYear);
-        rangeEnd.setYear(currentYearRange.endYear);
-        this._headerYearRangeButtonText = `${yearFormat.format(rangeStart.toLocalJSDate())} - ${yearFormat.format(rangeEnd.toLocalJSDate())}`;
+        const { rangeStartText, rangeEndText } = this._formatYearRangeText(currentYearRange);
+        this._headerYearRangeButtonText = `${rangeStartText} - ${rangeEndText}`;
         this._secondaryCalendarType && this._setSecondaryCalendarTypeButtonText();
     }
     onInvalidation(changeInfo) {
@@ -402,10 +404,7 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
         const yearFormatSecType = DateFormat.getDateInstance({ format: "y", calendarType: this._secondaryCalendarType });
         this._headerYearButtonTextSecType = String(yearFormatSecType.format(this._localDate, true));
         const currentYearRange = this._currentYearRange;
-        const rangeStart = new CalendarDateComponent(this._calendarDate, this._primaryCalendarType);
-        const rangeEnd = new CalendarDateComponent(this._calendarDate, this._primaryCalendarType);
-        rangeStart.setYear(currentYearRange.startYear);
-        rangeEnd.setYear(currentYearRange.endYear);
+        const { rangeStart, rangeEnd } = this._createYearRangeDates(currentYearRange);
         const rangeStartSecType = transformDateToSecondaryType(this.primaryCalendarType, this._secondaryCalendarType, rangeStart.valueOf() / 1000, true)
             .firstDate;
         const rangeEndSecType = transformDateToSecondaryType(this.primaryCalendarType, this._secondaryCalendarType, rangeEnd.valueOf() / 1000, true)
@@ -565,16 +564,53 @@ let Calendar = Calendar_1 = class Calendar extends CalendarPart {
         };
     }
     get accInfo() {
+        const currentYearRange = this._currentYearRange;
+        const { rangeStartText, rangeEndText } = this._formatYearRangeText(currentYearRange);
+        const headerMonthButtonText = this.hasSecondaryCalendarType
+            ? `${this._headerMonthButtonText}, ${this.secondMonthButtonText}` : `${this._headerMonthButtonText}`;
+        // Get base labels
+        const monthLabel = Calendar_1.i18nBundle?.getText(CALENDAR_HEADER_MONTH_BUTTON, headerMonthButtonText);
+        const yearLabel = Calendar_1.i18nBundle?.getText(CALENDAR_HEADER_YEAR_BUTTON, this._headerYearButtonText);
+        const yearRangeLabel = Calendar_1.i18nBundle?.getText(CALENDAR_HEADER_YEAR_RANGE_BUTTON, rangeStartText, rangeEndText);
+        // Get shortcuts
+        const monthShortcut = Calendar_1.i18nBundle?.getText(CALENDAR_HEADER_MONTH_BUTTON_SHORTCUT);
+        const yearShortcut = Calendar_1.i18nBundle?.getText(CALENDAR_HEADER_YEAR_BUTTON_SHORTCUT);
+        const yearRangeShortcut = Calendar_1.i18nBundle?.getText(CALENDAR_HEADER_YEAR_RANGE_BUTTON_SHORTCUT);
         return {
-            ariaLabelMonthButton: this.hasSecondaryCalendarType
-                ? `${this._headerMonthButtonText}, ${this.secondMonthButtonText}` : `${this._headerMonthButtonText}`,
+            ariaLabelMonthButton: monthLabel,
+            ariaLabelYearButton: yearLabel,
+            ariaLabelYearRangeButton: yearRangeLabel,
+            // Keyboard shortcuts for aria-keyshortcuts
+            keyShortcutMonthButton: monthShortcut,
+            keyShortcutYearButton: yearShortcut,
+            keyShortcutYearRangeButton: yearRangeShortcut,
+            // Tooltips combining label and shortcut
+            tooltipMonthButton: `${monthLabel} (${monthShortcut})`,
+            tooltipYearButton: `${yearLabel} (${yearShortcut})`,
+            tooltipYearRangeButton: `${yearRangeLabel} (${yearRangeShortcut})`,
         };
     }
-    get headerPreviousButtonText() {
-        return Calendar_1.i18nBundle?.getText(CALENDAR_HEADER_PREVIOUS_BUTTON);
+    /**
+     * Helper method to create CalendarDateComponent instances for year range
+     * @private
+     */
+    _createYearRangeDates(yearRange, calendarType = this._primaryCalendarType) {
+        const rangeStart = new CalendarDateComponent(this._calendarDate, calendarType);
+        const rangeEnd = new CalendarDateComponent(this._calendarDate, calendarType);
+        rangeStart.setYear(yearRange.startYear);
+        rangeEnd.setYear(yearRange.endYear);
+        return { rangeStart, rangeEnd };
     }
-    get headerNextButtonText() {
-        return Calendar_1.i18nBundle?.getText(CALENDAR_HEADER_NEXT_BUTTON);
+    /**
+     * Helper method to format year range text
+     * @private
+     */
+    _formatYearRangeText(yearRange) {
+        const yearFormat = DateFormat.getDateInstance({ format: "y", calendarType: this.primaryCalendarType });
+        const { rangeStart, rangeEnd } = this._createYearRangeDates(yearRange, this.primaryCalendarType);
+        const rangeStartText = yearFormat.format(rangeStart.toLocalJSDate());
+        const rangeEndText = yearFormat.format(rangeEnd.toLocalJSDate());
+        return { rangeStartText, rangeEndText };
     }
     get secondMonthButtonText() {
         const secondMonthButtonText = this.secondaryCalendarTypeButtonText?.monthButtonText;

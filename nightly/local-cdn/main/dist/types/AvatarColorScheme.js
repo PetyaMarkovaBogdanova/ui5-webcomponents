@@ -53,6 +53,10 @@ var AvatarColorScheme;
      * @public
      */
     AvatarColorScheme["Placeholder"] = "Placeholder";
+    /**
+     * @public
+     */
+    AvatarColorScheme["Transparent"] = "Transparent";
 })(AvatarColorScheme || (AvatarColorScheme = {}));
 export default AvatarColorScheme;
 //# sourceMappingURL=AvatarColorScheme.js.map

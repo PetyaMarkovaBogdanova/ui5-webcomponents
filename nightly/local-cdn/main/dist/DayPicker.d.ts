@@ -131,6 +131,8 @@ declare class DayPicker extends CalendarPart implements ICalendarPicker {
      * @private
      */
     _isDaySelected(timestamp: number): boolean;
+    _isRangeEndDate(timestamp: number): boolean;
+    _isRangeStartDate(timestamp: number): boolean;
     /**
      * Tells if the day is inside a selection range (light blue).
      * @param timestamp

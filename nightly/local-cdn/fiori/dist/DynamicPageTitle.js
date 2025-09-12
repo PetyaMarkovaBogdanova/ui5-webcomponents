@@ -116,8 +116,14 @@ let DynamicPageTitle = DynamicPageTitle_1 = class DynamicPageTitle extends UI5El
     get _headerExpanded() {
         return !this.snapped;
     }
+    get _role() {
+        return this.interactive ? "button" : undefined;
+    }
+    get _ariaDescribedBy() {
+        return this.interactive ? `${this._id}-toggle-description` : undefined;
+    }
     get _ariaDescribedbyText() {
-        return DynamicPageTitle_1.i18nBundle.getText(DYNAMIC_PAGE_ARIA_DESCR_TOGGLE_HEADER);
+        return this.interactive ? DynamicPageTitle_1.i18nBundle.getText(DYNAMIC_PAGE_ARIA_DESCR_TOGGLE_HEADER) : undefined;
     }
     get _ariaLabelledBy() {
         const hasAnyHeading = this[this.headingSlotName].length;
@@ -127,6 +133,9 @@ let DynamicPageTitle = DynamicPageTitle_1 = class DynamicPageTitle extends UI5El
     }
     get _needsSeparator() {
         return (this.navigationBar.length > 0 && this.actionsBar.length > 0);
+    }
+    get forAriaExpanded() {
+        return this.interactive ? this._headerExpanded : undefined;
     }
     prepareLayoutActions() {
         const navigationBar = this.querySelector("[ui5-toolbar][slot='navigationBar']"), isWideScreen = this.offsetWidth >= 1280;

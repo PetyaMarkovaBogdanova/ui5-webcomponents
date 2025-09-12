@@ -49,6 +49,14 @@ declare abstract class TableSelectionBase extends UI5Element implements ITableFe
      */
     isRowSelectorRequired(): boolean;
     /**
+     * Returns the ARIA description of the Table as an alternative to aria-multiselectable.
+     */
+    getAriaDescriptionForTable(): string | undefined;
+    /**
+     * Returns the ARIA description of the selection component displayed in the column header.
+     */
+    getAriaDescriptionForColumnHeader(): string | undefined;
+    /**
      * Returns the unique key associated with the table row.
      *
      * @param row The row instance

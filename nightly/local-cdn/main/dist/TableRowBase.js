@@ -72,8 +72,8 @@ let TableRowBase = TableRowBase_1 = class TableRowBase extends UI5Element {
     get _isMultiSelect() {
         return !!this._tableSelection?.isMultiSelectable();
     }
-    get _hasRowSelector() {
-        return !!this._tableSelection?.isRowSelectorRequired();
+    get _hasSelector() {
+        return this._table?._isRowSelectorRequired;
     }
     get _visibleCells() {
         return this.cells.filter(c => !c._popin);

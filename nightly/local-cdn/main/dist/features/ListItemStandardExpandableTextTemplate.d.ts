@@ -1,4 +1,4 @@
-import type ListItemStandard from "../ListItemStandard.js";
+import type ListItemBase from "../ListItemBase.js";
 import type { ExpandableTextTemplateParams } from "../types/ExpandableTextTemplateParams.js";
 /**
  * Provides a template for rendering text with the ExpandableText component
@@ -7,4 +7,4 @@ import type { ExpandableTextTemplateParams } from "../types/ExpandableTextTempla
  * @param {object} injectedProps - The configuration options for the expandable text
  * @returns {JSX.Element} The rendered ExpandableText component
  */
-export default function ListItemStandardExpandableTextTemplate(this: ListItemStandard, injectedProps: ExpandableTextTemplateParams): JSX.Element;
+export default function ListItemStandardExpandableTextTemplate(this: ListItemBase, injectedProps: ExpandableTextTemplateParams): JSX.Element;

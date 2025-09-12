@@ -8,17 +8,20 @@
 
 
 
-  <script type="module" crossorigin src="/ui5-webcomponents/nightly/assets/bundle.esm-DNnKmvT2.js"></script>
-  <link rel="stylesheet" crossorigin href="/ui5-webcomponents/nightly/assets/NotificationListGroupItem-BnvkFowY.css">
+  <script type="module" crossorigin src="/webcomponents/nightly/assets/bundle.esm-Cp9xgeKe.js"></script>
+  <link rel="stylesheet" crossorigin href="/webcomponents/nightly/assets/NotificationListGroupItem-BnvkFowY.css">
 </head>
 
 <body class="notificationlistgroupitem1auto">
 
-	<ui5-shellbar id="shellbar" primary-title="Product Title" show-notifications>
+	<ui5-shellbar id="shellbar" show-notifications>
+		<ui5-shellbar-branding slot="branding">Product Title</ui5-shellbar-branding>
 	</ui5-shellbar>
 	<ui5-button id="btnCompact">Toggle sapUiSizeCompact</ui5-button>
 
-	<ui5-shellbar id="shellbarGrowingAndSticky" primary-title="Notifications with Growing and Sticky" show-notifications notifications-count="n"></ui5-shellbar>
+	<ui5-shellbar id="shellbarGrowingAndSticky" show-notifications notifications-count="n">
+		<ui5-shellbar-branding slot="branding">Notifications with Growing and Sticky</ui5-shellbar-branding>
+	</ui5-shellbar>
 	<ui5-popover
 				id="popover-with-notifications"
 				placement="Bottom"
@@ -252,7 +255,7 @@
 			>
 				And with a very long description and long labels of the action buttons - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent feugiat, turpis vel scelerisque pharetra, tellus odio vehicula dolor, nec elementum lectus turpis at nunc.
 				<ui5-avatar size="XS" slot="avatar">
-					<img src="/ui5-webcomponents/nightly/assets/man_avatar_1-NFeJdB17.png" />
+					<img src="/webcomponents/nightly/assets/man_avatar_1-NFeJdB17.png" />
 				</ui5-avatar>
 
 				<span slot="footnotes">Office Notifications</span>
@@ -519,7 +522,7 @@
 					And with a very long description and long labels of the action buttons - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent feugiat, turpis vel scelerisque pharetra, tellus odio vehicula dolor, nec elementum lectus turpis at nunc.
 
 					<ui5-avatar size="XS" slot="avatar">
-						<img src="/ui5-webcomponents/nightly/assets/man_avatar_1-NFeJdB17.png" />
+						<img src="/webcomponents/nightly/assets/man_avatar_1-NFeJdB17.png" />
 					</ui5-avatar>
 
 					<span slot="footnotes">John Doe</span>

@@ -10,11 +10,11 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import { isPhone } from "@ui5/webcomponents-base/dist/Device.js";
-import { isUp, isDown, isEnter, isBackSpace, isDelete, isEscape, isTabNext, isPageUp, isPageDown, isHome, isEnd, isRight, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isUp, isDown, isEnter, isBackSpace, isDelete, isEscape, isTabNext, isPageUp, isPageDown, isHome, isEnd, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import SearchTemplate from "./SearchTemplate.js";
 import SearchCss from "./generated/themes/Search.css.js";
 import SearchField from "./SearchField.js";
-import { StartsWith, StartsWithPerTerm } from "@ui5/webcomponents/dist/Filters.js";
+import { StartsWith } from "@ui5/webcomponents/dist/Filters.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { SEARCH_CANCEL_BUTTON, SEARCH_SUGGESTIONS } from "./generated/i18n/i18n-defaults.js";
 import { i18n } from "@ui5/webcomponents-base/dist/decorators.js";
@@ -64,7 +64,6 @@ let Search = Search_1 = class Search extends SearchField {
         this.open = false;
         // The typed in value.
         this._typedInValue = "";
-        this._matchedPerTerm = false;
         this._valueBeforeOpen = this.getAttribute("value") || "";
     }
     onBeforeRendering() {
@@ -75,30 +74,24 @@ let Search = Search_1 = class Search extends SearchField {
         if (this._shouldAutocomplete && !autoCompletedChars) {
             const item = this._getFirstMatchingItem(this.value);
             this._proposedItem = item;
+            if (!isPhone()) {
+                this.open = this._popoupHasAnyContent();
+            }
             if (item) {
                 this._handleTypeAhead(item);
-                this._deselectItems();
-                item.selected = true;
+                this._selectMatchingItem(item);
             }
-            else {
-                this._typedInValue = this.value;
-            }
-        }
-        else {
-            this._typedInValue = this.value;
         }
         if (isPhone() && this.open) {
             const item = this._getFirstMatchingItem(this.value);
             this._proposedItem = item;
-            this._deselectItems();
             if (item && this._performItemSelectionOnMobile) {
-                item.selected = true;
+                this._selectMatchingItem(item);
             }
         }
         this._flattenItems.forEach(item => {
             item.highlightText = this._typedInValue;
         });
-        this._shouldAutocomplete = false;
     }
     onAfterRendering() {
         const innerInput = this.nativeInput;
@@ -138,32 +131,29 @@ let Search = Search_1 = class Search extends SearchField {
     }
     _handleTypeAhead(item) {
         const originalValue = item.text || "";
-        let displayValue = originalValue;
-        if (!originalValue.toLowerCase().startsWith(this.value.toLowerCase())) {
-            this._matchedPerTerm = true;
-            displayValue = `${this.value} - ${originalValue}`;
-        }
-        else {
-            this._matchedPerTerm = false;
-        }
         this._typedInValue = this.value;
-        this._innerValue = displayValue;
+        this._innerValue = originalValue;
         this._performTextSelection = true;
-        this.value = displayValue;
+        this.value = originalValue;
+        this._shouldAutocomplete = false;
     }
     _startsWithMatchingItems(str) {
-        return StartsWith(str, this._flattenItems.filter(item => !this._isGroupItem(item)), "text");
-    }
-    _startsWithPerTermMatchingItems(str) {
-        return StartsWithPerTerm(str, this._flattenItems.filter(item => !this._isGroupItem(item)), "text");
+        return StartsWith(str, this._flattenItems.filter(item => !this._isGroupItem(item) && !this._isShowMoreItem(item)), "text");
     }
     _isGroupItem(item) {
         return item.hasAttribute("ui5-search-item-group");
+    }
+    _isShowMoreItem(item) {
+        return item.hasAttribute("ui5-search-item-show-more");
     }
     _deselectItems() {
         this._flattenItems.forEach(item => {
             item.selected = false;
         });
+    }
+    _selectMatchingItem(item) {
+        this._deselectItems();
+        item.selected = true;
     }
     _handleDown(e) {
         if (this.open) {
@@ -172,20 +162,13 @@ let Search = Search_1 = class Search extends SearchField {
         }
     }
     _handleArrowDown() {
-        const firstListItem = this._getItemsList()?.getSlottedNodes("items")[0];
+        const focusableItems = this._getItemsList().listItems;
+        const firstListItem = focusableItems.at(0);
         if (this.open) {
             this._deselectItems();
             this.value = this._typedInValue || this.value;
             this._innerValue = this.value;
             firstListItem?.focus();
-        }
-    }
-    _handleRight(e) {
-        if (this._matchedPerTerm) {
-            e.preventDefault();
-            this.value = this._typedInValue;
-            this._innerValue = this._typedInValue;
-            this._proposedItem = undefined;
         }
     }
     _handleInnerClick() {
@@ -207,12 +190,6 @@ let Search = Search_1 = class Search extends SearchField {
             return;
         }
         const innerInput = this.nativeInput;
-        if (this._matchedPerTerm) {
-            this.value = this._proposedItem?.text || this.value;
-            this._innerValue = this.value;
-            this._typedInValue = this.value;
-            this._matchedPerTerm = false;
-        }
         innerInput.setSelectionRange(this.value.length, this.value.length);
         this.open = false;
     }
@@ -232,6 +209,7 @@ let Search = Search_1 = class Search extends SearchField {
     }
     _handleInput(e) {
         super._handleInput(e);
+        this._typedInValue = this.value;
         if (isPhone()) {
             return;
         }
@@ -249,8 +227,13 @@ let Search = Search_1 = class Search extends SearchField {
         }
     }
     _onItemKeydown(e) {
-        const isFirstItem = this._flattenItems[0] === e.target;
-        const isLastItem = this._flattenItems[this._flattenItems.length - 1] === e.target;
+        const target = e.target;
+        // if focus is on the group header (in group's shadow dom) the target is the group itself,
+        // if so using getFocusDomRef ensures the actual focused element is used
+        const focusedItem = this._isGroupItem(target) ? target?.getFocusDomRef() : target;
+        const focusableItems = this._getItemsList().listItems;
+        const isFirstItem = focusableItems.at(0) === focusedItem;
+        const isLastItem = focusableItems.at(-1) === focusedItem;
         const isArrowUp = isUp(e);
         const isArrowDown = isDown(e);
         const isTab = isTabNext(e);
@@ -285,23 +268,16 @@ let Search = Search_1 = class Search extends SearchField {
         }
         this._shouldAutocomplete = !this.noTypeahead
             && !(isBackSpace(e) || isDelete(e) || isEscape(e) || isUp(e) || isDown(e) || isTabNext(e) || isEnter(e) || isPageUp(e) || isPageDown(e) || isHome(e) || isEnd(e) || isEscape(e));
-        if (isRight(e)) {
-            this._handleRight(e);
-        }
         if (isDown(e)) {
             this._handleDown(e);
         }
         if (isEscape(e)) {
             this._handleEscape();
         }
-    }
-    _onfocusout() {
-        super._onfocusout();
-        if (this._matchedPerTerm) {
-            this.value = this._typedInValue;
-            this._innerValue = this._typedInValue;
+        // deselect item on backspace or delete
+        if (isBackSpace(e) || isDelete(e)) {
+            this._deselectItems();
         }
-        this._matchedPerTerm = false;
     }
     _onFocusOutSearch(e) {
         const target = e.relatedTarget;
@@ -346,16 +322,10 @@ let Search = Search_1 = class Search extends SearchField {
             return;
         }
         const startsWithMatches = this._startsWithMatchingItems(current);
-        const partialMatches = this._startsWithPerTermMatchingItems(current);
         if (!startsWithMatches.length) {
-            return partialMatches[0] ?? undefined;
+            return undefined;
         }
-        if (!partialMatches.length) {
-            return startsWithMatches[0];
-        }
-        return this._flattenItems.indexOf(startsWithMatches[0]) <= this._flattenItems.indexOf(partialMatches[0])
-            ? startsWithMatches[0]
-            : partialMatches[0];
+        return startsWithMatches[0];
     }
     _getPicker() {
         return this.shadowRoot.querySelector("[ui5-responsive-popover]");
@@ -397,7 +367,11 @@ __decorate([
     property({ type: Boolean })
 ], Search.prototype, "noTypeahead", void 0);
 __decorate([
-    slot({ type: HTMLElement, "default": true })
+    slot({
+        type: HTMLElement,
+        "default": true,
+        invalidateOnChildChange: true,
+    })
 ], Search.prototype, "items", void 0);
 __decorate([
     slot()

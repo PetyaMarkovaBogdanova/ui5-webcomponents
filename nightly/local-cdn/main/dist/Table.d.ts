@@ -305,11 +305,14 @@ declare class Table extends UI5Element {
         };
     };
     get _gridTemplateColumns(): string | undefined;
+    get _isRowSelectorRequired(): boolean | undefined;
     get _scrollContainer(): HTMLElement;
     get _stickyElements(): (TableHeaderRow | TableHeaderCell)[];
     get _effectiveNoDataText(): string;
     get _ariaLabel(): string | undefined;
-    get _ariaRowCount(): number | undefined;
+    get _ariaDescription(): string | undefined;
+    get _ariaRowCount(): number;
+    get _ariaColCount(): number;
     get _ariaMultiSelectable(): boolean | undefined;
     get isTable(): boolean;
 }

@@ -46,6 +46,27 @@ declare class SegmentedButton extends UI5Element {
      */
     accessibleName?: string;
     /**
+     * Defines the IDs of the HTML Elements that label the component.
+     * @default undefined
+     * @public
+     * @since 2.15.0
+     */
+    accessibleNameRef?: string;
+    /**
+     * Defines the accessible description of the component.
+     * @default undefined
+     * @public
+     * @since 2.15.0
+     */
+    accessibleDescription?: string;
+    /**
+     * Defines the IDs of the HTML Elements that describe the component.
+     * @default undefined
+     * @public
+     * @since 2.15.0
+     */
+    accessibleDescriptionRef?: string;
+    /**
      * Defines the component selection mode.
      * @default "Single"
      * @public
@@ -65,9 +86,11 @@ declare class SegmentedButton extends UI5Element {
     _itemNavigation: ItemNavigation;
     hasPreviouslyFocusedItem: boolean;
     _selectedItem?: ISegmentedButtonItem;
+    _actionCanceled: boolean;
     constructor();
     onBeforeRendering(): void;
     normalizeSelection(): void;
+    getFocusDomRef(): HTMLElement | undefined;
     _selectItem(e: MouseEvent | KeyboardEvent): this | undefined;
     _applySingleSelection(item: ISegmentedButtonItem): void;
     _onclick(e: MouseEvent): void;
@@ -83,8 +106,9 @@ declare class SegmentedButton extends UI5Element {
      */
     get selectedItems(): Array<ISegmentedButtonItem>;
     get navigatableItems(): SegmentedButtonItem[];
-    get ariaDescribedBy(): string;
-    get ariaDescription(): string;
+    get ariaLabelText(): string | undefined;
+    get ariaDescriptionText(): string;
+    get ariaRoleDescription(): string;
 }
 export default SegmentedButton;
 export type { SegmentedButtonSelectionChangeEventDetail, ISegmentedButtonItem, };

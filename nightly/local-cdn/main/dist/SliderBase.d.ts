@@ -104,6 +104,7 @@ declare abstract class SliderBase extends UI5Element {
     _resizeHandler: ResizeObserverCallback;
     _moveHandler: (e: TouchEvent | MouseEvent) => void;
     _upHandler: (e: TouchEvent | MouseEvent) => void;
+    _windowMouseoutHandler: (e: MouseEvent) => void;
     _stateStorage: StateStorage;
     notResized: boolean;
     _isUserInteraction: boolean;
@@ -120,10 +121,6 @@ declare abstract class SliderBase extends UI5Element {
     _handleUp(e: TouchEvent | MouseEvent): void;
     _onmousedown(e: TouchEvent | MouseEvent): void;
     _handleActionKeyPress(e: Event): void;
-    abstract styles: {
-        label: Record<string, string>;
-        labelContainer: Record<string, string>;
-    };
     abstract tickmarksObject: Array<boolean>;
     abstract _ariaLabelledByText: string;
     static get ACTION_KEYS(): ((event: KeyboardEvent) => boolean)[];

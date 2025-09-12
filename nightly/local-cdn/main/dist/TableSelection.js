@@ -51,7 +51,7 @@ import { isSelectionCheckbox, isHeaderSelector, findRowInPath } from "./TableUti
  */
 let TableSelection = class TableSelection extends UI5Element {
     constructor() {
-        super(...arguments);
+        super();
         /**
          * Defines the selection mode.
          *
@@ -68,6 +68,7 @@ let TableSelection = class TableSelection extends UI5Element {
         this.selected = "";
         this.identifier = "TableSelection";
         this._rowsLength = 0;
+        this.onClickCaptureBound = this._onClickCapture.bind(this);
     }
     onTableActivate(table) {
         this._table = table;
@@ -86,6 +87,10 @@ let TableSelection = class TableSelection extends UI5Element {
             this._rowsLength = this._table.rows.length;
             this._table.headerRow[0]._invalidate++;
         }
+        this._table?.removeEventListener("click", this.onClickCaptureBound);
+    }
+    onTableAfterRendering() {
+        this._table?.addEventListener("click", this.onClickCaptureBound, { capture: true });
     }
     isSelectable() {
         return this.mode !== TableSelectionMode.None;
@@ -95,6 +100,12 @@ let TableSelection = class TableSelection extends UI5Element {
     }
     isRowSelectorRequired() {
         return this.mode !== TableSelectionMode.None;
+    }
+    getAriaDescriptionForTable() {
+        return undefined;
+    }
+    getAriaDescriptionForColumnHeader() {
+        return undefined;
     }
     getRowKey(row) {
         return row.rowKey || "";
@@ -222,7 +233,7 @@ let TableSelection = class TableSelection extends UI5Element {
             this._rangeSelection.shiftPressed = e.shiftKey;
         }
     }
-    _onclick(e) {
+    _onClickCapture(e) {
         if (!this._table || this.mode !== TableSelectionMode.Multiple) {
             return;
         }
@@ -239,11 +250,12 @@ let TableSelection = class TableSelection extends UI5Element {
             const startRow = this._rangeSelection.rows[0];
             const startIndex = this._table.rows.indexOf(startRow);
             const endIndex = this._table.rows.indexOf(row);
+            const selectionState = this.isSelected(startRow);
             // When doing a range selection and clicking on an already selected row, the checked status should not change
             // Therefore, we need to manually set the checked attribute again, as clicking it would deselect it and leads to
             // a visual inconsistency.
-            row.shadowRoot?.querySelector("#selection-component")?.toggleAttribute("checked", true);
-            e.stopImmediatePropagation();
+            row.shadowRoot?.querySelector("#selection-component")?.toggleAttribute("checked", selectionState);
+            e.stopPropagation();
             if (startIndex === -1 || endIndex === -1 || row.rowKey === startRow.rowKey || row.rowKey === this._rangeSelection.rows[this._rangeSelection.rows.length - 1].rowKey) {
                 return;
             }

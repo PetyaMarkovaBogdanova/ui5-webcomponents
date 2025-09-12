@@ -1,5 +1,5 @@
 import patchPatcher from "./patchPatcher.js";
-import patchPopup from "./patchPopup.js";
+import { patchPopup, addOpenedPopup, removeOpenedPopup, getTopmostPopup, } from "./patchPopup.js";
 import { registerFeature } from "../FeaturesRegistry.js";
 import { setTheme } from "../config/Theme.js";
 class OpenUI5Support {
@@ -138,7 +138,17 @@ class OpenUI5Support {
         if (!link) {
             return false;
         }
-        return !!link.href.match(/\/css(-|_)variables\.css/);
+        // The file name is "css_variables.css" until 1.127 and "library.css" from 1.127 onwards
+        return !!link.href.match(/\/css(-|_)variables\.css/) || !!link.href.match(/\/library\.css/);
+    }
+    static addOpenedPopup(popupInfo) {
+        addOpenedPopup(popupInfo);
+    }
+    static removeOpenedPopup(popup) {
+        removeOpenedPopup(popup);
+    }
+    static getTopmostPopup() {
+        return getTopmostPopup();
     }
 }
 registerFeature("OpenUI5Support", OpenUI5Support);

@@ -17,18 +17,10 @@ import SideNavigationSelectableItemBase from "./SideNavigationSelectableItemBase
  * @since 1.0.0-rc.8
  */
 declare class SideNavigationSubItem extends SideNavigationSelectableItemBase {
-    /**
-     * Defines if the item's parent is disabled.
-     * @private
-     * @default false
-     * @since 2.10.0
-     */
-    _parentDisabled: boolean;
     _onkeydown(e: KeyboardEvent): void;
     _onkeyup(e: KeyboardEvent): void;
     _onfocusin(e: FocusEvent): void;
     _onclick(e: MouseEvent): void;
-    get effectiveDisabled(): boolean;
     get classesArray(): string[];
 }
 export default SideNavigationSubItem;

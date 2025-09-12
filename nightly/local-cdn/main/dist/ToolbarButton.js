@@ -10,6 +10,7 @@ import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import ToolbarItem from "./ToolbarItem.js";
 import ToolbarButtonTemplate from "./ToolbarButtonTemplate.js";
+import ToolbarButtonCss from "./generated/themes/ToolbarButton.css.js";
 /**
  * @class
  *
@@ -121,6 +122,7 @@ ToolbarButton = __decorate([
         tag: "ui5-toolbar-button",
         template: ToolbarButtonTemplate,
         renderer: jsxRenderer,
+        styles: [ToolbarButtonCss],
     })
     /**
      * Fired when the component is activated either with a

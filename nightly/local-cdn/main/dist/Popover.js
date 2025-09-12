@@ -12,7 +12,6 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import { isIOS } from "@ui5/webcomponents-base/dist/Device.js";
 import { getClosedPopupParent } from "@ui5/webcomponents-base/dist/util/PopupUtils.js";
 import clamp from "@ui5/webcomponents-base/dist/util/clamp.js";
-import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
 import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import Popup from "./Popup.js";
@@ -151,7 +150,7 @@ let Popover = Popover_1 = class Popover extends Popup {
         if (!opener) {
             return;
         }
-        if (this.isOpenerOutsideViewport(opener.getBoundingClientRect())) {
+        if (!opener || this.isOpenerOutsideViewport(opener.getBoundingClientRect())) {
             await renderFinished();
             this.open = false;
             this.fireDecoratorEvent("close");
@@ -189,7 +188,7 @@ let Popover = Popover_1 = class Popover extends Popup {
         removeOpenedPopover(this);
     }
     getOpenerHTMLElement(opener) {
-        if (opener === undefined) {
+        if (opener === undefined || opener === null) {
             return opener;
         }
         if (opener instanceof HTMLElement) {
@@ -254,6 +253,13 @@ let Popover = Popover_1 = class Popover extends Popup {
     async _show() {
         super._show();
         const opener = this.getOpenerHTMLElement(this.opener);
+        if (!opener) {
+            Object.assign(this.style, {
+                top: `0px`,
+                left: `0px`,
+            });
+            return;
+        }
         if (opener && instanceOfUI5Element(opener) && !opener.getDomRef()) {
             return;
         }
@@ -320,8 +326,22 @@ let Popover = Popover_1 = class Popover extends Popup {
         const actualTop = Math.ceil(this.getBoundingClientRect().top);
         return top + (Number.parseInt(this.style.top || "0") - actualTop);
     }
-    getPopoverSize() {
-        const rect = this.getBoundingClientRect(), width = rect.width, height = rect.height;
+    getPopoverSize(calcScrollHeight = false) {
+        const rect = this.getBoundingClientRect();
+        const width = rect.width;
+        let height;
+        const domRef = this.getDomRef();
+        if (calcScrollHeight && domRef) {
+            const header = domRef.querySelector(".ui5-popup-header-root");
+            const content = domRef.querySelector(".ui5-popup-content");
+            const footer = domRef.querySelector(".ui5-popup-footer-root");
+            height = content?.scrollHeight || 0;
+            height += header?.scrollHeight || 0;
+            height += footer?.scrollHeight || 0;
+        }
+        else {
+            height = rect.height;
+        }
         return { width, height };
     }
     _showOutsideViewport() {
@@ -353,7 +373,7 @@ let Popover = Popover_1 = class Popover extends Popup {
         const clientHeight = document.documentElement.clientHeight;
         let maxHeight = clientHeight;
         let maxWidth = clientWidth;
-        const placement = this.getActualPlacement(targetRect, popoverSize);
+        const placement = this.getActualPlacement(targetRect);
         this._preventRepositionAndClose = this.shouldCloseDueToNoOpener(targetRect) || this.shouldCloseDueToOverflow(placement, targetRect);
         const isVertical = placement === PopoverPlacement.Top
             || placement === PopoverPlacement.Bottom;
@@ -498,20 +518,28 @@ let Popover = Popover_1 = class Popover extends Popup {
             return PopoverPlacement.Top;
         }
     }
-    getActualPlacement(targetRect, popoverSize) {
+    getActualPlacement(targetRect) {
         const placement = this.placement;
         let actualPlacement = placement;
+        const isVertical = placement === PopoverPlacement.Top
+            || placement === PopoverPlacement.Bottom;
+        const popoverSize = this.getPopoverSize(!this.allowTargetOverlap);
         const clientWidth = document.documentElement.clientWidth;
-        const clientHeight = document.documentElement.clientHeight;
+        let clientHeight = document.documentElement.clientHeight;
+        let popoverHeight = popoverSize.height;
+        if (isVertical) {
+            popoverHeight += this.hideArrow ? 0 : ARROW_SIZE;
+            clientHeight -= Popover_1.VIEWPORT_MARGIN;
+        }
         switch (placement) {
             case PopoverPlacement.Top:
-                if (targetRect.top < popoverSize.height
+                if (targetRect.top < popoverHeight
                     && targetRect.top < clientHeight - targetRect.bottom) {
                     actualPlacement = PopoverPlacement.Bottom;
                 }
                 break;
             case PopoverPlacement.Bottom:
-                if (clientHeight - targetRect.bottom < popoverSize.height
+                if (clientHeight - targetRect.bottom < popoverHeight
                     && clientHeight - targetRect.bottom < targetRect.top) {
                     actualPlacement = PopoverPlacement.Top;
                 }
@@ -664,7 +692,6 @@ Popover = Popover_1 = __decorate([
             Popup.styles,
             PopupsCommonCss,
             PopoverCss,
-            getEffectiveScrollbarStyle(),
         ],
         template: PopoverTemplate,
     })

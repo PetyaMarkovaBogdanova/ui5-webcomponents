@@ -10,11 +10,12 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
+import { getEffectiveAriaLabelText, getAssociatedLabelForTexts, getEffectiveAriaDescriptionText, } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
-import { isSpace, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isSpace, isEnter, isShift, isEscape, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { SEGMENTEDBUTTON_ARIA_DESCRIPTION, SEGMENTEDBUTTON_ARIA_DESCRIBEDBY } from "./generated/i18n/i18n-defaults.js";
 import "./SegmentedButtonItem.js";
 import SegmentedButtonSelectionMode from "./types/SegmentedButtonSelectionMode.js";
@@ -54,15 +55,18 @@ let SegmentedButton = SegmentedButton_1 = class SegmentedButton extends UI5Eleme
             getItemsCallback: () => this.navigatableItems,
         });
         this.hasPreviouslyFocusedItem = false;
+        this._actionCanceled = false;
     }
     onBeforeRendering() {
         const items = this.getSlottedNodes("items");
-        items.forEach((item, index, arr) => {
-            item.posInSet = index + 1;
-            item.sizeOfSet = arr.length;
+        const visibleItems = items.filter(item => !item.hidden);
+        let index = 1;
+        items.forEach(item => {
+            item.posInSet = item.hidden ? undefined : index++;
+            item.sizeOfSet = item.hidden ? undefined : visibleItems.length;
         });
         this.normalizeSelection();
-        this.style.setProperty(getScopedVarName("--_ui5_segmented_btn_items_count"), `${items.length}`);
+        this.style.setProperty(getScopedVarName("--_ui5_segmented_btn_items_count"), `${visibleItems.length}`);
     }
     normalizeSelection() {
         if (!this.items.length) {
@@ -81,6 +85,9 @@ let SegmentedButton = SegmentedButton_1 = class SegmentedButton extends UI5Eleme
             }
             default:
         }
+    }
+    getFocusDomRef() {
+        return this._itemNavigation._getCurrentItem();
     }
     _selectItem(e) {
         const target = e.target;
@@ -115,15 +122,23 @@ let SegmentedButton = SegmentedButton_1 = class SegmentedButton extends UI5Eleme
     }
     _onkeydown(e) {
         if (isEnter(e)) {
-            this._selectItem(e);
+            this._selectItem(e); // Enter key behavior remains unaffected
         }
         else if (isSpace(e)) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent scrolling
+            this._actionCanceled = false; // Reset the action cancellation flag
+        }
+        else if (isShift(e) || isEscape(e)) {
+            this._actionCanceled = true; // Set the flag to cancel the action
         }
     }
     _onkeyup(e) {
         if (isSpace(e)) {
-            this._selectItem(e);
+            // Only select if the action was not canceled
+            if (!this._actionCanceled) {
+                this._selectItem(e);
+            }
+            this._actionCanceled = false; // Reset the flag after handling
         }
     }
     _onmousedown(e) {
@@ -163,16 +178,28 @@ let SegmentedButton = SegmentedButton_1 = class SegmentedButton extends UI5Eleme
             return !item.disabled;
         });
     }
-    get ariaDescribedBy() {
-        return SegmentedButton_1.i18nBundle.getText(SEGMENTEDBUTTON_ARIA_DESCRIBEDBY);
+    get ariaLabelText() {
+        return getEffectiveAriaLabelText(this) || getAssociatedLabelForTexts(this) || undefined;
     }
-    get ariaDescription() {
+    get ariaDescriptionText() {
+        return `${(getEffectiveAriaDescriptionText(this) || "")} ${SegmentedButton_1.i18nBundle.getText(SEGMENTEDBUTTON_ARIA_DESCRIBEDBY)}`.trim();
+    }
+    get ariaRoleDescription() {
         return SegmentedButton_1.i18nBundle.getText(SEGMENTEDBUTTON_ARIA_DESCRIPTION);
     }
 };
 __decorate([
     property()
 ], SegmentedButton.prototype, "accessibleName", void 0);
+__decorate([
+    property()
+], SegmentedButton.prototype, "accessibleNameRef", void 0);
+__decorate([
+    property()
+], SegmentedButton.prototype, "accessibleDescription", void 0);
+__decorate([
+    property()
+], SegmentedButton.prototype, "accessibleDescriptionRef", void 0);
 __decorate([
     property()
 ], SegmentedButton.prototype, "selectionMode", void 0);

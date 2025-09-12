@@ -24,6 +24,7 @@ import { AVATAR_GROUP_DISPLAYED_HIDDEN_LABEL, AVATAR_GROUP_SHOW_COMPLETE_LIST_LA
 import AvatarGroupCss from "./generated/themes/AvatarGroup.css.js";
 // Template
 import AvatarGroupTemplate from "./AvatarGroupTemplate.js";
+import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
 const OVERFLOW_BTN_CLASS = "ui5-avatar-group-overflow-btn";
 const AVATAR_GROUP_OVERFLOW_BTN_SELECTOR = `.${OVERFLOW_BTN_CLASS}`;
 // based on RTL/LTR a margin-left/right is set respectfully
@@ -160,6 +161,10 @@ let AvatarGroup = AvatarGroup_1 = class AvatarGroup extends UI5Element {
         return this.overflowButton.length ? this.overflowButton[0] : undefined;
     }
     get _ariaLabelText() {
+        if (this.accessibleName || this.accessibleNameRef) {
+            return getEffectiveAriaLabelText(this);
+        }
+        // Fallback to existing default behavior
         const hiddenItemsCount = this.hiddenItems.length;
         const typeLabelKey = this._isGroup ? AVATAR_GROUP_ARIA_LABEL_GROUP : AVATAR_GROUP_ARIA_LABEL_INDIVIDUAL;
         // avatar type label
@@ -329,6 +334,9 @@ let AvatarGroup = AvatarGroup_1 = class AvatarGroup extends UI5Element {
     _onfocusin(e) {
         this._itemNavigation.setCurrentItem(e.target);
     }
+    getFocusDomRef() {
+        return this._itemNavigation._getCurrentItem();
+    }
     /**
      * Returns the total width to item excluding the item width
      * RTL/LTR aware
@@ -409,6 +417,12 @@ __decorate([
 __decorate([
     property({ noAttribute: true })
 ], AvatarGroup.prototype, "_overflowButtonText", void 0);
+__decorate([
+    property()
+], AvatarGroup.prototype, "accessibleName", void 0);
+__decorate([
+    property()
+], AvatarGroup.prototype, "accessibleNameRef", void 0);
 __decorate([
     slot({ type: HTMLElement, "default": true })
 ], AvatarGroup.prototype, "items", void 0);

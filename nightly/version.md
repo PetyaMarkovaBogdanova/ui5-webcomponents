@@ -1,5 +1,5 @@
-commit fdc9a45386d6b8fa9327c415836a877d5fced142
-Author: PetyaMarkovaBogdanova <petya.markova@sap.com>
-Date:   Tue Jun 10 14:18:53 2025 +0300
+commit 1be62e06f2c7e44ed5042623ad35911b95a9f6b1
+Author: Petya Markova <petya.n.markova@gmail.com>
+Date:   Fri Sep 12 15:06:15 2025 +0300
 
-    test(ui5-list): test drag and drop cursor
+    Merge branch 'UI5:select-annauncement-fix' into select-annauncement-fix

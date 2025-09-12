@@ -489,6 +489,11 @@ var IllustrationMessageType;
     */
     IllustrationMessageType["TntDialog"] = "TntDialog";
     /**
+    * "TntEmptyContentPane" illustration type.
+    * @public
+    */
+    IllustrationMessageType["TntEmptyContentPane"] = "TntEmptyContentPane";
+    /**
     * "TntExternalLink" illustration type.
     * @public
     */

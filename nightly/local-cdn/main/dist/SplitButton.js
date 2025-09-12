@@ -120,6 +120,30 @@ let SplitButton = SplitButton_1 = class SplitButton extends UI5Element {
          * @private
          */
         this._hideArrowButton = false;
+        /**
+         * Defines the additional accessibility attributes that will be applied to the component.
+         * The `accessibilityAttributes` property accepts an object with the following optional fields:
+         *
+         * - **root**: Attributes that will be applied to the main (text) button.
+         *   - **hasPopup**: Indicates the presence and type of popup triggered by the button.
+         *     Accepts string values: `"dialog"`, `"grid"`, `"listbox"`, `"menu"`, or `"tree"`.
+         *   - **roleDescription**: Provides a human-readable description for the role of the button.
+         *     Accepts any string value.
+         *   - **title**: Specifies a tooltip or description for screen readers.
+         *     Accepts any string value.
+         * 	- **ariaKeyShortcuts**: Defines keyboard shortcuts that activate or give focus to the button.
+         *
+         * - **arrowButton**: Attributes applied specifically to the arrow (split) button.
+         *   - **hasPopup**: Indicates the presence and type of popup triggered by the arrow button.
+         *     Accepts string values: `"dialog"`, `"grid"`, `"listbox"`, `"menu"`, or `"tree"`.
+         *   - **expanded**: Indicates whether the popup triggered by the arrow button is currently expanded.
+         *     Accepts boolean values: `true` or `false`.
+         *
+         * @default {}
+         * @public
+         * @since 2.13.0
+         */
+        this.accessibilityAttributes = {};
     }
     onBeforeRendering() {
         if (this.disabled) {
@@ -274,7 +298,7 @@ let SplitButton = SplitButton_1 = class SplitButton extends UI5Element {
     get effectiveActiveArrowButton() {
         return this.activeArrowButton || this._activeArrowButton;
     }
-    get textButtonAccText() {
+    get buttonTextContent() {
         return this.textContent;
     }
     get isTextButton() {
@@ -286,19 +310,25 @@ let SplitButton = SplitButton_1 = class SplitButton extends UI5Element {
     get arrowButton() {
         return this.getDomRef()?.querySelector(".ui5-split-arrow-button");
     }
-    get accInfo() {
+    get _computedAccessibilityAttributes() {
         return {
             root: {
-                "description": SplitButton_1.i18nBundle.getText(SPLIT_BUTTON_DESCRIPTION),
-                "keyboardHint": SplitButton_1.i18nBundle.getText(SPLIT_BUTTON_KEYBOARD_HINT),
+                hasPopup: this.accessibilityAttributes?.root?.hasPopup,
+                roleDescription: this.accessibilityAttributes?.root?.roleDescription || (this._hideArrowButton ? undefined : SplitButton_1.i18nBundle.getText(SPLIT_BUTTON_DESCRIPTION)),
+                title: this.accessibilityAttributes?.root?.title,
+                ariaKeyShortcuts: this.accessibilityAttributes?.root?.ariaKeyShortcuts,
             },
             arrowButton: {
-                "title": this.arrowButtonTooltip,
-                "accessibilityAttributes": {
-                    "hasPopup": "menu",
-                    "expanded": this.effectiveActiveArrowButton,
-                },
+                hasPopup: this.accessibilityAttributes?.arrowButton?.hasPopup || "menu",
+                expanded: this.accessibilityAttributes?.arrowButton?.expanded || this.effectiveActiveArrowButton,
+                title: this.accessibilityAttributes?.arrowButton?.title || this.arrowButtonTooltip,
             },
+        };
+    }
+    get accInfo() {
+        return {
+            "keyboardHint": SplitButton_1.i18nBundle.getText(SPLIT_BUTTON_KEYBOARD_HINT),
+            "description": SplitButton_1.i18nBundle.getText(SPLIT_BUTTON_DESCRIPTION),
         };
     }
     get arrowButtonTooltip() {
@@ -341,6 +371,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], SplitButton.prototype, "_hideArrowButton", void 0);
+__decorate([
+    property({ type: Object })
+], SplitButton.prototype, "accessibilityAttributes", void 0);
 __decorate([
     slot({ type: Node, "default": true })
 ], SplitButton.prototype, "text", void 0);

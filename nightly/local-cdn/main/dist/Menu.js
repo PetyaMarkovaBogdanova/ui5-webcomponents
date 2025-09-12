@@ -10,7 +10,7 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import { isLeft, isRight, isEnter, isSpace, isTabNext, isTabPrevious, isDown, isUp, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isLeft, isRight, isEnter, isTabNext, isTabPrevious, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { isPhone, isDesktop, } from "@ui5/webcomponents-base/dist/Device.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import "@ui5/webcomponents-icons/dist/slim-arrow-right.js";
@@ -19,7 +19,8 @@ import { renderFinished } from "@ui5/webcomponents-base/dist/Render.js";
 import DOMReferenceConverter from "@ui5/webcomponents-base/dist/converters/DOMReference.js";
 // The import below should be kept, as MenuItem is part of the Menu component.
 import { isInstanceOfMenuItem } from "./MenuItem.js";
-import "./MenuSeparator.js";
+import { isInstanceOfMenuItemGroup } from "./MenuItemGroup.js";
+import { isInstanceOfMenuSeparator } from "./MenuSeparator.js";
 import menuTemplate from "./MenuTemplate.js";
 import { MENU_CLOSE_BUTTON_ARIA_LABEL, MENU_POPOVER_ACCESSIBLE_NAME, } from "./generated/i18n/i18n-defaults.js";
 // Styles
@@ -55,7 +56,11 @@ const MENU_OPEN_DELAY = 300;
  * - `Arrow Left` or `ArrowRight` - Navigate between the menu item actions and the menu item itself
  * - `Arrow Up` / `Arrow Down` - Navigates up and down the currently visible menu items
  *
- * Note: if the text ditrection is set to Right-to-left (RTL), `Arrow Right` and `Arrow Left` functionality is swapped.
+ * **Note:** If the text direction is set to Right-to-left (RTL), `Arrow Right` and `Arrow Left` functionality is swapped.
+ *
+ * Application developers are responsible for ensuring that interactive elements placed in the `endContent` slot
+ * have the correct accessibility behaviour, including their enabled or disabled states.
+ * The menu does not manage these aspects when the menu item state changes.
  *
  * ### ES6 Module Import
  *
@@ -108,17 +113,62 @@ let Menu = Menu_1 = class Menu extends UI5Element {
     get _popover() {
         return this.shadowRoot.querySelector("[ui5-responsive-popover]");
     }
+    get _list() {
+        return this.shadowRoot.querySelector("[ui5-list]");
+    }
+    /** Returns menu item groups */
+    get _menuItemGroups() {
+        return this.items.filter(isInstanceOfMenuItemGroup);
+    }
+    /** Returns menu items */
     get _menuItems() {
-        return this.items.filter((item) => !item.isSeparator);
+        return this.items.filter(isInstanceOfMenuItem);
+    }
+    /** Returns all menu items (including those in groups */
+    get _allMenuItems() {
+        const items = [];
+        this.items.forEach(item => {
+            if (isInstanceOfMenuItemGroup(item)) {
+                items.push(...item._menuItems);
+            }
+            else if (!isInstanceOfMenuSeparator(item)) {
+                items.push(item);
+            }
+        });
+        return items;
+    }
+    /** Returns menu items included in the ItemNavigation */
+    get _navigatableMenuItems() {
+        const items = [];
+        const slottedItems = this.getSlottedNodes("items");
+        slottedItems.forEach(item => {
+            if (isInstanceOfMenuItemGroup(item)) {
+                const groupItems = item.getSlottedNodes("items");
+                items.push(...groupItems);
+            }
+            else if (!isInstanceOfMenuSeparator(item)) {
+                items.push(item);
+            }
+        });
+        return items;
     }
     get acessibleNameText() {
         return Menu_1.i18nBundle.getText(MENU_POPOVER_ACCESSIBLE_NAME);
     }
     onBeforeRendering() {
-        const siblingsWithIcon = this._menuItems.some(menuItem => !!menuItem.icon);
-        this._menuItems.forEach(item => {
+        const siblingsWithIcon = this._allMenuItems.some(menuItem => !!menuItem.icon);
+        this._setupItemNavigation();
+        this._allMenuItems.forEach(item => {
             item._siblingsWithIcon = siblingsWithIcon;
         });
+    }
+    getFocusDomRef() {
+        return this._list?.getFocusDomRef();
+    }
+    _setupItemNavigation() {
+        if (this._list) {
+            this._list._itemNavigation._getItems = () => this._navigatableMenuItems;
+        }
     }
     _close() {
         this.open = false;
@@ -149,14 +199,14 @@ let Menu = Menu_1 = class Menu extends UI5Element {
     }
     async focus(focusOptions) {
         await renderFinished();
-        const firstMenuItem = this._menuItems[0];
+        const firstMenuItem = this._allMenuItems[0];
         if (firstMenuItem) {
             return firstMenuItem.focus(focusOptions);
         }
         return super.focus(focusOptions);
     }
     _closeOtherSubMenus(item) {
-        const menuItems = this._menuItems;
+        const menuItems = this._allMenuItems;
         if (!menuItems.includes(item)) {
             return;
         }
@@ -180,8 +230,9 @@ let Menu = Menu_1 = class Menu extends UI5Element {
                 "item": item,
                 "text": item.text || "",
             });
-            if (!prevented && this._popover) {
-                item.fireDecoratorEvent("close-menu");
+            if (!prevented) {
+                item._updateCheckedState();
+                this._popover && !item._shiftPressed && item.fireDecoratorEvent("close-menu");
             }
         }
         else {
@@ -194,12 +245,8 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         if (!isInstanceOfMenuItem(item)) {
             return;
         }
-        const menuItemInMenu = this._menuItems.includes(item);
-        const isItemNavigation = isUp(e) || isDown(e);
-        const isItemSelection = isEnter(e) || isSpace(e);
         const isEndContentNavigation = isRight(e) || isLeft(e);
         const shouldOpenMenu = this.isRtl ? isLeft(e) : isRight(e);
-        const shouldCloseMenu = menuItemInMenu && !(isItemNavigation || isItemSelection || isEndContentNavigation);
         if (isEnter(e) || isTabNextPrevious) {
             e.preventDefault();
         }
@@ -209,14 +256,14 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         if (shouldOpenMenu) {
             this._openItemSubMenu(item);
         }
-        else if ((shouldCloseMenu || isTabNextPrevious)) {
+        else if (isTabNextPrevious) {
             this._close();
         }
     }
     _navigateOutOfEndContent(e) {
         const item = e.target;
         const shouldNavigateToNextItem = e.detail.shouldNavigateToNextItem;
-        const menuItems = this._menuItems;
+        const menuItems = this._allMenuItems;
         const itemIndex = menuItems.indexOf(item);
         if (itemIndex > -1) {
             const nextItem = shouldNavigateToNextItem ? menuItems[itemIndex + 1] : menuItems[itemIndex - 1];
@@ -233,7 +280,7 @@ let Menu = Menu_1 = class Menu extends UI5Element {
         }
     }
     _afterPopoverOpen() {
-        this._menuItems[0]?.focus();
+        this._allMenuItems[0]?.focus();
         this.fireDecoratorEvent("open");
     }
     _beforePopoverClose(e) {

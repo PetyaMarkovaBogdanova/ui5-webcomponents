@@ -8,6 +8,7 @@ import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import { property, eventStrict } from "@ui5/webcomponents-base/dist/decorators.js";
 import { isInstanceOfTable } from "./TableUtils.js";
 import TableSelectionBehavior from "./types/TableSelectionBehavior.js";
+import { TABLE_MULTI_SELECTABLE, TABLE_SINGLE_SELECTABLE, } from "./generated/i18n/i18n-defaults.js";
 /**
  * Fired when the selection is changed by user interaction.
  *
@@ -64,6 +65,22 @@ class TableSelectionBase extends UI5Element {
      */
     isRowSelectorRequired() {
         return this.behavior === TableSelectionBehavior.RowSelector;
+    }
+    /**
+     * Returns the ARIA description of the Table as an alternative to aria-multiselectable.
+     */
+    getAriaDescriptionForTable() {
+        if (!this._table || !this._table.rows.length) {
+            return undefined;
+        }
+        const i18nBundle = this._table.constructor.i18nBundle;
+        return i18nBundle.getText(this.isMultiSelectable() ? TABLE_MULTI_SELECTABLE : TABLE_SINGLE_SELECTABLE);
+    }
+    /**
+     * Returns the ARIA description of the selection component displayed in the column header.
+     */
+    getAriaDescriptionForColumnHeader() {
+        return undefined;
     }
     /**
      * Returns the unique key associated with the table row.

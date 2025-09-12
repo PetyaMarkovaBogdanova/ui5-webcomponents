@@ -70,6 +70,7 @@ type MultiComboboxItemWithSelection = {
  * you can open or close the drop-down by pressing [F4], [Alt] + [Up] or [Alt] + [Down] keys.
  * Once the drop-down is opened, you can use the `UP` and `DOWN` arrow keys
  * to navigate through the available options and select one by pressing the `Space` or `Enter` keys.
+ * [Ctrl]+[Alt]+[F8] or [Command]+[Option]+[F8] - Focuses the first link in the value state message, if available. Pressing [Tab] moves the focus to the next link in the value state message, or closes the value state message if there are no more links.
  *
  * #### Tokens
  *
@@ -234,6 +235,17 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
      */
     tokenizerAvailable: boolean;
     /**
+     * Indicates whether link navigation is being handled.
+     * @private
+     * @since 2.11.0
+     * @default false
+     */
+    _handleLinkNavigation: boolean;
+    /**
+     * @private
+     */
+    _linksListenersArray: Array<(args: any) => void>;
+    /**
      * Defines the component items.
      * @public
      */
@@ -275,6 +287,7 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     _itemToFocus?: IMultiComboBoxItem;
     _itemsBeforeOpen: Array<MultiComboboxItemWithSelection>;
     selectedItems: Array<IMultiComboBoxItem>;
+    _valueStateLinks: Array<HTMLElement>;
     static i18nBundle: I18nBundle;
     get formValidityMessage(): string;
     get formValidity(): ValidityStateFlags;
@@ -296,7 +309,10 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     _inputLiveChange(e: InputEvent): void;
     _tokenDelete(e: CustomEvent<TokenizerTokenDeleteEventDetail>): void;
     get _getPlaceholder(): string;
+    get _shouldFocusLastToken(): boolean;
+    _handleArrowKey(direction: string): void;
     _handleArrowLeft(): void;
+    _handleArrowRight(): void;
     _onPopoverFocusOut(): void;
     _tokenizerFocusOut(e: FocusEvent): void;
     _tokenizerFocusIn(): void;
@@ -321,6 +337,7 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     _onItemTab(): void;
     _handleArrowNavigation(e: KeyboardEvent, isDownControl: boolean): void;
     _handleArrowDown(): Promise<void>;
+    _handleCtrlALtF8(): void;
     _handleItemRangeSelection(e: KeyboardEvent): void;
     _navigateToNextItem(): void;
     _navigateToPrevItem(): void;
@@ -349,6 +366,8 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     _beforeClose(): void;
     _afterClose(): void;
     _beforeOpen(): void;
+    _addLinksEventListeners(): void;
+    _removeLinksEventListeners(): void;
     _handleTypeAhead(item: IMultiComboBoxItem, filterValue: string): void;
     _getFirstMatchingItem(current: string): IMultiComboBoxItem | undefined;
     _startsWithMatchingItems(str: string): IMultiComboBoxItem[];
@@ -378,12 +397,15 @@ declare class MultiComboBox extends UI5Element implements IFormInputElement {
     get hasValueStateMessage(): boolean;
     get ariaValueStateHiddenText(): string | undefined;
     get valueStateDefaultText(): string;
-    get valueStateTextId(): "ui5-multi-combobox-valueStateDesc" | undefined;
+    get valueStateTextId(): "" | "ui5-multi-combobox-valueStateDesc";
     get ariaLabelText(): string | undefined;
     /**
      * This method is relevant for sap_horizon theme only
      */
     get _valueStateMessageIcon(): string;
+    get linksInAriaValueStateHiddenText(): HTMLElement[];
+    get getValueStateLinksShortcutsTextAcc(): string;
+    get _valueStateLinksShortcutsTextAccId(): "" | "hiddenText-value-state-link-shortcut";
     get _tokensCountText(): string | undefined;
     get _tokensCountTextId(): string;
     get _selectedTokensCount(): number;

@@ -156,9 +156,12 @@ declare class DynamicPageTitle extends UI5Element {
     get subheadingSlotName(): "subheading" | "snappedSubheading";
     get _tabIndex(): 0 | undefined;
     get _headerExpanded(): boolean;
-    get _ariaDescribedbyText(): string;
+    get _role(): "button" | undefined;
+    get _ariaDescribedBy(): string | undefined;
+    get _ariaDescribedbyText(): string | undefined;
     get _ariaLabelledBy(): string | undefined;
     get _needsSeparator(): boolean;
+    get forAriaExpanded(): boolean | undefined;
     prepareLayoutActions(): void;
     handleResize(): void;
     onMinContentWidthChange(e: CustomEvent<ToolbarMinWidthChangeEventDetail>): void;

@@ -317,6 +317,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
         }
         if (isDelete(e)) {
             this.fireDecoratorEvent("close", { item: this });
+            this.fireDecoratorEvent("_close", { item: this });
         }
         if (isF10Shift(e)) {
             this._onBtnMenuClick();
@@ -327,6 +328,7 @@ let NotificationListItem = NotificationListItem_1 = class NotificationListItem e
     }
     _onBtnCloseClick() {
         this.fireDecoratorEvent("close", { item: this });
+        this.fireDecoratorEvent("_close", { item: this });
     }
     _onBtnMenuClick() {
         if (this.getMenu()) {
@@ -436,7 +438,14 @@ NotificationListItem = NotificationListItem_1 = __decorate([
      * @public
      */
     ,
-    event("close", {
+    event("close")
+    /**
+     * Fired when the `Close` button is pressed.
+     * @param {HTMLElement} item the closed item.
+     * @private
+     */
+    ,
+    event("_close", {
         bubbles: true,
     })
 ], NotificationListItem);

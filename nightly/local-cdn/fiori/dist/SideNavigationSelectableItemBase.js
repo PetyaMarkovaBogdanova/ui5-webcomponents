@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
-import { isSpace, isEnter, isLeft, isRight, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isSpace, isEnter, isEnterShift, isEnterCtrl, isEnterAlt, isLeft, isRight, } from "@ui5/webcomponents-base/dist/Keys.js";
 import SideNavigationItemBase from "./SideNavigationItemBase.js";
 /**
  * Fired when the component is activated either with a click/tap or by using the [Enter] or [Space] keys.
@@ -22,7 +22,16 @@ let SideNavigationSelectableItemBase = class SideNavigationSelectableItemBase ex
     constructor() {
         super(...arguments);
         /**
-         * Defines whether the item is selected
+         * Defines if the item's parent is disabled.
+         * @private
+         * @default false
+         * @since 2.10.0
+         */
+        this._parentDisabled = false;
+        /**
+         * Defines whether the item is selected.
+         *
+         * **Note:** Items that have a set `href` and `target` set to `_blank` should not be selectable.
          *
          * @public
          * @default false
@@ -39,15 +48,15 @@ let SideNavigationSelectableItemBase = class SideNavigationSelectableItemBase ex
          */
         this.design = "Default";
         /**
-         * Indicates whether the navigation item is selectable. By default all items are selectable unless specifically marked as unselectable.
+         * Indicates whether the navigation item is selectable. By default, all items are selectable unless specifically marked as unselectable.
          *
          * When a parent item is marked as unselectable, selecting it will only expand or collapse its sub-items.
          * To improve user experience do not mix unselectable parent items with selectable parent items in a single side navigation.
          *
          *
          * **Guidelines**:
-         * - External links should be unselectable.
-         * - Items that trigger actions (with design "Action") should be unselectable.
+         * - Items with an assigned `href` and a target of `_blank` should be marked as unselectable.
+         * - Items that trigger actions (with design "Action") should be marked as unselectable.
          *
          * @public
          * @default false
@@ -87,13 +96,25 @@ let SideNavigationSelectableItemBase = class SideNavigationSelectableItemBase ex
         return (!this.effectiveDisabled && this.href) ? this.href : undefined;
     }
     get _target() {
-        return (!this.effectiveDisabled && this.target) ? this.target : undefined;
+        return (!this.effectiveDisabled && this.href && this.target) ? this.target : undefined;
     }
     get isExternalLink() {
         return this.href && this.target === "_blank";
     }
     get _selected() {
         return this.selected;
+    }
+    get _effectiveTag() {
+        return this._href ? "a" : "div";
+    }
+    get effectiveDisabled() {
+        return this.disabled || this._parentDisabled;
+    }
+    get _ariaHasPopup() {
+        if (this.accessibilityAttributes?.hasPopup) {
+            return this.accessibilityAttributes.hasPopup;
+        }
+        return undefined;
     }
     get classesArray() {
         const classes = [];
@@ -109,17 +130,24 @@ let SideNavigationSelectableItemBase = class SideNavigationSelectableItemBase ex
         return this.classesArray.join(" ");
     }
     get _ariaCurrent() {
-        if (!this.selected) {
+        if (!this.sideNavCollapsed && !this.selected) {
             return undefined;
         }
         return "page";
+    }
+    get _ariaSelected() {
+        if (!this.sideNavCollapsed) {
+            return undefined;
+        }
+        return this.selected;
     }
     _onkeydown(e) {
         const isRTL = this.effectiveDir === "rtl";
         if (isSpace(e) || isRight(e) || isLeft(e)) {
             e.preventDefault();
         }
-        if (isEnter(e)) {
+        // "Enter" + "Meta" is missing since it is often reserved by the operating system or window manager
+        if (isEnter(e) || isEnterShift(e) || isEnterCtrl(e) || isEnterAlt(e)) {
             this._activate(e);
         }
         if ((isRTL ? isLeft(e) : isRight(e)) && this.sideNavCollapsed && this.hasSubItems) {
@@ -130,6 +158,7 @@ let SideNavigationSelectableItemBase = class SideNavigationSelectableItemBase ex
         }
     }
     _onkeyup(e) {
+        // "Space" + modifier is often reserved by the operating system or window manager
         if (isSpace(e)) {
             this._activate(e);
             if (this.href && !e.defaultPrevented) {
@@ -174,6 +203,9 @@ let SideNavigationSelectableItemBase = class SideNavigationSelectableItemBase ex
         return true;
     }
 };
+__decorate([
+    property({ type: Boolean, noAttribute: true })
+], SideNavigationSelectableItemBase.prototype, "_parentDisabled", void 0);
 __decorate([
     property()
 ], SideNavigationSelectableItemBase.prototype, "icon", void 0);

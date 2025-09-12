@@ -9,7 +9,6 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import property from "@ui5/webcomponents-base/dist/decorators/property.js";
 import clamp from "@ui5/webcomponents-base/dist/util/clamp.js";
-import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import { isUp, isDown, isLeft, isRight, isUpShift, isDownShift, isLeftShift, isRightShift, } from "@ui5/webcomponents-base/dist/Keys.js";
 import ValueState from "@ui5/webcomponents-base/dist/types/ValueState.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
@@ -241,7 +240,6 @@ let Dialog = Dialog_1 = class Dialog extends Popup {
         super.onEnterDOM();
         this._attachScreenResizeHandler();
         this.addEventListener("dragstart", this._dragStartHandler);
-        this.setAttribute("data-sap-ui-fastnavgroup-container", "true");
     }
     onExitDOM() {
         super.onExitDOM();
@@ -486,7 +484,6 @@ Dialog = Dialog_1 = __decorate([
             Popup.styles,
             PopupsCommonCss,
             dialogCSS,
-            getEffectiveScrollbarStyle(),
         ],
     })
 ], Dialog);

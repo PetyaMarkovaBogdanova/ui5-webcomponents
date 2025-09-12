@@ -139,7 +139,7 @@ declare class Tokenizer extends UI5Element {
      * @private
      * @default undefined
      */
-    opener?: HTMLElement;
+    opener?: HTMLElement | string | null;
     /**
      * Sets the min-width of the nMore Popover.
      * **Note:** Used inside MultiInput and MultiComboBox components.
@@ -249,7 +249,7 @@ declare class Tokenizer extends UI5Element {
     _scrollToToken(token: IToken): void;
     _getList(): List;
     get _tokens(): Token[];
-    get morePopoverOpener(): HTMLElement;
+    get morePopoverOpener(): HTMLElement | string | null;
     get _nMoreText(): string | undefined;
     get _clearAllText(): string;
     get showNMore(): boolean;

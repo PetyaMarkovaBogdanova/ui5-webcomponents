@@ -12,7 +12,6 @@ import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
-import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import ItemNavigation from "@ui5/webcomponents-base/dist/delegate/ItemNavigation.js";
 import NavigationMode from "@ui5/webcomponents-base/dist/types/NavigationMode.js";
 import clamp from "@ui5/webcomponents-base/dist/util/clamp.js";
@@ -804,7 +803,6 @@ Wizard = Wizard_1 = __decorate([
         styles: [
             WizardCss,
             WizardPopoverCss,
-            getEffectiveScrollbarStyle(),
         ],
         template: WizardTemplate,
     })

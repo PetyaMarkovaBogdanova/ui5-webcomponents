@@ -10,7 +10,7 @@ import slot from "@ui5/webcomponents-base/dist/decorators/slot.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import customElement from "@ui5/webcomponents-base/dist/decorators/customElement.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
-import { isShow, isBackSpace, isLeft, isRight, isRightCtrl, isHome, isEnd, isDown, } from "@ui5/webcomponents-base/dist/Keys.js";
+import { isShow, isBackSpace, isLeft, isRight, isRightCtrl, isHome, isEnd, isDown, isEnter, } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsScope.js";
 import { MULTIINPUT_ROLEDESCRIPTION_TEXT, MULTIINPUT_VALUE_HELP_LABEL, MULTIINPUT_VALUE_HELP } from "./generated/i18n/i18n-defaults.js";
 import Input from "./Input.js";
@@ -124,6 +124,9 @@ let MultiInput = MultiInput_1 = class MultiInput extends Input {
         if (isHomeInBeginning) {
             this._skipOpenSuggestions = true; // Prevent input focus when navigating through the tokens
             return this._focusFirstToken(e);
+        }
+        if (isEnter(e)) {
+            e.preventDefault();
         }
         if (isLeft(e)) {
             this._skipOpenSuggestions = true;
@@ -254,7 +257,7 @@ let MultiInput = MultiInput_1 = class MultiInput extends Input {
         return this.placeholder;
     }
     get accInfo() {
-        const ariaDescribedBy = `${this._tokensCountTextId} ${this.suggestionsTextId} ${this.valueStateTextId} ${this._valueHelpTextId}`.trim();
+        const ariaDescribedBy = `${this._tokensCountTextId} ${this.suggestionsTextId} ${this.valueStateTextId} ${this._valueStateLinksShortcutsTextAccId} ${this._valueHelpTextId}`.trim();
         return {
             ...super.accInfo,
             "ariaRoledescription": this.ariaRoleDescription,

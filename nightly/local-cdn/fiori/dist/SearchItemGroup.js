@@ -22,9 +22,6 @@ let SearchItemGroup = class SearchItemGroup extends ListItemGroup {
     get isGroupItem() {
         return true;
     }
-    getFocusDomRef() {
-        return this.shadowRoot.querySelector("[ui5-li-group-header]");
-    }
 };
 SearchItemGroup = __decorate([
     customElement({

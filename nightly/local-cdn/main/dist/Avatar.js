@@ -127,9 +127,16 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
          * @private
          */
         this._hasImage = false;
+        /**
+         * @private
+         */
+        this._imageLoadError = false;
         this._handleResizeBound = this.handleResize.bind(this);
+        this._onImageLoadBound = this._onImageLoad.bind(this);
+        this._onImageErrorBound = this._onImageError.bind(this);
     }
     onBeforeRendering() {
+        this._attachImageEventHandlers();
         this._hasImage = this.hasImage;
     }
     get tabindex() {
@@ -181,7 +188,10 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
         return this.initials ? `${defaultLabel} ${this.initials}`.trim() : defaultLabel;
     }
     get hasImage() {
-        return !!this.image.length;
+        return !!this.image.length && !this._imageLoadError;
+    }
+    get imageEl() {
+        return this.image?.[0] instanceof HTMLImageElement ? this.image[0] : null;
     }
     get initialsContainer() {
         return this.getDomRef().querySelector(".ui5-avatar-initials");
@@ -203,6 +213,7 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
     }
     onExitDOM() {
         this.initialsContainer && ResizeHandler.deregister(this.initialsContainer, this._handleResizeBound);
+        this._detachImageEventHandlers();
     }
     handleResize() {
         if (this.initials && !this.icon) {
@@ -257,6 +268,59 @@ let Avatar = Avatar_1 = class Avatar extends UI5Element {
         }
         return ariaHaspopup;
     }
+    _attachImageEventHandlers() {
+        const imgEl = this.imageEl;
+        if (!imgEl) {
+            this._imageLoadError = false;
+            return;
+        }
+        // Remove previous handlers to avoid duplicates
+        imgEl.removeEventListener("load", this._onImageLoadBound);
+        imgEl.removeEventListener("error", this._onImageErrorBound);
+        // Attach new handlers
+        imgEl.addEventListener("load", this._onImageLoadBound);
+        imgEl.addEventListener("error", this._onImageErrorBound);
+        // Check existing image state
+        this._checkExistingImageState();
+    }
+    _checkExistingImageState() {
+        const imgEl = this.imageEl;
+        if (!imgEl) {
+            this._imageLoadError = false;
+            return;
+        }
+        if (imgEl.complete && imgEl.naturalWidth === 0) {
+            this._imageLoadError = true; // Already broken
+        }
+        else if (imgEl.complete && imgEl.naturalWidth > 0) {
+            this._imageLoadError = false; // Already loaded
+        }
+        else {
+            this._imageLoadError = false; // Pending load
+        }
+    }
+    _detachImageEventHandlers() {
+        const imgEl = this.imageEl;
+        if (!imgEl) {
+            return;
+        }
+        imgEl.removeEventListener("load", this._onImageLoadBound);
+        imgEl.removeEventListener("error", this._onImageErrorBound);
+    }
+    _onImageLoad(e) {
+        if (e.target !== this.imageEl) {
+            e.target?.removeEventListener("load", this._onImageLoadBound);
+            return;
+        }
+        this._imageLoadError = false;
+    }
+    _onImageError(e) {
+        if (e.target !== this.imageEl) {
+            e.target?.removeEventListener("error", this._onImageErrorBound);
+            return;
+        }
+        this._imageLoadError = true;
+    }
 };
 __decorate([
     property({ type: Boolean })
@@ -297,6 +361,9 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], Avatar.prototype, "_hasImage", void 0);
+__decorate([
+    property({ type: Boolean, noAttribute: true })
+], Avatar.prototype, "_imageLoadError", void 0);
 __decorate([
     slot({ type: HTMLElement, "default": true })
 ], Avatar.prototype, "image", void 0);

@@ -1,12 +1,14 @@
 import type { ResizeObserverCallback } from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import type { IFormInputElement } from "@ui5/webcomponents-base/dist/features/InputElementsFormSupport.js";
 import "@ui5/webcomponents-icons/dist/date-time.js";
+import DateFormat from "@ui5/webcomponents-localization/dist/DateFormat.js";
 import type { SegmentedButtonSelectionChangeEventDetail } from "./SegmentedButton.js";
 import type { CalendarSelectionChangeEventDetail } from "./Calendar.js";
 import DatePicker from "./DatePicker.js";
 import type { DatePickerChangeEventDetail as DateTimePickerChangeEventDetail, DatePickerInputEventDetail as DateTimePickerInputEventDetail } from "./DatePicker.js";
 import type { TimeSelectionChangeEventDetail } from "./TimePickerInternals.js";
 import CalendarPickersMode from "./types/CalendarPickersMode.js";
+import type TimeSelectionClocks from "./TimeSelectionClocks.js";
 type PreviewValues = {
     timeSelectionValue?: string;
     calendarTimestamp?: number;
@@ -98,6 +100,7 @@ declare class DateTimePicker extends DatePicker implements IFormInputElement {
      * @private
      */
     _previewValues: PreviewValues;
+    _clocks: TimeSelectionClocks;
     _handleResizeBound: ResizeObserverCallback;
     constructor();
     /**
@@ -130,7 +133,7 @@ declare class DateTimePicker extends DatePicker implements IFormInputElement {
     /**
      * @override
      */
-    get dateAriaDescription(): string;
+    get roleDescription(): string;
     /**
      * @override
      */
@@ -146,7 +149,7 @@ declare class DateTimePicker extends DatePicker implements IFormInputElement {
     /**
      * @override
      */
-    onSelectedDatesChange(e: CustomEvent<CalendarSelectionChangeEventDetail>): void;
+    onSelectedDatesChange(e: CustomEvent<CalendarSelectionChangeEventDetail>): Promise<void>;
     onTimeSelectionChange(e: CustomEvent<TimeSelectionChangeEventDetail>): void;
     /**
      * Handles document resize to switch between `phoneMode` and normal appearance.
@@ -172,8 +175,17 @@ declare class DateTimePicker extends DatePicker implements IFormInputElement {
      * @override
      */
     _modifyDateValue(amount: number, unit: string, preserveDate: boolean): void;
+    /**
+     * Checks if the provided value is valid and within valid range.
+     * @override
+     * @param value
+     */
+    _checkValueValidity(value: string): boolean;
     getSelectedDateTime(): Date;
     getFormat(): import("sap/ui/core/format/DateFormat").default;
+    getDisplayFormat(): import("sap/ui/core/format/DateFormat").default;
+    getValueFormat(): import("sap/ui/core/format/DateFormat").default;
+    getISOFormat(): DateFormat;
     /**
      * @override
      */

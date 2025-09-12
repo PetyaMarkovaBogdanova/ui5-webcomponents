@@ -22,7 +22,7 @@ import CalendarUtils from "@ui5/webcomponents-localization/dist/CalendarUtils.js
 import DateFormat from "@ui5/webcomponents-localization/dist/DateFormat.js";
 import CalendarSelectionMode from "./types/CalendarSelectionMode.js";
 import CalendarPart from "./CalendarPart.js";
-import { DAY_PICKER_WEEK_NUMBER_TEXT, DAY_PICKER_NON_WORKING_DAY, DAY_PICKER_TODAY, LIST_ITEM_SELECTED, } from "./generated/i18n/i18n-defaults.js";
+import { DAY_PICKER_WEEK_NUMBER_TEXT, DAY_PICKER_NON_WORKING_DAY, DAY_PICKER_TODAY, LIST_ITEM_SELECTED, DAY_PICKER_SELECTED_RANGE_START, DAY_PICKER_SELECTED_RANGE_END, DAY_PICKER_SELECTED_RANGE_BETWEEN, } from "./generated/i18n/i18n-defaults.js";
 // Template
 import DayPickerTemplate from "./DayPickerTemplate.js";
 // Styles
@@ -134,9 +134,20 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
             const tempSecondYearNumber = tempSecondDate ? tempSecondDate.getYear() : "";
             const secondaryMonthsNamesString = secondaryMonthsNames.length > 0 ? secondaryMonthsNames[tempSecondDate.getMonth()] : "";
             const tooltip = `${todayAriaLabel}${nonWorkingAriaLabel}${unnamedCalendarTypeLabel}`.trim();
-            const ariaLabel = this.hasSecondaryCalendarType
+            let ariaLabel = this.hasSecondaryCalendarType
                 ? `${monthsNames[tempDate.getMonth()]} ${tempDate.getDate()}, ${tempDate.getYear()}; ${secondaryMonthsNamesString} ${tempSecondDateNumber}, ${tempSecondYearNumber} ${tooltip}`.trim()
                 : `${monthsNames[tempDate.getMonth()]} ${tempDate.getDate()}, ${tempDate.getYear()} ${tooltip}`.trim();
+            if (this.selectionMode === CalendarSelectionMode.Range) {
+                if (isSelected && this._isRangeEndDate(timestamp)) {
+                    ariaLabel = DayPicker_1.i18nBundle.getText(DAY_PICKER_SELECTED_RANGE_END, ariaLabel);
+                }
+                else if (isSelected && this._isRangeStartDate(timestamp)) {
+                    ariaLabel = DayPicker_1.i18nBundle.getText(DAY_PICKER_SELECTED_RANGE_START, ariaLabel);
+                }
+                else if (isSelectedBetween) {
+                    ariaLabel = DayPicker_1.i18nBundle.getText(DAY_PICKER_SELECTED_RANGE_BETWEEN, ariaLabel);
+                }
+            }
             const day = {
                 timestamp: timestamp.toString(),
                 focusRef: isFocused,
@@ -282,6 +293,12 @@ let DayPicker = DayPicker_1 = class DayPicker extends CalendarPart {
             return this.selectedDates.includes(timestamp);
         }
         return timestamp === this.selectedDates[0] || timestamp === this.selectedDates[this.selectedDates.length - 1];
+    }
+    _isRangeEndDate(timestamp) {
+        return this.selectionMode === CalendarSelectionMode.Range && timestamp === this.selectedDates[1];
+    }
+    _isRangeStartDate(timestamp) {
+        return this.selectionMode === CalendarSelectionMode.Range && timestamp === this.selectedDates[0];
     }
     /**
      * Tells if the day is inside a selection range (light blue).

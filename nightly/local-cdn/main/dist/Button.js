@@ -99,6 +99,11 @@ let Button = Button_1 = class Button extends UI5Element {
          * - **hasPopup**: Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by the button.
          * Accepts the following string values: `dialog`, `grid`, `listbox`, `menu` or `tree`.
          *
+         * - **ariaLabel**: Defines the accessible ARIA name of the component.
+         * Accepts any string value.
+         *
+         *  - **ariaKeyShortcuts**: Defines keyboard shortcuts that activate or give focus to the button.
+         *
          * - **controls**: Identifies the element (or elements) whose contents or presence are controlled by the button element.
          * Accepts a lowercase string value.
          *
@@ -151,6 +156,22 @@ let Button = Button_1 = class Button extends UI5Element {
          * @private
          */
         this.nonInteractive = false;
+        /**
+         * Defines whether the button shows a loading indicator.
+         *
+         * **Note:** If set to `true`, a busy indicator component will be displayed on the related button.
+         * @default false
+         * @public
+         * @since 2.13.0
+         */
+        this.loading = false;
+        /**
+         * Specifies the delay in milliseconds before the loading indicator appears within the associated button.
+         * @default 1000
+         * @public
+         * @since 2.13.0
+         */
+        this.loadingDelay = 1000;
         /**
          * @private
          */
@@ -230,6 +251,10 @@ let Button = Button_1 = class Button extends UI5Element {
         if (this.nonInteractive) {
             return;
         }
+        if (this.loading) {
+            e.preventDefault();
+            return;
+        }
         const { altKey, ctrlKey, metaKey, shiftKey, } = e;
         const prevented = !this.fireDecoratorEvent("click", {
             originalEvent: e,
@@ -239,6 +264,7 @@ let Button = Button_1 = class Button extends UI5Element {
             shiftKey,
         });
         if (prevented) {
+            e.preventDefault();
             return;
         }
         if (this._isSubmit) {
@@ -259,7 +285,7 @@ let Button = Button_1 = class Button extends UI5Element {
         activeButton = this; // eslint-disable-line
     }
     _ontouchend(e) {
-        if (this.disabled) {
+        if (this.disabled || this.loading) {
             e.preventDefault();
             e.stopPropagation();
         }
@@ -299,13 +325,10 @@ let Button = Button_1 = class Button extends UI5Element {
     }
     _setActiveState(active) {
         const eventPrevented = !this.fireDecoratorEvent("active-state-change");
-        if (eventPrevented) {
+        if (eventPrevented || this.loading) {
             return;
         }
         this.active = active;
-    }
-    get _hasPopup() {
-        return this.accessibilityAttributes.hasPopup;
     }
     get hasButtonType() {
         return this.design !== ButtonDesign.Default && this.design !== ButtonDesign.Transparent;
@@ -344,14 +367,24 @@ let Button = Button_1 = class Button extends UI5Element {
         return this.nonInteractive ? -1 : Number.parseInt(this.forcedTabIndex);
     }
     get ariaLabelText() {
+        const textContent = this.textContent || "";
         const ariaLabelText = getEffectiveAriaLabelText(this) || "";
         const typeLabelText = this.hasButtonType ? this.buttonTypeText : "";
         const internalLabelText = this.effectiveBadgeDescriptionText || "";
-        const labelParts = [ariaLabelText, typeLabelText, internalLabelText].filter(part => part);
+        const labelParts = [textContent, ariaLabelText, typeLabelText, internalLabelText].filter(part => part);
         return labelParts.join(" ");
     }
     get ariaDescriptionText() {
         return this.accessibleDescription === "" ? undefined : this.accessibleDescription;
+    }
+    get _computedAccessibilityAttributes() {
+        return {
+            expanded: this.accessibilityAttributes.expanded,
+            hasPopup: this.accessibilityAttributes.hasPopup,
+            controls: this.accessibilityAttributes.controls,
+            ariaKeyShortcuts: this.accessibilityAttributes.ariaKeyShortcuts,
+            ariaLabel: this.accessibilityAttributes.ariaLabel || this.ariaLabelText,
+        };
     }
     get effectiveBadgeDescriptionText() {
         if (!this.shouldRenderBadge) {
@@ -431,6 +464,12 @@ __decorate([
 __decorate([
     property({ type: Boolean })
 ], Button.prototype, "nonInteractive", void 0);
+__decorate([
+    property({ type: Boolean })
+], Button.prototype, "loading", void 0);
+__decorate([
+    property({ type: Number })
+], Button.prototype, "loadingDelay", void 0);
 __decorate([
     property({ noAttribute: true })
 ], Button.prototype, "buttonTitle", void 0);

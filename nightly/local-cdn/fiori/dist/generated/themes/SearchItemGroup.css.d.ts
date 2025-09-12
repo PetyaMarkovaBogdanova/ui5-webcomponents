@@ -1,2 +1,2 @@
-declare const _default: "[ui5-li-group-header]::part(native-li){height:100%;padding:.5625rem .5rem}[ui5-li-group-header]{height:2rem}[ui5-li-group-header]::part(native-li):focus:after{inset:0!important;border-radius:8px}\n";
+declare const _default: ":host{height:2.75rem;background:var(--sapList_GroupHeaderBackground);color:var(--sapList_TableGroupHeaderTextColor)}.ui5-group-li-root{width:100%;height:100%;position:relative;box-sizing:border-box;padding:0;margin:0;list-style-type:none}[ui5-li-group-header]{border-bottom:var(--sapList_BorderWidth) solid var(--sapList_GroupHeaderBorderColor)}\n";
 export default _default;

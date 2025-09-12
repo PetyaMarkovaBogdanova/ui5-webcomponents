@@ -11,7 +11,8 @@ export default function InputTemplate(hooks) {
                             _jsx("div", { class: "ui5-input-icon-root", tabindex: -1, children: _jsx("slot", { name: "icon" }) }), _jsx("div", { class: "ui5-input-value-state-icon", children: this._valueStateInputIcon }), postContent.call(this), this._effectiveShowSuggestions &&
                             _jsxs(_Fragment, { children: [_jsx("span", { id: "suggestionsText", class: "ui5-hidden-text", children: this.suggestionsText }), _jsx("span", { id: "selectionText", class: "ui5-hidden-text", "aria-live": "polite", role: "status" }), _jsx("span", { id: "suggestionsCount", class: "ui5-hidden-text", "aria-live": "polite", children: this.availableSuggestionsCount })] }), this.accInfo.ariaDescription &&
                             _jsx("span", { id: "descr", class: "ui5-hidden-text", children: this.accInfo.ariaDescription }), this.accInfo.accessibleDescription &&
-                            _jsx("span", { id: "accessibleDescription", class: "ui5-hidden-text", children: this.accInfo.accessibleDescription }), this.hasValueState &&
+                            _jsx("span", { id: "accessibleDescription", class: "ui5-hidden-text", children: this.accInfo.accessibleDescription }), this.linksInAriaValueStateHiddenText.length > 0 &&
+                            _jsx("span", { id: "hiddenText-value-state-link-shortcut", class: "ui5-hidden-text", children: this.valueStateLinksShortcutsTextAcc }), this.hasValueState &&
                             _jsx("span", { id: "valueStateDesc", class: "ui5-hidden-text", children: this.ariaValueStateHiddenText })] }) }), InputPopoverTemplate.call(this, { suggestionsList })] }));
 }
 function defaultPreContent() { }

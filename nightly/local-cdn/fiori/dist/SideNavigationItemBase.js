@@ -66,7 +66,7 @@ class SideNavigationItemBase extends UI5Element {
         return this.classesArray.join(" ");
     }
     get effectiveTabIndex() {
-        return this.forcedTabIndex || undefined;
+        return this.forcedTabIndex !== undefined ? parseInt(this.forcedTabIndex) : undefined;
     }
     get sideNavigation() {
         return this._sideNavigation;

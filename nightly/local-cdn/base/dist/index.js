@@ -9,6 +9,7 @@ import { getFirstDayOfWeek, getLegacyDateCalendarCustomizing } from "./config/Fo
 import { setDefaultIconCollection, getDefaultIconCollection, } from "./config/Icons.js";
 import { RegisteredIconCollection } from "./asset-registries/util/IconCollectionsByTheme.js";
 import getEffectiveIconCollection from "./asset-registries/util/getIconCollectionByTheme.js";
+import { startMultipleDrag } from "./DragAndDrop.js";
 import { getLanguage, setLanguage, getDefaultLanguage, setFetchDefaultLanguage, getFetchDefaultLanguage, } from "./config/Language.js";
 import { getNoConflict, setNoConflict } from "./config/NoConflict.js";
 import { getTheme, setTheme, getDefaultTheme, } from "./config/Theme.js";
@@ -53,6 +54,8 @@ import { addCustomCSS, attachThemeLoaded, detachThemeLoaded } from "./Theming.js
 import UI5Element from "./UI5Element.js";
 export default UI5Element;
 export { 
+// drag and drop
+startMultipleDrag, 
 // animations/
 scroll, slideDown, slideUp, 
 // config/

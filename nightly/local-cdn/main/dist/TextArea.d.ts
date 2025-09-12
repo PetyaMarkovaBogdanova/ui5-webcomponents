@@ -15,6 +15,9 @@ type ExceededText = {
     leftCharactersCount?: number;
     calcedMaxLength?: number;
 };
+type TextAreaInputEventDetail = {
+    escapePressed?: boolean;
+};
 /**
  * @class
  *
@@ -36,7 +39,7 @@ type ExceededText = {
 declare class TextArea extends UI5Element implements IFormInputElement {
     eventDetails: {
         "change": void;
-        "input": void;
+        "input": TextAreaInputEventDetail;
         "select": void;
         "scroll": void;
         "value-changed": void;
@@ -234,7 +237,6 @@ declare class TextArea extends UI5Element implements IFormInputElement {
     get classes(): {
         root: {
             "ui5-textarea-root": boolean;
-            "ui5-content-custom-scrollbars": boolean;
         };
         valueStateMsg: {
             "ui5-valuestatemessage-header": boolean;
@@ -268,3 +270,4 @@ declare class TextArea extends UI5Element implements IFormInputElement {
     };
 }
 export default TextArea;
+export type { TextAreaInputEventDetail };

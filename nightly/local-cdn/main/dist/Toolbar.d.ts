@@ -106,7 +106,7 @@ declare class Toolbar extends UI5Element {
     get overflowItems(): ToolbarItem[];
     get standardItems(): ToolbarItem[];
     get hideOverflowButton(): boolean;
-    get interactiveItemsCount(): number;
+    get interactiveItems(): ToolbarItem[];
     /**
      * Accessibility
      */

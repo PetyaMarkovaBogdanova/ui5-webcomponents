@@ -14,7 +14,6 @@ import customElement from "@ui5/webcomponents-base/dist/decorators/customElement
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import ResizeHandler from "@ui5/webcomponents-base/dist/delegate/ResizeHandler.js";
 import { getEffectiveAriaLabelText, getAssociatedLabelForTexts } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
-import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import i18n from "@ui5/webcomponents-base/dist/decorators/i18n.js";
 import { isEscape } from "@ui5/webcomponents-base/dist/Keys.js";
 import TextAreaTemplate from "./TextAreaTemplate.js";
@@ -185,9 +184,13 @@ let TextArea = TextArea_1 = class TextArea extends UI5Element {
         this._keyDown = true;
         if (isEscape(e)) {
             const nativeTextArea = this.getInputDomRef();
-            this.value = this.previousValue;
-            nativeTextArea.value = this.value;
-            this.fireDecoratorEvent("input");
+            const prevented = !this.fireDecoratorEvent("input", {
+                escapePressed: true,
+            });
+            if (!prevented) {
+                this.value = this.previousValue;
+                nativeTextArea.value = this.value;
+            }
         }
     }
     _onkeyup() {
@@ -302,7 +305,6 @@ let TextArea = TextArea_1 = class TextArea extends UI5Element {
         return {
             root: {
                 "ui5-textarea-root": true,
-                "ui5-content-custom-scrollbars": !!getEffectiveScrollbarStyle(),
             },
             valueStateMsg: {
                 "ui5-valuestatemessage-header": true,
@@ -452,7 +454,6 @@ TextArea = TextArea_1 = __decorate([
         styles: [
             textareaStyles,
             valueStateMessageStyles,
-            getEffectiveScrollbarStyle(),
         ],
         renderer: jsxRenderer,
         template: TextAreaTemplate,
@@ -477,11 +478,13 @@ TextArea = TextArea_1 = __decorate([
      * Fired when the value of the component changes at each keystroke or when
      * something is pasted.
      * @since 1.0.0-rc.5
+     * @param {boolean} escapePressed Indicates whether the Escape key was pressed, which triggers a revert to the previous value
      * @public
      */
     ,
     event("input", {
         bubbles: true,
+        cancelable: true,
     })
     /**
      * Fired when some text has been selected.

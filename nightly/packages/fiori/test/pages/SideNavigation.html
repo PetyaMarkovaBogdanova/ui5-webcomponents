@@ -9,15 +9,15 @@
 			"rtl": false
 		}
 	</script>
-  <script type="module" crossorigin src="/ui5-webcomponents/nightly/assets/bundle.esm-DNnKmvT2.js"></script>
-  <link rel="stylesheet" crossorigin href="/ui5-webcomponents/nightly/assets/SideNavigation-DIVfNUAT.css">
+  <script type="module" crossorigin src="/webcomponents/nightly/assets/bundle.esm-Cp9xgeKe.js"></script>
+  <link rel="stylesheet" crossorigin href="/webcomponents/nightly/assets/SideNavigation-DIVfNUAT.css">
 </head>
 
 <body class="sidenavigation1auto">
 	<ui5-shellbar
-		primary-title="UI5 Web Components"
 		secondary-title="The Best Run SAP"
 	>
+		<ui5-shellbar-branding slot="branding">UI5 Web Components</ui5-shellbar-branding>
 		<ui5-toggle-button icon="sap-icon://da" slot="assistant"></ui5-toggle-button>
 		<ui5-button icon="menu" slot="startButton" id="startButton"></ui5-button>
 	</ui5-shellbar>
@@ -28,7 +28,7 @@
 			<!-- Header -->
 			<div slot="header" class="header">
 				<ui5-avatar size="L">
-					<img src="/ui5-webcomponents/nightly/assets/man_avatar_1-NFeJdB17.png" />
+					<img src="/webcomponents/nightly/assets/man_avatar_1-NFeJdB17.png" />
 				</ui5-avatar>
 
 				<br>
@@ -148,10 +148,10 @@
 			item.addEventListener("ui5-click", function (event) {
 				["altKey", "ctrlKey", "metaKey", "shiftKey"].forEach(key => {
 					const listItem = document.getElementById(`${key}Info`);
-					listItem?.setAttribute("additional-text", event.detail?.[key]); 
+					listItem?.setAttribute("additional-text", event.detail?.[key]);
 					listItem?.setAttribute("additional-text-state", event.detail?.[key] ? "Positive" : "Negative");
 				});
-				
+
 				if (preventClick) {
 					event.preventDefault();
 					return;

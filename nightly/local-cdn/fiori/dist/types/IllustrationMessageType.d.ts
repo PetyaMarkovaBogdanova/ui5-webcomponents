@@ -488,6 +488,11 @@ declare enum IllustrationMessageType {
     */
     TntDialog = "TntDialog",
     /**
+    * "TntEmptyContentPane" illustration type.
+    * @public
+    */
+    TntEmptyContentPane = "TntEmptyContentPane",
+    /**
     * "TntExternalLink" illustration type.
     * @public
     */

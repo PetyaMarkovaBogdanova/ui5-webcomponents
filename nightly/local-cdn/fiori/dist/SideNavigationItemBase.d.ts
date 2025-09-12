@@ -66,7 +66,7 @@ declare class SideNavigationItemBase extends UI5Element implements ITabbable {
     get effectiveDisabled(): boolean;
     get classesArray(): string[];
     get _classes(): string;
-    get effectiveTabIndex(): string | undefined;
+    get effectiveTabIndex(): number | undefined;
     get sideNavigation(): SideNavigation;
     set sideNavigation(sideNavigation: SideNavigation);
     get isFixedItem(): boolean;

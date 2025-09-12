@@ -47,6 +47,27 @@ let ToolbarSelect = class ToolbarSelect extends ToolbarItem {
          * @public
          */
         this.disabled = false;
+        // Internal value storage, in case the composite select is not rendered on the the assignment happens
+        this._value = "";
+    }
+    /**
+     * Defines the value of the component:
+     *
+     * @public
+     * @default ""
+     * @since 2.15.0
+     */
+    set value(newValue) {
+        if (this.select && this.select.value !== newValue) {
+            this.select.value = newValue;
+        }
+        this._value = newValue;
+    }
+    get value() {
+        return this.select ? this.select.value : this._value;
+    }
+    get select() {
+        return this.shadowRoot.querySelector("[ui5-select]");
     }
     onClick(e) {
         e.stopImmediatePropagation();
@@ -90,16 +111,25 @@ let ToolbarSelect = class ToolbarSelect extends ToolbarItem {
     }
     get styles() {
         return {
-            width: this.width,
+            width: this.isOverflowed ? undefined : this.width,
         };
+    }
+    get hasCustomLabel() {
+        return !!this.label.length;
     }
 };
 __decorate([
     property()
 ], ToolbarSelect.prototype, "width", void 0);
 __decorate([
-    slot({ "default": true, type: HTMLElement, invalidateOnChildChange: true })
+    slot({
+        "default": true,
+        type: HTMLElement,
+    })
 ], ToolbarSelect.prototype, "options", void 0);
+__decorate([
+    slot()
+], ToolbarSelect.prototype, "label", void 0);
 __decorate([
     property()
 ], ToolbarSelect.prototype, "valueState", void 0);
@@ -112,6 +142,9 @@ __decorate([
 __decorate([
     property()
 ], ToolbarSelect.prototype, "accessibleNameRef", void 0);
+__decorate([
+    property()
+], ToolbarSelect.prototype, "value", null);
 ToolbarSelect = __decorate([
     customElement({
         tag: "ui5-toolbar-select",

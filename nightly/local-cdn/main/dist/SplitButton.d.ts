@@ -1,8 +1,15 @@
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
-import type { AriaHasPopup, UI5CustomEvent } from "@ui5/webcomponents-base";
+import type { AccessibilityAttributes } from "@ui5/webcomponents-base/dist/types.js";
+import type { UI5CustomEvent } from "@ui5/webcomponents-base";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import type ButtonDesign from "./types/ButtonDesign.js";
 import type Button from "./Button.js";
+type SplitButtonRootAccAttributes = Pick<AccessibilityAttributes, "hasPopup" | "roleDescription" | "title" | "ariaKeyShortcuts">;
+type SplitButtonArrowButtonAccAtributes = Pick<AccessibilityAttributes, "hasPopup" | "expanded" | "title">;
+type SplitButtonAccessibilityAttributes = {
+    root?: SplitButtonRootAccAttributes;
+    arrowButton?: SplitButtonArrowButtonAccAtributes;
+};
 /**
  * @class
  *
@@ -136,6 +143,30 @@ declare class SplitButton extends UI5Element {
      */
     _hideArrowButton: boolean;
     /**
+     * Defines the additional accessibility attributes that will be applied to the component.
+     * The `accessibilityAttributes` property accepts an object with the following optional fields:
+     *
+     * - **root**: Attributes that will be applied to the main (text) button.
+     *   - **hasPopup**: Indicates the presence and type of popup triggered by the button.
+     *     Accepts string values: `"dialog"`, `"grid"`, `"listbox"`, `"menu"`, or `"tree"`.
+     *   - **roleDescription**: Provides a human-readable description for the role of the button.
+     *     Accepts any string value.
+     *   - **title**: Specifies a tooltip or description for screen readers.
+     *     Accepts any string value.
+     * 	- **ariaKeyShortcuts**: Defines keyboard shortcuts that activate or give focus to the button.
+     *
+     * - **arrowButton**: Attributes applied specifically to the arrow (split) button.
+     *   - **hasPopup**: Indicates the presence and type of popup triggered by the arrow button.
+     *     Accepts string values: `"dialog"`, `"grid"`, `"listbox"`, `"menu"`, or `"tree"`.
+     *   - **expanded**: Indicates whether the popup triggered by the arrow button is currently expanded.
+     *     Accepts boolean values: `true` or `false`.
+     *
+     * @default {}
+     * @public
+     * @since 2.13.0
+     */
+    accessibilityAttributes: SplitButtonAccessibilityAttributes;
+    /**
      * Defines the text of the component.
      *
      * **Note:** Although this slot accepts HTML Elements, it is strongly recommended that you only use text in order to preserve the intended design.
@@ -183,24 +214,17 @@ declare class SplitButton extends UI5Element {
      */
     _handleDefaultAction(e: KeyboardEvent): void;
     get effectiveActiveArrowButton(): boolean;
-    get textButtonAccText(): string | null;
+    get buttonTextContent(): string | null;
     get isTextButton(): boolean;
     get textButton(): Button | null | undefined;
     get arrowButton(): Button | null | undefined;
+    get _computedAccessibilityAttributes(): SplitButtonAccessibilityAttributes;
     get accInfo(): {
-        root: {
-            description: string;
-            keyboardHint: string;
-        };
-        arrowButton: {
-            title: string;
-            accessibilityAttributes: {
-                hasPopup: AriaHasPopup;
-                expanded: boolean;
-            };
-        };
+        keyboardHint: string;
+        description: string;
     };
     get arrowButtonTooltip(): string;
     get ariaLabelText(): string;
 }
 export default SplitButton;
+export type { SplitButtonAccessibilityAttributes, };

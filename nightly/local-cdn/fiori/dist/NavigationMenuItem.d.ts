@@ -60,8 +60,9 @@ declare class NavigationMenuItem extends MenuItem {
         role: import("@ui5/webcomponents-base/dist/types.js").AriaRole;
         ariaHaspopup?: `${import("@ui5/webcomponents-base/dist/types.js").AriaHasPopup}`;
         ariaKeyShortcuts?: string;
-        ariaHidden?: boolean;
         ariaExpanded?: boolean;
+        ariaHidden?: boolean;
+        ariaChecked?: boolean;
         ariaLevel?: number;
         ariaLabel: string;
         ariaLabelRadioButton: string;
@@ -69,7 +70,6 @@ declare class NavigationMenuItem extends MenuItem {
         posinset?: number;
         setsize?: number;
         ariaSelected?: boolean;
-        ariaChecked?: boolean;
         listItemAriaLabel?: string;
         ariaOwns?: string;
         tooltip?: string;
@@ -77,7 +77,6 @@ declare class NavigationMenuItem extends MenuItem {
     get classes(): ClassMap;
     _onclick(e: MouseEvent): void;
     _activate(e: MouseEvent | KeyboardEvent): void;
-    _handleFocus(associatedItem: SideNavigationSelectableItemBase): void;
     _onkeydown(e: KeyboardEvent): Promise<void>;
     _onkeyup(e: KeyboardEvent): void;
     get acessibleNameText(): string;

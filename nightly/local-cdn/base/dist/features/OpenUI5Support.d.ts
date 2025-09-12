@@ -1,3 +1,4 @@
+import type { PopupInfo } from "./patchPopup.js";
 import type { CLDRData } from "../asset-registries/LocaleData.js";
 import type { LegacyDateCalendarCustomizing } from "../features/LegacyDateFormats.js";
 declare class OpenUI5Support {
@@ -31,5 +32,8 @@ declare class OpenUI5Support {
     static _listenForThemeChange(): void;
     static attachListeners(): void;
     static cssVariablesLoaded(): boolean | undefined;
+    static addOpenedPopup(popupInfo: PopupInfo): void;
+    static removeOpenedPopup(popup: object): void;
+    static getTopmostPopup(): object;
 }
 export default OpenUI5Support;

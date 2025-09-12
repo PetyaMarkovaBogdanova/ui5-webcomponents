@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import UI5Element from "@ui5/webcomponents-base/dist/UI5Element.js";
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import { customElement, property, slot, eventStrict as event, } from "@ui5/webcomponents-base/dist/decorators.js";
-import getEffectiveScrollbarStyle from "@ui5/webcomponents-base/dist/util/getEffectiveScrollbarStyle.js";
 import UserSettingsItemTemplate from "./UserSettingsItemTemplate.js";
 import UserSettingsItemCss from "./generated/themes/UserSettingsItem.css.js";
 /**
@@ -184,7 +183,7 @@ UserSettingsItem = __decorate([
         tag: "ui5-user-settings-item",
         renderer: jsxRenderer,
         template: UserSettingsItemTemplate,
-        styles: [getEffectiveScrollbarStyle(), UserSettingsItemCss],
+        styles: [UserSettingsItemCss],
     })
     /**
      * Fired when a selected view changed.
