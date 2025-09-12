@@ -675,7 +675,7 @@ let Select = Select_1 = class Select extends UI5Element {
         const itemPositionText = Select_1.i18nBundle.getText(LIST_ITEM_POSITION, this._selectedIndex + 1, optionsCount);
         if (this.focused && this._currentlySelectedOption) {
             text = `${this._currentlySelectedOption.textContent} ${this._isPickerOpen ? itemPositionText : ""}`;
-            announce(text, InvisibleMessageMode.Assertive);
+            announce(text, InvisibleMessageMode.Polite);
         }
     }
     openValueStatePopover() {
