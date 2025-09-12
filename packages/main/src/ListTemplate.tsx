@@ -13,7 +13,7 @@ export default function ListTemplate(this: List) {
 			onDrop={this._ondrop}
 			onDragLeave={this._ondragleave}
 			// events bubbling from slotted items
-			onui5-close={this.onItemClose}
+			onui5-_close={this.onItemClose}
 			onui5-toggle={this.onItemToggle}
 			onui5-request-tabindex-change={this.onItemTabIndexChange}
 			onui5-_focused={this.onItemFocused}
@@ -29,7 +29,10 @@ export default function ListTemplate(this: List) {
 				active={this.showBusyIndicatorOverlay}
 				class="ui5-list-busy-indicator"
 			>
+
 				<div class="ui5-list-scroll-container">
+					<span tabindex={-1} aria-hidden="true" class="ui5-list-start-marker"></span>
+
 					{this.header.length > 0 && <slot name="header" />}
 
 					{this.shouldRenderH1 &&
@@ -92,7 +95,8 @@ function moreRow(this: List) {
 					"ui5-growing-button-inner": true,
 					"ui5-growing-button-inner-active": this._loadMoreActive,
 				}}
-				aria-labelledby={`${this._id}-growingButton-text`}
+				aria-label={this.growingButtonAriaLabel}
+				aria-labelledby={this.growingButtonAriaLabelledBy}
 				onClick={this._onLoadMoreClick}
 				onKeyDown={this._onLoadMoreKeydown}
 				onKeyUp={this._onLoadMoreKeyup}

@@ -12,8 +12,11 @@ import {
 	isEnter,
 	isLeft,
 	isRight,
+	isHome,
+	isEnd,
 } from "@ui5/webcomponents-base/dist/Keys.js";
 import { getEffectiveAriaLabelText } from "@ui5/webcomponents-base/dist/util/AccessibilityTextsHelper.js";
+import { getTabbableElements } from "@ui5/webcomponents-base/dist/util/TabbableElements.js";
 import ListItemStandard from "@ui5/webcomponents/dist/ListItemStandard.js";
 import List from "@ui5/webcomponents/dist/List.js";
 import type { ListItemClickEventDetail } from "@ui5/webcomponents/dist/List.js";
@@ -23,7 +26,6 @@ import Button from "@ui5/webcomponents/dist/Button.js";
 import ButtonBadge from "@ui5/webcomponents/dist/ButtonBadge.js";
 import Menu from "@ui5/webcomponents/dist/Menu.js";
 import Icon from "@ui5/webcomponents/dist/Icon.js";
-import type Input from "@ui5/webcomponents/dist/Input.js";
 import type { IButton } from "@ui5/webcomponents/dist/Button.js";
 import type I18nBundle from "@ui5/webcomponents-base/dist/i18nBundle.js";
 import { isDesktop, isPhone } from "@ui5/webcomponents-base/dist/Device.js";
@@ -45,6 +47,7 @@ import { getScopedVarName } from "@ui5/webcomponents-base/dist/CustomElementsSco
 import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 import type ShellBarItem from "./ShellBarItem.js";
 import type { ShellBarItemAccessibilityAttributes } from "./ShellBarItem.js";
+import type ShellBarBranding from "./ShellBarBranding.js";
 
 // Templates
 import ShellBarTemplate from "./ShellBarTemplate.js";
@@ -120,6 +123,17 @@ type ShellBarSearchButtonEventDetail = {
 type ShellBarSearchFieldToggleEventDetail = {
 	expanded: boolean;
 };
+
+type ShellBarSearchFieldClearEventDetail = {
+	targetRef: HTMLElement;
+};
+
+interface IShellBarSearchField extends HTMLElement {
+	focused: boolean;
+	value: string;
+	collapsed?: boolean;
+	open?: boolean;
+}
 
 interface IShellBarHidableItem {
 	classes: string,
@@ -282,6 +296,20 @@ const PREDEFINED_PLACE_ACTIONS = ["feedback", "sys-help"];
 })
 
 /**
+ * Fired, when the search cancel button is activated.
+ *
+ * **Note:** You can prevent the default behavior (clearing the search field value) by calling `event.preventDefault()`. The search will still be closed.
+ * **Note:** The `search-field-clear` event is in an experimental state and is a subject to change.
+ * @param {HTMLElement} targetRef dom ref of the cancel button element
+ * @since 2.14.0
+ * @public
+ */
+@event("search-field-clear", {
+	cancelable: true,
+	bubbles: true,
+})
+
+/**
  * Fired, when an item from the content slot is hidden or shown.
  * **Note:** The `content-item-visibility-change` event is in an experimental state and is a subject to change.
  *
@@ -302,6 +330,7 @@ class ShellBar extends UI5Element {
 		"menu-item-click": ShellBarMenuItemClickEventDetail,
 		"search-button-click": ShellBarSearchButtonEventDetail,
 		"search-field-toggle": ShellBarSearchFieldToggleEventDetail,
+		"search-field-clear": ShellBarSearchFieldClearEventDetail,
 		"content-item-visibility-change": ShellBarContentItemVisibilityChangeEventDetail
 	}
 
@@ -456,6 +485,19 @@ class ShellBar extends UI5Element {
 	assistant!: Array<IButton>;
 
 	/**
+	 * Defines the branding slot.
+	 * The `ui5-shellbar-branding` component is intended to be placed inside this slot.
+	 * Content placed here takes precedence over the `primaryTitle` property and the `logo` content slot.
+	 *
+	 * **Note:** The `branding` slot is in an experimental state and is a subject to change.
+	 *
+	 * @since 2.12.0
+	 * @public
+	 */
+	@slot()
+	branding!: Array<ShellBarBranding>;
+
+	/**
 	 * Defines the `ui5-shellbar` additional items.
 	 *
 	 * **Note:**
@@ -504,7 +546,7 @@ class ShellBar extends UI5Element {
 		type: HTMLElement,
 		invalidateOnChildChange: true,
 	})
-	searchField!: Array<Input>;
+	searchField!: Array<IShellBarSearchField>;
 
 	/**
 	 * Defines a `ui5-button` in the bar that will be placed in the beginning.
@@ -536,7 +578,7 @@ class ShellBar extends UI5Element {
 	 * @since 2.7.0
 	 */
 	@slot({ type: HTMLElement, individualSlots: true })
-	content!: Array<UI5Element>;
+	content!: Array<HTMLElement>;
 
 	@i18n("@ui5/webcomponents-fiori")
 	static i18nBundle: I18nBundle;
@@ -552,10 +594,11 @@ class ShellBar extends UI5Element {
 	_observableContent: Array<HTMLElement> = [];
 	_autoRestoreSearchField = false;
 
+	_onSearchOpenBound = this._onSearchOpen.bind(this);
+	_onSearchCloseBound = this._onSearchClose.bind(this);
+	_onSearchBound = this._onSearch.bind(this);
+
 	_headerPress: () => void;
-	onSearchOpen: () => void;
-	onSearchClose: () => void;
-	onSearch: () => void;
 
 	static get FIORI_3_BREAKPOINTS() {
 		return [
@@ -599,24 +642,6 @@ class ShellBar extends UI5Element {
 			}
 		};
 
-		this.onSearchOpen = () => {
-			if (isPhone()) {
-				this.setSearchState(true);
-			}
-		};
-
-		this.onSearchClose = () => {
-			if (isPhone()) {
-				this.setSearchState(false);
-			}
-		};
-
-		this.onSearch = () => {
-			if (!isPhone() && !this.search?.value) {
-				this.setSearchState(!this.showSearchField);
-			}
-		};
-
 		this._handleResize = throttle(() => {
 			this.menuPopover = this._getMenuPopover();
 			this.overflowPopover = this._getOverflowPopover();
@@ -628,6 +653,43 @@ class ShellBar extends UI5Element {
 				}
 			}
 		}, RESIZE_THROTTLE_RATE);
+	}
+
+	_onSearchOpen(e: Event) {
+		if (e.target !== this.search) {
+			this._detachSearchFieldListeners(e.target as HTMLElement);
+			return;
+		}
+		if (isPhone()) {
+			this.setSearchState(true);
+		}
+	}
+
+	_onSearchClose(e: Event) {
+		if (e.target !== this.search) {
+			this._detachSearchFieldListeners(e.target as HTMLElement);
+			return;
+		}
+		if (isPhone()) {
+			this.setSearchState(false);
+		}
+	}
+
+	_onSearch(e: Event) {
+		if (e.target !== this.search) {
+			this._detachSearchFieldListeners(e.target as HTMLElement);
+			return;
+		}
+
+		// Decide when to toggle the search field:
+		// - On mobile, the search opens on its own (we don’t interfere).
+		// - If there’s already a value, onSearch is responsible for triggering the search (we don’t interfere)
+		// - If the field is closed, we must open it regardless.
+		if (isPhone() || (this.search?.value && this.showSearchField)) {
+			return;
+		}
+
+		this.setSearchState(!this.showSearchField);
 	}
 
 	_updateSearchFieldState() {
@@ -647,20 +709,68 @@ class ShellBar extends UI5Element {
 	}
 
 	_onKeyDown(e: KeyboardEvent) {
-		const items = this._getVisibleAndInteractiveItems();
+		if (!isLeft(e) && !isRight(e) && !isHome(e) && !isEnd(e)) {
+			return;
+		}
+
+		const domRef = this.getDomRef();
+		if (!domRef) {
+			// If the component is not rendered yet, we should not handle the keydown event
+			return;
+		}
+
 		const activeElement = getActiveElement();
+		if (!activeElement) {
+			return;
+		}
+
+		// Check if the active elements should "steal" the navigation
+		if (this._allowChildNavigation(activeElement as HTMLElement, e)) {
+			return;
+		}
+
+		const items = getTabbableElements(domRef).filter(el => this._isVisible(el));
 		const currentIndex = items.findIndex(el => el === activeElement);
 
-		if (isLeft(e) || isRight(e)) {
-			e.preventDefault();// Prevent the default behavior to avoid any further automatic focus movemen
+		// Only handle arrow navigation if the focus is on a ShellBar item
+		if (currentIndex !== -1) {
+			e.preventDefault();
 
 			// Focus navigation based on the key pressed
 			if (isLeft(e)) {
 				this._focusPreviousItem(items, currentIndex);
 			} else if (isRight(e)) {
 				this._focusNextItem(items, currentIndex);
+			} else if (isHome(e)) {
+				// Move focus to the first ShellBar item
+				items[0]?.focus();
+			} else if (isEnd(e)) {
+				// Move focus to the last ShellBar item
+				items[items.length - 1]?.focus();
 			}
 		}
+	}
+
+	private _allowChildNavigation(activeElement: HTMLElement, e: KeyboardEvent): boolean {
+		if (activeElement.tagName === "INPUT" || activeElement.tagName === "TEXTAREA") {
+			return this._allowInputNavigation(activeElement as HTMLInputElement | HTMLTextAreaElement, e);
+		}
+
+		return false; // Default to false for other elements
+	}
+
+	private _allowInputNavigation(inputElement: HTMLInputElement | HTMLTextAreaElement, e: KeyboardEvent): boolean {
+		const cursorPosition = inputElement.selectionStart || 0;
+		const textLength = inputElement.value.length;
+
+		// Allow internal navigation if cursor is not at the boundaries
+		if ((isLeft(e) && cursorPosition > 0)
+		|| (isRight(e) && cursorPosition < textLength)) {
+			return true;
+		}
+
+		// Let ShellBar handle navigation if at boundaries
+		return false;
 	}
 
 	_focusNextItem(items: HTMLElement[], currentIndex: number) {
@@ -681,26 +791,6 @@ class ShellBar extends UI5Element {
 		return style.display !== "none" && style.visibility !== "hidden" && element.offsetWidth > 0 && element.offsetHeight > 0;
 	}
 
-	_getNavigableContent() {
-		const elements = [
-			...this.startButton,
-			...this.logo,
-			...this.shadowRoot!.querySelectorAll(".ui5-shellbar-logo"),
-			...this.shadowRoot!.querySelectorAll(".ui5-shellbar-logo-area"),
-			...this.shadowRoot!.querySelectorAll(".ui5-shellbar-menu-button"),
-			...this.contentItems,
-			...this._getRightChildItems(),
-		] as HTMLElement[];
-
-		return elements.map((element: HTMLElement) => {
-			const component = element as UI5Element;
-			if (component.isUI5Element) {
-				return component.getFocusDomRef();
-			}
-			return element;
-		}).filter(el => !!el);
-	}
-
 	_getRightChildItems() {
 		return [
 			...this.searchField,
@@ -708,15 +798,6 @@ class ShellBar extends UI5Element {
 			...this.assistant,
 			...this.shadowRoot!.querySelectorAll(".ui5-shellbar-items-for-arrow-nav"),
 		] as HTMLElement[];
-	}
-
-	_getVisibleAndInteractiveItems() {
-		const items = this._getNavigableContent();
-		const visibleAndInteractiveItems = items.filter(item => {
-			return this._isVisible(item) && item.tabIndex === 0;
-		});
-
-		return visibleAndInteractiveItems;
 	}
 
 	_menuItemPress(e: CustomEvent<ListItemClickEventDetail>) {
@@ -809,6 +890,9 @@ class ShellBar extends UI5Element {
 			} else {
 				this.search.collapsed = !this.showSearchField;
 			}
+
+			this._detachSearchFieldListeners(this.search);
+			this._attachSearchFieldListeners(this.search);
 		}
 	}
 
@@ -862,6 +946,10 @@ class ShellBar extends UI5Element {
 		if (this.breakpointSize !== mappedSize) {
 			this.breakpointSize = mappedSize;
 		}
+
+		this.branding.forEach(brandingEl => {
+			brandingEl._isSBreakPoint = this.isSBreakPoint;
+		});
 	}
 
 	_hideItems(items: IShellBarHidableItem[]) {
@@ -935,27 +1023,35 @@ class ShellBar extends UI5Element {
 	onEnterDOM() {
 		ResizeHandler.register(this, this._handleResize);
 
-		if (isSelfCollapsibleSearch(this.search)) {
-			this.search.addEventListener("ui5-open", this.onSearchOpen);
-			this.search.addEventListener("ui5-close", this.onSearchClose);
-			this.search.addEventListener("ui5-search", this.onSearch);
-		}
-
 		if (isDesktop()) {
 			this.setAttribute("desktop", "");
 		}
+		this._attachSearchFieldListeners(this.search);
 	}
 
 	onExitDOM() {
 		this.contentItemsObserver.disconnect();
 		this._observableContent = [];
 		ResizeHandler.deregister(this, this._handleResize);
+		this._detachSearchFieldListeners(this.search);
+	}
 
-		if (isSelfCollapsibleSearch(this.search)) {
-			this.search.removeEventListener("ui5-open", this.onSearchOpen);
-			this.search.removeEventListener("ui5-close", this.onSearchClose);
-			this.search.removeEventListener("ui5-search", this.onSearch);
+	_attachSearchFieldListeners(searchField: HTMLElement | null) {
+		if (!searchField) {
+			return;
 		}
+		searchField.addEventListener("ui5-open", this._onSearchOpenBound);
+		searchField.addEventListener("ui5-close", this._onSearchCloseBound);
+		searchField.addEventListener("ui5-search", this._onSearchBound);
+	}
+
+	_detachSearchFieldListeners(searchField: HTMLElement | null) {
+		if (!searchField) {
+			return;
+		}
+		searchField.removeEventListener("ui5-open", this._onSearchOpenBound);
+		searchField.removeEventListener("ui5-close", this._onSearchCloseBound);
+		searchField.removeEventListener("ui5-search", this._onSearchBound);
 	}
 
 	_handleSearchIconPress() {
@@ -1034,8 +1130,17 @@ class ShellBar extends UI5Element {
 	}
 
 	_handleCancelButtonPress() {
+		const cancelButtonRef = this.shadowRoot!.querySelector<Button>(".ui5-shellbar-cancel-button")!;
+		const clearDefaultPrevented = !this.fireDecoratorEvent("search-field-clear", {
+			targetRef: cancelButtonRef,
+		});
+
 		this.showFullWidthSearch = false;
 		this.setSearchState(false);
+
+		if (!clearDefaultPrevented) {
+			this._clearSearchFieldValue();
+		}
 	}
 
 	_handleProductSwitchPress(e: UI5CustomEvent<Button, "click">) {
@@ -1045,6 +1150,12 @@ class ShellBar extends UI5Element {
 		this._defaultItemPressPrevented = !this.fireDecoratorEvent("product-switch-click", {
 			targetRef: buttonRef.classList.contains("ui5-shellbar-hidden-button") ? target : buttonRef,
 		});
+	}
+
+	_clearSearchFieldValue() {
+		if (this.search) {
+			this.search.value = "";
+		}
 	}
 
 	/**
@@ -1420,6 +1531,10 @@ class ShellBar extends UI5Element {
 		return !!this.assistant.length;
 	}
 
+	get hasBranding() {
+		return !!this.branding.length;
+	}
+
 	get hasSearchField() {
 		return !!this.searchField.length;
 	}
@@ -1673,7 +1788,7 @@ class ShellBar extends UI5Element {
 	}
 }
 
-interface IShellBarSelfCollapsibleSearch {
+interface IShellBarSelfCollapsibleSearch extends UI5Element {
 	collapsed: boolean;
 	open: boolean;
 }
@@ -1699,5 +1814,7 @@ export type {
 	ShellBarAccessibilityAttributes,
 	ShellBarSearchButtonEventDetail,
 	ShellBarSearchFieldToggleEventDetail,
+	ShellBarSearchFieldClearEventDetail,
 	IShellBarSelfCollapsibleSearch,
+	IShellBarSearchField,
 };

@@ -55,7 +55,7 @@ interface IButton extends HTMLElement, ITabbable {
 let isGlobalHandlerAttached = false;
 let activeButton: Button | null = null;
 
-type ButtonAccessibilityAttributes = Pick<AccessibilityAttributes, "expanded" | "hasPopup" | "controls">;
+type ButtonAccessibilityAttributes = Pick<AccessibilityAttributes, "expanded" | "hasPopup" | "controls" | "ariaKeyShortcuts" | "ariaLabel">;
 
 type ButtonClickEventDetail = {
 	originalEvent: MouseEvent,
@@ -235,6 +235,11 @@ class Button extends UI5Element implements IButton {
 	 * - **hasPopup**: Indicates the availability and type of interactive popup element, such as menu or dialog, that can be triggered by the button.
 	 * Accepts the following string values: `dialog`, `grid`, `listbox`, `menu` or `tree`.
 	 *
+	 * - **ariaLabel**: Defines the accessible ARIA name of the component.
+	 * Accepts any string value.
+	 *
+	 *  - **ariaKeyShortcuts**: Defines keyboard shortcuts that activate or give focus to the button.
+	 *
 	 * - **controls**: Identifies the element (or elements) whose contents or presence are controlled by the button element.
 	 * Accepts a lowercase string value.
 	 *
@@ -313,7 +318,28 @@ class Button extends UI5Element implements IButton {
 	nonInteractive = false;
 
 	/**
-	 * The current title of the button, either the tooltip property or the icons tooltip. The tooltip property with higher prio.
+	 * Defines whether the button shows a loading indicator.
+	 *
+	 * **Note:** If set to `true`, a busy indicator component will be displayed on the related button.
+	 * @default false
+	 * @public
+	 * @since 2.13.0
+	 */
+	@property({ type: Boolean })
+	loading = false;
+
+	/**
+	 * Specifies the delay in milliseconds before the loading indicator appears within the associated button.
+	 * @default 1000
+	 * @public
+	 * @since 2.13.0
+	 */
+	@property({ type: Number })
+	loadingDelay = 1000;
+
+	/**
+	 * The button's current title is determined by either the `tooltip` property or the icon's tooltip, with the `tooltip`
+	 * property taking precedence if both are set.
 	 * @private
 	 */
 	@property({ noAttribute: true })
@@ -448,6 +474,11 @@ class Button extends UI5Element implements IButton {
 			return;
 		}
 
+		if (this.loading) {
+			e.preventDefault();
+			return;
+		}
+
 		const {
 			altKey,
 			ctrlKey,
@@ -464,6 +495,7 @@ class Button extends UI5Element implements IButton {
 		});
 
 		if (prevented) {
+			e.preventDefault();
 			return;
 		}
 
@@ -490,7 +522,7 @@ class Button extends UI5Element implements IButton {
 	}
 
 	_ontouchend(e: TouchEvent) {
-		if (this.disabled) {
+		if (this.disabled || this.loading) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
@@ -539,15 +571,11 @@ class Button extends UI5Element implements IButton {
 	_setActiveState(active: boolean) {
 		const eventPrevented = !this.fireDecoratorEvent("active-state-change");
 
-		if (eventPrevented) {
+		if (eventPrevented || this.loading) {
 			return;
 		}
 
 		this.active = active;
-	}
-
-	get _hasPopup() {
-		return this.accessibilityAttributes.hasPopup;
 	}
 
 	get hasButtonType() {
@@ -598,16 +626,27 @@ class Button extends UI5Element implements IButton {
 	}
 
 	get ariaLabelText() {
+		const textContent = this.textContent || "";
 		const ariaLabelText = getEffectiveAriaLabelText(this) || "";
 		const typeLabelText = this.hasButtonType ? this.buttonTypeText : "";
 		const internalLabelText = this.effectiveBadgeDescriptionText || "";
 
-		const labelParts = [ariaLabelText, typeLabelText, internalLabelText].filter(part => part);
+		const labelParts = [textContent, ariaLabelText, typeLabelText, internalLabelText].filter(part => part);
 		return labelParts.join(" ");
 	}
 
 	get ariaDescriptionText() {
 		return this.accessibleDescription === "" ? undefined : this.accessibleDescription;
+	}
+
+	get _computedAccessibilityAttributes(): ButtonAccessibilityAttributes {
+		return {
+			expanded: this.accessibilityAttributes.expanded,
+			hasPopup: this.accessibilityAttributes.hasPopup,
+			controls: this.accessibilityAttributes.controls,
+			ariaKeyShortcuts: this.accessibilityAttributes.ariaKeyShortcuts,
+			ariaLabel: this.accessibilityAttributes.ariaLabel || this.ariaLabelText,
+		};
 	}
 
 	get effectiveBadgeDescriptionText() {

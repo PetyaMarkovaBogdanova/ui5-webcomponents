@@ -34,6 +34,7 @@ import type ToolbarSeparator from "./ToolbarSeparator.js";
 
 import type Button from "./Button.js";
 import type Popover from "./Popover.js";
+import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
 
 type ToolbarMinWidthChangeEventDetail = {
 	minWidth: number,
@@ -149,8 +150,8 @@ class Toolbar extends UI5Element {
 
 	/**
 	 * Defines the items of the component.
-     *
-     * **Note:** Currently only `ui5-toolbar-button`, `ui5-toolbar-select`, `ui5-toolbar-separator` and `ui5-toolbar-spacer` are allowed here.
+	 *
+	 * **Note:** Currently only `ui5-toolbar-button`, `ui5-toolbar-select`, `ui5-toolbar-separator` and `ui5-toolbar-spacer` are allowed here.
 	 * @public
 	 */
 	@slot({
@@ -216,8 +217,8 @@ class Toolbar extends UI5Element {
 		return this.itemsToOverflow.filter(item => !(item.ignoreSpace || item.isSeparator)).length === 0;
 	}
 
-	get interactiveItemsCount() {
-		return this.items.filter((item: ToolbarItem) => item.isInteractive).length;
+	get interactiveItems() {
+		return this.items.filter((item: ToolbarItem) => item.isInteractive);
 	}
 
 	/**
@@ -225,7 +226,7 @@ class Toolbar extends UI5Element {
 	 */
 
 	get hasAriaSemantics() {
-		return this.interactiveItemsCount > 1;
+		return this.interactiveItems.length > 1;
 	}
 
 	get accessibleRole() {
@@ -280,14 +281,21 @@ class Toolbar extends UI5Element {
 	}
 
 	onInvalidation(changeInfo: ChangeInfo) {
-		if (changeInfo.reason === "childchange" && changeInfo.child === this.itemsToOverflow[0]) {
-			this.onToolbarItemChange();
+		if (changeInfo.reason === "childchange") {
+			const currentItemsWidth = this.items.reduce((total, item) => total + this.getItemWidth(item), 0);
+			if (currentItemsWidth !== this.itemsWidth) {
+				this.onToolbarItemChange();
+			}
 		}
 	}
 
 	onBeforeRendering() {
 		this.detachListeners();
 		this.attachListeners();
+		if (getActiveElement() === this.overflowButtonDOM?.getFocusDomRef() && this.hideOverflowButton) {
+			const lastItem = this.interactiveItems.at(-1);
+			lastItem?.focus();
+		}
 	}
 
 	async onAfterRendering() {
@@ -296,7 +304,7 @@ class Toolbar extends UI5Element {
 		this.storeItemsWidth();
 		this.processOverflowLayout();
 		this.items.forEach(item => {
-			 item.isOverflowed = this.overflowItems.map(overflowItem => overflowItem).indexOf(item) !== -1;
+			item.isOverflowed = this.overflowItems.map(overflowItem => overflowItem).indexOf(item) !== -1;
 		});
 	}
 
@@ -461,10 +469,6 @@ class Toolbar extends UI5Element {
 	}
 
 	onResize() {
-		if (!this.itemsWidth) {
-			return;
-		}
-
 		this.closeOverflow();
 		this.processOverflowLayout();
 	}
@@ -498,7 +502,7 @@ class Toolbar extends UI5Element {
 
 		let itemWidth = 0;
 
-		if (renderedItem && renderedItem.offsetWidth) {
+		if (renderedItem && !renderedItem.classList.contains("ui5-tb-popover-item") && renderedItem.offsetWidth && item._isRendering === false) {
 			const ItemCSSStyleSet = getComputedStyle(renderedItem);
 			itemWidth = renderedItem.offsetWidth + parsePxValue(ItemCSSStyleSet, "margin-inline-end")
 				+ parsePxValue(ItemCSSStyleSet, "margin-inline-start");

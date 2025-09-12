@@ -1,6 +1,5 @@
 import { getFeature, registerFeature } from "../FeaturesRegistry.js";
 import { isF6Next, isF6Previous } from "../Keys.js";
-import { instanceOfUI5Element } from "../UI5Element.js";
 import { getFirstFocusableElement } from "../util/FocusableElements.js";
 import getFastNavigationGroups from "../util/getFastNavigationGroups.js";
 import isElementClickable from "../util/isElementClickable.js";
@@ -41,18 +40,12 @@ class F6Navigation {
 	}
 
 	async groupElementToFocus(nextElement: HTMLElement) {
-		let nextElementDomRef = nextElement;
-
-		if (instanceOfUI5Element(nextElement)) {
-			nextElementDomRef = nextElement.getDomRef() || nextElement.firstElementChild as HTMLElement;
-		}
-
-		if (nextElementDomRef) {
-			if (isElementClickable(nextElementDomRef)) {
-				return nextElementDomRef;
+		if (nextElement) {
+			if (isElementClickable(nextElement)) {
+				return nextElement;
 			}
 
-			const elementToFocus = await getFirstFocusableElement(nextElementDomRef);
+			const elementToFocus = await getFirstFocusableElement(nextElement);
 
 			if (elementToFocus) {
 				return elementToFocus;
@@ -107,10 +100,20 @@ class F6Navigation {
 				//     </ui5-list>
 				// </ui5-flexible-column-layout>
 				// Here for both FCL & List the firstFoccusableElement is the same (the ui5-li)
-				const firstFocusable = await this.groupElementToFocus(this.groups[currentIndex - 1]);
-				const shouldSkipParent = firstFocusable === await this.groupElementToFocus(this.groups[currentIndex]);
+				const currentGroupFocusable = await this.groupElementToFocus(this.groups[currentIndex]);
+				let distanceToNextGroup = 1;
 
-				currentIndex = shouldSkipParent ? currentIndex - 2 : currentIndex - 1;
+				for (let distanceIndex = 1; distanceIndex < this.groups.length; distanceIndex++) {
+					const firstFocusable = await this.groupElementToFocus(this.groups[currentIndex - distanceIndex]);
+
+					if (firstFocusable === currentGroupFocusable) {
+						distanceToNextGroup++;
+					} else {
+						break;
+					}
+				}
+
+				currentIndex -= distanceToNextGroup;
 
 				if (currentIndex < 0) {
 					currentIndex = this.groups.length - 1;
