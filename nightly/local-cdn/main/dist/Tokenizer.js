@@ -156,6 +156,11 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         this._preventCollapse = false;
         this._skipTabIndex = false;
         this._previousToken = null;
+        /**
+         * Scroll to end when tokenizer is expanded
+         * @private
+         */
+        this._scrollToEndOnExpand = false;
         this._resizeHandler = this._handleResize.bind(this);
         this._itemNav = new ItemNavigation(this, {
             currentIndex: -1,
@@ -190,7 +195,6 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         this.expanded = true;
         if (!this.preventPopoverOpen) {
             this.open = true;
-            this.scrollToEnd();
         }
         this._tokens.forEach(token => {
             token.forcedTabIndex = "-1";
@@ -201,12 +205,11 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
     _onmousedown(e) {
         if (e.target.hasAttribute("ui5-token")) {
             const target = e.target;
-            this.expanded = true;
             if (this.open) {
                 this._preventCollapse = true;
             }
             if (!target.toBeDeleted) {
-                this._itemNav.setCurrentItem(target);
+                this._addTokenToNavigation(target);
                 this._scrollToToken(target);
             }
         }
@@ -244,7 +247,22 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         if (this.expanded) {
             this._expandedScrollWidth = this.contentDom.scrollWidth;
         }
+        this._scrollToEndIfNeeded();
         this._tokenDeleting = false;
+    }
+    /**
+     * Scrolls the container to the end to ensure very long tokens are visible at their end.
+     * Otherwise, tokens may appear visually cut off.
+     * @protected
+     */
+    _scrollToEndIfNeeded() {
+        // if scroll to end is prevented, skip scroll to the end
+        if (!this._scrollToEndOnExpand) {
+            return;
+        }
+        if (this.tokens.length || this.expanded) {
+            this.scrollToEnd();
+        }
     }
     _delete(e) {
         const target = e.target;
@@ -570,12 +588,13 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         this._handleTokenSelection(e);
     }
     _onfocusin(e) {
-        const target = e.target;
         this.open = false;
-        this._itemNav.setCurrentItem(target);
-        if (!this.expanded) {
-            this.expanded = true;
-        }
+        this.expanded = true;
+        this._addTokenToNavigation(e.target);
+    }
+    _addTokenToNavigation(token) {
+        this._scrollToEndOnExpand = false;
+        this._itemNav.setCurrentItem(token);
     }
     _onfocusout(e) {
         const relatedTarget = e.relatedTarget;
@@ -626,9 +645,7 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
     _fillClipboard(shortcutName, tokens) {
         const tokensTexts = tokens.filter(token => token.selected).map(token => token.text).join("\r\n");
         const cutToClipboard = (e) => {
-            if (e.clipboardData) {
-                e.clipboardData.setData("text/plain", tokensTexts);
-            }
+            navigator.clipboard.writeText(tokensTexts);
             e.preventDefault();
         };
         document.addEventListener(shortcutName, cutToClipboard);
@@ -658,7 +675,8 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
     }
     /**
      * Scrolls token to the visible area of the container.
-     * Adds 4 pixels to the scroll position to ensure padding and border visibility on both ends
+     * Adds 5 pixels to the scroll position to ensure padding and border visibility on both ends
+     * For the last token, if its width is more than the needed space, scroll to the end without offset
      * @protected
      */
     _scrollToToken(token) {
@@ -667,11 +685,17 @@ let Tokenizer = Tokenizer_1 = class Tokenizer extends UI5Element {
         }
         const tokenRect = token.getBoundingClientRect();
         const tokenContainerRect = this.contentDom.getBoundingClientRect();
+        const oneSideBorderAndPaddingOffset = 5;
+        const isLastToken = this._tokens.indexOf(token) === this._tokens.length - 1;
+        if (isLastToken) {
+            this.scrollToEnd();
+            return;
+        }
         if (tokenRect.left < tokenContainerRect.left) {
-            this._scrollEnablement?.scrollTo(this.contentDom.scrollLeft - (tokenContainerRect.left - tokenRect.left + 5), 0);
+            this._scrollEnablement?.scrollTo(this.contentDom.scrollLeft - (tokenContainerRect.left - tokenRect.left + oneSideBorderAndPaddingOffset), 0);
         }
         else if (tokenRect.right > tokenContainerRect.right) {
-            this._scrollEnablement?.scrollTo(this.contentDom.scrollLeft + (tokenRect.right - tokenContainerRect.right + 5), 0);
+            this._scrollEnablement?.scrollTo(this.contentDom.scrollLeft + (tokenRect.right - tokenContainerRect.right + oneSideBorderAndPaddingOffset), 0);
         }
     }
     _getList() {

@@ -72,7 +72,9 @@ declare class SearchItem extends ListItemBase {
     static i18nBundle: I18nBundle;
     _onfocusin(e: FocusEvent): void;
     _onfocusout(): void;
+    _onkeydown(e: KeyboardEvent): Promise<void>;
     _onDeleteButtonClick(): void;
+    _onDeleteButtonKeyDown(e: KeyboardEvent): void;
     onBeforeRendering(): void;
     get _deleteButtonTooltip(): string;
 }

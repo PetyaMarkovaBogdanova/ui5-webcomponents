@@ -79,6 +79,7 @@ declare class MultiInput extends Input implements IFormInputElement {
     _tokenizerFocusOut(e: FocusEvent): void;
     valueHelpMouseUp(): void;
     innerFocusIn(): void;
+    _showMoreItemsPress(): void;
     _onkeydown(e: KeyboardEvent): void;
     _onTokenizerKeydown(e: KeyboardEvent): void;
     _handleLeft(e: KeyboardEvent): void;

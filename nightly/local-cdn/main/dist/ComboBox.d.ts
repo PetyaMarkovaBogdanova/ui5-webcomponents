@@ -19,6 +19,7 @@ import "./ComboBoxItemGroup.js";
 import type ComboBoxFilter from "./types/ComboBoxFilter.js";
 import PopoverHorizontalAlign from "./types/PopoverHorizontalAlign.js";
 import type { InputEventDetail } from "./Input.js";
+import type InputComposition from "./features/InputComposition.js";
 /**
  * Interface for components that may be slotted inside a `ui5-combobox`
  * @public
@@ -221,6 +222,12 @@ declare class ComboBox extends UI5Element implements IFormInputElement {
      */
     _linksListenersArray: Array<(args: any) => void>;
     /**
+     * Indicates whether IME composition is currently active
+     * @default false
+     * @private
+     */
+    _isComposing: boolean;
+    /**
      * Defines the component items.
      * @public
      */
@@ -252,7 +259,9 @@ declare class ComboBox extends UI5Element implements IFormInputElement {
     _selectedItemText: string;
     _userTypedValue: string;
     _valueStateLinks: Array<HTMLElement>;
+    _composition?: InputComposition;
     static i18nBundle: I18nBundle;
+    static composition: typeof InputComposition;
     get formValidityMessage(): string;
     get formValidity(): ValidityStateFlags;
     formElementAnchor(): Promise<HTMLElement | undefined>;
@@ -261,6 +270,7 @@ declare class ComboBox extends UI5Element implements IFormInputElement {
     onBeforeRendering(): void;
     get iconsCount(): number;
     onAfterRendering(): void;
+    onEnterDOM(): void;
     onExitDOM(): void;
     _focusin(e: FocusEvent): void;
     _focusout(e: FocusEvent): void;
@@ -316,6 +326,12 @@ declare class ComboBox extends UI5Element implements IFormInputElement {
     _makeAllVisible(item: IComboBoxItem): void;
     _scrollToItem(indexOfItem: number): void;
     _announceValueStateText(): void;
+    /**
+     * Enables IME composition handling.
+     * Dynamically loads the InputComposition feature and sets up event listeners.
+     * @private
+     */
+    _enableComposition(): void;
     get _headerTitleText(): string;
     get _iconAccessibleNameText(): string;
     get _popupLabel(): string;

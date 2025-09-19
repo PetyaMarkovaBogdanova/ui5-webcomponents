@@ -523,6 +523,11 @@ let Select = Select_1 = class Select extends UI5Element {
     _applyFocusToSelectedItem() {
         this.options.forEach(option => {
             option.focused = option.selected;
+            if (option.focused && isPhone()) {
+                // on phone, the popover opens full screen (dialog)
+                // move focus to option to read out dialog header
+                option.focus();
+            }
         });
     }
     _afterClose() {
@@ -626,6 +631,7 @@ let Select = Select_1 = class Select extends UI5Element {
         return {
             popoverValueState: {
                 "ui5-valuestatemessage-root": true,
+                "ui5-valuestatemessage-header": !this._isPhone,
                 "ui5-valuestatemessage--success": this.valueState === ValueState.Positive,
                 "ui5-valuestatemessage--error": this.valueState === ValueState.Negative,
                 "ui5-valuestatemessage--warning": this.valueState === ValueState.Critical,
@@ -639,11 +645,12 @@ let Select = Select_1 = class Select extends UI5Element {
     get styles() {
         return {
             popoverHeader: {
-                "max-width": `${this.offsetWidth}px`,
+                "display": "block",
             },
             responsivePopoverHeader: {
                 "display": this.options.length && this._listWidth === 0 ? "none" : "inline-block",
                 "width": `${this.options.length ? this._listWidth : this.offsetWidth}px`,
+                "max-width": "100%",
             },
             responsivePopover: {
                 "min-width": `${this.offsetWidth}px`,
@@ -675,7 +682,7 @@ let Select = Select_1 = class Select extends UI5Element {
         const itemPositionText = Select_1.i18nBundle.getText(LIST_ITEM_POSITION, this._selectedIndex + 1, optionsCount);
         if (this.focused && this._currentlySelectedOption) {
             text = `${this._currentlySelectedOption.textContent} ${this._isPickerOpen ? itemPositionText : ""}`;
-            announce(text, InvisibleMessageMode.Polite);
+            announce(text, InvisibleMessageMode.Assertive);
         }
     }
     openValueStatePopover() {

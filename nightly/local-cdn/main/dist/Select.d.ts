@@ -371,6 +371,7 @@ declare class Select extends UI5Element implements IFormInputElement {
     get classes(): {
         popoverValueState: {
             "ui5-valuestatemessage-root": boolean;
+            "ui5-valuestatemessage-header": boolean;
             "ui5-valuestatemessage--success": boolean;
             "ui5-valuestatemessage--error": boolean;
             "ui5-valuestatemessage--warning": boolean;
@@ -382,11 +383,12 @@ declare class Select extends UI5Element implements IFormInputElement {
     };
     get styles(): {
         popoverHeader: {
-            "max-width": string;
+            display: string;
         };
         responsivePopoverHeader: {
             display: string;
             width: string;
+            "max-width": string;
         };
         responsivePopover: {
             "min-width": string;

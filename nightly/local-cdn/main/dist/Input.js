@@ -227,6 +227,12 @@ let Input = Input_1 = class Input extends UI5Element {
          */
         this._linksListenersArray = [];
         /**
+         * Indicates whether IME composition is currently active
+         * @default false
+         * @private
+         */
+        this._isComposing = false;
+        /**
          * Indicates whether link navigation is being handled.
          * @default false
          * @private
@@ -266,11 +272,13 @@ let Input = Input_1 = class Input extends UI5Element {
     onEnterDOM() {
         ResizeHandler.register(this, this._handleResizeBound);
         registerUI5Element(this, this._updateAssociatedLabelsTexts.bind(this));
+        this._enableComposition();
     }
     onExitDOM() {
         ResizeHandler.deregister(this, this._handleResizeBound);
         deregisterUI5Element(this);
         this._removeLinksEventListeners();
+        this._composition?.removeEventListeners();
     }
     _highlightSuggestionItem(item) {
         item.markupText = this.typedInValue ? this.Suggestions?.hightlightInput((item.text || ""), this.typedInValue) : encodeXML(item.text || "");
@@ -324,7 +332,9 @@ let Input = Input_1 = class Input extends UI5Element {
         if (this._shouldAutocomplete && !isAndroid() && !autoCompletedChars && !this._isKeyNavigation) {
             const item = this._getFirstMatchingItem(value);
             if (item) {
-                this._handleTypeAhead(item);
+                if (!this._isComposing) {
+                    this._handleTypeAhead(item);
+                }
                 this._selectMatchingItem(item);
             }
         }
@@ -777,6 +787,7 @@ let Input = Input_1 = class Input extends UI5Element {
         // Set initial focus to the native input
         if (isPhone()) {
             (this.getInputDOMRef()).focus();
+            this._composition?.addEventListeners();
         }
         this._handlePickerAfterOpen();
     }
@@ -838,6 +849,34 @@ let Input = Input_1 = class Input extends UI5Element {
         else {
             import("./features/InputSuggestions.js").then(SuggestionsModule => {
                 setup(SuggestionsModule.default);
+            });
+        }
+    }
+    /**
+     * Enables IME composition handling.
+     * Dynamically loads the InputComposition feature and sets up event listeners.
+     * @private
+     */
+    _enableComposition() {
+        if (this._composition) {
+            return;
+        }
+        const setup = (FeatureClass) => {
+            this._composition = new FeatureClass({
+                getInputEl: () => this.getInputDOMRefSync(),
+                updateCompositionState: (isComposing) => {
+                    this._isComposing = isComposing;
+                },
+            });
+            this._composition.addEventListeners();
+        };
+        if (Input_1.composition) {
+            setup(Input_1.composition);
+        }
+        else {
+            import("./features/InputComposition.js").then(CompositionModule => {
+                Input_1.composition = CompositionModule.default;
+                setup(CompositionModule.default);
             });
         }
     }
@@ -1374,6 +1413,9 @@ __decorate([
 __decorate([
     property({ type: Array })
 ], Input.prototype, "_linksListenersArray", void 0);
+__decorate([
+    property({ type: Boolean, noAttribute: true })
+], Input.prototype, "_isComposing", void 0);
 __decorate([
     slot({ type: HTMLElement, "default": true })
 ], Input.prototype, "suggestionItems", void 0);

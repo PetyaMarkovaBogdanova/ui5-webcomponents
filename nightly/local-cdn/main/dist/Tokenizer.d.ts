@@ -185,6 +185,11 @@ declare class Tokenizer extends UI5Element {
     _previousToken: Token | null;
     _focusedElementBeforeOpen?: HTMLElement | null;
     _deletedDialogItems: Token[];
+    /**
+     * Scroll to end when tokenizer is expanded
+     * @private
+     */
+    _scrollToEndOnExpand: boolean;
     _handleResize(): void;
     constructor();
     handleClearAll(): void;
@@ -196,6 +201,12 @@ declare class Tokenizer extends UI5Element {
     onTokenSelect(e: CustomEvent): void;
     _getVisibleTokens(): Token[];
     onAfterRendering(): void;
+    /**
+     * Scrolls the container to the end to ensure very long tokens are visible at their end.
+     * Otherwise, tokens may appear visually cut off.
+     * @protected
+     */
+    _scrollToEndIfNeeded(): void;
     _delete(e: CustomEvent<TokenDeleteEventDetail>): void;
     _tokenClickDelete(e: CustomEvent<TokenDeleteEventDetail>, token: Token): void;
     _handleCurrentItemAfterDeletion(nextToken: Token): void;
@@ -223,6 +234,7 @@ declare class Tokenizer extends UI5Element {
     _handleArrowShift(focusedToken: Token, tokens: Array<Token>, backwards: boolean): void;
     _click(e: MouseEvent): void;
     _onfocusin(e: FocusEvent): void;
+    _addTokenToNavigation(token: Token): void;
     _onfocusout(e: FocusEvent): void;
     _toggleTokenSelection(tokens: Array<Token>): void;
     _handleTokenSelection(e: KeyboardEvent | MouseEvent, deselectAll?: boolean): void;
@@ -243,7 +255,8 @@ declare class Tokenizer extends UI5Element {
     scrollToEnd(): void;
     /**
      * Scrolls token to the visible area of the container.
-     * Adds 4 pixels to the scroll position to ensure padding and border visibility on both ends
+     * Adds 5 pixels to the scroll position to ensure padding and border visibility on both ends
+     * For the last token, if its width is more than the needed space, scroll to the end without offset
      * @protected
      */
     _scrollToToken(token: IToken): void;

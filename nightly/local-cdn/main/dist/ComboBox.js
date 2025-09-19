@@ -210,6 +210,12 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
          * @private
          */
         this._linksListenersArray = [];
+        /**
+         * Indicates whether IME composition is currently active
+         * @default false
+         * @private
+         */
+        this._isComposing = false;
         this._initialRendering = true;
         this._itemFocused = false;
         // used only for Safari fix (check onAfterRendering)
@@ -264,8 +270,12 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
             this._valueStateLinks = this.linksInAriaValueStateHiddenText;
         }
     }
+    onEnterDOM() {
+        this._enableComposition();
+    }
     onExitDOM() {
         this._removeLinksEventListeners();
+        this._composition?.removeEventListeners();
     }
     _focusin(e) {
         this.focused = true;
@@ -404,7 +414,7 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
         this.filterValue = value;
         this._clearFocus();
         // autocomplete
-        if (shouldAutocomplete && !isAndroid()) {
+        if (shouldAutocomplete && !this._isComposing && !isAndroid()) {
             this._handleTypeAhead(value, value);
         }
         this.fireDecoratorEvent("input");
@@ -903,6 +913,34 @@ let ComboBox = ComboBox_1 = class ComboBox extends UI5Element {
             announce(valueStateText, InvisibleMessageMode.Polite);
         }
     }
+    /**
+     * Enables IME composition handling.
+     * Dynamically loads the InputComposition feature and sets up event listeners.
+     * @private
+     */
+    _enableComposition() {
+        if (this._composition) {
+            return;
+        }
+        const setup = (InputCompositionClass) => {
+            this._composition = new InputCompositionClass({
+                getInputEl: () => this.inner,
+                updateCompositionState: (isComposing) => {
+                    this._isComposing = isComposing;
+                },
+            });
+            this._composition.addEventListeners();
+        };
+        if (ComboBox_1.composition) {
+            setup(ComboBox_1.composition);
+        }
+        else {
+            import("./features/InputComposition.js").then(CompositionModule => {
+                ComboBox_1.composition = CompositionModule.default;
+                setup(CompositionModule.default);
+            });
+        }
+    }
     get _headerTitleText() {
         return ComboBox_1.i18nBundle.getText(INPUT_SUGGESTIONS_TITLE);
     }
@@ -1139,6 +1177,9 @@ __decorate([
 __decorate([
     property({ type: Array })
 ], ComboBox.prototype, "_linksListenersArray", void 0);
+__decorate([
+    property({ type: Boolean, noAttribute: true })
+], ComboBox.prototype, "_isComposing", void 0);
 __decorate([
     slot({
         type: HTMLElement,

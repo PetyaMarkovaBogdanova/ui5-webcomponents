@@ -10,6 +10,6 @@ export default function SearchFieldTemplate() {
                         _jsx("slot", { name: "image" }), this.icon &&
                         _jsx(Icon, { class: "ui5-search-item-icon", name: this.icon }), this.scopeName &&
                         _jsx(Tag, { design: TagDesign.Set2, colorScheme: "10", children: this.scopeName }), _jsxs("div", { class: "ui5-search-item-titles-container", children: [_jsx("span", { part: "title", class: "ui5-search-item-text", dangerouslySetInnerHTML: { __html: this._markupText } }), _jsx("span", { part: "subtitle", class: "ui5-search-item-description", children: this.description })] }), this.deletable &&
-                        _jsx(Button, { class: "ui5-search-item-selected-delete", design: ButtonDesign.Transparent, icon: decline, onClick: this._onDeleteButtonClick, tooltip: this._deleteButtonTooltip })] }) }) }));
+                        _jsx(Button, { class: "ui5-search-item-selected-delete", design: ButtonDesign.Transparent, icon: decline, onClick: this._onDeleteButtonClick, tooltip: this._deleteButtonTooltip, onKeyDown: this._onDeleteButtonKeyDown })] }) }) }));
 }
 //# sourceMappingURL=SearchItemTemplate.js.map

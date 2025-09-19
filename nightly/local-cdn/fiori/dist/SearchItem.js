@@ -15,6 +15,9 @@ import generateHighlightedMarkup from "@ui5/webcomponents-base/dist/util/generat
 import jsxRenderer from "@ui5/webcomponents-base/dist/renderer/JsxRenderer.js";
 import event from "@ui5/webcomponents-base/dist/decorators/event-strict.js";
 import { SEARCH_ITEM_DELETE_BUTTON } from "./generated/i18n/i18n-defaults.js";
+import getActiveElement from "@ui5/webcomponents-base/dist/util/getActiveElement.js";
+import { getFirstFocusableElement } from "@ui5/webcomponents-base/dist/util/FocusableElements.js";
+import { isSpace, isEnter, isF2 } from "@ui5/webcomponents-base/dist/Keys.js";
 import { i18n } from "@ui5/webcomponents-base/dist/decorators.js";
 // @ts-expect-error
 import encodeXML from "@ui5/webcomponents-base/dist/sap/base/security/encodeXML.js";
@@ -60,8 +63,37 @@ let SearchItem = SearchItem_1 = class SearchItem extends ListItemBase {
     _onfocusout() {
         this.selected = false;
     }
+    async _onkeydown(e) {
+        super._onkeydown(e);
+        if (this.getFocusDomRef().matches(":has(:focus-within)")) {
+            if (isSpace(e) || isEnter(e)) {
+                e.preventDefault();
+                return;
+            }
+        }
+        if (isF2(e)) {
+            e.stopImmediatePropagation();
+            const activeElement = getActiveElement();
+            const focusDomRef = this.getFocusDomRef();
+            if (!focusDomRef) {
+                return;
+            }
+            if (activeElement === focusDomRef) {
+                const firstFocusable = await getFirstFocusableElement(focusDomRef);
+                firstFocusable?.focus();
+            }
+            else {
+                focusDomRef.focus();
+            }
+        }
+    }
     _onDeleteButtonClick() {
         this.fireDecoratorEvent("delete");
+    }
+    _onDeleteButtonKeyDown(e) {
+        if (isSpace(e) || isEnter(e)) {
+            this.fireDecoratorEvent("delete");
+        }
     }
     onBeforeRendering() {
         super.onBeforeRendering();

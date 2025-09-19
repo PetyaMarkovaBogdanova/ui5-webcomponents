@@ -1,5 +1,6 @@
 // OpenUI5's Control.js subset
 import getSharedResource from "../getSharedResource.js";
+import insertOpenUI5PopupStyles from "./insertOpenUI5PopupStyles.js";
 // contains all OpenUI5 and Web Component popups that are currently opened
 const AllOpenedPopupsRegistry = getSharedResource("AllOpenedPopupsRegistry", { openedRegistry: [] });
 const addOpenedPopup = (popupInfo) => {
@@ -99,6 +100,7 @@ const createGlobalStyles = () => {
     document.adoptedStyleSheets = [...document.adoptedStyleSheets, stylesheet];
 };
 const patchPopup = (Popup) => {
+    insertOpenUI5PopupStyles();
     patchOpen(Popup); // Popup.prototype.open
     patchClosed(Popup); // Popup.prototype._closed
     createGlobalStyles(); // Ensures correct popover positioning by OpenUI5 (otherwise 0,0 is the center of the screen)

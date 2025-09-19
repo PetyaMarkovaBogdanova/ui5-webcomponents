@@ -101,7 +101,6 @@ let MultiInput = MultiInput_1 = class MultiInput extends Input {
     _tokenizerFocusOut(e) {
         if (!this.contains(e.relatedTarget) && !this.shadowRoot.contains(e.relatedTarget)) {
             this.tokenizer._tokens.forEach(token => { token.selected = false; });
-            this.tokenizer.scrollToStart();
         }
     }
     valueHelpMouseUp() {
@@ -110,15 +109,18 @@ let MultiInput = MultiInput_1 = class MultiInput extends Input {
         }, 0);
     }
     innerFocusIn() {
+        this.tokenizer._scrollToEndOnExpand = true;
         this.tokenizer.expanded = true;
         this.focused = true;
-        this.tokenizer.scrollToEnd();
         this.tokens.forEach(token => {
             token.selected = false;
         });
     }
+    _showMoreItemsPress() {
+        this.tokenizer._scrollToEndOnExpand = true;
+    }
     _onkeydown(e) {
-        super._onkeydown(e);
+        !this._isComposing && super._onkeydown(e);
         const target = e.target;
         const isHomeInBeginning = isHome(e) && target.selectionStart === 0;
         if (isHomeInBeginning) {
@@ -218,12 +220,6 @@ let MultiInput = MultiInput_1 = class MultiInput extends Input {
     onAfterRendering() {
         super.onAfterRendering();
         this.tokenizer.preventInitialFocus = true;
-        if (this.tokenizer.expanded) {
-            this.tokenizer.scrollToEnd();
-        }
-        else {
-            this.tokenizer.scrollToStart();
-        }
     }
     get iconsCount() {
         return super.iconsCount + (this.showValueHelpIcon ? 1 : 0);
